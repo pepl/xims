@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+# Copyright (c) 2002-2011 The XIMS Project.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
+-->
+<chartable>
+    <!-- Some special chars -->
+    <char val=" " rep="_x0020_" />
+    <char val="#" rep="_x0023_" />
+    <char val="$" rep="_x0024_" />
+    <char val="%" rep="_x0025_" />
+    <char val="&amp;" rep="_x0026_" />
+    <char val="&apos;" rep="_x0027_" />
+    <char val="(" rep="_x0028_" />
+    <char val=")" rep="_x0029_" />
+    <char val="*" rep="_x002A_" />
+    <char val="+" rep="_x002B_" />
+    <char val="," rep="_x002C_" />
+    <char val="/" rep="_x002F_" />
+    <char val=":" rep="_x003A_" />
+    <char val=";" rep="_x003B_" />
+    <char val="&lt;" rep="_x003C_" />
+    <char val="=" rep="_x003D_" />
+    <char val="&gt;" rep="_x003E_" />
+    <char val="?" rep="_x003F_" />
+    <char val="@" rep="_x0040_" />
+    <char val="\" rep="_x005C_" />
+    <char val="{" rep="_x007B_" />
+    <char val="|" rep="_x007C_" />
+    <char val="}" rep="_x007D_" />
+    <char val="~" rep="_x007E_" />
+    <!-- Invalid characters for MS-Access names -->
+    <char val="." rep="_" />
+    <char val="!" rep="_" />
+    <char val="`" rep="_" />
+    <char val="[" rep="_" />
+    <char val="]" rep="_" />
+    <char val="&#34;" rep="_" />
+</chartable>

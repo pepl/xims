@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<l>
+    <!-- Begin Questionnaire -->
+    <Question>Frage</Question>
+    <Questions>Fragen</Questions>
+    <Answer>Antwort</Answer>
+    <Answers>Antworten</Answers>
+    <Example_Answers>(Beispiels-)Antworten</Example_Answers>
+    <Comment>Kommentar</Comment>
+    <Intro>Einleitung</Intro>
+    <Exit>Endnachricht</Exit>
+    <Alignment>Ausrichtung (Radio, Checkbox)</Alignment>
+    <Type>Typ</Type>
+    <results>Ergebnisse</results>
+    <Results>Ergebnisse</Results>
+    <Overview>Übersicht</Overview>
+    <close_window>Fenster schließen</close_window>
+    <next>Weiter</next>
+    <start>Start</start>
+    <TAN_number>Anzahl TANs in Liste</TAN_number>
+    <TAN_lists_assigned>Zugeordnete TAN-Listen</TAN_lists_assigned>
+    <Question_number>Anzahl Fragen</Question_number>
+    <Questionnaires_answered_number>Anzahl beantworteter Fragebögen</Questionnaires_answered_number>
+    <Questionnaires_valid_number>Anzahl gültig beantworteter Fragebögen</Questionnaires_valid_number>
+    <Questionnaire_thank_you>Danke für die Beantwortung des Fragebogens</Questionnaire_thank_you>
+    <Download>Herunterladen</Download>
+    <Add_TAN_List>TAN-Liste hinzufügen</Add_TAN_List>
+    <Remove_TAN_List>TAN-Liste entfernen</Remove_TAN_List>
+    <browse_TAN_List>TAN-Liste suchen</browse_TAN_List>
+    <Add_Question>Frage hinzufügen</Add_Question>
+    <Edit_Question>Frage bearbeiten</Edit_Question>
+    <Copy_question>Frage kopieren</Copy_question>
+    <Delete_Question>Frage löschen</Delete_Question>
+    <Add_Subquestion>Unterfrage hinzufügen</Add_Subquestion>
+    <Add_Answer>Antwort hinzufügen</Add_Answer>
+    <Delete_Answer>Antwort löschen</Delete_Answer>
+    <Add_to_selection>Zur Auswahl hinzufügen</Add_to_selection>
+    <Remove_from_selection>Von Auswahl entfernen</Remove_from_selection>
+    <show_questions>Fragen anzeigen</show_questions>
+    <hide_questions>Fragen ausblenden</hide_questions>
+    <All_results>Alle Fragebögen herunterladen</All_results>
+    <Raw_results>Rohdaten (Tab-separiert)</Raw_results>
+    <with_text_answers>mit Anworten des Typs 'Text'- und 'Textarea' im Detail</with_text_answers>
+    <Default_Thank_You>Vielen Dank für die Beantwortung der Fragen!</Default_Thank_You>
+    <Mandatory_Answers>Jede Frage muss bei der Beantwortung dieses Fragebogens beantwortet werden</Mandatory_Answers>
+    <Kioskmode>Kiosk-Modus (Mehrfachausfüllmöglichkeit mit gleicher Browser-Instanz)</Kioskmode>
+    <Questionnaire_Options>Fragebogenoptionen</Questionnaire_Options>
+    <!-- End Questionnaire -->
+</l>

@@ -1,0 +1,14 @@
+-- Copyright (c) 2002-2006 The XIMS Project.
+-- See the file "LICENSE" for information and conditions for use, reproduction,
+-- and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+-- $Id$
+
+PROMPT Creating Index 'BMK_USR_OBJECT_ID_FK_I'
+CREATE INDEX BMK_USR_OBJECT_ID_FK_I ON CI_BOOKMARKS
+ (CONTENT_ID)
+/
+
+PROMPT Creating Index 'BMK_USR_USER_ID_FK_I'
+CREATE INDEX BMK_USR_USER_ID_FK_I ON CI_BOOKMARKS
+ (OWNER_ID)
+/

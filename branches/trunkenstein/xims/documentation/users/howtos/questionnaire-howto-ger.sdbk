@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD Simplified DocBook XML V1.0//EN"
+"http://www.oasis-open.org/docbook/xml/simple/1.0/sdocbook.dtd">
+<article>
+    <title>Erstellen von Umfragen mit dem Questionnaire Modul</title>
+
+    <articleinfo>
+        <authorgroup>
+            <author>
+                <firstname>Joachim</firstname>
+
+                <surname>Kargl</surname>
+
+                <authorblurb>
+                    <para><email>joachim.kargl@uibk.ac.at</email></para>
+                </authorblurb>
+            </author>
+
+            <author>
+                <firstname>Michael</firstname>
+
+                <surname>Kröll</surname>
+
+                <authorblurb>
+                    <para><email>michael.kroell@uibk.ac.at</email></para>
+                </authorblurb>
+            </author>
+        </authorgroup>
+    </articleinfo>
+
+    <section>
+        <title>Elemente einer Umfrage</title>
+
+        <section>
+            <title>Fragebogen</title>
+
+            <para>Ein Fragebogen hat einen <emphasis>Titel</emphasis> und einen optionalen <emphasis>Kommentar</emphasis>. Diese Elemente werden bei der
+            Beantwortung auf der Startseite eines Fragebogens angezeigt.</para>
+
+            <section>
+                <title>Fragen</title>
+
+                <para>Fragen bestehen aus dem <emphasis>Fragetext</emphasis> und einem optionalen <emphasis>Kommentar</emphasis>. Jeder Frage können beliebig
+                viele <emphasis>Unterfragen</emphasis> und <emphasis>Antworten</emphasis> hinzugefügt werden. Fragen auf der obersten Ebene haben einen
+                besonderen Status. Bei der Beantwortung des Fragebogens wird jeweils eine Frage der obersten Ebene mit all ihren Unterfragen und Antworten zur
+                Beantwortung angezeigt.</para>
+            </section>
+
+            <section>
+                <title>Antworten</title>
+
+                <para>Jede Antwort hat einen <emphasis>Typ</emphasis> und einen optionalen <emphasis>Kommentar.</emphasis> Für die Typen &#39;Radio&#39; und
+                &#39;Checkbox&#39; muss mindestens eine <emphasis>Antwortmöglichkeit</emphasis> bestehen. Die <emphasis>Ausrichtung</emphasis> legt bei diesen
+                beiden Typen fest, wie die Antwortmöglichkeiten bei der Beantwortung dargestellt werden. Es gibt 5 unterschiedliche Antworttypen:</para>
+
+                <itemizedlist>
+                    <listitem>
+                        <para>Select</para>
+
+                        <para>Dieser Typ lässt nur eine Antwortmöglichkeit zu.</para>
+
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="images/xims_questionnaire_howto_selectbox.png" />
+                            </imageobject>
+                        </mediaobject>
+                    </listitem>
+
+                    <listitem>
+                        <para>Radio</para>
+
+                        <para>Dieser Typ lässt nur eine Antwortmöglichkeit zu.</para>
+
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="images/xims_questionnaire_howto_radio.png" />
+                            </imageobject>
+                        </mediaobject>
+                    </listitem>
+
+                    <listitem>
+                        <para>Checkbox</para>
+
+                        <para>Es können mehrere Antwortmöglichkeiten ausgewählt werden.</para>
+
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="images/xims_questionnaire_howto_checkbox.png" />
+                            </imageobject>
+                        </mediaobject>
+                    </listitem>
+
+                    <listitem>
+                        <para>Text</para>
+
+                        <para>Einzeilige freie Texteingabe als Antwort. Sind Antwortmöglichkeiten vorgegeben, werden sie als Text vor den Eingabefeldern
+                        angezeigt. Textfelder werden immer untereinander dargestellt.</para>
+
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="images/xims_questionnaire_howto_text.png" />
+                            </imageobject>
+                        </mediaobject>
+                    </listitem>
+
+                    <listitem>
+                        <para>Textarea</para>
+
+                        <para>Mehrzeilige freie Texteingabe für längere Antworten. Sind Antwortmöglichkeiten vorgegeben, werden als Vorgabe in die Textfelder
+                        übernommen. Die einzelnen Textfelder, falls mehrere Antwortmöglichkeiten vorgesehen sind, werden untereinander dargestellt.</para>
+
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="images/xims_questionnaire_howto_textarea.png" />
+                            </imageobject>
+                        </mediaobject>
+                    </listitem>
+                </itemizedlist>
+            </section>
+        </section>
+
+        <section>
+            <title>TAN-Listen</title>
+
+            <para>Eine TAN-Liste ist eine Liste von unterschiedlichen Nummern oder Zeichenfolgen. Ist einem Fragebogen eine TAN-Liste zugeordnet, so kann dieser
+            nur mit einem TAN aus der zugeordneten Liste beantwortet werden. Die Eigabe des TAN wird auf der Startseite des Fragebogens verlangt. Eine TAN-Liste
+            kann mehreren Fragebögen zugeordnet werden, genauso wie einem Fragebogen mehrere TAN-Listen zugeordnet sein können. Ist einem Fragebogen keine
+            TAN-Liste zugeordnet, kann er von jedem beantwortet werden.</para>
+        </section>
+    </section>
+
+    <section>
+        <title>Erstellen einer Umfrage</title>
+
+        <section>
+            <title>Erstellen des Fragebogens</title>
+
+            <para>Wählen sie den &#39;Questionnaire&#39;-Objekt-Typ im Dropdown-Menü zum Erstellen aus und klicken auf &#34;Erstellen&#34;.</para>
+
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="images/xims_questionnaire_howto_selectq.png" />
+                </imageobject>
+            </mediaobject>
+
+            <para>Weisen sie dem Fragebogen <emphasis>Location</emphasis> und <emphasis>Titel</emphasis> zu.</para>
+
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="images/xims_questionnaire_howto_createq.png" />
+                </imageobject>
+            </mediaobject>
+
+            <para>Nachdem sie den Fragebogen gespeichert haben, gelangen sie zur Standardansicht des Questionnaire-Objekts mit einer Übersicht von Fragen,
+            TAN-Listen und dem Status des Fragebogens.</para>
+
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="images/xims_questionnaire_howto_qdefault.png" />
+                </imageobject>
+            </mediaobject>
+        </section>
+
+        <section>
+            <title>Hinzufügen einer Einleitung und einer Endnachricht</title>
+
+            <para>Eine Einleitung wird in der veröffentlichten Version des Fragebogens vor der ersten Frage dargestellt. Eine Endnachricht wird nach dem
+            Beantworten der letzten Frage angezeigt.</para>
+
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="images/xims_questionnaire_howto_introtext.png" />
+                </imageobject>
+
+                <caption>
+                    <para>Beispielstext &#39;Einleitung&#39; für veröffentlichten Fragebogen</para>
+                </caption>
+            </mediaobject>
+
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="images/xims_questionnaire_howto_exittext.png" />
+                </imageobject>
+
+                <caption>
+                    <para>Beispielstext &#39;Endnachricht&#39; eines veröffentlichten Fragebogens</para>
+                </caption>
+            </mediaobject>
+        </section>
+
+        <section>
+            <title>Hinzufügen von Fragen und Antworten zum Fragebogen</title>
+
+            <para>Bearbeiten sie den Fragebogen und klicken sie auf &#34;Frage hinzufügen&#34; - Die erste Frage wird erstellt.</para>
+
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="images/xims_questionnaire_howto_addquestion.png" />
+                </imageobject>
+            </mediaobject>
+
+            <para>Geben sie den Fragentext und optional einen Kommentar ein. Kommentare werden unter dem Fragentext und allfälligen Antworten dargestellt. Die
+            Eingabe eines Fragentextes ist erforderlich, da sonst die Frage nicht gespeichert wird. Zur einer Frage können beliebig viele Unterfragen erstellt
+            werden. Bei der Beantwortung des Fragebogens wird jeweils eine Frage der ersten Ebene mit all ihren Unterfragen und Antworten zur Beantwortung
+            komplett angezeigt.</para>
+
+            <para>Für die Fragetypen Select, Radio und Checkbox müssen sie nun der Frage Antworten hinzufügen, bei den Fragetypen Text und Textarea sind
+            Antwortmöglichkeiten optional. Wählen sie den Typ aus dem Dropdown-Menü aus. Bei den Fragetypen Radio und Checkbox können sie die Ausrichtung der
+            Antworten, entweder horizontal oder vertikal, bestimmen.</para>
+
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="images/xims_questionnaire_howto_addanswer.png" />
+                </imageobject>
+            </mediaobject>
+
+            <para>Sie können in das Textfeld bei &#34;(Beispiels-)Antworten mehrere Antwortmöglichkeiten eingeben indem sie sie der Auswahl hinzu hinzufügen.
+            Diese erscheinen dann im Dropdown-Feld. Wiederholen sie diesen Vorgang für alle Antwortmöglichkeiten. Löschen können sie eine Antwortmöglichkeit
+            indem sie sie im Dropdown-Feld auswählen und &#34;Von Auswahl entfernen&#34; klicken.</para>
+
+            <para>Auf diese Weise können sie beliebig viele Fragen, Unterfragen und Antworten hinzufügen.</para>
+        </section>
+
+        <section>
+            <title>Bearbeiten von Fragen und Antworten</title>
+
+            <para>Beim Editieren des Fragebogens werden die Fragen der ersten Ebene im Überblick dargestellt, d.h. Unterfragen und Antworten sind bis auf die
+            Frage, die gerade bearbeitet wird ausgeblendet.</para>
+
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="images/xims_questionnaire_howto_editanswer.png" />
+                </imageobject>
+            </mediaobject>
+
+            <para>Um eine andere Frage zu bearbeiten klicken sie entweder auf den Fragentext oder auf das Bearbeitungs-Symbol.</para>
+
+            <para>Mit den Pfeilsymbolen am Beginn jeder Frage bzw. Antwort können sie die Fragen oder Antworten jeweils um eine Position nach oben oder unten
+            verschieben. Dies ist auch mit Unterfragen möglich. Es ist allerdings nicht möglich eine Unterfrage oder Antwort auf eine höhere Ebene zu
+            verschieben. Eine Frage mit allen Unterfragen und Antworten kann durch Klicken auf das entsprechende Symbol kopiert oder gelöscht werden.</para>
+
+            <para>Ist der Fragebogen vollständig speichern sie ihn.</para>
+        </section>
+
+        <section>
+            <title>Einschränken der Umfrage-TeilnehmerInnen mittels TAN-Listen</title>
+
+            <para>Veröffentliche Fragebögen sind standardmäßig von jedem ausfüllbar. Um den Kreis der Umfrage-TeilnehmerInnen zu beschränken, gleichzeitig aber
+            deren Anonymität innerhalb dieses Kreises zu gewährleisten, bietet sich dich Verwendung von TAN-Listen an. Dabei wird aus einer Liste zufällig
+            generierter Zahlen (TANs) jeweils ein TAN an die TeilnehmInnen zufällig verteilt. Zum Beispiel können die ausgedruckten TANs von den TeilnehmerInnen
+            selbst aus einem Topf gezogen werden. Die Zuweisung von TAN-Listen an einen Fragebogen muss vor dessen Veröffentlichung geschehen!</para>
+
+            <section>
+                <title>Erstellen einer TAN-Liste</title>
+
+                <para>Erstellen sie eine TAN-Liste und geben sie die <emphasis>Location</emphasis>, einen <emphasis>Titel</emphasis> zur einfacheren
+                Identifizierung und die Anzahl der TANs die verfügbar sein sollen ein. Die Anzahl der TANs richtet sich nach der Anzahl der TeilnehmerInnen der
+                Umfrage. Am besten wählen sie eine Zahl die höher ist, als die tatsächlichen TeilnehmerInnen, damit bei der TAN-Verlosung auch der oder die
+                letzte noch eine Auswahl hat.</para>
+
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/xims_questionnaire_howto_create_tanlist.png" />
+                    </imageobject>
+                </mediaobject>
+
+                <para>Nach dem Speichern der TAN-Liste haben sie die Möglichkeit die TANs als Datei herunterzuladen. Mit dieser Datei können z.B. TAN-Kärtchen
+                ausgedruckt werden, um sie den zu Befragenden auszuteilen.</para>
+            </section>
+
+            <section>
+                <title>Zuweisen einer TAN-Liste zum Fragebogen</title>
+
+                <para>Beim Bearbeiten des Fragebogens, dem sie die TAN-Liste zuweisen wollen, geben sie in das Feld neben &#34;TAN-Liste hinzufügen&#34;
+                entweder den Pfad zur TAN-Liste ein oder suchen sie nach der TAN-Liste mit Hilfe von &#34;TAN-Liste suchen&#34;. Klicken sie danach auf
+                &#34;TAN-Liste hinzufügen&#34;.</para>
+
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/xims_questionnaire_howto_select_tanlist.png" />
+                    </imageobject>
+
+                    <caption>
+                        <para>TAN-Liste auswählen</para>
+                    </caption>
+                </mediaobject>
+
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/xims_questionnaire_howto_assigned_tanlist.png" />
+                    </imageobject>
+
+                    <caption>
+                        <para>Anzeige der zugewiesenen TAN-Liste</para>
+                    </caption>
+                </mediaobject>
+
+                <para>Die TAN-Liste wird unter TAN-Lists angeführt, in Klammer steht die Anzahl der TANs in der Liste. Speichern sie die den Fragebogen, damit
+                die TAN-Listen Zuweisung aktiv wird. Sie können die TAN-Liste wieder entfernen, indem sie auf &#34;TAN-Liste entfernen&#34; klicken und den
+                Fragebogen speichern.</para>
+            </section>
+        </section>
+
+        <section>
+            <title>Veröffentlichen des Fragebogens</title>
+
+            <para>Damit der Fragebogen nun auch beantwortet werden kann, muss er zuvor veröffentlicht werden. Die TAN-Listen müssen und können auch nicht
+            veröffentlicht werden. Die im Laufe der XIMS-Veröffentlichung angegebene URL im Status-Symbol ist der Link, mit dem sie die Startseite des
+            Fragebogens aufrufen können. Diesen Link können sie zum Beispiel auf ihrer Homepage einbauen oder mit email verschicken um den Zugang zum Fragebogen
+            zu ermöglichen. Beim Verlinken der veröffentlichten Version des Fragebogens empfiehlt es sich, den Link in einem neuen Fenster ohne zusätzliche
+            Navigation zu starten, damit die BenutzerInnen nicht vom Beantworten abgelenkt werden.</para>
+
+            <para></para>
+        </section>
+    </section>
+</article>

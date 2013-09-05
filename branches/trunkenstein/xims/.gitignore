@@ -1,0 +1,62 @@
+sql/setup_db.log
+*jquery_min.css
+*jquery_min.js
+*min.css
+*min.js
+*Thumbs.db
+
+# /
+/vpproject
+
+# /conf/
+/conf/ximsconfig.xml.uibk
+
+# /documentation/users/
+/documentation/users/sfs.zip
+
+# /documentation/users/sfs/
+/documentation/users/sfs/sfs.aux
+/documentation/users/sfs/sfs.bbl
+/documentation/users/sfs/sfs.blg
+/documentation/users/sfs/sfs.idx
+/documentation/users/sfs/sfs.ilg
+/documentation/users/sfs/sfs.ind
+/documentation/users/sfs/sfs.lof
+/documentation/users/sfs/sfs.lot
+/documentation/users/sfs/sfs.out
+/documentation/users/sfs/sfs.toc
+/documentation/users/sfs/wysiwyg.log
+/documentation/users/sfs/allgemeines.log
+/documentation/users/sfs/sfs.tps
+/documentation/users/sfs/sfs.tcp
+/documentation/users/sfs/startseite.log
+/documentation/users/sfs/sfs.log
+
+# /documentation/users/sfs/images/
+/documentation/users/sfs/images/new_file.html
+/documentation/users/sfs/images/Thumbs.db
+
+# /lib/XIMS/CGI/
+/lib/XIMS/CGI/user_uibk.pm
+
+# /www/ximspubroot/
+/www/ximspubroot/uniweb
+
+# /www/ximsroot/
+/www/ximsroot/jquery
+
+# /www/ximsroot/editors/
+/www/ximsroot/editors/codemirror-ui-0.0.14
+/www/ximsroot/editors/tinymce_uibk
+/www/ximsroot/editors/tinymce_3.5b3_jquery
+
+# /www/ximsroot/scripts/
+/www/ximsroot/scripts/CodeMirror-2.18
+
+# /www/ximsroot/skins/default/scripts/
+/www/ximsroot/skins/default/scripts/datetime.js
+
+# /www/ximsroot/skins/default/stylesheets/
+/www/ximsroot/skins/default/stylesheets/common_header_uibk.xsl
+/www/ximsroot/skins/default/stylesheets/common_head_uibk.xsl
+/www/ximsroot/skins/default/stylesheets/common_tinymce_scripts_uibk.xsl

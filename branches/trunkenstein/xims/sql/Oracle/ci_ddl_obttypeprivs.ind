@@ -1,0 +1,19 @@
+-- Copyright (c) 2002-2006 The XIMS Project.
+-- See the file "LICENSE" for information and conditions for use, reproduction,
+-- and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+-- $Id$
+
+PROMPT Creating Index 'OTP_USR_GRANTEE_FK_I'
+CREATE INDEX OTP_USR_GRANTEE_FK_I ON CI_OBJECT_TYPE_PRIVS
+ (GRANTEE_ID)
+/
+
+PROMPT Creating Index 'OTP_USR_FK_I'
+CREATE INDEX OTP_USR_FK_I ON CI_OBJECT_TYPE_PRIVS
+ (GRANTOR_ID)
+/
+
+PROMPT Creating Index 'OTP_OBT_FK_I'
+CREATE INDEX OTP_OBT_FK_I ON CI_OBJECT_TYPE_PRIVS
+ (OBJECT_TYPE_ID)
+/

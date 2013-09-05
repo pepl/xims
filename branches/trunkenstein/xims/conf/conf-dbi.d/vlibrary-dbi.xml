@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Config>
+    <DBI>
+        <PropertyAttributes>
+            <item name="vlibauthor.id" value="cilib_authors_id_seq_nval()"/>
+            <item name="vlibauthormap.id" value="cilib_authormap_id_seq_nval()"/>
+            <item name="vlibkeyword.id" value="cilib_keywords_id_seq_nval()"/>
+            <item name="vlibkeywordmap.id" value="cilib_keywordmap_id_seq_nval()"/>
+            <item name="vlibsubject.id" value="cilib_subjects_id_seq_nval()"/>
+            <item name="vlibsubjectmap.id" value="cilib_subjectmap_id_seq_nval()"/>
+            <item name="vlibpublication.id" value="cilib_publications_id_seq_nval()"/>
+            <item name="vlibpublicationmap.id" value="cilib_publmap_id_seq_nval()"/>
+            <item name="vlibmeta.id" value="cilib_meta_id_seq_nval()"/>
+        </PropertyAttributes>
+        <Tables>
+            <item name="vlibauthor" value="cilib_authors"/>
+            <item name="vlibauthormap" value="cilib_authormap"/>
+            <item name="vlibkeyword" value="cilib_keywords"/>
+            <item name="vlibkeywordmap" value="cilib_keywordmap"/>
+            <item name="vlibsubject" value="cilib_subjects"/>
+            <item name="vlibsubjectmap" value="cilib_subjectmap"/>
+            <item name="vlibpublication" value="cilib_publications"/>
+            <item name="vlibpublicationmap" value="cilib_publicationmap"/>
+            <item name="vlibmeta" value="cilib_meta"/>
+        </Tables>
+    </DBI>
+</Config>

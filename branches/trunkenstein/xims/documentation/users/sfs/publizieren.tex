@@ -1,0 +1,144 @@
+\section{Inhalte öffentlich zugänglich machen}
+\label{inhaltepublizieren}
+
+In \otherterm{XIMS} erstellte Objekte bzw. veränderte Versionen von bereits publizierten
+Objekten sind nicht automatisch für die Öffentlichkeit sichtbar. Objekte müssen
+explizit veröffentlicht werden!
+Das Zusammenspiel zwischen Content Management und Präsentation für die
+Öffentlichkeit zeigt die folgende Darstellung \ref{fig:xims-zusammenspiel}.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/xims-zusammenspiel.png}
+	\caption{\otherterm{XIMS} Zusammenspiel
+Inhalteverwaltung und Präsentation}
+	\label{fig:xims-zusammenspiel}
+\end{figure}
+
+Das Objekt (Dokument, Ordner, Datei, Bild, etc.), welches in \otherterm{XIMS} erstellt worden
+ist, existiert vorerst nur in der \otherterm{XIMS}-Datenbank (1). Erst wenn das Objekt
+veröffentlicht wird (»veröffentlichen« bzw. »publish«) (2), wird dieses in Form
+einer XML-Datei in das Dateisystem des Webservers kopiert (3) und ist von diesem
+Zeitpunkt an öffentlich sichtbar.
+An der Uni Innsbruck ist \otherterm{XIMS} bzw. AxKit so konfiguriert, dass der \ximsterm{SiteRoot} \path{/uniweb}
+öffentlich unter der Adresse \url{http://www.uibk.ac.at/} zu erreichen ist. Insofern spiegeln
+die Pfade der \otherterm{XIMS} \ximsterm{Container} unter \path{/uniweb} die URLs unter
+\url{http://www.uibk.ac.at/} wieder, d.h. Objekte in \otherterm{XIMS} unter dem Pfad
+\path{/uniweb/fakultaeten/xxx} sind öffentlich (wenn über \otherterm{XIMS} veröffentlicht) unter
+\nolinkurl{http://www.uibk.ac.at/fakultaeten/xxx} verfügbar.
+
+\subsection{Objekte veröffentlichen (Publish)}
+\label{publizieren}
+
+Objekte können durch das Klicken auf das »Publizieren-Icon« veröffentlicht werden. Beim
+erstmaligen \otherterm{Publizieren} eines erstellten Objekts erscheint folgendes \otherterm{Dialogfenster},
+das ein »Veröffentlichen« oder ein »Abbrechen« zur Auswahl stellt.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.9\textwidth]{./images/XI5S-publish.png}
+	\caption{Dialog zum Veröffentlichen von Objekten}
+	\label{fig:xims-publish}
+\end{figure}
+
+Bricht man den Publikationsvorgang ab (Abbrechen), ist das Objekt weiterhin nur in
+der \otherterm{XIMS}-Datenbank präsent und nicht öffentlich zugänglich.
+Nach dem Klicken des »Veröffentlichen«-Buttons erscheint eine Erfolgsmeldung,
+die bestätigt, dass das Objekt erfolgreich veröffentlicht wurde, als XML-Datei im
+Dateisystem vorliegt und somit öffentlich erreichbar ist.
+
+\subsection{Wiederveröffentlichen (Republish)}
+\label{republish}
+
+Wurden bei einem vormals veröffentlichten Objekt Änderungen vorgenommen (siehe
+Punkt \ref{icons}), müssen dessen Inhalte nochmals veröffentlicht
+(»Wiederveröffentlichen« oder »Republish«) werden. Getätigte Änderungen (vor
+dem Wiederveröffentlichen) werden in dem Fall wiederum nur in der \otherterm{XIMS}-Datenbank
+gespeichert, sind jedoch noch nicht im Dateisystem aktualisiert.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.9\textwidth]{./images/XI5S-republish.png}
+	\caption{Dialog zum erneuten Veröffentlichen von Objekten}
+	\label{fig:xims-republish}
+\end{figure}
+
+Bricht man den Publikationsvorgang ab (»Abbrechen«), ist das Objekt weiterhin in
+nicht aktualisierter Form veröffentlicht.
+»Veröffentlichen rückgängig machen« (Unpublish) macht eine vormalige
+Veröffentlichung rückgängig und löscht die öffentlich zugängliche Version des
+Objekts im Dateisystem und das Objekt ist ab diesem Zeitpunkt nur mehr in der
+\otherterm{XIMS}-Datenbank gespeichert.
+»Wiederveröffentlichen« (Republish) aktualisiert die Version des Objekts im
+Dateisystem des Webservers. Somit sind die Versionen in der Datenbank und im Dateisystem des Webservers identisch (siehe Abb.~\ref{fig:xims-zusammenspiel}).
+
+\subsection{Löschen und Verschieben veröffentlichter Objekte}
+\label{deletepublished}
+
+In bestimmten Fällen ist es gewünscht, veröffentlichte Objekte nicht mehr öffentlich
+zur Verfügung zu stellen. Ein Szenario ist beispielsweise, dass eine PDF-Datei,
+welche zum Download angeboten wurde, nicht mehr öffentlich zur Verfügung
+stehen soll. Das entsprechende Objekt muss daher aus dem Dateisystem des
+Webservers gelöscht werden. Das geschieht mit Hilfe der Funktion
+»Veröffentlichen rückgängig machen« (Unpublish). Ein Löschen der Datei im
+\otherterm{XIMS} ist per se nicht notwendig.
+
+Um Inkonsistenzen der \otherterm{XIMS}-Objekte zu vermeiden, ist das System mit einem
+»Sicherungsmechanismus« ausgestattet:
+Nachdem Objekte veröffentlicht wurden, verhindert \otherterm{XIMS} das Verschieben bzw.
+Löschen ebensolcher, selbst wenn man grundsätzlich die notwendigen Rechte dafür
+hat (siehe Punkt \ref{gesperrteobjekte}).
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/publishednotpublished.png}
+	\caption{Veröffentlichtes und unveröffentlichtes Objekt in der \otherterm{XIMS}-Containeransicht}
+	\label{fig:publishednotpublished}
+\end{figure}
+
+Um nun ein veröffentlichtes Objekt verschieben bzw. löschen zu können, muss die
+Veröffentlichung dieses Objekts zuerst rückgängig gemacht werden (siehe Punkt \ref{inhaltepublizieren}). Durch das Zurücknehmen der Veröffentlichung ist das Objekt nur noch in der
+\otherterm{XIMS}-Datenbank vorhanden. Es ist wieder möglich, das Objekt zu verschieben (mit
+Hilfe des »Verschieben-Icons«) bzw. zu löschen (»Löschen-Icon«).
+
+%
+% Option ist derzeit in Xims deaktiviert, das Sie nicht richtig funktioniert und eigentlich nicht gebraucht wird
+%
+%\subsection{Vorschau auf Objekte in veröffentlichtem Zustand}
+%\label{preview}
+%
+%Die Darstellung von Dokumenten im \otherterm{XIMS} variiert teilweise von der Darstellung des
+%Dokuments im veröffentlichten Zustand. Um als Redakteur eine Vorstellung zu
+%bekommen, wie ein Dokument im veröffentlichten Zustand aussehen wird, bietet
+%\otherterm{XIMS} eine Veröffentlichungsvorschau an.
+%
+%\begin{figure}[!ht]
+%	\centering
+%		\includegraphics[width=\textwidth]{./images/veroeffentlichungsvorschau.png}
+%	\caption{Veröffentlichungsvorschau}
+%	\label{fig:veroeffentlichungsvorschau}
+%\end{figure}
+%
+%Der Link »Veröffentlichungsvorschau« (Publishing Preview) öffnet ein neues
+%Fenster in dem der Inhalt des Dokuments integriert in das UIBK-Design dargestellt
+%wird. Dies entspricht der Darstellung des Dokuments, wie es die Benutzer (nach dem
+%eigentlichen Veröffentlichungsvorgang) öffentlich präsentiert bekommen.
+%
+%\begin{figure}[!ht]
+%	\centering
+%		\includegraphics[width=\textwidth]{./images/veroeffentlichungsvorschau-live.png}
+%	\caption{Veröffentlichungsvorschau: Zeigt das Dokument im eigentlichen Design ohne
+%zu veröffentlichen}
+%	\label{fig:veroeffentlichungsvorschau-live}
+%\end{figure}
+%
+%\begin{Hinweis}
+%  Objekte, die in der Veröffentlichungsvorschau betrachtet werden,
+%  zeigen in der Darstellung bereits alle Veränderungen. Dabei ist zu
+%  beachten, dass die Veröffentlichungsvorschau das Objekt nicht
+%  veröffentlicht. Da es sich um eine reine Vorschau handelt, existiert
+%  das Objekt in der veränderten Version weiterhin nur in der
+%  \otherterm{XIMS}-Datenbank. Um die Veränderungen für die
+%  Öffentlichkeit sichtbar zu machen, müssen Objekte veröffentlicht
+%  bzw. wiederveröffentlicht werden.
+%\end{Hinweis}

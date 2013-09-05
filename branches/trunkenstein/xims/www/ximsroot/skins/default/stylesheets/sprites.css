@@ -1,0 +1,277 @@
+.xims-sprite, .sprite-spacer, .sprite-status-spacer, .sprite-del-spacer, .sprite-status_pub, .sprite-status_pub_async, .sprite-status_none, .sprite-new, .sprite-list{
+    background-image: url(/ximsroot/skins/default/images/sprite.gif) !important;
+}
+
+.sprite-list {
+    background-repeat: no-repeat;
+    padding: 1px 0 0 20px;
+    margin-left: 12px;
+}
+
+.sprite-list span {
+    display: none;
+}
+
+.xims-sprite{
+	background-repeat: no-repeat;
+	/*padding: 0 0 0 22px;*/
+  	text-decoration: none;
+	display:inline-block;
+  	position: relative;
+}
+
+.xims-sprite:focus, .xims-sprite:hover {
+    z-index: 25;
+	cursor: pointer;
+}
+
+.xims-sprite span{
+    /*display: none; */
+    position: absolute;
+    top: 0;
+    left: -9999em;
+}
+    
+.xims-sprite:focus span, .xims-sprite:hover span{
+	display: block;
+  position: absolute;
+  top: 2em;
+	border: 1px solid #000;
+  color: #000;
+  background-color: #ffffe0;
+  font-weight: normal;
+}
+
+/*
+.sprite-navback {
+    background: url(/ximsroot/skins/default/images/navigate-back.png);
+	background-repeat: no-repeat top left;
+	background-position:  0 -780;
+	padding:  0 5px 0 20px;
+	text-decoration:none;
+	position:relative;
+}
+
+.sprite-navup {
+    background: url(/ximsroot/skins/default/images/navigate-up.png) no-repeat top left;
+    background-position: 0 0;
+    height: 28px;
+    width: 28px;
+    padding: 0 5px 0 20px;
+    text-decoration: none;
+    position: relative;
+    z-index: 24;
+}
+
+.sprite-navfwd {
+    background: url(/ximsroot/skins/default/images/navigate-forward.png) no-repeat top left;
+    background-position: 0 0;
+    height: 28px;
+    width: 28px;
+    padding: 0 5px 0 20px;
+    text-decoration: none;
+    position: relative;
+    z-index: 24;
+}
+*/
+
+.ui-icon{
+	display: inline-block !important;
+}
+.ui-button-icon-only {
+    width: 1.8em !important;
+}
+.ui-state-default.button-delete .ui-icon{
+	background-image: url("../../../stylesheets/jquery/images/ui-icons_800000_256x240.png");
+}
+.warn>.ui-icon{
+	background-image: url("../../../stylesheets/jquery/images/ui-icons_2e83ff_256x240.png");
+}
+
+/* from now on only positions */
+.sprite-spacer {
+  background-repeat: no-repeat;
+	padding: 0 0 0 20px;
+}
+.sprite-ui-icon-spacer{
+	background-repeat: no-repeat;
+	padding: 0 0 0 16px;
+}
+.sprite-status-spacer {
+	background-repeat: no-repeat;
+    padding: 0 0 0 22px;
+}
+.sprite-del-spacer {
+	background-repeat: no-repeat;
+    padding: 0 0 0 28px; 
+}
+.sprite-status_pub {
+    background-position: -1px -782px;
+    padding: 0 0 0 22px !important;
+}
+.sprite-status_pub_async {
+    background-position: -3px -763px;
+    padding: 0 0 0 22px !important;
+}
+.sprite-status_none {
+    background-position: 0 0;
+    padding: 0 0 0 22px !important;
+}
+.sprite-new {
+    background-position: 0 -574px;
+    padding: 0 0 0 22px !important;
+}
+.sprite-locked {
+    background-position: -1px -800px;
+}
+.sprite-filter{
+  background-position: -37px -577px;
+  padding: 0 0 0 20px;
+}
+.sprite-option_trashcan {
+    background-position: 1px -54px;
+}
+.sprite-option_purge {
+    background-position: 1px -622px;
+}
+.sprite-option_delete {
+    background-position: 1px -702px;
+}
+.sprite-option_edit {
+    background-position: 0 -680px;
+}
+.sprite-option_copy {
+    background-position: 0 -720px;
+}
+.sprite-option_move {
+    background-position: -2px -660px;
+}
+.sprite-option_acl {
+    background-position: 0 -740px;
+}
+.sprite-option_undelete {
+    background-position: 0 -600px;
+}
+.sprite-option_pub {
+    background-position: 0 -640px;
+}
+.sprite-option_email {
+	background-position: -39px -451px;
+}
+.sprite-option_none {
+	background-position: 0 0;
+}
+.sprite-list_arrow {
+    background-position: -37px -288px;
+}
+.sprite-list_AXPML {
+    background-position: -37px -504px;
+}
+.sprite-list_Binary {
+    background-position: -37px -270px;
+}
+.sprite-list_bullet {
+    background-position: -37px -252px;
+}
+.sprite-list_Container {
+    background-position: -37px -234px;
+}
+.sprite-list_CSS {
+    background-position: -37px -216px;
+}
+.sprite-list_DepartmentRoot {
+    background-position: -37px -198px;
+}
+.sprite-list_DocBookXML {
+    background-position: -37px -162px;
+}
+.sprite-list_DOC, .sprite-list_DOCX, .sprite-list_ODT {
+    background-position: -37px -486px;
+}
+.sprite-list_ECMA {
+    background-position: -37px -468px;
+}
+.sprite-list_Email {
+    background-position: -37px -450px;
+}
+.sprite-list_Gallery {
+    background-position: -37px -560px;
+}
+.sprite-list_GIF {
+    background-position: -37px -0px;
+}
+.sprite-list_GNU-Zip {
+    background-position: -37px -36px;
+}
+.sprite-list_HTML {
+    background-position: -37px -216px;
+}
+.sprite-list_Icon {
+    background-position: -37px -432px;
+}
+.sprite-list_JPEG {
+    background-position: -37px -0px;
+}
+.sprite-list_PDF {
+    background-position: -37px -18px;
+}
+.sprite-list_PJPEG {
+    background-position: -37px -0px;
+}
+.sprite-list_PNG {
+    background-position: -37px -0px;
+}
+.sprite-list_Portlet {
+    background-position: -37px -378px;
+}
+.sprite-list_PPT, .sprite-list_PPTX, .sprite-list_ODP, .sprite-list_SLDX, .sprite-list_PPS {
+    background-position: -37px -414px;
+}
+.sprite-list_Questionnaire {
+    background-position: -37px -396px;
+}
+.sprite-list_ReferenceLibrary {
+    background-position: -37px -180px;
+}
+.sprite-list_sDocBookXML {
+    background-position: -37px -162px;
+}
+.sprite-list_SimpleDB {
+    background-position: -37px -144px;
+}
+.sprite-list_SiteRoot {
+    background-position: -37px -126px;
+}
+.sprite-list_SymbolicLink {
+    background-position: -37px -378px;
+}
+.sprite-list_TAN_List {
+    background-position: -37px -108px;
+}
+.sprite-list_Text {
+    background-position: -37px -90px;
+}
+.sprite-list_TIFF {
+    background-position: -37px -0px;
+}
+.sprite-list_URL {
+    background-position: -37px -360px;
+}
+.sprite-list_VLibrary {
+    background-position: -37px -180px;
+}
+.sprite-list_XLS, .sprite-list_XLSX, .sprite-list_ODS {
+    background-position: -37px -342px;
+}
+.sprite-list_XML {
+    background-position: -37px -72px;
+}
+.sprite-list_XSLT {
+    background-position: -37px -324px;
+}
+.sprite-list_XSP {
+    background-position: -37px -54px;
+}
+.sprite-list_ZIP {
+    background-position: -37px -36px;
+}

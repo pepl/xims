@@ -1,0 +1,335 @@
+-- Copyright (c) 2002-2006 The XIMS Project.
+-- See the file "LICENSE" for information and conditions for use, reproduction,
+-- and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+-- $Id$
+
+PROMPT Creating Index 'DOC_DFM_FK_I'
+CREATE INDEX DOC_DFM_FK_I ON CI_DOCUMENTS
+ (DATA_FORMAT_ID)
+/
+
+PROMPT Creating Index 'DOC_DOC_DEPARTMENT_FK_I'
+CREATE INDEX DOC_DOC_DEPARTMENT_FK_I ON CI_DOCUMENTS
+ (DEPARTMENT_ID)
+/
+
+PROMPT Creating Index 'DOC_DOC_SYMNAME_TO_DOC_FK_I'
+CREATE INDEX DOC_DOC_SYMNAME_TO_DOC_FK_I ON CI_DOCUMENTS
+ (SYMNAME_TO_DOC_ID)
+/
+
+PROMPT Creating Index 'DOC_OBT_FK_I'
+CREATE INDEX DOC_OBT_FK_I ON CI_DOCUMENTS
+ (OBJECT_TYPE_ID)
+/
+
+PROMPT Creating Index 'DOC_DOC_PARENT_FK_I'
+CREATE INDEX DOC_DOC_PARENT_FK_I ON CI_DOCUMENTS
+ (PARENT_ID)
+/
+
+PROMPT Creating Index 'OBT_OBT_PARENT_FK_I'
+CREATE INDEX OBT_OBT_PARENT_FK_I ON CI_OBJECT_TYPES
+ (PARENT_ID)
+/
+
+PROMPT Creating Index 'RGT_USR_FK_I'
+CREATE INDEX RGT_USR_FK_I ON CI_ROLES_GRANTED
+ (GRANTEE_ID)
+/
+
+PROMPT Creating Index 'RGT_USR_GRANTOR_FK_I'
+CREATE INDEX RGT_USR_GRANTOR_FK_I ON CI_ROLES_GRANTED
+ (GRANTOR_ID)
+/
+
+PROMPT Creating Index 'OPG_USR_GRANTEE_FK_I'
+CREATE INDEX OPG_USR_GRANTEE_FK_I ON CI_OBJECT_PRIVS_GRANTED
+ (GRANTEE_ID)
+/
+
+PROMPT Creating Index 'OPG_USR_FK_I'
+CREATE INDEX OPG_USR_FK_I ON CI_OBJECT_PRIVS_GRANTED
+ (GRANTOR_ID)
+/
+
+PROMPT Creating Index 'OPG_CTT_FK_I'
+CREATE INDEX OPG_CTT_FK_I ON CI_OBJECT_PRIVS_GRANTED
+ (CONTENT_ID)
+/
+
+CREATE  INDEX ctt_doc_css_fk_i
+ ON ci_content
+  ( css_id  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_doc_fk_i
+ ON ci_content
+  ( document_id  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_doc_image_fk_i
+ ON ci_content
+  ( image_id  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_doc_script_fk_i
+ ON ci_content
+  ( script_id  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_doc_style_fk_i
+ ON ci_content
+  ( style_id  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_doc_schema_fk_i
+ ON ci_content
+  ( schema_id  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE INDEX ctt_doc_feed_fk_i 
+   ON ci_content
+    ( feed_id ) 
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_lng_fk_i
+ ON ci_content
+  ( language_id  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_usr_fk_i
+ ON ci_content
+  ( created_by_id  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_usr_last_modified_by_fk_i
+ ON ci_content
+  ( last_modified_by_id  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_usr_locked_by_fk_i
+ ON ci_content
+  ( locked_by_id  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_usr_owned_by_fk_i
+ ON ci_content
+  ( owned_by_id  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_title_i
+ ON ci_content
+  ( title  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     1048576
+   NEXT        1048576
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_keywords_i
+ ON ci_content
+  ( keywords  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     1048576
+   NEXT        1048576
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX doc_location_i
+ ON ci_documents
+  ( location  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     1048576
+   NEXT        1048576
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX doc_locationp_i
+ ON ci_documents
+  ( location_path  )
+/
+
+CREATE  INDEX ctt_last_mod_timestamp_i
+ ON ci_content
+  ( last_modification_timestamp  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     1048576
+   NEXT        1048576
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX ctt_creation_timestamp_i
+ ON ci_content
+  ( creation_timestamp  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     1048576
+   NEXT        1048576
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX doc_position_i
+ ON ci_documents
+  ( position  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+

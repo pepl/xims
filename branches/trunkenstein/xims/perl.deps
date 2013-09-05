@@ -1,0 +1,57 @@
+# This is a simple list of dependancies to be used with cpanm,
+# e.g. cpanm --skip-satisfied < perl.deps
+# Omit --skip-satisfied in case you want cpanm to update all mentioned modules.
+#
+# If you plan to use LDAP validation
+# Net::LDAP
+# If you plan to use IMAP validation
+# IMAP::Admin
+Archive::Zip 
+Array::Iterator 
+CSS::Minifier::XS 
+CSS::Tiny 
+Class::XSAccessor::Compat
+DBI
+# If you’re on Oracle, you may deactive this one; 
+DBD::Pg~1.31           
+# DBD::Oracle is best installed manually  
+DBIx::SQLEngine~0.017
+DBIx::XHTML_Table
+Digest::MD5
+Email::Valid 
+File::Slurp 
+HTTP::Exception
+HTTP::Headers::Util
+HTTP::Request
+HTTP::Throwable
+JSON::XS
+JavaScript::Minifier::XS 
+URI
+LWP
+Locale::TextDomain 
+MIME::Lite::HTML 
+Storable
+Task::Plack
+Term::ReadKey 
+Text::Diff 
+Text::Iconv 
+Text::Template 
+Time::Piece 
+XML::LibXML~1.70
+XML::LibXML::Iterator 
+XML::LibXSLT~1.70
+XML::Parser::PerlSAX
+XML::SAX::Machines 
+XML::Generator::DBI 
+XML::Generator::PerlData
+XML::Filter::GenericChunk~0.04
+Net::Server::SS::PreFork
+Plack::Middleware::XForwardedFor
+Plack::Middleware::SizeLimit
+# If you plan to run all tests
+# XML::Schematron
+# Perl::Critic
+# Test::Perl::Critic
+# Test::Pod
+# Test::Pod::Coverage 
+# Devel::Cover

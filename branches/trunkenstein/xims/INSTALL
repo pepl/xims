@@ -1,0 +1,114 @@
+$Id$
+
+XIMS Installation Guide
+-----------------------------------
+
+0) The following basic prerequisites need to be installed and working:
+    * Perl (>=5.10.1), preferably unthreaded, and cpanm. 
+
+    * libxml2, libxslt (http://www.xmlsoft.org/),
+      and Expat (http://sourceforge.net/projects/expat/) C libraries
+
+      Note: Some parts of XML::LibXML (<= 1.56) break with libxml2 >= 2.6.0.
+      Using XML::LibXML 1.58 and XML::LibXSLT 1.58 fixes this.
+
+    * Tidy (http://tidy.sourceforge.net/)
+
+    * XIMS currently supports either
+      Oracle (>=8.1.6) or PostgreSQL (>=9.0)
+      as RDBMS backend. You need access to either one and have the
+      respective client installed on your XIMS box.
+
+      If you are using PostgreSQL, you will need to have the Postgres contrib
+      package as well.
+
+    * For database access using perl, you'll need either DBD::Oracle or 
+      DBD::Pg (>= 1.31) installed.
+
+    * A Webserver capable of running PSGI apps. Some pure perl implementations
+      will be installed automatically as they come with Plack as dependencies.
+
+1) Unpack the distribution to /usr/local:
+
+    [root@host local]# cd /usr/local
+    [root@host local]# tar xzpvf xims-X.Y.Z.tar.gz
+    [root@host local]# ln -s xims-X.Y.Z xims
+
+    X and Y represent the major and minor version numbers of your
+    XIMS package.
+
+    In case you are forced to install under a different path, say
+    "/opt/webapps/" do the following:
+
+        [root@host local]# cd /opt/webapps
+        [root@host webapps]# tar xzpvf xims-X.Y.Z.tar.gz
+        [root@host webapps]# ln -s xims-X.Y.Z xims
+
+        Set the environment variable XIMS_HOME to "/opt/webapps/xims":
+
+        [root@host local]# XIMS_HOME='/opt/webapps/xims';export XIMS_HOME
+
+        if you have a sh-like shell (sh, ksh, bash, zsh) or
+
+        [root@host local]# setenv XIMS_HOME '/opt/webapps/xims'
+
+        on a csh-like shell (csh, tcsh).
+
+2) Check for module dependencies, set up database and
+   basic configuration options, run the test suite.
+
+   [This is out of date]
+
+    2.1) Update the location of the Perl binary in the Makefile if
+         necessary
+
+        [root@host local] cd xims && perl Makefile.PL
+
+    2.2) Run 'make' to check for Perl module dependencies
+
+        [root@host xims] make
+
+    2.3) Run 'make install' to start XIMS installation
+
+        [root@host xims] make install
+
+        First, missing Perl modules will be installed using CPAN.pm.
+        Depending on your already installed modules and the quality of
+        the modules' setup scripts this is more or less likely to fail.
+        If it does, it makes sense to retry "make install" one or two
+        times since missing dependencies from the first run may be
+        satisfied by then. If that also fails, you have to install the
+        missing modules manually.
+        After all module dependencies have been satisified, XIMS module patches
+        will be applied, followed by the XIMS database setup process.
+        During that process, you will be prompted for database connection
+        information.
+        Having successfully set up the XIMS database, the setup process
+        will continue with the basic XIMS configuration, where you will
+        be prompted to provide configuration information again. Note
+        that this will update the the most essential XIMS config options
+        only. It is recommended to take a look at
+        /usr/local/xims/conf/ximsconfig.xml for further config
+        customizations after finishing "make install".
+
+    2.4) (Re)start the server. Check if it prints warnings or errors.
+
+    2.5) Run the test suite
+
+        [root@host xims] make test
+
+        If tests fail, check you testsuite config and|or take a look at
+        the debug.log. If that does not help, feel free to contact us at
+        the addresses quoted at the end of this document.
+
+3) If the installation went fine so far, login to XIMS at
+   http://host/goxims/user as user 'xgu' (pw: xgu) or user
+   'admin' (pw: _adm1nXP).
+
+4) Consult the documentation documents, e.g. "Building Sites with XIMS (Admin Guide)",
+   for the next steps.
+
+Please actually read the file README.
+
+If you have problems, feel free to contact us at irc://irc.perl.org/xims for
+support.
