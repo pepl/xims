@@ -137,21 +137,32 @@ sub get {
             properties     => [ 'location', 'id', 'object_type_id' ],
             marked_deleted => 0
         );
-        my $body;
+        my $titling = $object->location_path;
+        my $body = "<html>\n  <head><title>$titling</title></head>\n  <body>\n     <h2>$titling</h2>\n     <ul>\n";
         my $location;
         $path =~ s#/$##;
         foreach my $child (@children) {
             $location = $child->location();
             if ( $child->object_type->is_fs_container() ) {
                 $body
-                    .= qq|<a href="$godav$path/$location/">$location/</a><br>\n|;
+                    .= qq|      <li><a href="$godav$path/$location/">$location/</a></li>\n|;
             }
             else {
-                $location =~ s#/$##;
-                $body
-                    .= qq|<a href="$godav$path/$location">$location</a><br>\n|;
+               
+               # URLLinks  
+               if ($location =~ /^https?:/) {
+                   $body .= qq|      <li><a href="$location">$location</a></li>\n|;
+               }
+               elsif ($location =~ /^\//) {
+                   $body .= qq|      <li><a href="$godav$location">$location</a></li>\n|
+               }
+               else {
+                   $location =~ s#/$##;
+                   $body .= qq|      <li><a href="$godav$path/$location">$location</a></li>\n|;
+               }
             }
         }
+        $body .= "    </ul>\n    <hr noshade><em>XIMS WebDAV</em>\n  </body>\n</html>";
         return [ '200', [ 'Content-Type' => 'text/html', ], [$body] ];
     }
     else {
