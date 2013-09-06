@@ -21,7 +21,7 @@
 </xsl:template>
 
 <xsl:template name="copyfooter">
-    © 2002-2011 <a href="http://xims.info/">The XIMS Project</a>
+    © 2002-2013 <a href="http://xims.info/">The XIMS Project</a>
 </xsl:template>
 
 <xsl:template name="powerdbyfooter">
