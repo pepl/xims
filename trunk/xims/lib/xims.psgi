@@ -103,6 +103,7 @@ builder {
     mount XIMS::XIMSROOT_URL()    =>  Plack::App::File->new( root => XIMS::XIMSROOT() );
     mount XIMS::PUBROOT_URL()     =>  Plack::App::File->new( root => XIMS::PUBROOT() );
     mount '/favicon.ico' => Plack::App::File->new(file => XIMS::XIMSROOT() . '/images/xims_favicon.ico');
+    mount '/robots.txt'  => Plack::App::File->new(file => XIMS::XIMSROOT() . '/robots.txt');
 
     # Redirect / -> /goxims
     mount '/' => http_exception(Found => { location => XIMS::GOXIMS() . '/' });
