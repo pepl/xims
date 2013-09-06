@@ -144,9 +144,6 @@ sub event_store {
 
     my $body = $self->param( 'body' );
     if ( defined $body and length $body ) {
-        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-            $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
-        }
         my $object = $ctxt->object();
         $body = XIMS::xml_escape( $body );
         $body =~ /FROM\s(.*?)($|\sWHERE\s)/i;
@@ -205,9 +202,14 @@ sub event_plain {
     my $mime_type = $df->mime_type;
 
     my $charset;
-    if (! ($charset = XIMS::DBENCODING )) { $charset = "UTF-8"; }
-    print $self->header( -Content_type => $mime_type."; charset=".$charset );
-    print $ctxt->object->body();
+
+    $self->{RES} = $self->{REQ}->new_response(
+        $self->psgi_header(
+            '-charset'             => 'UTF-8',
+            '-type'                => $df->mime_type,
+        ),
+        Encode::encode( 'UTF-8', $ctxt->object->body() );
+    );
     $self->skipSerialization(1);
 
     return 0;
@@ -286,7 +288,7 @@ sub _build_form_from_skeys {
         $skey = "sqlrep.$skey";
         $form .= $self->div($self->strong( $origkey ),
                             $self->textfield( -name => lc $skey,
-                                              -default => XIMS::decode( $self->param( lc $skey ) ),
+                                              -default => $self->param( lc $skey ),
                                               -force => 1,
                                               -size => 50,
                                             )
@@ -508,7 +510,7 @@ sub _build_crits_from_skeys {
         $skey = "sqlrep.$skey";
         my $value = $self->param( lc $skey );
         next unless defined $value and length $value;
-        $value = XIMS::decode( $value );
+        $value = $value;
 
         # allow * asterisk lookups
         $value =~ s/\*+/%/g;
