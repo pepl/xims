@@ -114,10 +114,9 @@ sub event_download_pdf {
     }
 
     my $output_handler = XIMS::CGI::AxPointPresentation::Output->new();
-    my $charset = XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8';
 
     # get the xml document, add an XML declaration
-    my $xmlstring = '<?xml version="1.0" encoding="'.$charset.'"?>' . $object->body();
+    my $xmlstring = '<?xml version="1.0"?>' . $object->body();
 
     # chdir, so that relatively linked images will be found
     # for that, the parent dir of the presentation has to be published
@@ -169,11 +168,16 @@ sub event_download_pdf {
     my $filename = $object->location();
     $filename =~ s/\.axp$/.pdf/;
 
-    # print to browser
-    print $self->header(-type => $mime_type, '-Content-disposition' => "attachment; filename=$filename" );
-    print $output_string;
-
+	$self->{RES} = $self->{REQ}->new_response(
+        $self->psgi_header(
+            '-charset'             => $encoding,
+            '-type'                => $mime_type,
+            '-Content-disposition' => "attachment; filename=$filename",
+        ),
+        $output_string;
+    );
     $self->skipSerialization(1);
+
     return 0;
 }
 
