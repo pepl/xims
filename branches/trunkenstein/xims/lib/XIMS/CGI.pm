@@ -264,6 +264,13 @@ sub event_access_denied {
 	XIMS::Debug( 5, "called" );
 	my ( $self, $ctxt ) = @_;
 
+    # quickly discourage crawlers,
+    # TODO: overthink error handling and send the regular error message
+    #       w/ status 403 as well
+    if ( $ctxt->session->auth_module eq 'XIMS::Auth::Public' ) {
+        HTTP::Exception->throw(403);
+    }
+
 	$self->sendError( $ctxt, __ "Access Denied" );
 
 	return 0;

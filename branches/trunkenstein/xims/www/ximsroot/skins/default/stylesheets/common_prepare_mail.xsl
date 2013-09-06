@@ -104,7 +104,7 @@
 				<xsl:value-of select="$i18n/l/Send"/>
 			</button> -->
 				<xsl:call-template name="rbacknav"/>
-				<button type="submit" name="cancel_create" accesskey="C">
+				<button type="submit" name="cancel_create button" class="button" accesskey="C">
 					<span class="text">
 						<xsl:value-of select="$i18n/l/cancel"/>
 					</span>
@@ -115,7 +115,7 @@
 	</xsl:template>
 	
 	<xsl:template name="save_jsbutton">
-		<button class="save-button-js hidden" type="submit" name="submit_eform" accesskey="S" onclick="document.eform.send_as_mail.click(); return false">
+		<button class="save-button-js hidden button" type="submit" name="submit_eform" accesskey="S" onclick="document.eform.send_as_mail.click(); return false">
 			<span class="text">
 				<xsl:value-of select="$i18n/l/Email_Send"/>
 			</span>
@@ -129,7 +129,7 @@
 			<input name="order" type="hidden" value="desc"/>
 		</xsl:if>
 		<input type="submit" name="store" value="{$i18n/l/save}" class="save-button" accesskey="S"/>-->
-		<button type="submit" name="send_as_mail" class="save-button" accesskey="S">
+		<button type="submit" name="send_as_mail" class="save-button button" accesskey="S">
 				<xsl:value-of select="$i18n/l/Send"/>
 			</button> 
 	</xsl:template>

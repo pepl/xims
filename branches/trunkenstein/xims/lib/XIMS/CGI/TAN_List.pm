@@ -120,14 +120,21 @@ sub event_download {
             $filename .= '.' . lc $type;
         }
         else {
+            $body=$ctxt->object->body();
             $filename .= '.' . lc $type;
         }
 
         # older browsers use the suffix of the URL for content-type sniffing,
         # so we have to supply a content-disposition header
-        print $self->header( -type => $mime_type, '-Content-disposition' => "attachment; filename=$filename" );
-        print $body;
-        $self->skipSerialization(1);
+        $self->{RES} = $self->{REQ}->new_response(
+        $self->psgi_header(
+            '-type'                => $mime_type,
+            '-Content-disposition' => "attachment; filename=$filename",
+        ),
+        $body
+    );
+    $self->skipSerialization(1);
+
     }
     return 0;
 }
