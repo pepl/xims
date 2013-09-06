@@ -23,7 +23,6 @@ package XIMS::CGI::Document;
 
 use common::sense;
 use parent qw( XIMS::CGI XIMS::CGI::Mailable);
-use Text::Iconv;
 use Encode;
 use Text::Template;
 use Locale::TextDomain ('info.xims');

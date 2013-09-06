@@ -50,7 +50,7 @@ sub import {
     return unless $root;
 
     # hmmm, this is a rather subtle way to check and decode the body if it has not already been decoded upstream
-    my $decbody = XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$root->toString()) : $root->toString();
+    my $decbody = $root->toString();
     $object->body( $decbody ) if defined $decbody and length $decbody;
 
     my $id = $self->SUPER::import( $object, $updateexisting );

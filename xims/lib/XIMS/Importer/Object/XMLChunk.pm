@@ -44,9 +44,8 @@ sub get_rootelement {
     if ( not $doc = $object->balanced_string( $$strref, %args ) ) {
         $wbdata = $object->balance_string( $$strref );
         my $parser = XML::LibXML->new();
-        my $encoding ||= ( XIMS::DBENCODING() || 'UTF-8' );
         eval {
-            $doc = $parser->parse_xml_chunk( $wbdata, $encoding );
+            $doc = $parser->parse_balanced_chunk( $wbdata );
         };
         if ( $@ ) {
             XIMS::Debug( 3, "Could not parse: $@" );

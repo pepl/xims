@@ -94,22 +94,11 @@ sub event_store {
     else {
         $body = $self->param( 'body' );
 
-        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-            $body = XIMS::decode( $body );
-        }
-
         # The VLibraryItem::DocBookXML importer needs an XML::Document and not just
         # a fragment to get the metadata out of the Document
 
         # Substitute the possibly wrong encoding attribute in the XML declaration
         $body = XIMS::CGI::XML::update_decl_encoding( $body );
-
-        # Add an XML declaration if it is not already there in the case of
-        # a non UTF-8 database
-        if ( XIMS::DBENCODING() and not $body =~ /^<\?xml/ ) {
-            XIMS::Debug( 4, "Adding XML declaration" );
-            $body = '<?xml version="1.0" encoding="' . XIMS::DBENCODING() . '"?>' . $body;
-        }
     }
 
     if ( defined $body and length $body ) {

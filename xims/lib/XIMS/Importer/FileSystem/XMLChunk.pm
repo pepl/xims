@@ -41,7 +41,7 @@ sub handle_data {
     unless ( $dontbody ) {
         my $root = $self->get_rootelement( $location, nochunk => 1 );
         return unless $root;
-        $object->body( XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$root->toString()) : $root->toString() );
+        $object->body( $root->toString() );
     }
 
     return $object;

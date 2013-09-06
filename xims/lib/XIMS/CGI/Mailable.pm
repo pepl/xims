@@ -90,9 +90,7 @@ sub event_send_as_mail {
     my $object = $ctxt->object();
 
     my $from = '"'
-               . Encode::encode( "MIME-Header", 
-                                 XIMS::encode( $object->User->fullname ) 
-                 )
+               . Encode::encode( "MIME-Header", $object->User->fullname )
                . '" <' . $object->User->email . '>';
 
     unless ( $object->published() ) {

@@ -384,7 +384,7 @@ sub event_import {
         return 0;
     }
 
-    $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
+    $doc->setEncoding( 'UTF-8' );
 
     my $root = $doc->documentElement();
     $root->setNamespace('http://www.loc.gov/mods/v3','m',0);

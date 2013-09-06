@@ -52,10 +52,8 @@ sub prepare {
     my %object_types = ();
     my %data_formats = ();
 
-    my %encargs;
-    $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
-    $self->{FilterList} = [
-        XML::Filter::CharacterChunk->new( %encargs, TagName => [qw(body)] ) ];
+    $self->{FilterList} =
+        [ XML::Filter::CharacterChunk->new( TagName => [qw(body)] ) ];
 
     my $doc_data = { context => {} };
 

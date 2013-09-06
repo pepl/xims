@@ -76,14 +76,12 @@ sub prepare {
         # the escape body thing cannot be resolved otherwise, since
         # the default should be the filter set(!), we need a flag to
         # remove that filter.
-        my %encargs;
-        $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
 
         if ( not $ctxt->properties->content->escapebody() ) {
             push(
                 @{ $self->{FilterList} },
                 XML::Filter::CharacterChunk->new(
-                    %encargs, TagName => [qw(body)]
+                    TagName => [qw(body)]
                 )
             );
         }

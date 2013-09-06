@@ -34,7 +34,6 @@ use Digest::MD5;
 use HTTP::Exception;
 #use Data::Dumper::Concise;
 use HTTP::Date;
-use Encode qw(encode decode);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -174,7 +173,7 @@ sub get {
                 [   'Content-Type' => "$mime_type; charset=UTF-8",
                     'Last-Modified' => time2str( str2time( $object->last_modification_timestamp(), 'CET') )
                 ],
-                [  encode('UTF-8', $object->body()) ]
+                [  Encode::encode('UTF-8', $object->body()) ]
             ];
         }
         else {
@@ -639,7 +638,6 @@ sub propfind {
 
         my $ndisplayname = $dom->createElement("D:displayname");
 
-        #my $displayname = XIMS::encode($o->title());
         my $displayname = $o->location();
         $displayname =~ s#/#_#g;
         $ndisplayname->appendText($displayname);
@@ -850,7 +848,7 @@ sub copymove {
         HTTP::Exception->throw(412);
     }
 
-    my $destination_path = decode( 'UTF-8', uri_unescape( $req->header('Destination') ) );
+    my $destination_path = Encode::decode( 'UTF-8', uri_unescape( $req->header('Destination') ) );
     $destination_path =~ s/^.*?$godav//;  # the cheap and pragmatic way to get the
     $destination_path =~ s#/$##;          # location_path
 
@@ -1015,7 +1013,7 @@ sub _get_path {
     my $path = uri_unescape( $_[0]->{PATH_INFO}) || '/';
 
     eval{
-        $path = decode( 'UTF-8', $path, Encode::FB_CROAK );
+        $path = Encode::decode( 'UTF-8', $path, Encode::FB_CROAK );
     };
     if ($@) {
         HTTP::Exception->throw(400, status_message => "400 Bad Request\n\n$@.\n");

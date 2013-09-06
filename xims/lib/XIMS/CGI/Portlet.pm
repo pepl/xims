@@ -200,7 +200,7 @@ sub event_test_filter {
 
         my $filter = $self->param( "extra-filters" );
         eval {
-            my $chunk  = XML::LibXML->new->parse_xml_chunk( $filter );
+            my $chunk  = XML::LibXML->new->parse_balanced_chunk( $filter );
         };
         if ( $@ ) {
             $ctxt->session->error_msg( __"bad formed filter conditions: " . $@ );
@@ -330,7 +330,7 @@ sub generate_body {
         my $filter = $self->param( "extra_filters" );
         XIMS::Debug( 5, "filter is $filter" );
         eval {
-            my $chunk  = XML::LibXML->new->parse_xml_chunk( $filter );
+            my $chunk  = XML::LibXML->new->parse_balanced_chunk( $filter );
         };
         if ( $@ ) {
             XIMS::Debug( 3, "bad formed filter conditions : $@" );

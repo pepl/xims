@@ -56,7 +56,7 @@ sub get_rootelement {
         }
     }
 
-    $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
+    $doc->setEncoding( 'UTF-8' );
     return $doc->documentElement();
 }
 

@@ -742,10 +742,10 @@ sub selectStylesheet {
 	if ( defined $ctxt->object ) {
 		$self->param( 'request.uri', $ctxt->object->location_path_relative() );
 	}
-    # $self->query_string() is slow for some reason (says NYTProf);
-	# $self->param( 'request.uri.query', $self->query_string() );
-    # XXX reach down to Plack, pbly not sanitized...
-    $self->param( 'request.uri.query', $self->{REQ}->env->{QUERY_STRING});
+        # $self->query_string() is slow for some reason (says NYTProf);
+        # $self->param( 'request.uri.query', $self->query_string() );
+        # XXX reach down to Plack, pbly not sanitized...
+        $self->param( 'request.uri.query', $self->{REQ}->env->{QUERY_STRING});
 
 	my $gotpubuilangstylesheet;
 
@@ -1423,15 +1423,6 @@ sub init_store_object {
 	my $keywords = $self->param('keywords');
 	my $abstract = $self->param('abstract');
 	my $notes    = $self->param('notes');
-
-	# if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-	# 	$title = XIMS::decode($title) if ( defined $title and length $title );
-	# 	$keywords = XIMS::decode($keywords)
-	# 	  if ( defined $keywords and length $keywords );
-	# 	$abstract = XIMS::decode($abstract)
-	# 	  if ( defined $abstract and length $abstract );
-	# 	$notes = XIMS::decode($notes) if ( defined $notes and length $notes );
-	# }
 
 	if ( $object and $object->id() and length $self->param('id') ) {
 		unless ( $ctxt->session->user->object_privmask($object) &
@@ -3050,7 +3041,7 @@ sub event_test_wellformedness {
 	XIMS::Debug( 5, "called" );
 	my ( $self, $ctxt ) = @_;
 
-	my $body = XIMS::decode( $self->param('body') );
+	my $body = $self->param('body');
 
 	# if we got no body param, use $object->body
 	my $string = defined $body ? $body : $ctxt->object->body();
@@ -3067,7 +3058,7 @@ sub event_test_wellformedness {
 		$self->{RES}->body("Parse ok\n");
 	}
 	else {
-		$test = XIMS::encode($test);
+		$test = $test;
 		$test ||= "Cowardly refusing to fill an errorstring";
         $self->{RES}->body( "$test\n" );
 	}
@@ -3091,7 +3082,7 @@ sub event_htmltidy {
 	XIMS::Debug( 5, "called" );
 	my ( $self, $ctxt ) = @_;
 
-	my $body = XIMS::decode( $self->param('body') );
+	my $body = $self->param('body');
 
 	# if we got no body param, use $object->body
 	my $string = defined $body ? $body : $ctxt->object->body();
@@ -3106,9 +3097,6 @@ sub event_htmltidy {
 
 	# deindent one level
 	$tidiedstring =~ s/^[ ]{4}//mg;
-
-	# encode back to utf-8 in case
-	$tidiedstring = XIMS::encode($tidiedstring);
 
 	$self->{RES} = $self->{REQ}->new_response(
         $self->psgi_header( -type => 'text/plain',
@@ -3145,13 +3133,13 @@ sub event_htmltidy {
 =cut
 
 sub event_prettyprintxml {
-	XIMS::Debug( 5, "called" );
-	my ( $self, $ctxt ) = @_;
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
 
-	my $body = XIMS::decode( $self->param('body') );
+    my $body = $self->param('body');
 
-	# if we got no body param, use $object->body
-	my $string = defined $body ? $body : $ctxt->object->body();
+    # if we got no body param, use $object->body
+    my $string = defined $body ? $body : $ctxt->object->body();
 
     $self->{RES} = $self->{REQ}->new_response(
         $self->psgi_header(
@@ -3159,30 +3147,18 @@ sub event_prettyprintxml {
             -charset => 'UTF-8'
         )
     );
-	$self->skipSerialization(1);
+    $self->skipSerialization(1);
 
-	my $doc = $ctxt->object->balanced_string($string);
-	if ( defined $doc and $doc->isa('XML::LibXML::DocumentFragment') ) {
-
-	   # $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' ); does not work
-	   # correctly for whatever reasons - we have to manually decode again then.
-
-		# Format 1 does not work as documented :-/
-		# Format 2 deals better with the one-line fragment produced by
-		# HTMLArea's serializer with Gecko
-		my $pprinted =
-		  XIMS::Entities::decode( XIMS::decode( $doc->toString(2) ) );
-		$pprinted =~
-		  s/\n\s*\n/\n/g;    # remove duplicate linebreaks added by toString(2)
-		$self->{RES}->body($pprinted);
-	}
-	else {
-
-		# set back to body if parsing was unsuccessful
-		$self->{RES}->body($body);
-		$ctxt->session->message( __ "Parse Failure. Could not prettyprint." );
-	}
-	return 0;
+    my $doc = $ctxt->object->balanced_string($string);
+    if ( defined $doc and $doc->isa('XML::LibXML::DocumentFragment') ) {
+        $self->{RES}->body( $doc->toString(1) );
+    }
+    else {
+        # set back to body if parsing was unsuccessful
+        $self->{RES}->body($body);
+        $ctxt->session->message( __ "Parse Failure. Could not prettyprint." );
+    }
+    return 0;
 }
 
 =head2 event_obj_acllist()
@@ -4046,8 +4022,8 @@ sub body_ref_objects {
 	my $parser = XML::LibXML->new();
 	my $chunk;
 	eval {
-		my $data = XIMS::encode($body);
-		$chunk = $parser->parse_xml_chunk($data);
+		my $data = $body;
+		$chunk = $parser->parse_balanced_chunk($data);
 	};
 	if ($@) {
 		XIMS::Debug( 4, "cannot parse the body. reason: $@" );
@@ -4312,7 +4288,7 @@ sub event_search {
 		$self->param( 's', $search );    # update CGI param, so that stylesheets
 		                                 # get the right one
 	}
-	$search ||= XIMS::decode( $self->param('s') );    # fallback
+	$search ||= $self->param('s');    # fallback
 
 	my $offset = $self->param('page');
 	$offset = $offset - 1 if $offset;
@@ -4364,16 +4340,11 @@ sub event_search {
 
 		# Make sure the utf8 flag is turned on for handling the allowed
 		# chars regex
-		#if ( not XIMS::DBENCODING() ) {
-			require Encode;
-			no warnings 'prototype';
-			Encode::_utf8_on($search);
-		#}
+                require Encode;
+                no warnings 'prototype';
+                Encode::_utf8_on($search);
 
-		my $allowed =
-		  XIMS::decode(
-			q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~}
-		  );
+		my $allowed = q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~};
 		my $qb = $qbdriver->new(
 			{
 				search          => $search,

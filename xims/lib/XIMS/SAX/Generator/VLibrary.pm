@@ -94,26 +94,23 @@ sub prepare {
     # add the user's privs.
     my %userprivs = $ctxt->session->user->object_privileges( $ctxt->object() );
     $doc_data->{context}->{object}->{user_privileges} = {%userprivs}
-      if ( grep { defined $_ } values %userprivs );
+        if ( grep { defined $_ } values %userprivs );
 
-    my %encargs;
     if ( $ctxt->properties->application->style() eq 'subject_show'
          or $ctxt->properties->application->style() eq 'subject_view' ) {
-        $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
         push(
             @{ $self->{FilterList} },
             XML::Filter::CharacterChunk->new(
-                %encargs, TagName => [qw(description)]
+                TagName => [qw(description)]
             )
         );
     }
     # only for style eq 'objectlist'?
     elsif ( $ctxt->properties->application->style() !~ /^edit|^create/ )  {
-        $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
         push(
             @{ $self->{FilterList} },
             XML::Filter::CharacterChunk->new(
-                %encargs, TagName => [qw(abstract)]
+                TagName => [qw(abstract)]
             )
         );
     }

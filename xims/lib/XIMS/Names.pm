@@ -41,7 +41,8 @@ sub get_URI {
         if ( $t ) {
             return $property_name;
         }
-        if ( grep { $_ =~ /^.+?\.$property_name$/ } @{$Properties{Content}} ) {
+        my $re = qr(^.+?\.$property_name$);
+        if ( grep { $_ =~ $re } @{$Properties{Content}} ) {
             return 'content' . '.' . $property_name;
         }
         else {
