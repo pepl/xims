@@ -6,9 +6,14 @@
 # $Id: document_default.xsl 2192 2009-01-10 20:07:32Z pepl $
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
-
+  
 	<xsl:import href="view_common.xsl"/>
 	<xsl:import href="document_common.xsl"/>
+	<!-- output xhtml -->
+	<xsl:output method="xml" 
+                doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" 
+                doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" />
+
 	<!-- parameter to allow loading of css-styles needed to match  xims- with public-layout-->
 	<xsl:param name="sitestyle" select="true()"/>
 	
@@ -168,6 +173,7 @@
 				<xsl:attribute name="type"><xsl:value-of select="@type"/></xsl:attribute>
 			</xsl:if>
 			<xsl:value-of select="text()"/>
+            <xsl:comment/>
 		</script>
 	</xsl:template>
 	
