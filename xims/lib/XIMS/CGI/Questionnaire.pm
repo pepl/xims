@@ -83,9 +83,9 @@ sub event_default {
         $self->_default_public($ctxt);
     }
     else {
-        $object->body( XIMS::encode( $object->body() ) );
+        $object->body( $object->body() );
         $object->set_statistics();
-        $object->body( XIMS::decode( $object->body() ) );
+        $object->body( $object->body() );
     }
     $self->SUPER::event_default($ctxt);
 }
@@ -105,7 +105,7 @@ sub _default_public {
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
     my $user   = $ctxt->session->user;
-    $object->body( XIMS::encode( $object->body() ) );
+    $object->body( $object->body() );
     my $tan_needed = $object->tan_needed();
     XIMS::Debug( 6,
         "User " . $user->name . " is answering the questionnaire" );
@@ -136,7 +136,7 @@ sub _default_public {
 
     $params{'tan'} = $tan;
     $object->set_answer_data(%params);
-    $object->body( XIMS::decode( $object->body() ) );
+    $object->body( $object->body() );
 }
 
 =head2 event_edit()
@@ -155,7 +155,7 @@ sub event_edit {
         return 0;
     }
     my $object = $ctxt->object();
-    $object->body( XIMS::encode( $object->body() ) )
+    $object->body( $object->body() )
         if defined $object->body();
 
     # a published questionnaire or a questionnaire which has already
@@ -193,7 +193,7 @@ sub event_edit {
         $self->delete($_) if /^[question|answer]/;
     }
     $object->$method( $edit_id, $q_dom ) unless $method eq '1';
-    $object->body( XIMS::decode( $object->body() ) )
+    $object->body( $object->body() )
         if defined $object->body();
     $self->resolve_content( $ctxt, [qw( STYLE_ID )] );
     $self->SUPER::event_edit($ctxt);
@@ -229,21 +229,21 @@ sub event_store {
         #parameters to XIMS::DBENCODING
         my %params = $self->Vars;
         my $q_dom  = $object->form_to_xml(%params);
-        $body = XIMS::decode( $q_dom->toString() );
+        $body = $q_dom->toString();
     }
     else {
         $ctxt->object()
             ->body( "<questionnaire><title>"
-                . XIMS::decode( $self->param('title') )
+                . $self->param('title')
                 . "</title><comment>"
-                . XIMS::decode( $self->param('questionnaire_comment') )
+                . $self->param('questionnaire_comment')
                 . "</comment></questionnaire>" );
         $body = $ctxt->object()->body();
     }
     $object->body( $body, dontbalance => 1 );
     XIMS::Debug( 6, "body set, len: " . length($body) );
     $ctxt->object()
-        ->title( XIMS::decode( $self->param('title') ) );
+        ->title( $self->param('title') );
     return $self->SUPER::event_store($ctxt);
 }
 
@@ -255,7 +255,7 @@ sub event_answer {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
-    $object->body( XIMS::encode( $object->body() ) )
+    $object->body( $object->body() )
         if defined $object->body();
     my $tan              = $self->param('tan');
     my $questionnaire_id = $object->document_id();
@@ -308,7 +308,7 @@ sub event_answer {
     foreach ( $self->param() ) {
         $self->delete($_) if /^[question|answer]/;
     }
-    $object->body( XIMS::decode( $object->body() ) )
+    $object->body( $object->body() )
         if defined $object->body();
     $self->SUPER::event_default($ctxt);
 }
@@ -409,11 +409,11 @@ sub event_download_all_results {
 
         if ( $encoding =~ /latin1/i ) {
             XIMS::Debug( 6, "Encoding is Latin1" );
-            $body     = XIMS::decode($body);
             $encoding = 'ISO-8859-1';
         }
         else {
             $encoding = 'UTF-8';
+            $body = Encode::encode('UTF-8', $body);
         }
     }
     elsif ( $type =~ /html/i ) {
@@ -449,12 +449,15 @@ sub event_download_all_results {
     # older browsers use the suffix of the URL for content-type
     # sniffing, so we have to supply a content-disposition header
     return 0 unless $body;
-    print $self->header(
-        '-charset'             => $encoding,
-        '-type'                => $mime_type,
-        '-Content-disposition' => "attachment; filename=$filename"
+
+ 	$self->{RES} = $self->{REQ}->new_response(
+        $self->psgi_header(
+            '-charset'             => $encoding,
+            '-type'                => $mime_type,
+            '-Content-disposition' => "attachment; filename=$filename",
+        ),
+        $body
     );
-    print $body;
     $self->skipSerialization(1);
 
     return 0;
@@ -518,6 +521,10 @@ sub event_download_raw_results {
             $self->sendError( $ctxt, __"Could not create temporary ZIP file" );
             return 0;
         }
+        else {
+            # make sure we read from the start of the file
+            seek( $zipfilefh, 0, 0 );
+        }
         if ( not unlink0( $tmpfh, $tmpfilename ) ) {
             XIMS::Debug( 2, "Could not unlink temporary file." . $! );
         }
@@ -528,22 +535,19 @@ sub event_download_raw_results {
         return 0;
     }
 
-    my $charset = XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8';
     my $mime_type = XIMS::DataFormat->new( suffix => 'zip' )->mime_type();
-    print $self->header(
-        '-charset'             => $charset,
-        '-type'                => $mime_type,
-        '-Content-disposition' => "attachment; filename=$zipfilename.zip"
+
+    $self->{RES} = $self->{REQ}->new_response(
+        $self->psgi_header(
+            '-charset'             => 'UTF-8',
+            '-type'                => $mime_type,
+            '-Content-disposition' => "attachment; filename=$zipfilename.zip",
+        ),
+        $zipfilefh
     );
 
-    # stream zip file to browser
-    my $buffer;
-    seek( $zipfilefh, 0, 0 );
-    while ( read( $zipfilefh, $buffer, 1024 ) ) {
-        print $buffer;
-    }
-
     $self->skipSerialization(1);
+
     return 0;
 }
 
@@ -612,13 +616,14 @@ sub event_download_results_pdf {
 
     if ( $pdf =~ m/^%PDF-1.3/ ) {
         my $resultfile = $object->title() . '.pdf';
-        print $self->header(
-            -type        => "application/pdf",
-            -attachment  => $resultfile,
-            -disposition => "attachment; filename=$resultfile;"
+        $self->{RES} = $self->{REQ}->new_response(
+            $self->psgi_header(
+                '-type'        => "application/pdf",
+                '-attachment'  => $resultfile,
+                '-disposition' => "attachment; filename=$resultfile;"
+            ),
+            $pdf
         );
-        print $pdf;
-
         $self->skipSerialization(1);
         return 0;
     }

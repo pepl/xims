@@ -128,6 +128,7 @@ function initMenuMenu(){
 
 function containerDate(){
 	//date is defined by xsl-param $sb
+	if (typeof date === 'undefined') var date;
 	if (!date || !date.contains('date') ) date = "date";
     $('.td-vf,.td-vt').hide();
     $('.th-lm').click(function(){
