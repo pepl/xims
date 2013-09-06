@@ -94,7 +94,7 @@ sub handle_data {
     my $fragment = $self->{Object}->body();
     my $parser   = XML::LibXML->new;
     my $frag;
-    eval { $frag = $parser->parse_xml_chunk($fragment); };
+    eval { $frag = $parser->parse_balanced_chunk($fragment); };
     unless ( defined $frag ) {
         XIMS::Debug( 3, "no valid body fragment found" );
         return;

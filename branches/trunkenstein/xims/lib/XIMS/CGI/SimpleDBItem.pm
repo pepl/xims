@@ -197,7 +197,7 @@ sub update_properties {
         $propertyname = Encode::encode_utf8( $propertyname ) if Encode::is_utf8( $propertyname );
         my $value = XIMS::utf8_sanitize( $self->param( 'simpledb_' . $propertyname ) );
         next unless defined $value;
-        $value = substr(XIMS::trim( XIMS::decode( $value )),0,2000); # play safe with the DB field length
+        $value = substr(XIMS::trim( $value ),0,2000); # play safe with the DB field length
 
         # check for mandatory properties
         #if ( $property->mandatory() and not (defined $value and length $value) ) {

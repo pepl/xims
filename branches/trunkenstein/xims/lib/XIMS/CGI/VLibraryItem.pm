@@ -505,7 +505,7 @@ sub _create_mapping_from_name {
     my $propertyvalue = shift;
     my $propobject;
 
-    my @vlpropvalues = split( ";", XIMS::trim( XIMS::decode($propertyvalue) ) );
+    my @vlpropvalues = split( ";", XIMS::trim( $propertyvalue ) );
     foreach my $value (@vlpropvalues) {
         my $parsed_name;
         my $propclass = "XIMS::VLib" . $propertyname;

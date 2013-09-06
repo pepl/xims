@@ -69,7 +69,7 @@ sub _getbodyfragment {
     my $parser = XML::LibXML->new();
     my $fragment;
     eval {
-        $fragment = $parser->parse_xml_chunk( $self->body );
+        $fragment = $parser->parse_balanced_chunk( $self->body );
     };
     if ( $@ ) {
         XIMS::Debug( 2, "problem with the gallery body ($@)"  );

@@ -120,10 +120,8 @@ sub event_default {
     my $search = "u:".$ctxt->session->user->name();
 
     # Make sure the utf8 flag is turned on, since it may not depending on the DBD driver version
-    if ( not XIMS::DBENCODING() ) {
-        require Encode;
-        Encode::_utf8_on($search);
-    }
+    require Encode;
+    Encode::_utf8_on($search);
 
     my $qb = $qbdriver->new( { search => $search } );
     if ( defined $qb ) {

@@ -84,10 +84,6 @@ sub event_store {
     my $object = $ctxt->object();
 
     if ( defined $body and length $body ) {
-        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-            $body =
-              Text::Iconv->new( "UTF-8", XIMS::DBENCODING() )->convert($body);
-        }
 
         # fix /goxims/content/-links in href- and src attributes
         my $absolute_path_nosite = 

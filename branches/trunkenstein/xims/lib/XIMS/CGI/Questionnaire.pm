@@ -225,8 +225,7 @@ sub event_store {
     if ( $body =~ /questionnaire/ ) {
 
         #build xml from HTML-Form. This is done before init_store,
-        #because params have to be UTF-8, init_store converts all
-        #parameters to XIMS::DBENCODING
+        #because params have to be UTF-8
         my %params = $self->Vars;
         my $q_dom  = $object->form_to_xml(%params);
         $body = $q_dom->toString();

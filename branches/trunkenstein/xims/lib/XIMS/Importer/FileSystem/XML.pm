@@ -50,7 +50,7 @@ sub handle_data {
             XIMS::Debug( 3, "Could not parse: $location" );
             return;
         }
-        $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
+        $doc->setEncoding( 'UTF-8' );
         $object->body( $doc->toString() );
     }
 

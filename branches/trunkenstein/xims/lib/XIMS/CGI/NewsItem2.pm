@@ -107,9 +107,6 @@ sub event_store {
                 and length $image_title
                 and $image_title !~ /^\s+$/ )
             {
-                if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-                    $image_title = XIMS::decode($image_title);
-                }
                 $img_obj->title($image_title);
             }
 
@@ -123,12 +120,6 @@ sub event_store {
                     or not length $image_description )
               )
             {
-                if (    length $image_description
-                    and XIMS::DBENCODING()
-                    and $self->request_method eq 'POST' )
-                {
-                    $image_description = XIMS::decode($image_description);
-                }
                 XIMS::Debug( 6,
                     "image_description, len: " . length($image_description) );
                 $img_obj->abstract($image_description);

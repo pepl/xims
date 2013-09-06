@@ -24,7 +24,6 @@ package XIMS::CGI::CSS;
 use common::sense;
 use parent qw( XIMS::CGI XIMS::CGI::Text );
 use CSS::Tiny;
-use Text::Iconv;
 use Encode;
 use Text::Template;
 use Locale::TextDomain ('info.xims');
@@ -148,11 +147,6 @@ sub event_store {
     }
     else {
         $body = $self->param( 'body' );
-        if ( defined $body and length $body ) {
-            if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-                $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
-            }
-        }
     }
 
     if ( defined $body and length $body ) {

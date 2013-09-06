@@ -115,11 +115,6 @@ sub event_store {
     }
     else {
         $body = $self->param( 'body' );
-        if ( defined $body and length $body ) {
-            if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-                $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
-            }
-        }
     }
 
     if ( defined $body and length $body ) {

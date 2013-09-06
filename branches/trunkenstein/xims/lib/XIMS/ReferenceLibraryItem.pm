@@ -519,8 +519,8 @@ sub create_author_mapping_from_name {
     my $propertyvalue = shift;
     my @authors = ();
 
-    $propertyvalue = Encode::decode_utf8($propertyvalue); # set the utf-8 bit to on, so that the regexes will work...
-    my @vlpropvalues = split(";", XIMS::trim( XIMS::decode( $propertyvalue ) ) );
+    $propertyvalue = Encode::decode('UTF-8',$propertyvalue); # set the utf-8 bit to on, so that the regexes will work...
+    my @vlpropvalues = split(";", XIMS::trim( $propertyvalue ) );
     foreach my $value ( @vlpropvalues ) {
         my $parsed_name = XIMS::VLibAuthor::parse_namestring( $value );
         my ($firstname, $middlename, $lastname, $suffix);
@@ -592,8 +592,8 @@ sub update_title {
     my $title = shift;
     my @vleauthors = @_;
 
-    $date = XIMS::trim( XIMS::decode( $date ) );
-    $title = XIMS::trim( XIMS::decode( $title ) );
+    $date = XIMS::trim( $date );
+    $title = XIMS::trim( $title );
     $date ||= $self->{_date};
     $title ||= $self->{_title};
 
@@ -604,13 +604,13 @@ sub update_title {
         my @lastnames;
         for ( @authors ) {
             my $lastname = $_->lastname;
-            if ( not XIMS::DBENCODING() ) {
-                # DBD::Pg does not set UTF-8 Flag when returning data. During import,
-                # $title has the flag set and if the non-utf8-flagged lastnames are concatenated,
-                # garbage results. Hence, we have to check here, if the utf-8 flag is set for
-                # the lastnames and if it is not, set it. :-|
-                $lastname = Encode::decode_utf8($lastname) unless Encode::is_utf8($lastname);
-            }
+
+            # DBD::Pg does not set UTF-8 Flag when returning data. During import,
+            # $title has the flag set and if the non-utf8-flagged lastnames are concatenated,
+            # garbage results. Hence, we have to check here, if the utf-8 flag is set for
+            # the lastnames and if it is not, set it. :-|
+            $lastname = Encode::decode('UTF-8', $lastname) unless Encode::is_utf8($lastname);
+
             push( @lastnames, $lastname );
         }
         #my @lastnames = map { $_->lastname } @authors;
@@ -626,7 +626,7 @@ sub update_title {
     }
 
     # Similar UTF-8 check for title if it comes in via the Web-UI... :-|
-    $title = Encode::decode_utf8($title) unless Encode::is_utf8($title); # and not XIMS::DBENCODING()
+    $title = Encode::decode('UTF-8', $title) unless Encode::is_utf8($title);
 
     $ntitle .= '. ' . $title;
     $self->title( $ntitle );

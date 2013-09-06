@@ -98,13 +98,6 @@ sub validate {
     my $system = $args{system} || "http://www.docbook.org/xml/4.3/docbookx.dtd";
     my $string = $args{string} || $self->body();
 
-    # Because XIMS::DocBookXML object bodies are stored as chunk without an
-    # XML declaration, we have to manually add an XML declaration with an
-    # encoding attribute if XIMS::DBEncoding() is set.
-    if ( XIMS::DBENCODING() and not $string =~ /^<\?xml/ ) {
-        $string = '<?xml version="1.0" encoding="' . XIMS::DBENCODING() . '"?>' . $string;
-    }
-
     my $dtd = XML::LibXML::Dtd->new( $public, $system );
     my $doc;
     eval {

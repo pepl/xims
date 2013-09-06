@@ -275,10 +275,6 @@ sub QBDRIVER                  { return $_CONFIG_->QBDriver(); }
 
 sub DBDSN                     { return $_CONFIG_->DBdsn(); }
 
-# drop support for non-UTF-8 databases.
-# conditional conversions are therefore no-ops and safe to remove.
-sub DBENCODING                { return undef; }
-
 sub UIFALLBACKLANG            { return $_CONFIG_->UIFallbackLang(); }
 
 sub PUBLICUSERID              { return $_CONFIG_->PublicUserID(); }
@@ -475,31 +471,6 @@ sub xml_escape_noquot {
     return $text;
 }
 
-=head2 encode()
-
-=head3 Description
-
-Legacy. Returns its input.
-
-=cut
-
-sub encode {
-    carp "XIMS::encode does nothing for you!\n";
-    return $_[0];
-}
-
-=head2 decode()
-
-=head3 Description
-
-Legacy. Returns its input.
-
-=cut
-
-sub decode {
-    carp "XIMS::decode does nothing for you!\n";
-    return $_[0];
-}
 
 =head2 nodevalue()
 
