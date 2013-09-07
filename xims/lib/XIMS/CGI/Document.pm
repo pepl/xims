@@ -51,7 +51,7 @@ sub registerEvents {
                                 'obj_aclrevoke',
                                 'test_wellformedness',
                                 'pub_preview',
-                                'prepare_mail', 
+                                'prepare_mail',
                                 'send_as_mail',
                                 @_
                                 );
@@ -130,7 +130,7 @@ sub event_store {
     return 0 unless $self->init_store_object( $ctxt )
                     and defined $ctxt->object();
 
-    my $trytobalance  = $self->param( 'trytobalance' );
+    my $trytobalance = $self->param( 'trytobalance' ) unless $ctxt->object->attribute_by_key('geekmode');
 
     my $body = $self->param( 'body' );
     if ( defined $body and length $body ) {
@@ -186,7 +186,10 @@ sub event_store {
             $self->sendError( $ctxt, __"Document body could not be converted to a well balanced string.", $verbose_msg );
             return 0;
         }
+
+        $object->attribute( geekmode => $self->param('geekmode') ? 1 : 0 );
     }
+
 
     return $self->SUPER::event_store( $ctxt );
 }
