@@ -1268,7 +1268,7 @@ sub redirect_uri {
 		$uri->query($params);
 	}
 
-    # vermutlich PROXY-bezogen, schaumer später…
+        # vermutlich PROXY-bezogen, schaumer später…
 	# my $frontend_uri =
 	#   URI->new( $ctxt->apache, $ctxt->session->serverurl() );
 	# $uri->scheme( $frontend_uri->scheme() );
@@ -1306,7 +1306,7 @@ sub clean_userquery {
 	return $userquery;
 }
 
-=head2 set_wysiwyg_editor())=
+=head2 set_wysiwyg_editor()
 
 =head3 Parameter
 
@@ -1317,8 +1317,11 @@ sub clean_userquery {
     $self->set_wysiwyg_editor();
 
 =cut
+
 sub set_wysiwyg_editor {
     my ( $self, $ctxt ) = @_;
+
+    return if $ctxt->object->attribute_by_key('geekmode');
 
     my $cookiename = 'xims_wysiwygeditor';
     my $editor = $self->cookie($cookiename);
@@ -1332,7 +1335,7 @@ sub set_wysiwyg_editor {
     }
     elsif ( not(length $editor) and length XIMS::DEFAULTXHTMLEDITOR() ) {
         $editor = lc( XIMS::DEFAULTXHTMLEDITOR() );
-        
+
         my $cookie = $self->cookie( -name    => $cookiename,
                                     -value   => $editor,
                                     -expires => "+2160h"); # 90 days
@@ -1357,6 +1360,8 @@ sub set_wysiwyg_editor {
 
 sub set_code_editor {
     my ( $self, $ctxt ) = @_;
+
+    return if $ctxt->object->attribute_by_key('geekmode');
 
     my $cookiename = 'xims_codeeditor';
     my $editor = $self->cookie($cookiename);
