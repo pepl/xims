@@ -14,8 +14,9 @@ sub call {
     XIMS::Debug( 5, 'called' );
 
     # have you got a good session cookie?
-    if ( $self->get_session_from_cookie($env) ) {
+    if ( my $session = $self->get_session_from_cookie($env) ) {
         XIMS::Debug( 6, 'got session from cookie' );
+        $env->{REMOTE_USER} = $session->user->name;
         $res = $self->app->($env);
 
         # but you want to logout?
@@ -32,37 +33,43 @@ sub call {
         return $res;
     }
 
-    # no, so you might want to login and get a new session?
-    elsif ( $self->is_login_request($env)
-        and my $session_id = $self->create_new_session($env) )
-    {
-        XIMS::Debug( 6, 'this is a login request, creating a new session' );
+    # no, but you are trying to log in ...
+    elsif ( $self->is_login_request($env) ){
+        # ... in order to get a new session?
+        if ( my $session_id = $self->create_new_session($env) ) {
 
-        $res = $self->app->($env);
-        # all fine, you get a fresh XIMS session cookie
-        # XXX should find out, when to set the secure-flag...
-        Plack::Util::response_cb(
-            $res,
-            sub {
-                my $res = shift;
-                push @{ $res->[1] },
-                    'Set-Cookie' => "session=$session_id;path=/;httponly;";
-                return;
-            }
-        );
-        return $res;
+            XIMS::Debug( 6, 'this is a login request, creating a new session' );
+
+            $res = $self->app->($env);
+            # all fine, you get a fresh XIMS session cookie
+            # TODO: this should find out when to set the cookies secure flag...
+            Plack::Util::response_cb(
+                $res,
+                sub {
+                    my $res = shift;
+                    push @{ $res->[1] },
+                        'Set-Cookie' => "session=$session_id;path=/;httponly;";
+                    return;
+                }
+            );
+            return $res;
+        }
+        else {
+            # no session for you, but you certainly may try again ...
+            return $self->unauthorized($env, 'mismatch');
+        }
     }
-    # otherwise, you certainly may try again…
     else {
-        return $self->unauthorized($env, 'mismatch');
+        # you need to log in here (and haven't tried yet).
+        return $self->unauthorized($env);
     }
 
 }
 
-# how to find out, we have a login-request.
+# defines how we find out that we have a login-request;
 # to be overwritten; default is our form
 # we look for POST and dologin=1;
-# could also be a CAS-Ticket…
+# could also be a CAS-Ticket...
 sub is_login_request {
     my ( $self, $env ) = @_;
     XIMS::Debug(5, 'called');
@@ -131,7 +138,6 @@ sub create_new_session {
         $env->{'xims.appcontext'}->session(
             XIMS::Session->new(
                 'user_id'     => $user->id(),
-                'user_name'   => $user->name(),
                 'host'        => $env->{REMOTE_ADDR},
                 'auth_module' => ref($login)
             )
