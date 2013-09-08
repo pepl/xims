@@ -208,7 +208,7 @@ sub event_plain {
             '-charset'             => 'UTF-8',
             '-type'                => $df->mime_type,
         ),
-        Encode::encode( 'UTF-8', $ctxt->object->body() );
+        Encode::encode( 'UTF-8', $ctxt->object->body() )
     );
     $self->skipSerialization(1);
 

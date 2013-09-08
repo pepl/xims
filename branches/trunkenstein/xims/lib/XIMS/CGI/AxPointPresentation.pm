@@ -170,11 +170,10 @@ sub event_download_pdf {
 
 	$self->{RES} = $self->{REQ}->new_response(
         $self->psgi_header(
-            '-charset'             => $encoding,
             '-type'                => $mime_type,
             '-Content-disposition' => "attachment; filename=$filename",
         ),
-        $output_string;
+        $output_string
     );
     $self->skipSerialization(1);
 
