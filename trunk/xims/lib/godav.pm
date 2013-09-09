@@ -34,7 +34,6 @@ use Digest::MD5;
 use HTTP::Exception;
 #use Data::Dumper::Concise;
 use HTTP::Date;
-use Encode qw(encode decode);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -137,21 +136,32 @@ sub get {
             properties     => [ 'location', 'id', 'object_type_id' ],
             marked_deleted => 0
         );
-        my $body;
+        my $titling = $object->location_path;
+        my $body = "<html>\n  <head><title>$titling</title></head>\n  <body>\n     <h2>$titling</h2>\n     <ul>\n";
         my $location;
         $path =~ s#/$##;
         foreach my $child (@children) {
             $location = $child->location();
             if ( $child->object_type->is_fs_container() ) {
                 $body
-                    .= qq|<a href="$godav$path/$location/">$location/</a><br>\n|;
+                    .= qq|      <li><a href="$godav$path/$location/">$location/</a></li>\n|;
             }
             else {
-                $location =~ s#/$##;
-                $body
-                    .= qq|<a href="$godav$path/$location">$location</a><br>\n|;
+               
+               # URLLinks  
+               if ($location =~ /^https?:/) {
+                   $body .= qq|      <li><a href="$location">$location</a></li>\n|;
+               }
+               elsif ($location =~ /^\//) {
+                   $body .= qq|      <li><a href="$godav$location">$location</a></li>\n|
+               }
+               else {
+                   $location =~ s#/$##;
+                   $body .= qq|      <li><a href="$godav$path/$location">$location</a></li>\n|;
+               }
             }
         }
+        $body .= "    </ul>\n    <hr noshade><em>XIMS WebDAV</em>\n  </body>\n</html>";
         return [ '200', [ 'Content-Type' => 'text/html', ], [$body] ];
     }
     else {
@@ -163,7 +173,7 @@ sub get {
                 [   'Content-Type' => "$mime_type; charset=UTF-8",
                     'Last-Modified' => time2str( str2time( $object->last_modification_timestamp(), 'CET') )
                 ],
-                [  encode('UTF-8', $object->body()) ]
+                [  Encode::encode('UTF-8', $object->body()) ]
             ];
         }
         else {
@@ -628,7 +638,6 @@ sub propfind {
 
         my $ndisplayname = $dom->createElement("D:displayname");
 
-        #my $displayname = XIMS::encode($o->title());
         my $displayname = $o->location();
         $displayname =~ s#/#_#g;
         $ndisplayname->appendText($displayname);
@@ -839,7 +848,7 @@ sub copymove {
         HTTP::Exception->throw(412);
     }
 
-    my $destination_path = decode( 'UTF-8', uri_unescape( $req->header('Destination') ) );
+    my $destination_path = Encode::decode( 'UTF-8', uri_unescape( $req->header('Destination') ) );
     $destination_path =~ s/^.*?$godav//;  # the cheap and pragmatic way to get the
     $destination_path =~ s#/$##;          # location_path
 
@@ -1004,7 +1013,7 @@ sub _get_path {
     my $path = uri_unescape( $_[0]->{PATH_INFO}) || '/';
 
     eval{
-        $path = decode( 'UTF-8', $path, Encode::FB_CROAK );
+        $path = Encode::decode( 'UTF-8', $path, Encode::FB_CROAK );
     };
     if ($@) {
         HTTP::Exception->throw(400, status_message => "400 Bad Request\n\n$@.\n");
@@ -1067,7 +1076,7 @@ PROPPATCH?
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

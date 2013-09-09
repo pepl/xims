@@ -65,7 +65,7 @@ sub handle_data {
             }
             if ( length $value ) {
                 # $doc->setEncoding() does not work depending on the libxml version :-/
-                $value = XIMS::utf8_sanitize( $value ) unless XIMS::DBENCODING;
+                $value = XIMS::utf8_sanitize( $value );
                 $object->$field( XIMS::Entities::decode( $value ) );
             }
         }
@@ -117,7 +117,7 @@ sub get_rootelement {
                             $_[0], $_[0]->attributes;
                         } );
 
-    $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
+    $doc->setEncoding( 'UTF-8' );
     return $doc->documentElement();
 }
 
@@ -149,7 +149,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

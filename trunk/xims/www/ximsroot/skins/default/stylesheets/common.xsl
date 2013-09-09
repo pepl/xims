@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-		# Copyright (c) 2002-2011 The XIMS Project. # See the file "LICENSE"
+		# Copyright (c) 2002-2013 The XIMS Project. # See the file "LICENSE"
 		for information and conditions for use, reproduction, # and
 		distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES. #
 		$Id: common.xsl 2248 2009-08-10 10:27:04Z haensel $
@@ -341,30 +341,39 @@
 							</xsl:with-param>
 						</xsl:call-template>
 						&#160;'<xsl:value-of select="title"/>'&#160;
-						<xsl:if test="$selEditor = 'wysiwyg' or $selEditor = 'code'">
-              <xsl:value-of select="$i18n/l/using"/>
-              <xsl:text>&#160;</xsl:text>
-              <label for="xims_wysiwygeditor">
-              <xsl:attribute name="for">xims_<xsl:value-of select="selEditor"/>editor</xsl:attribute>
-                <xsl:value-of select="$i18n/l/Editor"/>
-              </label>
-              <xsl:text>&#160;</xsl:text>
-            </xsl:if>
+						<xsl:if test="(   $selEditor = 'wysiwyg' 
+                                       or $selEditor = 'code') 
+                                   and not(attributes/geekmode='1')">
+                          <xsl:value-of select="$i18n/l/using"/>
+                          <xsl:text>&#160;</xsl:text>
+                          <label for="xims_wysiwygeditor">
+                            <xsl:attribute name="for">xims_<xsl:value-of select="selEditor"/>editor</xsl:attribute>
+                            <xsl:value-of select="$i18n/l/Editor"/>
+                          </label>
+                          <xsl:text>&#160;</xsl:text>
+                        </xsl:if>
 					</xsl:when>
 					<xsl:when test="$mode='move'">
-						<xsl:value-of select="$i18n/l/Move_object"/> '<xsl:value-of select="title"/>' 
+					  <xsl:value-of select="$i18n/l/Move_object"/> '<xsl:value-of select="title"/>' 
 					</xsl:when>
 					<xsl:when test="$mode='movemultiple'">
-						<xsl:value-of select="$i18n/l/Move_objects"/> 
+					  <xsl:value-of select="$i18n/l/Move_objects"/> 
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="title"/>
+					  <xsl:value-of select="title"/>
 					</xsl:otherwise>
 				</xsl:choose>
 		    </h1>
-            <xsl:if test="$selEditor and ($mode='edit' or $mode='create')">
-              <xsl:call-template name="setdefaulteditor"/>
-            </xsl:if>
+            <xsl:choose>
+              <xsl:when test="not(attributes/geekmode='1')">
+                <xsl:if test="$selEditor and ($mode='edit' or $mode='create')">
+                  <xsl:call-template name="setdefaulteditor"/>
+                </xsl:if>
+              </xsl:when>
+              <xsl:otherwise>
+                <b title="{$i18n/l/noCleanup}">(Geekmode)</b>
+              </xsl:otherwise>
+            </xsl:choose>
 		</div>
 	</xsl:template>
 	
@@ -636,14 +645,16 @@
 			<img src="{$skimages}option_wfcheck.png" alt="{$i18n/l/Test_body_xml}" title="{$i18n/l/Test_body_xml}" width="32" height="19"/>
 		</a>
 	</xsl:template>
-	<xsl:template name="prettyprint">
-		<xsl:param name="ppmethod" select="'htmltidy'"/>
+	<xsl:template name="prettyprint"> 
+   	  <xsl:param name="ppmethod" select="'htmltidy'"/>
+      <xsl:if test="not(attributes/geekmode='1')">
 		<xsl:call-template name="prettyprintjs">
 			<xsl:with-param name="ppmethod" select="$ppmethod"/>
 		</xsl:call-template>
 		<a href="javascript:prettyprint('#body')">
 			<img src="{$skimages}option_prettyprint.png" alt="{$i18n/l/Prettyprint}" title="{$i18n/l/Prettyprint}" width="32" height="19"/>
 		</a>
+      </xsl:if>
 	</xsl:template>
 	
 	<xsl:template name="form-body-edit">
@@ -661,10 +672,12 @@
 		</xsl:param>
 		<div class="block form-div">
 			<h2>
-				<label for="body"><xsl:value-of select="$i18n/l/Body"/></label>
-				<!--<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('Body')" class="doclink">
-					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Body"/></xsl:attribute>(?)</a>-->
+			  <label for="body">
+                <xsl:value-of select="$i18n/l/Body"/>
+              </label>
+			  <!--<xsl:text>&#160;</xsl:text>
+				  <a href="javascript:openDocWindow('Body')" class="doclink">
+				  <xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Body"/></xsl:attribute>(?)</a>-->
 			</h2>
 			<xsl:call-template name="ui-resizable"/>
 			<!--<div id="bodymain">-->
@@ -2082,7 +2095,6 @@
 	<xsl:if test="$tinymce">
 		<xsl:call-template name="tinymce_scripts"/>
 	</xsl:if>
-	
 	<xsl:if test="$codemirror">
 		<xsl:call-template name="codemirror_scripts"/>
 	</xsl:if>

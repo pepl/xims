@@ -275,10 +275,6 @@ sub QBDRIVER                  { return $_CONFIG_->QBDriver(); }
 
 sub DBDSN                     { return $_CONFIG_->DBdsn(); }
 
-# drop support for non-UTF-8 databases.
-# conditional conversions are therefore no-ops and safe to remove.
-sub DBENCODING                { return undef; }
-
 sub UIFALLBACKLANG            { return $_CONFIG_->UIFallbackLang(); }
 
 sub PUBLICUSERID              { return $_CONFIG_->PublicUserID(); }
@@ -475,31 +471,6 @@ sub xml_escape_noquot {
     return $text;
 }
 
-=head2 encode()
-
-=head3 Description
-
-Legacy. Returns its input.
-
-=cut
-
-sub encode {
-    carp "XIMS::encode does nothing for you!\n";
-    return $_[0];
-}
-
-=head2 decode()
-
-=head3 Description
-
-Legacy. Returns its input.
-
-=cut
-
-sub decode {
-    carp "XIMS::decode does nothing for you!\n";
-    return $_[0];
-}
 
 =head2 nodevalue()
 
@@ -887,7 +858,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

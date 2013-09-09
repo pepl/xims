@@ -197,7 +197,7 @@ sub update_properties {
         $propertyname = Encode::encode_utf8( $propertyname ) if Encode::is_utf8( $propertyname );
         my $value = XIMS::utf8_sanitize( $self->param( 'simpledb_' . $propertyname ) );
         next unless defined $value;
-        $value = substr(XIMS::trim( XIMS::decode( $value )),0,2000); # play safe with the DB field length
+        $value = substr(XIMS::trim( $value ),0,2000); # play safe with the DB field length
 
         # check for mandatory properties
         #if ( $property->mandatory() and not (defined $value and length $value) ) {
@@ -282,7 +282,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

@@ -60,7 +60,7 @@ sub _build {
     my $bol;
     my $foundmacro = 0;
 
-    my $allowedusernamechars = XIMS::decode( '-A-Za-z0-9öäüßàáâãåæèçéêëìíîïðñòóôõøùúûýÿ_' );
+    my $allowedusernamechars = '-A-Za-z0-9öäüßàáâãåæèçéêëìíîïðñòóôõøùúûýÿ_';
 
     for ( my $i = 0; $i <= scalar(@{$search})-1; $i++ ) {
         # handle fieldbased-searches first
@@ -211,7 +211,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

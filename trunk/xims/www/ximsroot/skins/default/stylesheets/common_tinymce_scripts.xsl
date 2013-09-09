@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 	<!--
-		# Copyright (c) 2002-2011 The XIMS Project. # See the file "LICENSE"
+		# Copyright (c) 2002-2013 The XIMS Project. # See the file "LICENSE"
 		for information and conditions for use, reproduction, # and
 		distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES. #
 		$Id: common_tinymce_scripts.xsl 2249 2009-08-10 11:29:26Z haensel $

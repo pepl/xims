@@ -107,9 +107,6 @@ sub event_store {
                 and length $image_title
                 and $image_title !~ /^\s+$/ )
             {
-                if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-                    $image_title = XIMS::decode($image_title);
-                }
                 $img_obj->title($image_title);
             }
 
@@ -123,12 +120,6 @@ sub event_store {
                     or not length $image_description )
               )
             {
-                if (    length $image_description
-                    and XIMS::DBENCODING()
-                    and $self->request_method eq 'POST' )
-                {
-                    $image_description = XIMS::decode($image_description);
-                }
                 XIMS::Debug( 6,
                     "image_description, len: " . length($image_description) );
                 $img_obj->abstract($image_description);
@@ -227,7 +218,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

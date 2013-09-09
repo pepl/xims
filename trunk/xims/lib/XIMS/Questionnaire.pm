@@ -124,7 +124,7 @@ sub questionnaire_dom {
     }
     else {
         my $q_dom;
-        eval { $q_dom = $self->_parser->parse_string( XIMS::encode( $self->body() ) ); };
+        eval { $q_dom = $self->_parser->parse_string( $self->body() ); };
         if ( $@ ) {
             XIMS::Debug( 2, "Could not parse body" );
             return;
@@ -169,7 +169,7 @@ sub move_up {
     $node->unbindNode();
     $parent_node->insertBefore( $node, $previous_node );
     my $xml_string = $questionnaire->toString();
-    $self->body( XIMS::decode( $xml_string ) );
+    $self->body( $xml_string );
 }
 
 
@@ -203,7 +203,7 @@ sub move_down {
     $node->unbindNode();
     $parent_node->insertAfter( $node, $next_node );
     my $xml_string = $questionnaire->toString();
-    $self->body( XIMS::decode( $xml_string ) );
+    $self->body( $xml_string );
 }
 
 
@@ -252,7 +252,7 @@ sub add_question {
     XIMS::Debug ( 6, "Added Question: $new_id" );
     $questionnaire = _set_top_question_edit ($questionnaire, $new_id);
     my $xml_string = $questionnaire->toString();
-    $self->body( XIMS::decode( $xml_string ) );
+    $self->body( $xml_string );
 }
 
 
@@ -292,7 +292,7 @@ sub edit_question{
 
     $node->setAttribute( "edit", "1" );
     my $xml_string = $questionnaire->toString();
-    $self->body( XIMS::decode( $xml_string ) );
+    $self->body( $xml_string );
 }
 
 
@@ -325,7 +325,7 @@ sub delete_node {
     }
     $questionnaire = _set_top_question_edit ($questionnaire, $node_id);
     my $xml_string = $questionnaire->toString();
-    $self->body( XIMS::decode( $xml_string ) );
+    $self->body( $xml_string );
 }
 
 
@@ -365,7 +365,7 @@ sub copy_question {
     $node->addSibling( $new_node );
     $questionnaire = _set_top_question_edit ($questionnaire, $new_id);
     my $xml_string = $questionnaire->toString();
-    $self->body( XIMS::decode( $xml_string ) );
+    $self->body( $xml_string );
 }
 
 
@@ -410,7 +410,7 @@ sub add_answer {
     $node->appendChild( $new_node );
     $questionnaire = _set_top_question_edit ($questionnaire, $new_id);
     my $xml_string = $questionnaire->toString();
-    $self->body( XIMS::decode( $xml_string ) );
+    $self->body( $xml_string );
 }
 
 
@@ -442,7 +442,7 @@ sub delete_answer {
     $questionnaire = _set_top_question_edit ($questionnaire, $node_id);
     my $xml_string = $questionnaire->toString();
     #  $xml_string =~ s/^<body>(.*|\n*)<\/body>/\1/i;
-    $self->body( XIMS::decode( $xml_string ) );
+    $self->body( $xml_string );
 }
 
 
@@ -754,7 +754,7 @@ sub set_answer_data {
         $questionnaire->appendTextChild( 'current_question', $question_id );
     }
     $questionnaire->appendTextChild( 'tan', $tan );
-    $self->body( XIMS::decode( $questionnaire->toString() ) );
+    $self->body( $questionnaire->toString() );
 
     return 1
 }
@@ -769,7 +769,7 @@ sub set_answer_error {
 
     my $questionnaire = $self->questionnaire_dom();
     $questionnaire->appendTextChild( 'error_message', $error_message );
-    $self->body( XIMS::decode( $questionnaire->toString() ) );
+    $self->body( $questionnaire->toString() );
 
     return 1
 }
@@ -1050,14 +1050,16 @@ sub add_tanlist {
         XIMS::Debug( 4, "adding TAN-List: $TAN_List");
         my $new_node = XML::LibXML::Element->new( "tanlist" );
         $new_node->setAttribute( "id", $TAN_List->document_id() );
-        $new_node->appendText( XIMS::encode( $TAN_List->title() ) ." (".$TAN_List->number().")"  );
+        # XXXX This looks like a (parens) bug!
+        # $new_node->appendText(  $TAN_List->title() ) ." (".$TAN_List->number().")"  );
+        $new_node->appendText(  $TAN_List->title() ." (".$TAN_List->number().")" );
         $questionnaire->appendChild( $new_node );
     }
     else {
         XIMS::Debug( 4, "Could not find TAN_List using path '$tanlist_path'" );
         return;
     }
-    $self->body( XIMS::decode( $questionnaire->toString() ) );
+    $self->body( $questionnaire->toString() );
 }
 
 
@@ -1096,7 +1098,7 @@ sub remove_tanlist {
     $node = $node->parentNode->removeChild( $node );
     # XIMS::Debug ( 6, "Deleted TAN_List: $tanlist_id" );
     my $xml_string = $questionnaire->toString();
-    $self->body( XIMS::decode( $xml_string ) );
+    $self->body( $xml_string );
 }
 
 
@@ -1126,7 +1128,7 @@ sub set_statistics {
     # add statistics to xml-structure
     $questionnaire->setAttribute( 'total_answered', $total );
     $questionnaire->setAttribute( 'valid_answered', $valid );
-    $self->body( XIMS::decode( $questionnaire->toString() ) );
+    $self->body( $questionnaire->toString() );
     #  XIMS::Debug( 6, "### xml=".$self->body());
 
     return 1
@@ -1213,7 +1215,7 @@ sub set_results {
             }
         }
     }
-    $self->body( XIMS::decode( $questionnaire->toString() ) );
+    $self->body( $questionnaire->toString() );
     return 1;
 }
 
@@ -1332,7 +1334,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

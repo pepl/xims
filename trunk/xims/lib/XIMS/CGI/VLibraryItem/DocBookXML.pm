@@ -94,22 +94,11 @@ sub event_store {
     else {
         $body = $self->param( 'body' );
 
-        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-            $body = XIMS::decode( $body );
-        }
-
         # The VLibraryItem::DocBookXML importer needs an XML::Document and not just
         # a fragment to get the metadata out of the Document
 
         # Substitute the possibly wrong encoding attribute in the XML declaration
         $body = XIMS::CGI::XML::update_decl_encoding( $body );
-
-        # Add an XML declaration if it is not already there in the case of
-        # a non UTF-8 database
-        if ( XIMS::DBENCODING() and not $body =~ /^<\?xml/ ) {
-            XIMS::Debug( 4, "Adding XML declaration" );
-            $body = '<?xml version="1.0" encoding="' . XIMS::DBENCODING() . '"?>' . $body;
-        }
     }
 
     if ( defined $body and length $body ) {
@@ -184,7 +173,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

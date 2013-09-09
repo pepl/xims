@@ -98,13 +98,6 @@ sub validate {
     my $system = $args{system} || "http://www.docbook.org/xml/4.3/docbookx.dtd";
     my $string = $args{string} || $self->body();
 
-    # Because XIMS::DocBookXML object bodies are stored as chunk without an
-    # XML declaration, we have to manually add an XML declaration with an
-    # encoding attribute if XIMS::DBEncoding() is set.
-    if ( XIMS::DBENCODING() and not $string =~ /^<\?xml/ ) {
-        $string = '<?xml version="1.0" encoding="' . XIMS::DBENCODING() . '"?>' . $string;
-    }
-
     my $dtd = XML::LibXML::Dtd->new( $public, $system );
     my $doc;
     eval {
@@ -156,7 +149,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

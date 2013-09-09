@@ -124,22 +124,22 @@ sub event_edit {
     # expand the attributes to XML-nodes
     $self->expand_attributes( $ctxt );
 
-	$ctxt->properties->content->escapebody( 1 );
+    $ctxt->properties->content->escapebody( 1 );
 
-	# event edit in SUPER implements operation control
+    # event edit in SUPER implements operation control
     $self->SUPER::event_edit( $ctxt );
     return 0 if $ctxt->properties->application->style() eq 'error';
-	
-	# check if a code editor is to be used based on cookie or config
+
+    # check if a code editor is to be used based on cookie or config
     my $ed = $self->set_code_editor( $ctxt );
     $ctxt->properties->application->style( "edit" . $ed );
-	# $ctxt->properties->application->style( "edit" );
-	
-	# resolve document_ids to location_path after attributes have been expanded
+    # $ctxt->properties->application->style( "edit" );
+
+    # resolve document_ids to location_path after attributes have been expanded
     $self->resolve_content( $ctxt, [ qw( STYLE_ID CSS_ID SCHEMA_ID ) ] );
-	#$self->resolve_content( $ctxt, [ qw( CSS_ID ) ] );
-    
-	return 0;
+    #$self->resolve_content( $ctxt, [ qw( CSS_ID ) ] );
+
+    return 0;
 }
 
 
@@ -179,11 +179,6 @@ sub event_store {
     }
     else {
         $body = $self->param( 'body' );
-        if ( defined $body and length $body ) {
-            if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-                $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
-            }
-        }
     }
     if ( defined $body and length $body ) {
         # we have to update the encoding attribute in the xml-decl to match
@@ -220,101 +215,13 @@ sub update_decl_encoding {
 
     my ( $encoding ) = ( $body =~ /^<\?xml[^>]+encoding="([^"]*)"/ );
     if ( $encoding ) {
-        my $newencoding = ( XIMS::DBENCODING() || 'UTF-8' );
-        XIMS::Debug( 6, "switching encoding attribute from '$encoding' to '$newencoding'");
-        $body =~ s/^(<\?xml[^>]+)encoding="[^"]*"/$1encoding="$newencoding"/;
+        my $newencoding = ( 'UTF-8' );
+        XIMS::Debug( 6, "switching encoding attribute from '$encoding' to 'UTF-8'");
+        $body =~ s/^(<\?xml[^>]+)encoding="[^"]*"/$1encoding="UTF-8"/;
     }
 
     return $body;
 }
-
-# BitFlux is long gone
-# =head2 save_PUT_data()
-
-# =cut
-
-# sub save_PUT_data {
-#     XIMS::Debug( 5, "called" );
-#     my ( $self, $ctxt ) = @_;
-
-#     # Read PUT-request
-#     my $content_length = $ctxt->req->header_in('Content-length');
-#     my $content;
-#     $self->env->{'psgi.input'}->read($content, $content_length);
-
-
-
-#     if ( XIMS::DBENCODING() ) {
-#         $content = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($content);
-#     }
-
-#     # we have to update the encoding attribute in the xml-decl to match
-#     # the encoding, the body will be saved in the db. that can't be done
-#     # parsing the body, doing a setEncoding() followed by a toString()
-#     # because we have to deal with the case that the body itself gets
-#     # send by the browser encoded in UTF-8 but still has different
-#     # encoding attributes from the user's document.
-#     #
-#     $content = update_decl_encoding( $content );
-
-#     $ctxt->object->body( $content );
-
-#     # Store in database
-#     if ( $ctxt->object->update() ) {
-#         return 1;
-#     }
-#     else {
-#         return 0;
-#     }
-# }
-
-
-# If a simple RelaxNG schema with a specific structure has been assigned to the XML object, event simpleformedit
-# can be used to edit the text values of the XML files elements via HTML form input controls.
-# Note that the XML Document must not have an XML-Declaration!
-#<grammar ns="" xmlns="http://relaxng.org/ns/structure/1.0" xmlns:s="http://xims.info/ns/xmlsimpleformedit"
-#  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
-#  <start>
-#    <element name="events">
-#      <oneOrMore>
-#        <element name="event">
-#            <s:last_modified_attr>1</s:last_modified_attr>
-#            <attribute name="id"/>
-#            <optional>
-#                <attribute name="last_modified"/>
-#            </optional>
-#            <element name="date">
-#                <s:description show="1">Date</s:description>
-#                <s:datatype>datetime</s:datatype>
-#                <text/>
-#            </element>
-#            <element name="location">
-#                <s:description>Location</s:description>
-#                <text/>
-#            </element>
-#            <element name="description">
-#                <s:description show="1">Description</s:description>
-#                <text/>
-#            </element>
-#            <element name="public">
-#              <s:description>The event is public?</s:description>
-#              <s:datatype>boolean</s:datatype>
-#              <text/>
-#            </element>
-#            <element name="type">
-#              <s:description>Type of event</s:description>
-#              <s:datatype>stringoptions</s:datatype>
-#              <s:select>
-#                  <s:option>seminar</s:option>
-#                  <s:option>talk</s:option>
-#              </s:select>
-#              <text/>
-#            </element>
-#        </element>
-#      </oneOrMore>
-#    </element>
-#  </start>
-#</grammar>
 
 =head2 event_simpleformedit()
 
@@ -360,7 +267,7 @@ sub event_simpleformedit {
         $self->sendError( $ctxt, __"Could not parse schema." );
         return 0;
     }
-    $sdoc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
+    $sdoc->setEncoding( 'UTF-8' );
 
     $schemaroot = $sdoc->documentElement();
     $schemaroot->setNamespace('http://relaxng.org/ns/structure/1.0','r',0);
@@ -392,7 +299,7 @@ sub event_simpleformedit {
         $self->sendError( $ctxt, __"Could not parse body." );
         return 0;
     }
-    $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
+    $doc->setEncoding( 'UTF-8' );
     my $root = $doc->documentElement();
 
     #
@@ -451,7 +358,7 @@ sub event_simpleformedit {
                 $entryelement->setAttribute( 'last_modified', $ctxt->object->data_provider->db_now() );
             }
             foreach my $element ( $schemaroot->findnodes("r:start/r:element/r:oneOrMore/r:element/r:element/\@name") ) {
-                my $value = XIMS::clean( XIMS::decode( $self->param( "sfe_" . $element->value ) ) );
+                my $value = XIMS::clean( $self->param( "sfe_" . $element->value ) );
                 $entryelement->appendTextChild( $element->value, $value );
             }
             if ( defined $elementid ) {
@@ -546,7 +453,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

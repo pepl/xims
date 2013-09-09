@@ -1335,7 +1335,7 @@ sub __fix_clone_reference {
             if ( defined $body and length $body ) {
                 my $parser = XML::LibXML->new();
                 my $fragment;
-                eval { $fragment = $parser->parse_xml_chunk($body); };
+                eval { $fragment = $parser->parse_balanced_chunk($body); };
                 if ($@) {
                     XIMS::Debug( 2,
                         "problem with the stored portlet data ($@)" );
@@ -3319,7 +3319,7 @@ Helpers
        recognized keys: nochunk     : if set, $CDATAstring is assumed to be a
                                       document with a root-element and will be
                                       parsed with parse_string() instead of
-                                      the default parse_xml_chunk() useful
+                                      the default parse_balanced_chunk() useful
                                       for importing
                         verbose_msg : if set, XML::LibXML'S error string
                                       instead of undef is returned on
@@ -3371,7 +3371,7 @@ sub balanced_string {
             $encoding = $args{encoding} if defined $args{encoding};
             $encoding ||= 'UTF-8';
             carp "Non-UTF-8 encoding '$encoding' set!\n" unless $encoding eq 'UTF-8';
-            eval { $doc = $parser->parse_xml_chunk( $CDATAstring, $encoding ); };
+            eval { $doc = $parser->parse_balanced_chunk( $CDATAstring, $encoding ); };
             if ( !$doc or $@ ) {
                 XIMS::Debug( 2, "string not well-balanced" );
                 XIMS::Debug( 6, "LibXML returned $@" );
@@ -3435,8 +3435,7 @@ sub balance_string {
 
     my $tmp_fh = IO::File->new( $tmp, 'w' );
     if ( defined $tmp_fh ) {
-        # binmode ( $tmp_fh, ':utf8' );
-        print $tmp_fh XIMS::encode($CDATAstring);
+        print $tmp_fh $CDATAstring;
         $tmp_fh->close;
         XIMS::Debug( 4, "Temporary file written" );
     }
@@ -3461,31 +3460,21 @@ sub balance_string {
 
         my $parser = XML::LibXML->new();
 
-        $CDATAstring = XIMS::encode($CDATAstring);
         $CDATAstring =~ s/\r//g; # dunno where these CRs come from
         my $doc;
-        eval { $doc = $parser->parse_html_string($CDATAstring, { encoding =>'utf-8', 
-                                                                 recover => 1, 
+        eval { $doc = $parser->parse_html_string($CDATAstring, { encoding =>'utf-8',
+                                                                 recover => 1,
                                                                  no_blanks => 0,
                                                                  expand_entities => 1 }
-                      ); 
+                      );
         };
         if ($@) {
             XIMS::Debug( 2, "LibXML could not parse string either: $@" );
             return;
         }
         else {
-            my $encoding = XIMS::DBEncoding() ? XIMS::DBEncoding() : 'UTF-8';
-            #$doc->setEncoding($encoding); # needed. otherwise, toString()
-            #                              # produces one-byte numeric entities
-            #                              # or double-byte chars !?
-            $wbCDATAstring = XIMS::decode( $doc->toString() );
+            $wbCDATAstring =  $doc->toString();
         }
-    }
-    else {
-
-        # tidy returns utf-8, so we may have to decode...
-        $wbCDATAstring = XIMS::decode($wbCDATAstring);
     }
 
     if ( not exists $args{keephtmlheader} ) {
@@ -3579,7 +3568,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

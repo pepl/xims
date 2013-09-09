@@ -77,17 +77,16 @@ sub event_store {
       unless $self->init_store_object($ctxt)
       and defined $ctxt->object();
 
-    my $trytobalance = $self->param('trytobalance');
+    my $trytobalance;
+    unless ($ctxt->object->attribute_by_key('geekmode') or $self->param('geekmode')) {
+        $trytobalance = $self->param( 'trytobalance' );
+    }
 
     my $body = $self->param('body');
 
     my $object = $ctxt->object();
 
     if ( defined $body and length $body ) {
-        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-            $body =
-              Text::Iconv->new( "UTF-8", XIMS::DBENCODING() )->convert($body);
-        }
 
         # fix /goxims/content/-links in href- and src attributes
         my $absolute_path_nosite = 
@@ -117,6 +116,8 @@ sub event_store {
             $self->sendError( $ctxt, __"Document body could not be converted to a well balanced string." );
             return 0;
         }
+
+        $object->attribute( geekmode => $self->param('geekmode') ? 1 : 0 );
     }
 
     $self->SUPER::event_store($ctxt);
@@ -232,7 +233,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
