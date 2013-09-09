@@ -14,35 +14,52 @@
   
   <xsl:template name="trytobalance">
     <div id="tr-trytobal">
-      <fieldset>
-        <!--<div id="label-trytobal">-->
-        <legend>
-          <xsl:value-of select="$i18n/l/Try_to_well-balance"/>
-        </legend><br/>
-        <!--</div>-->
-        <input name="trytobalance" type="radio" value="true" checked="checked" onchange="javascript:createCookie('xims_trytobalancewell','true',90);" id="radio-trytobal-true" class="radio-button"/>
-        <label for="radio-trytobal-true">
-          <xsl:value-of select="$i18n/l/Yes"/>
-        </label>
-        <input name="trytobalance" type="radio" value="false" onchange="javascript:createCookie('xims_trytobalancewell','false',90);" id="radio-trytobal-false" class="radio-button"/>
-        <label for="radio-trytobal-false">
-          <xsl:value-of select="$i18n/l/No"/>
-        </label>
-        <input name="geekmode" type="checkbox" id="geekmode" class="checkbox">
-          <xsl:if test="attributes/geekmode='1'">
-            <xsl:attribute name="checked"/>
+        <fieldset>
+          <!--<div id="label-trytobal">--> 
+          <legend>
+            <xsl:value-of select="$i18n/l/Try_to_well-balance"/>
+          </legend>
+          <br/>
+          <!--</div>-->
+          <xsl:if test="not(attributes/geekmode=1)">
+            <input name="trytobalance" 
+                   type="radio"
+                   value="true"
+                   checked="checked"
+                   onchange="javascript:createCookie('xims_trytobalancewell','true',90);"
+                   id="radio-trytobal-true"
+                   class="radio-button"/>
+            <label for="radio-trytobal-true">
+              <xsl:value-of select="$i18n/l/Yes"/>
+            </label>
+            <input name="trytobalance"
+                   type="radio"
+                   value="false"
+                   onchange="javascript:createCookie('xims_trytobalancewell','false',90);"
+                   id="radio-trytobal-false"
+                   class="radio-button"/>
+            <label for="radio-trytobal-false">
+              <xsl:value-of select="$i18n/l/No"/>
+            </label>
           </xsl:if>
-        </input>
-        <label for="geekmode">
-          Geekmode
-        </label>
-      </fieldset>
-      <!-- set checked attribute for trytobalance-input-element according to cookie -->
-      <script type="text/javascript">
-      $().ready(function(){
-      selTryToBalance(document.eform.trytobalance, readCookie('xims_trytobalancewell'));
-      });
-    </script>
+          <xsl:if test="/document/context/session/user/userprefs/profile_type = 'webadmin' 
+                        or /document/context/session/user/userprefs/profile_type = 'expert'">
+            <input name="geekmode" type="checkbox" id="geekmode" class="checkbox">
+              <xsl:if test="attributes/geekmode='1'">
+                <xsl:attribute name="checked"/>
+              </xsl:if>
+            </input>
+            <label for="geekmode">
+              Geekmode (<xsl:value-of select="$i18n/l/noCleanup"/>)
+            </label>
+          </xsl:if>
+        </fieldset>
+        <!-- set checked attribute for trytobalance-input-element according to cookie -->
+        <script type="text/javascript">
+          $().ready(function(){
+          selTryToBalance(document.eform.trytobalance, readCookie('xims_trytobalancewell'));
+          });
+        </script>
     </div>
   </xsl:template>
 

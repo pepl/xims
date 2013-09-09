@@ -77,7 +77,10 @@ sub event_store {
       unless $self->init_store_object($ctxt)
       and defined $ctxt->object();
 
-    my $trytobalance = $self->param('trytobalance');
+    my $trytobalance;
+    unless ($ctxt->object->attribute_by_key('geekmode') or $self->param('geekmode')) {
+        $trytobalance = $self->param( 'trytobalance' );
+    }
 
     my $body = $self->param('body');
 
@@ -113,6 +116,8 @@ sub event_store {
             $self->sendError( $ctxt, __"Document body could not be converted to a well balanced string." );
             return 0;
         }
+
+        $object->attribute( geekmode => $self->param('geekmode') ? 1 : 0 );
     }
 
     $self->SUPER::event_store($ctxt);
