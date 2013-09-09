@@ -518,12 +518,12 @@ sub clean_location {
         ':'  => ''
     );
 
-    my $badchars = join "", keys %escapes;
+    my $badchars = join '', keys %escapes;
     $location =~ s/
                     ([$badchars])     # more flexible :)
                   /
                     $escapes{$1}
-                  /segx;    # *coff*
+                  /segxu;    # *coff*
     return ( not (ref $self and $self->{ArchiveMode}) # sometimes used as a function 
              and XIMS::Config::LowerCaseLocations() )
         ? lc($location)
