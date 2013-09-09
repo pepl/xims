@@ -130,7 +130,10 @@ sub event_store {
     return 0 unless $self->init_store_object( $ctxt )
                     and defined $ctxt->object();
 
-    my $trytobalance = $self->param( 'trytobalance' ) unless $ctxt->object->attribute_by_key('geekmode');
+    my $trytobalance;
+    unless ($ctxt->object->attribute_by_key('geekmode') or $self->param('geekmode')) {
+        $trytobalance = $self->param( 'trytobalance' );
+    }
 
     my $body = $self->param( 'body' );
     if ( defined $body and length $body ) {
