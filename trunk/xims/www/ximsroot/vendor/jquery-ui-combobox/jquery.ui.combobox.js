@@ -42,7 +42,14 @@
       uiCombo: null,
       uiInput: null,
       _wasOpen: false,
-
+      
+      options: {
+			input_id: '',
+			button_type: 'button',
+			input_size: 30,
+			readonly: false
+		},
+		
       _create: function() {
 
          var self = this,
@@ -52,7 +59,7 @@
          select.prop('selectedIndex', -1);
 
          input = this.uiInput =
-                  $( "<input />" )
+                  $( "<input id = '"+this.options.input_id+"' name = '"+this.options.input_id+"' size='"+this.options.input_size+"' type='text' >" )
                       .insertAfter(select)
                       .addClass("ui-widget ui-widget-content ui-corner-left ui-combobox-input");
 
@@ -146,8 +153,8 @@
 
                 if ( !valid ) {
 
-                   // remove invalid value, as it didn't match anything
-                   $el.val( "" );
+                   // DO NOT remove invalid value, as it didn't match anything
+                   //$el.val( "" );
                    this.element.prop('selectedIndex', -1);
                    //return false;
 
