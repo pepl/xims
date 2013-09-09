@@ -23,7 +23,6 @@ package XIMS::CGI::Document;
 
 use common::sense;
 use parent qw( XIMS::CGI XIMS::CGI::Mailable);
-use Text::Iconv;
 use Encode;
 use Text::Template;
 use Locale::TextDomain ('info.xims');
@@ -52,7 +51,7 @@ sub registerEvents {
                                 'obj_aclrevoke',
                                 'test_wellformedness',
                                 'pub_preview',
-                                'prepare_mail', 
+                                'prepare_mail',
                                 'send_as_mail',
                                 @_
                                 );
@@ -131,7 +130,10 @@ sub event_store {
     return 0 unless $self->init_store_object( $ctxt )
                     and defined $ctxt->object();
 
-    my $trytobalance  = $self->param( 'trytobalance' );
+    my $trytobalance;
+    unless ($ctxt->object->attribute_by_key('geekmode') or $self->param('geekmode')) {
+        $trytobalance = $self->param( 'trytobalance' );
+    }
 
     my $body = $self->param( 'body' );
     if ( defined $body and length $body ) {
@@ -187,7 +189,10 @@ sub event_store {
             $self->sendError( $ctxt, __"Document body could not be converted to a well balanced string.", $verbose_msg );
             return 0;
         }
+
+        $object->attribute( geekmode => $self->param('geekmode') ? 1 : 0 );
     }
+
 
     return $self->SUPER::event_store( $ctxt );
 }
@@ -519,7 +524,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

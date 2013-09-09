@@ -76,14 +76,12 @@ sub prepare {
         # the escape body thing cannot be resolved otherwise, since
         # the default should be the filter set(!), we need a flag to
         # remove that filter.
-        my %encargs;
-        $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
 
         if ( not $ctxt->properties->content->escapebody() ) {
             push(
                 @{ $self->{FilterList} },
                 XML::Filter::CharacterChunk->new(
-                    %encargs, TagName => [qw(body)]
+                    TagName => [qw(body)]
                 )
             );
         }
@@ -502,7 +500,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

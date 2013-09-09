@@ -120,10 +120,8 @@ sub event_default {
     my $search = "u:".$ctxt->session->user->name();
 
     # Make sure the utf8 flag is turned on, since it may not depending on the DBD driver version
-    if ( not XIMS::DBENCODING() ) {
-        require Encode;
-        Encode::_utf8_on($search);
-    }
+    require Encode;
+    Encode::_utf8_on($search);
 
     my $qb = $qbdriver->new( { search => $search } );
     if ( defined $qb ) {
@@ -749,7 +747,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

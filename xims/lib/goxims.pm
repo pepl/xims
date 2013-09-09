@@ -91,10 +91,24 @@ sub handler {
 
     # 'content' interface
     if ( "/$interface_type" eq XIMS::CONTENTINTERFACE() ) {
-        #  we have to get the content-object
-        $ctxt->object( get_object( $req ) );
-
-        http_throw('NotFound') unless $ctxt->object( get_object($req) ) and $ctxt->object->id();
+        # try to get the content-object ...
+        unless ( $ctxt->object( get_object($req) ) and $ctxt->object->id() ) {
+            # during login, we silently redirect to the user page, if the
+            # requested object does not exist. (e.g. due to a stale bookmark,
+            # etc.)
+            # XXX Once we start support for CAS, we should move this whole
+            # logic out (again) into something like a
+            # Plack::Middleware::XIMS::Auth::Form.
+            if ($req->method eq 'POST' and $req->param('dologin') == 1) {
+                # Raise no exeption here, as it might bypass
+                # Plack::Middleware::XIMS::Auth.
+                return [302, ['Location' => XIMS::GOXIMS . XIMS::PERSONALINTERFACE()], []];
+            }
+            else {
+                # otherwise it's a plain 404.
+                http_throw('NotFound');
+            }
+        }
 
         my $ot_fullname = $ctxt->object->object_type->fullname();
 
@@ -407,7 +421,7 @@ PROPPATCH?
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

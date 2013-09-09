@@ -94,7 +94,7 @@ sub handle_data {
     my $fragment = $self->{Object}->body();
     my $parser   = XML::LibXML->new;
     my $frag;
-    eval { $frag = $parser->parse_xml_chunk($fragment); };
+    eval { $frag = $parser->parse_balanced_chunk($fragment); };
     unless ( defined $frag ) {
         XIMS::Debug( 3, "no valid body fragment found" );
         return;
@@ -194,7 +194,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

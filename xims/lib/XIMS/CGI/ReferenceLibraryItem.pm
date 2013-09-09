@@ -141,7 +141,7 @@ sub event_store {
             return 0
         }
         my $importer = XIMS::Importer::Object::ReferenceLibraryItem->new( User => $ctxt->session->user(), Parent => $ctxt->parent() );
-        my $identifier = XIMS::trim( XIMS::decode( $self->param( 'identifier' ) ) );
+        my $identifier = XIMS::trim( $self->param( 'identifier' ) );
         if ( defined $identifier and length $identifier and not $importer->check_duplicate_identifier( $identifier ) ) {
             XIMS::Debug( 3, "Reference with the same identifier already exists." );
             $self->sendError( $ctxt , __"Reference with the same identifier already exists." );
@@ -262,7 +262,7 @@ sub update_properties {
     foreach my $property ( $ctxt->object->property_list() ) {
         my $value = $self->param( $property->name() );
         next unless defined $value;
-        $value = XIMS::trim( XIMS::decode( $value ) );
+        $value = XIMS::trim( $value );
 
         my $reflibpropval = XIMS::RefLibReferencePropertyValue->new( property_id => $property->id(), reference_id => $reference->id() );
         if ( defined $reflibpropval ) {
@@ -584,7 +584,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

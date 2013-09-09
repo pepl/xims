@@ -682,7 +682,7 @@ $(document).ready(function(){
 /* IE special polyfills*/
 if (typeof String.prototype.contains === 'undefined') { String.prototype.contains = function(it) { return this.indexOf(it) != -1; }; }
 
-/*  Copyright Mihai Bazon, 2002-2005  |  www.bazon.net/mishoo
+/*  Copyright Mihai Bazon, 2002-2013  |  www.bazon.net/mishoo
  * -----------------------------------------------------------
  *
  * The DHTML Calendar, version 1.0 "It is happening again"

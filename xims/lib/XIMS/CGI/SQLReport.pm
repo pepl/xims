@@ -208,7 +208,7 @@ sub event_plain {
             '-charset'             => 'UTF-8',
             '-type'                => $df->mime_type,
         ),
-        Encode::encode( 'UTF-8', $ctxt->object->body() );
+        Encode::encode( 'UTF-8', $ctxt->object->body() )
     );
     $self->skipSerialization(1);
 
@@ -636,7 +636,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

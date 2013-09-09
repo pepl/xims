@@ -1016,7 +1016,7 @@ INSERT INTO ci_documents ( id, parent_id, object_type_id, data_format_id, depart
 INSERT INTO ci_content ( id, document_id, title, language_id, last_modified_by_id, owned_by_id, created_by_id, body )
 	VALUES (nextval('ci_content_id_seq'), 27, 'sdocbook_default.xsl', 2, 2, 2, 2, '<?xml version="1.0" encoding="UTF-8"?>
 <!--
-# Copyright (c) 2002-2011 The XIMS Project.
+# Copyright (c) 2002-2013 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: sdocbook_default.xsl 1442 2006-03-26 18:51:16Z pepl $
@@ -2285,7 +2285,7 @@ INSERT INTO ci_content ( id, document_id, title, language_id, last_modified_by_i
 </xsl:template>
 
 <xsl:template name="copyfooter">
-    © 2002-2011 <a href="http://xims.info/">The XIMS Project</a>
+    © 2002-2013 <a href="http://xims.info/">The XIMS Project</a>
 </xsl:template>
 
 <xsl:template name="powerdbyfooter">
