@@ -518,7 +518,8 @@ sub clean_location {
         ':'  => ''
     );
 
-    my $badchars = join '', keys %escapes;
+    my $badchars = join( '', sort(keys %escapes));
+    warn "([$badchars])";
     $location =~ s/
                     ([$badchars])     # more flexible :)
                   /
