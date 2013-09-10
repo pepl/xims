@@ -342,6 +342,7 @@
 <YouAreIn>Sie befinden sich in: </YouAreIn>
 <Menu>Menu</Menu>
 <Editor>Editor</Editor>
+<noCleanup>vermeidet Codebereinigung für dieses Dokument</noCleanup>
 <RSSFeed>RSS-Feed</RSSFeed>
 <UnzipContents>Inhalte entpacken</UnzipContents>
 <OverwriteUnzip>Überschreibe vorhandene Dateien beim entpacken</OverwriteUnzip>
