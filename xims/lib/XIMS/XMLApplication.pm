@@ -83,7 +83,7 @@ sub registerEvents   { return (); }
 sub getDOM           { return undef; }
 sub requestDOM       { return undef; }  # old style use getDOM!
 
-sub getStylesheetString { return ""; }     # return a XSL String
+#sub getStylesheetString { return ""; }     # return a XSL String
 sub getStylesheet       { return ""; }     # returns either name of a stylesheetfile or the xsl DOM
 sub selectStylesheet    { return ""; }     # old style getStylesheet
 
@@ -253,18 +253,15 @@ sub run {
         }
     }
 
-    my $res;
     if ( $sid >= 0
          and defined $self->{RES}
          and         $self->{RES}->isa('Plack::Response') ) {
 
-        $res = delete $self->{RES};
+        return $self->{RES}->finalize;
     }
     else {
-        $res = $self->panic($sid, $ctxt);
+        return $self->panic($sid, $ctxt)->finalize();
     }
-
-    return $res->finalize();
 }
 
 sub serialization {
@@ -280,18 +277,7 @@ sub serialization {
 
     my %header = $self->setHttpHeader( $ctxt );
 
-    my $xml_doc = $self->getDOM( $ctxt );
-    if ( not defined $xml_doc ) {
-        XIMS::Debug( 6, "use old style interface");
-        $xml_doc = $self->requestDOM( $ctxt );
-    }
-    # if still no document is available
-    if ( not defined $xml_doc ) {
-        XIMS::Debug( 6, "no DOM defined; use empty DOM" );
-        $xml_doc = XML::LibXML::Document->new;
-        # the following line is to keep xpath.c quiet!
-        $xml_doc->setDocumentElement( $xml_doc->createElement( "dummy" ) );
-    }
+    my $xml_doc = $self->getDOM( $ctxt ) || XML::LibXML::Document->new->createElement( "dummy" ); ;
 
     if( defined $self->passthru() && $self->passthru() == 1 ) {
         # this is a useful feature for DOM debugging
@@ -304,77 +290,67 @@ sub serialization {
         return 0;
     }
 
-    my $stylesheet = $self->getStylesheet( $ctxt );
+#    my $stylesheet = $self->getStylesheet( $ctxt ); #
 
     my ( $xsl_dom, $style, $res );
     my $parser = XML::LibXML->new();
     my $xslt   = XML::LibXSLT->new();
 
-    if ( ref( $stylesheet ) ) {
-        XIMS::Debug( 5, "stylesheet is reference"  );
-        $xsl_dom = $stylesheet;
-    }
-    elsif ( -f $stylesheet && -r $stylesheet ) {
-        XIMS::Debug( 5, "filename is $stylesheet" );
-        eval {
-            $xsl_dom  = $parser->parse_file( $stylesheet );
-        };
-        if ( $@ ) {
-            XIMS::Debug( 3, "Corrupted Stylesheet:\n broken XML\n". $@ );
-            $self->setPanicMsg( "Corrupted document:\n broken XML\n". $@ );
-            return -2;
-        }
-    }
-    else {
-        # first test the new style interface
-        my $xslstring = $self->getStylesheetString( $ctxt );
-        if ( length $xslstring ) {
-            XIMS::Debug( 5, "stylesheet is xml string"  );
-            eval { $xsl_dom = $parser->parse_string( $xslstring ); };
-            if ( $@ || not defined $xsl_dom ) {
-                # the parse failed !!!
-                XIMS::Debug( 3, "Corrupted Stylesheet String:\n". $@ ."\n" );
-                $self->setPanicMsg( "Corrupted Stylesheet String:\n". $@ );
-                return -2;
+    # if ( ref( $stylesheet ) ) {
+    #     XIMS::Debug( 1, "stylesheet is reference"  );
+    #     $xsl_dom = $stylesheet;
+    # }
+    # elsif ( -f $stylesheet && -r $stylesheet ) {
+    #     XIMS::Debug( 1, "filename is $stylesheet" );
+       
+    #     eval {
+    #         $xsl_dom = $XIMS::_STYLE_CACHE_{$stylesheet} ||= $parser->parse_file( $stylesheet );
+            
+    #     };
+    #     if ( $@ ) {
+    #         XIMS::Debug( 3, "Corrupted Stylesheet:\n broken XML\n". $@ );
+    #         HTTP::Exception->throw(500, message => "Internal Server Error.\n\nCorrupted Stylesheet:\n broken XML\n". $@  );
+    #     }
+    #     use Data::Dumper;
+    #     print Dumper( %XIMS::_STYLE_CACHE_ );
+    # }
+    # else {
+    my $stylesheet = $self->selectStylesheet( $ctxt );
+    
+    # if ( ref( $stylesheet ) ) {
+    #     XIMS::Debug( 5, "stylesheet is reference"  );
+    #     $xsl_dom = $stylesheet;
+    # }
+
+    #use Data::Dumper;
+    #warn Dumper( \%XIMS::_STYLE_CACHE_ );
+
+    unless ($style = $XIMS::_STYLE_CACHE_{$stylesheet}) {
+        if ( -f $stylesheet && -r $stylesheet ) {
+            XIMS::Debug( 5, "filename is $stylesheet" );
+            eval {
+                $xsl_dom  = $parser->parse_file( $stylesheet );
+            };
+            if ( $@ ) {
+                XIMS::Debug( 3, "Corrupted Stylesheet:\n broken XML\n". $@ );
+                HTTP::Exception->throw(500, message => "Internal Server Error.\n\nCorrupted document:\n broken XML\n". $@  );
             }
         }
         else {
-            # now test old style interface
-            # will be removed with the next major release
-
-            XIMS::Debug( 5, "old style interface to select the stylesheet"  );
-            $stylesheet = $self->selectStylesheet( $ctxt );
-            if ( ref( $stylesheet ) ) {
-                XIMS::Debug( 5, "stylesheet is reference"  );
-                $xsl_dom = $stylesheet;
-            }
-            elsif ( -f $stylesheet && -r $stylesheet ) {
-                XIMS::Debug( 5, "filename is $stylesheet" );
-                eval {
-                    $xsl_dom  = $parser->parse_file( $stylesheet );
-                };
-                if ( $@ ) {
-                    XIMS::Debug( 3, "Corrupted Stylesheet:\n broken XML\n". $@ );
-                    $self->setPanicMsg( "Corrupted document:\n broken XML\n". $@ );
-                    return -2;
-                }
-            }
-            else {
-                XIMS::Debug( 2 , "panic stylesheet file $stylesheet does not exist" );
-                $self->setPanicMsg( "$stylesheet" );
-                return length $stylesheet ? -2 : -1 ;
-            }
+            XIMS::Debug( 2 , "panic stylesheet file $stylesheet does not exist" );
+            $self->setPanicMsg( "$stylesheet" );
+            HTTP::Exception->throw(500, message => "Internal Server Error.\n\nStylesheet file $stylesheet does not exist". $@  );
+        }
+        eval {
+            $style =  $XIMS::_STYLE_CACHE_{$stylesheet} =  $xslt->parse_stylesheet( $xsl_dom );
+        };
+        if( $@ ) {
+            XIMS::Debug( 3, "Corrupted Stylesheet:\n". $@ ."\n" );
+            HTTP::Exception->throw(500, message => "Internal Server Error.\n\nCorrupted Stylesheet:\n". $@  );
         }
     }
 
-    eval {
-        $style = $xslt->parse_stylesheet( $xsl_dom );
-    };
-    if( $@ ) {
-        XIMS::Debug( 3, "Corrupted Stylesheet:\n". $@ ."\n" );
-        $self->setPanicMsg( "Corrupted Stylesheet:\n". $@ );
-        return -2;
-    }
+    #warn Dumper( \%XIMS::_STYLE_CACHE_ );
 
     my %xslparam = $self->getXSLParameter( $ctxt );
     eval {
