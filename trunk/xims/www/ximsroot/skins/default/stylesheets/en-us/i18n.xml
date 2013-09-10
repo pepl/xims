@@ -360,6 +360,7 @@
 <YouAreIn>You are in: </YouAreIn>
 <Menu>Menu</Menu>
 <Editor>Editor</Editor>
+<noCleanup>avoids code cleaning in this document</noCleanup>
 <RSSFeed>RSS Feed</RSSFeed>
 <UnzipContents>Unzip Contents</UnzipContents>
 <OverwriteUnzip>Overwrite existing objects when unzipping</OverwriteUnzip>
