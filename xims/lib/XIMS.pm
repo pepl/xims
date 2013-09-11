@@ -89,6 +89,7 @@ BEGIN {
         }
     }
 
+    my %STYLE_CACHE;
     ## use critic
 
 }
