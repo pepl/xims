@@ -63,12 +63,24 @@ sub event_default {
     return 0 if $self->SUPER::event_default( $ctxt );
 
     $self->skipSerialization(1);
-    $self->{RES} = $self->{REQ}->new_response(
-        $self->psgi_header(
-            -type => $ctxt->object->data_format->mime_type()
-        ),
-        $ctxt->object->body()
-    );
+
+    my $mtime = $ctxt->object->mtime();
+
+    # Conditional requests for XIMS::File and derived objects. This pays off
+    # as these are often embedded in other pages -- think of images -- and do
+    # not show UI controls in event_default.
+    if ( $mtime eq _value($self->{REQ}->env->{HTTP_IF_MODIFIED_SINCE} ) ) {
+        $self->{RES} = $self->{REQ}->new_response(304);
+    }
+    else {
+        $self->{RES} = $self->{REQ}->new_response(
+            $self->psgi_header(
+                -last_modified => $mtime,
+                -type => $ctxt->object->data_format->mime_type()
+            ),
+            $ctxt->object->body()
+        );
+    }
     return 0;
 }
 
@@ -281,8 +293,13 @@ sub import_from_zip {
 
 sub body_ref_objects {return ();}
 
-1;
-
+# from Plack::Middleware::ConditionalGET.
+sub _value {
+    my $str = shift;
+    # IE sends wrong formatted value(i.e. "Thu, 03 Dec 2009 01:46:32 GMT; length=17936")
+    $str =~ s/;.*$//;
+    return $str;
+}
 
 1;
 

@@ -23,6 +23,8 @@ package XIMS::File;
 
 use common::sense;
 use parent qw( XIMS::Object );
+use Time::Piece;
+use POSIX qw(setlocale LC_TIME);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -34,6 +36,30 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 =cut
 
 sub content_field { return 'binfile';}
+
+=head2 mtime()
+
+Returns $self->last_modification_timestamp in RFC 1123 format.
+
+=cut
+
+sub mtime {
+    my $self    = shift;
+
+    my $mtime = Time::Piece->strptime($self->last_modification_timestamp , "%Y-%m-%d %H:%M:%S");
+
+    # TZ correction
+    $mtime -= localtime->tzoffset;
+
+    # Locale-fu :-/
+    my $olc = setlocale( LC_TIME );
+    setlocale( LC_TIME, 'C' );
+    my $rv = $mtime->strftime("%a, %d %b %Y %H:%M:%S GMT");
+    setlocale( LC_TIME, $olc );
+
+    return $rv;
+}
+
 
 
 
