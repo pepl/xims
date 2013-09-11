@@ -417,7 +417,13 @@
 					<xsl:value-of select="$i18n/l/Location"/>
 				</label>
 			</div>
-			<input type="text" name="name" size="60" value="{location}" id="input-location">
+			<input type="text" 
+                               name="name" 
+                               size="60"
+                               value="{location}" 
+                               id="input-location"
+                               required="" 
+                               pattern="[-_A-Za-z0-9.]+">
 				<xsl:choose>
 					<!--make location-field readonly if object published or object is a newsletter-->
 					<xsl:when test="($publish_gopublic = '0' and published = '1') or ($objecttype = '15')">
@@ -464,9 +470,16 @@
 					<xsl:value-of select="$i18n/l/Location"/>
 				</label>
 			</div>
-			<input type="text" name="name" size="60" class="text" id="input-location">
+			<input type="text"
+                               name="name"
+                               size="60" 
+                               class="text"
+                               id="input-location" 
+                               required=""  
+                               pattern="[-_A-Za-z0-9.]+">
 				<xsl:if test="$testlocation">
-					<xsl:attribute name="onchange">return testlocation();</xsl:attribute>
+					<xsl:attribute name="onchange">return
+					testlocation();</xsl:attribute>
 				</xsl:if>
 				<!--make location-field readonly if object is a newsitem-->
 				<xsl:if test="$objecttype = '15'">
@@ -505,7 +518,8 @@
 					<xsl:value-of select="$i18n/l/Title"/>&#160;*
 				</label>
 			</div>
-			<input type="text" name="title" size="60" class="text" id="input-title" value="{title}">
+			<input type="text" name="title" size="60" class="text"
+                               id="input-title" value="{title}" autofocus="">
 			</input>
 			<xsl:text>&#160;</xsl:text>
 			<!--<a href="javascript:openDocWindow('Title')" class="doclink">
@@ -525,7 +539,12 @@
 					</label>
 				</div>
 				<!-- strip suffix; leave it, if it's a sdbk with lang-extension -->
-				<input type="text" name="name" size="60" id="input-location" value="{location}">
+				<input type="text" 
+                                       name="name" size="60" 
+                                       id="input-location" 
+                                       value="{location}"
+                                       required=""  
+                                       pattern="[-_A-Za-z0-9.]+">
 					<xsl:choose>
 						<xsl:when test="published = '1'">
 							<xsl:attribute name="readonly">readonly</xsl:attribute>
