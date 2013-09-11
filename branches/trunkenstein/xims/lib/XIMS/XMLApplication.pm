@@ -22,8 +22,7 @@ package XIMS::XMLApplication;
 # ################################################################
 use common::sense;
 
-
-use Carp;
+#use Carp;
 #use Data::Dumper;
 
 # ################################################################
@@ -31,27 +30,9 @@ use Carp;
 # ################################################################
 use Plack::Request;
 use XIMS;
-use HTTP::Throwable::Factory qw(http_throw);
 use parent qw( CGI::PSGI );
 
 # ################################################################
-
-$XIMS::XMLApplication::VERSION = "1.1.3";
-
-# ################################################################
-# general configuration
-# ################################################################
-
-# some hardcoded error messages, the application has always, e.g.
-# to tell that a stylesheet is missing
-@XIMS::XMLApplication::panic = (
-          'No Stylesheet specified! ',
-          'Stylesheet is not available! ',
-          'Event not implemented',
-          'Application Error',
-         );
-
-$XIMS::XMLApplication::Quiet = 1 if XIMS::DEBUGLEVEL < 5;
 
 # ################################################################
 # methods
@@ -271,12 +252,8 @@ sub serialization {
     require XML::LibXML;
     require XML::LibXSLT;
 
-    my $self = shift;
-    my $ctxt = shift;
-    my $id;
-
+    my ($self, $ctxt) = @_;
     my %header = $self->setHttpHeader( $ctxt );
-
     my $xml_doc = $self->getDOM( $ctxt ) || XML::LibXML::Document->new->createElement( "dummy" ); ;
 
     if( defined $self->passthru() && $self->passthru() == 1 ) {
@@ -290,141 +267,55 @@ sub serialization {
         return 0;
     }
 
-#    my $stylesheet = $self->getStylesheet( $ctxt ); #
-
-    my ( $xsl_dom, $style, $res );
     my $parser = XML::LibXML->new();
     my $xslt   = XML::LibXSLT->new();
-
-    # if ( ref( $stylesheet ) ) {
-    #     XIMS::Debug( 1, "stylesheet is reference"  );
-    #     $xsl_dom = $stylesheet;
-    # }
-    # elsif ( -f $stylesheet && -r $stylesheet ) {
-    #     XIMS::Debug( 1, "filename is $stylesheet" );
-       
-    #     eval {
-    #         $xsl_dom = $XIMS::_STYLE_CACHE_{$stylesheet} ||= $parser->parse_file( $stylesheet );
-            
-    #     };
-    #     if ( $@ ) {
-    #         XIMS::Debug( 3, "Corrupted Stylesheet:\n broken XML\n". $@ );
-    #         HTTP::Exception->throw(500, message => "Internal Server Error.\n\nCorrupted Stylesheet:\n broken XML\n". $@  );
-    #     }
-    #     use Data::Dumper;
-    #     print Dumper( %XIMS::_STYLE_CACHE_ );
-    # }
-    # else {
-    my $stylesheet = $self->selectStylesheet( $ctxt );
+    my $style;
     
-    # if ( ref( $stylesheet ) ) {
-    #     XIMS::Debug( 5, "stylesheet is reference"  );
-    #     $xsl_dom = $stylesheet;
-    # }
+    my $stylesheet = $self->selectStylesheet( $ctxt );
 
-    #use Data::Dumper;
-    #warn Dumper( \%XIMS::_STYLE_CACHE_ );
-
-    unless ($style = $XIMS::_STYLE_CACHE_{$stylesheet}) {
-        if ( -f $stylesheet && -r $stylesheet ) {
-            XIMS::Debug( 5, "filename is $stylesheet" );
-            eval {
-                $xsl_dom  = $parser->parse_file( $stylesheet );
-            };
-            if ( $@ ) {
-                XIMS::Debug( 3, "Corrupted Stylesheet:\n broken XML\n". $@ );
-                HTTP::Exception->throw(500, message => "Internal Server Error.\n\nCorrupted document:\n broken XML\n". $@  );
-            }
-        }
-        else {
-            XIMS::Debug( 2 , "panic stylesheet file $stylesheet does not exist" );
-            $self->setPanicMsg( "$stylesheet" );
-            HTTP::Exception->throw(500, message => "Internal Server Error.\n\nStylesheet file $stylesheet does not exist". $@  );
-        }
+    # nb: I did away with the previous evalitis, as XML::LibXSLT gives useful error messages.
+    unless ( $style = $XIMS::STYLE_CACHE{$stylesheet} ) {
         eval {
-            $style =  $XIMS::_STYLE_CACHE_{$stylesheet} =  $xslt->parse_stylesheet( $xsl_dom );
+            $style = $xslt->parse_stylesheet( $parser->parse_file( $stylesheet ) );    
         };
         if( $@ ) {
-            XIMS::Debug( 3, "Corrupted Stylesheet:\n". $@ ."\n" );
-            HTTP::Exception->throw(500, message => "Internal Server Error.\n\nCorrupted Stylesheet:\n". $@  );
+            XIMS::Debug( 3, "Stylesheet problem:\n $@ \n" );
+            HTTP::Exception->throw(500, status_message => "Internal Server Error. (Stylesheet problem):\n\n$@"  );
         }
+
+        # cache parsed stylesheet
+        $XIMS::STYLE_CACHE{$stylesheet} = $style;
     }
 
-    #warn Dumper( \%XIMS::_STYLE_CACHE_ );
-
-    my %xslparam = $self->getXSLParameter( $ctxt );
-    eval {
-        # first do special xpath encoding of the parameter
-        if ( %xslparam && scalar( keys %xslparam ) > 0 ) {
-            my @list;
-            foreach my $key ( keys %xslparam ) {
-                # check for multivalued parameters stored in a \0 separated string by CGI.pm :-/
-                if ( $xslparam{$key} =~ /\0/ ) {
-                    push @list, $key, (split("\0",$xslparam{$key}))[-1];
-                }
-                else {
-                        push @list, $key, $xslparam{$key};
-                }
+    # TODO: Plack has a solution for multivalued params
+    my (%xslparam, @xslparams);
+    if ( %xslparam = $self->getXSLParameter( $ctxt ) ) {
+        foreach my $key ( keys %xslparam ) {
+            # check for multivalued parameters stored in a \0 separated string by CGI.pm :-/
+            if ( $xslparam{$key} =~ /\0/ ) {
+                push @xslparams, $key, (split("\0",$xslparam{$key}))[-1];
             }
-            $res = $style->transform( $xml_doc,
-                                      XML::LibXSLT::xpath_to_string(@list)
-                                    );
+            else {
+                push @xslparams, $key, $xslparam{$key};
+            }
         }
-        else {
-            $res = $style->transform( $xml_doc );
-        }
-    };
-    if( $@ ) {
-        XIMS::Debug( 3, "Broken Transformation:\n". $@ ."\n" );
-        $self->setPanicMsg( "Broken Transformation:\n". $@ );
-        return -2;
+        @xslparams = XML::LibXSLT::xpath_to_string(@xslparams);
     }
 
-    # override content-type with the correct content-type
-    # of the style (is this ok?)
-    $header{-type}    = $style->media_type;
-    $header{-charset} = $style->output_encoding;
-
-    XIMS::Debug( 6, "serialization do output" );
-    # we want nice xhtml and since the output_string does not the
-    # right job
-    my $out_string= undef;
-
-    XIMS::Debug( 6, "serialization get output string" );
     eval {
-        $out_string =  $style->output_as_bytes( $res );
-    };
-    XIMS::Debug( 6, "serialization rendered output" );
-    if ( $@ ) {
-        XIMS::Debug( 3, "Corrupted Output:\n", $@ , "\n" );
-        $self->setPanicMsg( "Corrupted Output:\n". $@ );
-        return -2;
-    }
-    else {
+        $header{-type}    = $style->media_type;
+        $header{-charset} = $style->output_encoding;
         $self->{RES} = $self->{REQ}->new_response(
             $self->psgi_header(%header),
-            $out_string
+            $style->output_as_bytes( $style->transform( $xml_doc, @xslparams ) )
         );
-        XIMS::Debug( 6, "output set" );
-        return 0;
+    };
+    if ( $@ ) {
+        XIMS::Debug( 3, "Transformation error:\n $@\n" );
+        HTTP::Exception->throw(500, status_message => "Internal Server Error.\n\nTransformation error:\n\n$@\n" );
     }
-}
-
-sub panic {
-    my ( $self, $pid ) = @_;
-    #return unless $pid < 0;
-    $pid++;
-    $pid*=-1;
-
-    my $str = "\n$pid: $XIMS::XMLApplication::panic[$pid]\n" ;
-    $str .= $self->getPanicMsg();
-
-    XIMS::Debug( 1, "$str" );
-
-    $str = "\n$XIMS::XMLApplication::panic[$pid]\n"  if $XIMS::XMLApplication::Quiet == 1;
-    $str = q() if $XIMS::XMLApplication::Quiet == 2;
-
-    http_throw(InternalServerError => {message => "$str\n"});
+    XIMS::Debug( 6, "output set" );
+    return 0;
 }
 
 1;
