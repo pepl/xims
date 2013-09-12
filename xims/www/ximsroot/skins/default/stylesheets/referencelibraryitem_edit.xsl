@@ -50,8 +50,8 @@
 		var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
 		var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
 	</script>					
-	<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-	<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+	<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:comment></xsl:comment></script>
+	<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:comment></xsl:comment></script>
 
 </xsl:template>
     <!--
