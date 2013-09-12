@@ -274,7 +274,7 @@ sub serialization {
     my $stylesheet = $self->selectStylesheet( $ctxt );
 
     # nb: I did away with the previous evalitis, as XML::LibXSLT gives useful error messages.
-    unless ( $style = $XIMS::STYLE_CACHE{$stylesheet} ) {
+    unless ( XIMS::DEBUGLEVEL > 5 and $style = $XIMS::STYLE_CACHE{$stylesheet} ) {
         eval {
             $style = $xslt->parse_stylesheet( $parser->parse_file( $stylesheet ) );    
         };

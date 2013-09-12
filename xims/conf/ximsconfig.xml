@@ -2,10 +2,13 @@
 <Config>
     <General>
         <!--
-        # Values from 0..6, where 6 is the most verbose.
-        # See
-        # http://xims.info/documentation/developers/xims-developer_s-guide.sdbk#DebuglevelReference
-        # for the "Debuglevel Reference"
+            0   Quiet
+            1 	Fatals (unrecoverable errors)
+            2 	Errors (serious error conditions)
+            3 	Warnings (non-serious error-conditions)
+            4 	Infos (»interesting« events)
+            5 	Program flow and verbose infos, e.g. most method entries and exits
+            6 	Dumps SQL-strings and important values, disables stylesheet caching  	
         -->
         <DebugLevel>2</DebugLevel>
 
