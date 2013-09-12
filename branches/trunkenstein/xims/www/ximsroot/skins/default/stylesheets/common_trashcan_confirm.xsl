@@ -25,7 +25,7 @@
 						<p><xsl:value-of select="$i18n/l/AboutDeletion1"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/AboutDeletion2"/></p>
 						<p><xsl:value-of select="$i18n/l/ClickCancelConf"/></p>
 						<div id="confirm-buttons">
-							<button name="trashcan" type="submit">
+							<button name="trashcan" type="submit" class="button">
 							<xsl:value-of select="$i18n/l/Confirm"/>
 							</button>
 							<input name="id" type="hidden" value="{$id}"/>

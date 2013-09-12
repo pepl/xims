@@ -23,7 +23,7 @@
 					<xsl:when test="not(/document/objectlist)">
 						<p><xsl:value-of select="$i18n/l/NoObjects"/></p>
 						<br/>
-						<button name="default" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+						<button name="default" type="button" class="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 					</xsl:when>
 					<xsl:otherwise>
 					<form action="{$xims_box}{$goxims_content}" method="get">
@@ -33,7 +33,7 @@
 							<p><strong><xsl:value-of select="$i18n/l/WarnNoUndo"/></strong></p>
 						<p><xsl:value-of select="$i18n/l/ClickCancelConf"/></p>
 						<div id="confirm-buttons">
-							<button name="deletemultiple" type="submit">
+							<button name="deletemultiple" type="submit" class="button">
 							<xsl:value-of select="$i18n/l/Confirm"/>
 							</button>
 							<input name="id" type="hidden" value="{@id}"/>
