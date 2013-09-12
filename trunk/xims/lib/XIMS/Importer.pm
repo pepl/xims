@@ -513,9 +513,6 @@ sub clean_location {
         '#'  => '-',
         '|'  => '-',
         '°'  => '-',
-        ','  => '',
-        ';'  => '',
-        ':'  => ''
     );
 
     my $badchars = join( '', sort(keys %escapes));
@@ -524,7 +521,9 @@ sub clean_location {
                   /
                     $escapes{$1}
                   /segxu;    # *coff*
-    return ( not (ref $self and $self->{ArchiveMode}) # sometimes used as a function 
+    $location =~ s/[^-.\w]//sag; # ascii!
+
+    return ( not (ref $self and $self->{ArchiveMode}) # sometimes used as a function
              and XIMS::Config::LowerCaseLocations() )
         ? lc($location)
         : $location;
