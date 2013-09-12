@@ -679,7 +679,7 @@ msgstr ""
 
 #: ../lib/XIMS/CGI/NewsItem.pm:190
 msgid "Setting location failed."
-msgstr "Die Location konnte nicht gesetzt werden."
+msgstr "Der Pfad konnte nicht gesetzt werden."
 
 #: ../lib/XIMS/CGI.pm:113
 msgid "Specify an object type to create an object!"
@@ -710,7 +710,7 @@ msgstr "Das Objekt »{title}« wurde veröffentlicht."
 #: ../lib/XIMS/CGI.pm:1359
 msgid "Failed to clean the location / filename. Please supply a sane filename!"
 msgstr ""
-"Der Versuch, die Location (also den Dateinamen) zu säubern, schlug fehl. "
+"Der Versuch, den Pfad (also den Dateinamen) zu säubern, schlug fehl. "
 "Bitte geben Sie einen brauchbaren Dateinnamen an! (a-z, 1-9, -, .)"
 
 #: ../lib/XIMS/CGI.pm:1380
@@ -723,12 +723,12 @@ msgstr ""
 #, perl-brace-format
 msgid "Location '{location}' already exists in container."
 msgstr ""
-"Ein Objekt mit der Location (Dateiname) »{location}« existiert in diesem "
+"Ein Objekt mit dem Pfad (Dateinamen) »{location}« existiert in diesem "
 "Verzeichnis bereits."
 
 #: ../lib/XIMS/CGI.pm:1429
 msgid "Please supply a valid location!"
-msgstr "Bitte geben Sie eine gültige Location an!"
+msgstr "Bitte geben Sie eine gültigen Pfad an!"
 
 #: ../lib/XIMS/CGI.pm:1838
 #, perl-brace-format
@@ -736,7 +736,7 @@ msgid ""
 "An object with the location '{location}' already exists in container. Please "
 "rename or move that object before undeleting this one."
 msgstr ""
-"Ein Objekt mit der Location (dem Dateinamen) »{location}« existiert in\n"
+"Ein Objekt mit dem Pfad (Dateinamen) »{location}« existiert in\n"
 "diesem Verzeichnis bereits. Bitte verschieben oder benennen Sie jenes Objekt "
 "um, bevor Sie das aktuelle Objekt aus dem Papierkorb zurückholen."
 
@@ -791,7 +791,7 @@ msgstr "Das Ziel ist kein gültiges Verzeichnis."
 #: ../lib/XIMS/CGI.pm:2250
 #, perl-brace-format
 msgid "Location '{location}' already exists in the target container."
-msgstr "Die Location »{location}« existiert bereits im Zielverzeichnis."
+msgstr "Der Pfad »{location}« existiert bereits im Zielverzeichnis."
 
 #: ../lib/XIMS/CGI.pm:2321
 msgid "copy failed!"
