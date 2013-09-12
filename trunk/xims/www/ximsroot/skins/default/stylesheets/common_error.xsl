@@ -35,7 +35,7 @@
               </xsl:if>
               <br/>
             <p>
-            <button type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/Back"/></button>
+            <button type="button" class="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/Back"/></button>
             </p>
             </div>
             <xsl:call-template name="script_bottom"/>
