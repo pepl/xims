@@ -29,7 +29,7 @@
 						<p><strong><xsl:value-of select="$i18n/l/WarnNoUndo"/></strong></p>
 						<p><xsl:value-of select="$i18n/l/ClickCancelConf"/></p>
 						<div id="confirm-buttons">
-							<button name="delete" type="submit"><xsl:value-of select="$i18n/l/Confirm"/></button>
+							<button name="delete" type="submit" class="button"><xsl:value-of select="$i18n/l/Confirm"/></button>
 							<input name="id" type="hidden" value="{$id}"/>
 							&#160;
 							<button type="button" name="default" class="button" onclick="javascript:history.go(-1)">
