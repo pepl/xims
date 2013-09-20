@@ -37,6 +37,7 @@ our $_OBJECT_TYPES_;
 our $_DATA_FORMATS_;
 our $_LANGUAGES_;
 our $_DEBUGLEVEL_;
+our %STYLE_CACHE;
 
 BEGIN {
     $_CONFIG_ = XIMS::Config->new();
@@ -88,8 +89,6 @@ BEGIN {
             return $fullname;
         }
     }
-
-    my %STYLE_CACHE;
     ## use critic
 
 }
