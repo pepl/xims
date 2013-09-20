@@ -18,9 +18,8 @@
 <xsl:param name="style"/>
 -->
 
-<xsl:param name="onepage" select="0"/>
-  <!-- <xsl:param name="pagerowlimit" select="$searchresultrowlimit"/>-->
-  <xsl:param name="pagerowlimit" select="30"/>
+  <xsl:param name="onepage" select="0"/>
+  <xsl:param name="pagerowlimit" select="$searchresultrowlimit"/>
   <xsl:variable name="pagesperpagenav" select="10"/>
   <xsl:variable name="containerview_show" select="/document/context/session/user/userprefs/containerview_show"/>
   <xsl:variable name="totalpages">
@@ -130,7 +129,8 @@
 
 <xsl:template name="pagenav">
     <xsl:param name="totalitems" select="targetchildren/totalobject"/>
-    <xsl:param name="itemsperpage" select="30"/>
+    <!-- <xsl:param name="itemsperpage" select="30"/>-->
+    <xsl:param name="itemsperpage" select="$pagerowlimit"/>
     <xsl:param name="currentpage" >
       <xsl:choose>
         <xsl:when test="not($page) or ($page &lt; 1)">1</xsl:when>

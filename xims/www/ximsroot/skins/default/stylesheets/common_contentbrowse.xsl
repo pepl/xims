@@ -20,7 +20,7 @@
 <xsl:param name="order" />
 <xsl:param name="sb" />
 
-<xsl:param name="pagerowlimit" select="$searchresultrowlimit"/>
+<xsl:param name="pagerowlimit" select="$searchresultrowlimit"/> 
 <xsl:variable name="totalpages">
     <xsl:choose>
       <xsl:when test="$onepage &gt; 0">
@@ -63,7 +63,7 @@
       <xsl:with-param name="totalitems">
         <xsl:value-of  select="/document/context/object/children/@totalobjects"/>
       </xsl:with-param>
-        <xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
+        <xsl:with-param name="itemsperpage" select="$pagerowlimit"/>
         <xsl:with-param name="currentpage" select="$page"/>
         <xsl:with-param name="url" select="$navurl"/>
       </xsl:call-template>
