@@ -64,6 +64,8 @@ sub get_binref {
     return \$contents;
 }
 
+1;
+
 __END__
 
 =head1 DIAGNOSTICS
