@@ -61,6 +61,7 @@ sub get_rootelement {
     return $self->SUPER::get_rootelement( $strref, @_ );
 }
 
+1;
 
 __END__
 
