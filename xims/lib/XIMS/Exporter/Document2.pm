@@ -26,7 +26,6 @@ use common::sense;
 use XIMS::Exporter;
 use parent -norequire, qw( XIMS::Exporter::Document );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 #
 # override here (create, remove, sax filters, ...)

@@ -22,7 +22,6 @@ use parent qw( XIMS::AbstractClass Class::XSAccessor::Compat );
 use Digest::MD5;
 use Time::Piece;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = (
     @{ XIMS::Names::property_interface_names( resource_type() ) },
     qw( error_msg   warning_msg message

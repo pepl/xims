@@ -31,7 +31,6 @@ use parent qw( XIMS::CGI );
 use XIMS::Object;
 use URI;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # #############################################################################
 # GLOBAL SETTINGS

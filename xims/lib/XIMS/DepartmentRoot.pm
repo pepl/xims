@@ -31,7 +31,6 @@ use XIMS::Importer::Object::URLLink;
 
 use XML::LibXML;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

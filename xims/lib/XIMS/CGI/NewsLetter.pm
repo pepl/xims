@@ -24,7 +24,6 @@ package XIMS::CGI::NewsLetter;
 use common::sense;
 use parent qw( XIMS::CGI::Document XIMS::CGI::Mailable );
 
-our ($VERSION) = ( q$Revision: 1947 $ =~ /\s+(\d+)\s*$/ );
 
 # #############################################################################
 # GLOBAL SETTINGS

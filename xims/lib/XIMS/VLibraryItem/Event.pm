@@ -24,7 +24,6 @@ package XIMS::VLibraryItem::Event;
 use common::sense;
 use parent qw( XIMS::VLibraryItem );
 
-our ($VERSION) = ( q$Revision: 1878 $ =~ /\s+(\d+)\s*$/ );
 
 
 

@@ -25,7 +25,6 @@ use common::sense;
 use XIMS::User;
 use Net::LDAP qw(LDAP_SUCCESS);
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 new()
 

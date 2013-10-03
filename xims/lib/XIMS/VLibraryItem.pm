@@ -37,7 +37,6 @@ use XIMS::VLibMeta;
 
 __PACKAGE__->mk_accessors( qw(vlkeywords vlsubjects vlpublications vlauthors) );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # use Data::Dumper;
 

@@ -28,7 +28,6 @@ use XIMS::User;
 
 #use Data::Dumper;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

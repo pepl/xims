@@ -24,7 +24,6 @@ package XIMS::Installer;
 use common::sense;
 use CPAN;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 new()
 

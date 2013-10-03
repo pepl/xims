@@ -25,7 +25,6 @@ use common::sense;
 use parent qw( XIMS::Document );
 use XIMS::Importer::Object;
 
-our ($VERSION) = ( q$Revision: 2183 $ =~ /\s+(\d+)\s*$/ );
 
 =head2 add_image()
 

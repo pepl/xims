@@ -24,7 +24,6 @@ package XIMS::Iterator;
 use common::sense;
 use parent qw( Array::Iterator );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 1;
 

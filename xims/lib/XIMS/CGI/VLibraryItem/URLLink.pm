@@ -26,7 +26,6 @@ use parent qw( XIMS::CGI::VLibraryItem );
 use XIMS::VLibMeta;
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 event_default()
 

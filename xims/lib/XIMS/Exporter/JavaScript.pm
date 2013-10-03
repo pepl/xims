@@ -21,7 +21,6 @@ use common::sense;
 use parent qw( XIMS::Exporter::Text );
 use JavaScript::Minifier::XS qw(minify);
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 create()
 

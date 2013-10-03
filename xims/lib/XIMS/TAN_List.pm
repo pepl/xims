@@ -24,7 +24,6 @@ package XIMS::TAN_List;
 use common::sense;
 use parent qw( XIMS::Text );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

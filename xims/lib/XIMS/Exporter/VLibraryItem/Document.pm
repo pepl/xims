@@ -28,7 +28,6 @@ use XIMS::ObjectType;
 use XIMS::ObjectPriv;
 use XIMS::SAX::Generator::Exporter::VLibraryItem;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 create()
 

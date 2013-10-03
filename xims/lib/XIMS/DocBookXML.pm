@@ -26,7 +26,6 @@ use parent qw( XIMS::Document );
 use XIMS::DataFormat;
 use XML::LibXML;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

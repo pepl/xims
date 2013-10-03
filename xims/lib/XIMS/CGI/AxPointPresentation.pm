@@ -30,7 +30,6 @@ use Cwd 'fastcwd';
 #use Text::Iconv;
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 registerEvents()
 

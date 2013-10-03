@@ -25,7 +25,6 @@ package XIMS::NewsLetter;
 use common::sense;
 use parent qw( XIMS::Document );
 
-our ($VERSION) = ( q$Revision: 1785 $ =~ /\s+(\d+)\s*$/ );
 
 1;
 

@@ -29,7 +29,6 @@ use XIMS::DataProvider;
 use DBIx::Connector;
 
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our %PropertyAttributes = XIMS::Config::DataProvider::DBI::PropertyAttributes();
 our %PropertyRelations = XIMS::Config::DataProvider::DBI::PropertyRelations();
 our %Tables = XIMS::Config::DataProvider::DBI::Tables();

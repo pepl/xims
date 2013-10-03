@@ -25,7 +25,6 @@ package XIMS::Names;
 
 use common::sense;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our %Properties = XIMS::Config::Names::Properties();
 our @ResourceTypes = XIMS::Config::Names::ResourceTypes();
 

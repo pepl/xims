@@ -24,7 +24,6 @@ use XIMS::Bookmark;
 use XIMS::UserPrefs;
 use Digest::MD5 qw( md5_hex );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{ XIMS::Names::property_interface_names( resource_type() ) };
 
 =head2 fields()

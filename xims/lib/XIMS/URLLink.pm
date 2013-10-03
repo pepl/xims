@@ -26,7 +26,6 @@ use parent qw( XIMS::Object );
 use XIMS::DataFormat;
 use LWP::UserAgent;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2    XIMS::URLLink->new( %args )
 

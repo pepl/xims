@@ -25,7 +25,6 @@ use common::sense;
 use parent qw(XIMS::Importer::FileSystem::XML XIMS::Importer::Object::VLibraryItem::DocBookXML);
 use File::Basename;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub handle_data {
     XIMS::Debug( 5, "called" );

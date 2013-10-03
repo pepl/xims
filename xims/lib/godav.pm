@@ -35,7 +35,6 @@ use HTTP::Exception;
 #use Data::Dumper::Concise;
 use HTTP::Date;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 handler()
 
@@ -74,7 +73,7 @@ sub handler {
 
     push $resp->[1],
         (
-        'X-Server'      => 'XIMS::DAVServer ' . $VERSION,
+        'X-Server'      => "XIMS::DAVServer $XIMS::VERSION",
         'MS-Author-Via' => 'DAV'
         );
     ##use critic

@@ -26,7 +26,6 @@ use parent qw( XIMS::Importer::Object );
 use XIMS::Object;
 use XML::LibXML;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 get_rootelement()
 
