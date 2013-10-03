@@ -80,6 +80,8 @@ else {
     my $target = XIMS::Object->new( path => $targetparentpath, marked_deleted => 0, User => $user );
     die "Could not find target container '$targetparentpath'.\n" unless defined $target;
 
+    die "You cannot move an object into itself. (e.g. `-f /f1 -t /f1/f2`)\n" if $target->id == $object->id;
+
     $privmask = $user->object_privmask( $target );
     die "Access Denied. You do not have privileges to move '".$args{f}."' to '".$args{t}."'\n" unless $privmask and ($privmask & XIMS::Privileges::CREATE());
 
