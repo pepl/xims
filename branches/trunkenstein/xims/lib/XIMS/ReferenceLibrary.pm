@@ -28,7 +28,6 @@ use XIMS::RefLibReferenceType;
 use XIMS::VLibAuthor;
 use XIMS::RefLibSerial;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

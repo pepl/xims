@@ -77,7 +77,6 @@ use IO::File;
 
 use XIMS::Object; # just to be failsafe
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

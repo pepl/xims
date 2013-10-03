@@ -24,7 +24,6 @@ package XIMS::SymbolicLink;
 use common::sense;
 use parent qw( XIMS::Object );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 =head2    my $target = $symlink->target( [ $object ] );

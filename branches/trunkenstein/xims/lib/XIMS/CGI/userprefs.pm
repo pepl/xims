@@ -29,7 +29,6 @@ use XIMS::UserPrefs;
 use XIMS::CGI::defaultbookmark;
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision: 2232 $ =~ /\s+(\d+)\s*$/ );
 
 =head2 registerEvents()
 

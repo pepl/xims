@@ -27,7 +27,6 @@ use parent qw(XIMS::CGI::Folder);
 use Time::Piece;
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 registerEvents()
 

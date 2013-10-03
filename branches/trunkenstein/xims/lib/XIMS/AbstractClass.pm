@@ -24,7 +24,6 @@ package XIMS::AbstractClass;
 use common::sense;
 use XIMS;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 data()
 

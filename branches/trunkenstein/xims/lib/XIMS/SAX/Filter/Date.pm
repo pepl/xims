@@ -20,7 +20,6 @@ package XIMS::SAX::Filter::Date;
 use common::sense;
 use parent qw( XML::SAX::Base );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 new()
 

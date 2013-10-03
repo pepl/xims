@@ -31,7 +31,6 @@ use Text::Iconv;
 use XML::LibXSLT;
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # (de)register events here
 

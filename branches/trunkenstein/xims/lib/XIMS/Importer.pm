@@ -30,7 +30,6 @@ use XIMS::Folder;
 use XIMS::DataFormat;
 use XIMS::ObjectType;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2    $importer = XIMS::Importer->new( %param );
 

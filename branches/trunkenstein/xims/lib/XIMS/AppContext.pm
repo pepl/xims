@@ -26,7 +26,6 @@ use Carp;
 
 use parent qw( XIMS::AbstractClass Class::XSAccessor::Compat );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = (
     'properties',
     'user', # used for user-management

@@ -26,7 +26,6 @@ use parent qw( XIMS::Importer::FileSystem );
 use XIMS::Object;
 use File::Basename;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub handle_data {
     XIMS::Debug( 5, "called" );

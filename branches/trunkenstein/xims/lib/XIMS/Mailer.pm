@@ -35,7 +35,6 @@ use parent qw(MIME::Lite::HTML);
 
 use HTTP::Request;
 
-our ($VERSION) = ( q$Revision:  $ =~ /\s+(\d+)\s*$/ );
 
 =head2 new()
 

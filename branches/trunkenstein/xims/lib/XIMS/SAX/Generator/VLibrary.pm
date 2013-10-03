@@ -26,7 +26,6 @@ package XIMS::SAX::Generator::VLibrary;
 use common::sense;
 use parent qw(XIMS::SAX::Generator::Content);
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 prepare
 

@@ -30,7 +30,6 @@ use XML::LibXML::Iterator;
 use XIMS::Object;
 use Encode;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 handle_data()
 

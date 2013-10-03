@@ -26,7 +26,6 @@ use parent qw( XIMS::CGI );
 use XIMS::Portlet;
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # #############################################################################
 # GLOBAL SETTINGS

@@ -26,7 +26,6 @@ use parent qw( XIMS::Object );
 use XIMS::DataFormat;
 use XIMS::Entities;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

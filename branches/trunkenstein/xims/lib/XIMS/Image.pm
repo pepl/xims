@@ -24,7 +24,6 @@ package XIMS::Image;
 use common::sense;
 use parent qw( XIMS::File );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 1;
 

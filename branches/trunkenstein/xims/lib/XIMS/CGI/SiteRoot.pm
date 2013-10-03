@@ -24,7 +24,6 @@ package XIMS::CGI::SiteRoot;
 use common::sense;
 use parent qw( XIMS::CGI::DepartmentRoot );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # #############################################################################
 # RUNTIME EVENTS

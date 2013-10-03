@@ -31,7 +31,6 @@ use XIMS::RefLibReferencePropertyValue;
 use XIMS::RefLibReference;
 use XIMS::RefLibAuthorMap;
 use XIMS::VLibAuthor;
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 __PACKAGE__->mk_accessors( qw(vlauthors) );
 

@@ -42,7 +42,6 @@ use XML::LibXML;            # for balanced_string(), balance_string()
 use IO::File;               # for balanced_string()
 use Carp;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # the binfile field is no longer available via the method interface, but is
 # set internally in the object's HASH to allow binary object types to alias

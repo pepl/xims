@@ -27,7 +27,6 @@ use XIMS::DataProvider;
 use XML::Filter::CharacterChunk;
 use XIMS::SAX::Filter::ContentObjectPropertyResolver;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

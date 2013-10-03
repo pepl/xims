@@ -24,7 +24,6 @@ package XIMS::Auth::Public;
 use common::sense;
 use XIMS::User;
 
-our ($VERSION) = ( q$Revision: 2626 $ =~ /\s+(\d+)\s*$/ );
 
 =head2 new()
 

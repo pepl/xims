@@ -24,7 +24,6 @@ package XIMS::Importer::FileSystem::CSS;
 use common::sense;
 use parent qw( XIMS::Importer::FileSystem::Text );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 1;
 

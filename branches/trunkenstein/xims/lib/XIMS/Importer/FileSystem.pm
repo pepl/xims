@@ -30,7 +30,6 @@ use XIMS::Object;
 use File::Basename;
 use XML::LibXML;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # Global hash for parsed files memoization
 my %parsed_files;
