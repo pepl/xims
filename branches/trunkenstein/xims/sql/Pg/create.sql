@@ -178,6 +178,10 @@ COMMENT ON COLUMN ci_documents.position
         IS 'for positioning in the parent_id container-context'
 ;
 
+\echo Adding check constraint parent_id != id on ci_documents
+ALTER TABLE ci_documents 
+      ADD CONSTRAINT DOC_PARENT_ISNT_DOC 
+      CHECK (parent_id != id);
 
 \echo creating indices on ci_documents
 -- found some queries with 'in( parent_id,  )' conditions
