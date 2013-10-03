@@ -121,6 +121,9 @@ sub event_store {
         return 1;
     }
 }
+
+1;
+
 __END__
 
 =head1 DIAGNOSTICS
