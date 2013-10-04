@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Iterator -- A .... doing bla, bla, bla. (short)
+XIMS::Iterator
 
 =head1 VERSION
 

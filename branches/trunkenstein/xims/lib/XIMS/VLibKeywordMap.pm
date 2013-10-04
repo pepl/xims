@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::VLibKeywordMap -- A .... doing bla, bla, bla. (short)
+XIMS::VLibKeywordMap
 
 =head1 VERSION
 

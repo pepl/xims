@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Questionnaire -- A .... doing bla, bla, bla. (short)
+XIMS::Questionnaire
 
 =head1 VERSION
 

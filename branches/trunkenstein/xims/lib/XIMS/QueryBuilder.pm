@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::QueryBuilder -- A .... doing bla, bla, bla. (short)
+XIMS::QueryBuilder
 
 =head1 VERSION
 

@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::VLibPublicationMap -- A .... doing bla, bla, bla. (short)
+XIMS::VLibPublicationMap
 
 =head1 VERSION
 

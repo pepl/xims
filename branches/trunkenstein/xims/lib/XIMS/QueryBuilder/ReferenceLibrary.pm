@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::QueryBuilder::ReferenceLibrary -- A .... doing bla, bla, bla. (short)
+XIMS::QueryBuilder::ReferenceLibrary
 
 =head1 VERSION
 

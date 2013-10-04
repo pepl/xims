@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::MimeType -- A .... doing bla, bla, bla. (short)
+XIMS::MimeType
 
 =head1 VERSION
 

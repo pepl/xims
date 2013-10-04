@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::NewsItem -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::NewsItem
 
 =head1 VERSION
 

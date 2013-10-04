@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Filter::PortletCollector -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Filter::PortletCollector
 
 =head1 VERSION
 

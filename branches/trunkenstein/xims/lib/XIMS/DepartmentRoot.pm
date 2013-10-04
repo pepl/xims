@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::DepartmentRoot -- A .... doing bla, bla, bla. (short)
+XIMS::DepartmentRoot
 
 =head1 VERSION
 

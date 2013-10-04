@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::RefLibReferencePropertyMap -- A .... doing bla, bla, bla. (short)
+XIMS::RefLibReferencePropertyMap
 
 =head1 VERSION
 
