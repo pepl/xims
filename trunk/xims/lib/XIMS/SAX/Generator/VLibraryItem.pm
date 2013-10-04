@@ -24,7 +24,6 @@ package XIMS::SAX::Generator::VLibraryItem;
 use common::sense;
 use parent qw(XIMS::SAX::Generator::Content);
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # code shared between XIMS::SAX::Generator::VLibraryItem
 # and XIMS::SAX::Generator::Exporter::VLibraryItem

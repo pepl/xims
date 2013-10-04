@@ -24,7 +24,6 @@ package XIMS::Exporter::VLibraryItem::Event;
 use common::sense;
 use parent qw( XIMS::Exporter::VLibraryItem::Document );
 
-our ($VERSION) = ( q$Revision: 1965 $ =~ /\s+(\d+)\s*$/ );
 
 1;
 

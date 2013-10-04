@@ -25,7 +25,6 @@ use common::sense;
 use parent qw( XIMS::Iterator );
 use XIMS::Object;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

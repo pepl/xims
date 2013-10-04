@@ -25,7 +25,6 @@ package XIMS::Importer::FileSystem::Document2;
 use common::sense;
 use parent -norequire, qw( XIMS::Importer::Document );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
     
 #
 # override here (handle_data, ...)

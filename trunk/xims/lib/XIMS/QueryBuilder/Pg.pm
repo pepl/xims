@@ -27,7 +27,6 @@ use parent qw( XIMS::QueryBuilder );
 use XIMS::User;
 use Time::Piece;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

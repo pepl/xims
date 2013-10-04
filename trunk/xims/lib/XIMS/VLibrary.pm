@@ -28,7 +28,6 @@ use XIMS::VLibraryItem;
 use XIMS::VLibKeyword;
 use XIMS::VLibSubject;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2    XIMS::VLibrary->new( %args )
 

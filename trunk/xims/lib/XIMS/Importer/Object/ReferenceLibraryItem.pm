@@ -25,7 +25,6 @@ use common::sense;
 use parent qw( XIMS::Importer::Object );
 use XIMS::RefLibReferenceProperty;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 check_duplicate_identifier()
 

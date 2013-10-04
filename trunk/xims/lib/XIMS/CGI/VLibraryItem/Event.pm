@@ -25,7 +25,6 @@ package XIMS::CGI::VLibraryItem::Event;
 use common::sense;
 use parent qw( XIMS::CGI::VLibraryItem::Document );
 
-our ($VERSION) = ( q$Revision: 1957 $ =~ /\s+(\d+)\s*$/ );
 
 1;
 

@@ -33,7 +33,6 @@ use XIMS::Importer::Object::ReferenceLibraryItem;
 use Encode;
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 registerEvents()
 

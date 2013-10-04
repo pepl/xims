@@ -26,7 +26,6 @@ use common::sense;
 use parent qw( XIMS::SAX::Filter::DataCollector );
 use XIMS::User;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 new()
 

@@ -24,7 +24,6 @@ package XIMS::Annotation;
 use common::sense;
 use parent qw( XIMS::Document );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 1;
 

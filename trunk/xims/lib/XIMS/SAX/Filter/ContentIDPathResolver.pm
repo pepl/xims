@@ -27,7 +27,6 @@ use common::sense;
 use parent qw( XML::SAX::Base );
 use XIMS::Object;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 new()
 

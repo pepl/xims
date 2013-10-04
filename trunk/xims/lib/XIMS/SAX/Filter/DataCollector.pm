@@ -28,7 +28,6 @@ use parent qw( XML::Filter::GenericChunk );
 use XML::Generator::PerlData;
 use XML::LibXML;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

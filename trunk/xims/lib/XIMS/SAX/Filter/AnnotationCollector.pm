@@ -25,7 +25,6 @@ use common::sense;
 use parent qw( XML::SAX::Base );
 use XML::Generator::PerlData;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub end_element {
     my $self = shift;

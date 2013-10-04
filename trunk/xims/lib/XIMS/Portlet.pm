@@ -25,7 +25,6 @@ package XIMS::Portlet;
 use common::sense;
 use parent qw( XIMS::SymbolicLink );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =pod
 

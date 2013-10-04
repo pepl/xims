@@ -77,7 +77,6 @@ use IO::File;
 
 use XIMS::Object; # just to be failsafe
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 
@@ -1148,27 +1147,23 @@ sub transform_dom {
 
     my $stylesheet = $self->{Stylesheet};
     if ( defined $stylesheet and -f $stylesheet and -r $stylesheet ) {
-        my $xsl_dom;
         my $style;
         my $parser = XML::LibXML->new();
         my $xslt   = XML::LibXSLT->new();
 
         XIMS::Debug( 4, "filename is $stylesheet" );
-        eval {
-            $xsl_dom  = $parser->parse_file( $stylesheet );
-        };
-        if ( $@ ) {
-            XIMS::Debug( 3, "Could not parse stylesheet file: ". $@ );
-            return;
-        }
 
-        eval {
-            $style = $xslt->parse_stylesheet( $xsl_dom );
-            # $style = $xslt->parse_stylesheet_file( $file );
-        };
-        if( $@ ) {
-            XIMS::Debug( 2, "Error in Stylesheet: ". $@ );
-            return;
+        unless ( XIMS::DEBUGLEVEL < 6 and $style = $XIMS::STYLE_CACHE{$stylesheet} ) {
+            eval {
+                $style = $xslt->parse_stylesheet( $parser->parse_file( $stylesheet ) );
+            };
+            if( $@ ) {
+                XIMS::Debug( 3, "Stylesheet problem:\n $@ \n" );
+                return;
+            }
+
+            # cache parsed stylesheet
+            $XIMS::STYLE_CACHE{$stylesheet} = $style;
         }
 
         my $transformed_dom;

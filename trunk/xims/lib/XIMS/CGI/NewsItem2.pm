@@ -29,7 +29,6 @@ use XIMS::ObjectType;
 use Text::Iconv;
 use Locale::TextDomain;
 
-our ($VERSION) = ( q$Revision: 2232 $ =~ /\s+(\d+)\s*$/ );
 
 =head2 event_default()
 

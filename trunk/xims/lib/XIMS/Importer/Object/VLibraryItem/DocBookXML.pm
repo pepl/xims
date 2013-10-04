@@ -29,7 +29,6 @@ use XIMS::VLibSubject;
 use XIMS::VLibPublication;
 use XIMS::VLibMeta;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 import()
 

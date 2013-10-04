@@ -24,7 +24,6 @@ package XIMS::VLibAuthor;
 use common::sense;
 use parent qw( XIMS::AbstractClass Class::XSAccessor::Compat );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
 
 our @compound_lastnames = (

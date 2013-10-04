@@ -38,7 +38,6 @@ use XIMS::Exporter;
 use Digest::MD5 qw( md5_hex );
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 registerEvents()
 

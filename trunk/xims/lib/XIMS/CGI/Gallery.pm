@@ -25,7 +25,6 @@ use common::sense;
 use parent qw( XIMS::CGI::Folder );
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision: 2239 $ =~ /\s+(\d+)\s*$/ );
 
 # #############################################################################
 # GLOBAL SETTINGS

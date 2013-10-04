@@ -30,7 +30,7 @@ use Encode ();
 use Carp;
 
 our $AUTOLOAD;
-our $VERSION = 1.2;
+our $VERSION = 2.99_1;
 our $_CONFIG_;
 our $_DATAPROVIDER_;
 our $_OBJECT_TYPES_;

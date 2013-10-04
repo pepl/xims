@@ -24,7 +24,6 @@ package XIMS::Importer::Object::URLLink;
 use common::sense;
 use parent qw( XIMS::Importer::Object );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 check_location()
 

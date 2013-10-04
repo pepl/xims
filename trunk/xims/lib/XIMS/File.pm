@@ -26,7 +26,6 @@ use parent qw( XIMS::Object );
 use Time::Piece;
 use POSIX qw(setlocale LC_TIME);
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 content_field()
 

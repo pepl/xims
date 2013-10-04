@@ -27,7 +27,6 @@ use XML::SAX::Machines qw( :all );
 use XIMS;
 use XIMS::SAX::Filter::Date;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 # move these to config?
 our $DefaultSAXHandler ||= 'XML::LibXML::SAX::Builder';
 our $DefaultSAXGenerator ||= 'XIMS::SAX::Generator::Content';

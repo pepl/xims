@@ -24,7 +24,6 @@ package XIMS::VLibraryItem::DocBookXML;
 use common::sense;
 use parent qw( XIMS::VLibraryItem XIMS::DocBookXML );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

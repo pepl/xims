@@ -24,7 +24,6 @@ package XIMS::VLibraryItem::URLLink;
 use common::sense;
 use parent qw( XIMS::VLibraryItem XIMS::URLLink );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

@@ -24,7 +24,6 @@ package XIMS::Importer::Object;
 use common::sense;
 use parent qw( XIMS::Importer );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 1;
 

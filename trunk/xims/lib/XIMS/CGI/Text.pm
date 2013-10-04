@@ -24,7 +24,6 @@ package XIMS::CGI::Text;
 use common::sense;
 use parent qw( XIMS::CGI );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 registerEvents()
 

@@ -24,7 +24,6 @@ package XIMS::SAX::Generator::User;
 use common::sense;
 use parent qw(XIMS::SAX::Generator::Users);
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub prepare {
     XIMS::Debug( 5, "called" );

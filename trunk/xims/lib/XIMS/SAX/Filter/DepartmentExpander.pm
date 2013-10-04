@@ -31,7 +31,6 @@ use XIMS::Portlet;
 use XML::LibXML;
 use XML::Generator::PerlData;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 new()
 

@@ -28,7 +28,6 @@ use Encode;
 use File::Find;
 use Term::ReadKey;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @files;
 our @links;
 

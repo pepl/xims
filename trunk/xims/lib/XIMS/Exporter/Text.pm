@@ -17,7 +17,6 @@ use common::sense;
 use XIMS::Exporter;
 use parent -norequire, qw( XIMS::Exporter::Binary );
 #use Data::Dumper;
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 create()
 

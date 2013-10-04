@@ -25,7 +25,6 @@ use common::sense;
 use parent qw( XIMS::AbstractClass Class::XSAccessor::Compat );
 use XIMS::MimeType;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
 
 =head2 fields()

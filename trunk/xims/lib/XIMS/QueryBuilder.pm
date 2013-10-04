@@ -25,7 +25,6 @@ use common::sense;
 
 # use warnings;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2    $qb = XIMS::QueryBuilder->new( { search => $search,
                       [ allowed => $to_be_qr-compiled_string_of_allowed_chars,]

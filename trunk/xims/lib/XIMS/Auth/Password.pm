@@ -24,7 +24,6 @@ package XIMS::Auth::Password;
 use common::sense;
 use XIMS::User;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 new()
 

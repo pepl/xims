@@ -27,7 +27,6 @@ use XIMS::TAN_List;
 use XIMS::QuestionnaireResult;
 use XML::LibXML;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our $AUTOLOAD;
 
 

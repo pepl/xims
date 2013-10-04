@@ -24,7 +24,6 @@ package XIMS::SAX::Generator::Users;
 use common::sense;
 use parent qw(XIMS::SAX::Generator XML::Generator::PerlData);
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 
