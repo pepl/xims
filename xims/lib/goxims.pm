@@ -1,6 +1,6 @@
 =head1 NAME
 
-godav -- XIMS' handler for WebDAV.
+goxims -- XIMS' standard handler.
 
 =head1 VERSION
 
@@ -8,7 +8,7 @@ $Id$
 
 =head1 SYNOPSIS
 
-    use godav;
+    use goxims
 
 =head1 DESCRIPTION
 
@@ -382,42 +382,7 @@ Look at F<ximshttpd.conf> for some well-commented examples.
 
 =head1 BUGS AND LIMITATION
 
-This module has beta status. All Litmus tests besides some of the props tests
-do pass.
-
-This DAV handler has been tested with cadaver, konqueror, Webdrive, Novell's
-Netdrive DAV client software and MS WebFolders
-
-Body-less or dynamic object types like URLLink or Questionnaire are filtered
-out.
-
-It is not possible to rename/move or delete published objects.
-
-Under Windows: Do not create objects with Explorer using the right mouse
-button. "New Text Document.txt" will be created as "new_text_document.txt" and
-not found again right away...
-
-http://host/godav/xims/
-
 Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
-
-=head1 TODO
-
-=over
-
-=item *
-
-Add acceptance tests (HTTP::DAV)
-
-=item *
-
-Add documentation with nice screenshots
-
-=item *
-
-PROPPATCH?
-
-=back
 
 =head1 LICENCE AND COPYRIGHT
 
