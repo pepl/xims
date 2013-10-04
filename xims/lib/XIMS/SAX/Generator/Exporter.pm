@@ -25,7 +25,6 @@ use common::sense;
 use parent qw( XIMS::SAX::Generator::Content );
 use XML::Filter::CharacterChunk;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

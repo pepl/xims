@@ -27,7 +27,6 @@ use XIMS::CGI::XML;
 use XIMS::Importer::Object::VLibraryItem::DocBookXML;
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 event_create()
 

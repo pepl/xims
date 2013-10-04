@@ -24,7 +24,6 @@ package XIMS::UserPrefs;
 use common::sense;
 use parent qw( XIMS::AbstractClass Class::XSAccessor::Compat );
 
-our ($VERSION) = ( q$Revision: 2183 $ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
 
 =head2 fields()

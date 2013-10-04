@@ -24,7 +24,6 @@ package XIMS::Importer::FileSystem::Folder;
 use common::sense;
 use parent qw( XIMS::Importer::FileSystem );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 1;
 

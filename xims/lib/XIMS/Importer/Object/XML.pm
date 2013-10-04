@@ -28,7 +28,6 @@ use XML::LibXML 1.54; # We have to use 1.54 onward here because the DOM implemen
                       # With 1.52, node iteration is handled differently and we would call
                       # $doc->getDocumentElement() instead of $doc->documentElement() for example...
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 get_rootelement()
 

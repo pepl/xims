@@ -34,7 +34,6 @@ use XML::LibXML;
 use File::Temp qw/ tempfile unlink0 /;
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub registerEvents {
     XIMS::Debug( 5, "called");

@@ -43,13 +43,6 @@ use common::sense;
 require Encode;
 
 our %decodemap;
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-
-=head2 Version()
-
-=cut
-
-sub Version { $VERSION; }
 
 BEGIN {
     for ( 1..33,

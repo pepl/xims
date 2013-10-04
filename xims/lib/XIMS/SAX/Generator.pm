@@ -25,7 +25,6 @@ package XIMS::SAX::Generator;
 use common::sense;
 use XIMS;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 #
 # simple base class for XIMS Generator classes.  not much to see yet,

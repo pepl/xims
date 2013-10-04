@@ -39,7 +39,6 @@ use Locale::TextDomain ('info.xims');
 use POSIX qw(LC_ALL setlocale);
 use JSON::XS;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 registerEvents()
 

@@ -29,7 +29,6 @@ use Archive::Zip qw( :ERROR_CODES :CONSTANTS );
 use File::Temp qw/ tempdir unlink0 /;
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 registerEvents()
 

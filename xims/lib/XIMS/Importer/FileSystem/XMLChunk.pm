@@ -24,7 +24,6 @@ package XIMS::Importer::FileSystem::XMLChunk;
 use common::sense;
 use parent qw(XIMS::Importer::FileSystem XIMS::Importer::Object::XMLChunk);
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 handle_data()
 

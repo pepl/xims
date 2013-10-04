@@ -24,7 +24,6 @@ package XIMS::CGI::DocBookXML;
 use common::sense;
 use parent qw( XIMS::CGI::XML);
 
-our ($VERSION) = ( q$Revision: 2183 $ =~ /\s+(\d+)\s*$/ );
 
 =head2 event_create()
 

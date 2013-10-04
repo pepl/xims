@@ -27,7 +27,6 @@ use parent qw( XIMS::CGI );
 use XIMS::DataFormat;
 use Locale::TextDomain ('info.xims');
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # (de)register events here
 

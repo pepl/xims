@@ -26,7 +26,6 @@ package XIMS::CGI::Document2;
 use common::sense;
 use parent qw( XIMS::CGI::Document );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 #

@@ -28,7 +28,6 @@ use XIMS::SimpleDBMember;
 use XIMS::SimpleDBMemberPropertyValue;
 use Encode;
 use Locale::TextDomain ('info.xims');
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 registerEvents()
 

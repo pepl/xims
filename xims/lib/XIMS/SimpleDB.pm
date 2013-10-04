@@ -27,7 +27,6 @@ use XIMS::DataFormat;
 use XIMS::SimpleDBMemberProperty;
 use XIMS::SimpleDBMemberPropertyMap;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

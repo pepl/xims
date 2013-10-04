@@ -25,7 +25,6 @@ use common::sense;
 use XIMS::User;
 use IMAP::Admin;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 new
 

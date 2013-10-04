@@ -36,7 +36,6 @@ use XIMS;
 use XIMS::Names;
 use XIMS::Iterator::Object;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our $AUTOLOAD;
 our $cached_URIs;
 

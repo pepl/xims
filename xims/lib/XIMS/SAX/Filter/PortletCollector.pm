@@ -36,7 +36,6 @@ use DBIx::SQLEngine::Criteria::And;
 use DBIx::SQLEngine::Criteria::LiteralSQL;
 use DBIx::SQLEngine::Criteria::Equality;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 

@@ -26,7 +26,6 @@ use common::sense;
 use parent qw( XIMS::Document );
 use XIMS::DataFormat;
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 =head2 new()

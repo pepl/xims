@@ -24,7 +24,6 @@ package XIMS::Importer::FileSystem::sDocBookXML;
 use common::sense;
 use parent qw( XIMS::Importer::FileSystem::XMLChunk );
 
-our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 1;
 
