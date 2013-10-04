@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Generator::Exporter -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Generator::Exporter
 
 =head1 VERSION
 

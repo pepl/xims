@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::JavaScript -- A .... doing bla, bla, bla. (short)
+XIMS::JavaScript
 
 =head1 VERSION
 

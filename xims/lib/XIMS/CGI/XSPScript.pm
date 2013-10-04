@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-xspscript::dummy -- A .... doing bla, bla, bla. (short)
+xspscript::dummy
 
 =head1 VERSION
 

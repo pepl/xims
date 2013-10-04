@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::TAN_List -- A .... doing bla, bla, bla. (short)
+XIMS::TAN_List
 
 =head1 VERSION
 

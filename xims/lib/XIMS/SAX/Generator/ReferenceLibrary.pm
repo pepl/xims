@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Generator::ReferenceLibrary -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Generator::ReferenceLibrary
 
 =head1 VERSION
 

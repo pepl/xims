@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::DataFormat -- A .... doing bla, bla, bla. (short)
+XIMS::DataFormat
 
 =head1 VERSION
 

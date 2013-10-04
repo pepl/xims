@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Importer::Object::XML -- A .... doing bla, bla, bla. (short)
+XIMS::Importer::Object::XML
 
 =head1 VERSION
 

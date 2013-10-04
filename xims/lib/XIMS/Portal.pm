@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Portal -- A .... doing bla, bla, bla. (short)
+XIMS::Portal
 
 =head1 VERSION
 

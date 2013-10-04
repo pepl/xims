@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::SQLReport -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::SQLReport
 
 =head1 VERSION
 

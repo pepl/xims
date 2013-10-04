@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::VLibraryItem::URLLink -- A .... doing bla, bla, bla. (short)
+XIMS::VLibraryItem::URLLink
 
 =head1 VERSION
 

@@ -1,6 +1,6 @@
 =head1 NAME
 
-XIMS::DataProvider::DBI -- A .... doing bla, bla, bla. (short)
+XIMS::DataProvider::DBI
 
 =head1 VERSION
 

@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::SymbolicLink -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::SymbolicLink
 
 =head1 VERSION
 

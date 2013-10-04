@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Auth::Password -- A .... doing bla, bla, bla. (short)
+XIMS::Auth::Password
 
 =head1 VERSION
 

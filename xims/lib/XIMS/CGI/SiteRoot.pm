@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::SiteRoot -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::SiteRoot
 
 =head1 VERSION
 

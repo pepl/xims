@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Image -- A .... doing bla, bla, bla. (short)
+XIMS::Image
 
 =head1 VERSION
 

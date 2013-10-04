@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::RefLibSerial -- A .... doing bla, bla, bla. (short)
+XIMS::RefLibSerial
 
 =head1 VERSION
 
