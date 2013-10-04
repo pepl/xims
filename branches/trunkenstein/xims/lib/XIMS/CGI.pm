@@ -4124,14 +4124,7 @@ sub body_ref_objects {
 
 sub autopublish {
 	XIMS::Debug( 5, "called" );
-	my $self                   = shift;
-	my $ctxt                   = shift;
-	my $exporter               = shift;
-	my $method                 = shift;
-	my $objids                 = shift;
-	my $no_dependencies_update = shift;
-	my $recpublish             = shift;
-
+    my ($self, $ctxt, $exporter, $method, $objids, $no_dependencies_update, $recpublish) = @_;
 	my $published = 0;
 	my $user = $ctxt->session->user();
 	# foreach ( @{$objids} ) {
@@ -4143,11 +4136,11 @@ sub autopublish {
 		  XIMS::Object->new( id => $id, User => $ctxt->session->user() );
 		if ($object) {
 			if ( $ctxt->session->user->object_privmask($object) & XIMS::Privileges::PUBLISH() ){
-				#if we publish: publish parent first 
+				#if we publish: publish parent first
 				if($method eq 'publish'){
 					if (
 						$exporter->$method(
-							Object                 => $object,
+							Object                 => rebless($object),
 							no_dependencies_update => $no_dependencies_update
 						)
 					  )
@@ -4166,7 +4159,7 @@ sub autopublish {
 					my $privmask;
 					my %param = ( User => $user, marked_deleted => 0 );
 					my @descendants = reverse sort { $a->{level} <=> $b->{level} } $object->descendants_granted(%param);
-					
+
 					$options{no_dependencies_update} = 1 if scalar @descendants > 0;
 					my $path;
 					my %seencontainers;
@@ -4201,7 +4194,7 @@ sub autopublish {
 						}
 					}    #end foreach child
 				}    #end if container
-				#if we unpublish: unpublish children first 
+				#if we unpublish: unpublish children first
 				if($method eq 'unpublish'){
 					if (
 						$exporter->$method(
@@ -4218,7 +4211,7 @@ sub autopublish {
 					next;
 					}
 				}#end if method unpublish
-				
+
 			}#end if check for privileges
 			else {
 				XIMS::Debug( 3, "no privileges to $method object with id $id" );
