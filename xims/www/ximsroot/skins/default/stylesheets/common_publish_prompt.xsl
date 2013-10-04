@@ -45,7 +45,7 @@
 				<xsl:call-template name="header"/>
 				
 				<div id="content-container" class="publish-dialog"> 
-					<form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="get">
+					<form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="post">
 						<h1 class="bluebg"><xsl:value-of select="$i18n/l/Publishing_options"/></h1>
 						<p>
 							<strong><xsl:value-of select="$i18n/l/Status"/>: <xsl:value-of select="$i18n/l/Object"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/isCurrently"/>&#160;<xsl:if test="published!='1'"><xsl:value-of select="$i18n/l/NOT"/>
