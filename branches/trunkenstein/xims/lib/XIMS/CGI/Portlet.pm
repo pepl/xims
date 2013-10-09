@@ -48,8 +48,8 @@ sub registerEvents {
           obj_acllight
           obj_aclgrant
           obj_aclrevoke
-          )
-        );
+      )
+    );
 }
 
 # END GLOBAL SETTINGS

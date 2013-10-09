@@ -30,12 +30,12 @@
                     <p><xsl:value-of select="$i18n/l/ClickCancelConf"/></p>
 
 <div id="confirm-buttons">
-		<button name="submit" type="submit"><xsl:value-of select="$i18n/l/Confirm"/></button>
+		<button name="submit" type="submit" class="button"><xsl:value-of select="$i18n/l/Confirm"/></button>
 		<input name="id" type="hidden" value="{$id}"/>
     <input type="hidden" name="confirmcopy" value="1"/>
     <input type="hidden" name="copy" value="1"/>
 		&#160;
-		<button type="button" name="default" onclick="javascript:history.go(-1)">
+		<button type="button" name="default" class="button" onclick="javascript:history.go(-1)">
 		<xsl:value-of select="$i18n/l/cancel"/></button>
 	</div>
         </form>
