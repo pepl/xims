@@ -1,7 +1,21 @@
 
 3.0 (in developement)
-  - Centralise the configuration
-  - Port to PSGI
+  - Numerous bugfixes
+  - Numerous performance improvements
+  - Container view: filter after object type, optionally display start date and
+    end date
+  - XIMS::Gallery improvements
+  - A »Geek Mode« for XIMS::Document
+  - Moved the user interface to HTML5
+  - Centralised the configuration
+  - Centralised 3rd party software (TinyMCE, JQuery, Codemirror, ...) and our
+    customisations under a vendor branch within our tree
+  - WebDAV improvements
+  - Implemented a quick handler for conditional requests to replace
+    Apache::AxKit::Provider::XIMSGoPublic
+  - Ported XIMS from Apache-1.3/mod_perl1 to PSGI /w lots of housecleaning along
+    the way
+  - Removed support for non UTF-8 Databases
 
 stable-2.0 (branch, no formal release)
   - Bugfixes
@@ -11,7 +25,7 @@ stable-2.0 (branch, no formal release)
   - CodeMirror source editor
   - Experimental NewsItem2
   - Dump BitFlux editor
-  - AnonDiscussionForum
+  - Removed AnonDiscussionForum 
   - Auto-generation of location from title
   - Improved i18n
   - URL-Links with target search
