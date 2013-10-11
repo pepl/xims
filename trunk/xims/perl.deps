@@ -25,10 +25,11 @@ HTTP::Headers::Util
 HTTP::Request
 HTTP::Throwable
 JSON::XS
-JavaScript::Minifier::XS 
+JavaScript::Minifier::XS
 URI
 LWP
 Locale::TextDomain 
+RJBS/MIME-Lite-3.028.tar.gz
 MIME::Lite::HTML 
 Storable
 Task::Plack
