@@ -30,8 +30,15 @@
 
   [Configuration, yadda, yadda, yadda]
 
-* Review and edit start_xims.sh. It is prepared for the paths as used herein
-  and starts a XIMS server listening on the loopbacks port 5000.  
+* Review and edit ximsctl. It is prepared for the paths as used herein
+  and starts a XIMS server listening on the loopback's port 5000.  
 
-  start_xims.sh
-        
+  ./etc/ contains example scripts as starting points for a deployment 
+  along linux FHS conventions 
+  
+  etc/
+  ├── init.d
+  │   └── xims
+  ├── oracleclient.env
+  └── xims.env
+      
