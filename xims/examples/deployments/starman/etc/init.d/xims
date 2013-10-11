@@ -1,0 +1,100 @@
+#!/bin/bash
+#
+# xims        Startup script for XIMS/Starman Server
+#
+# chkconfig: - 84 16
+# description: The XIMS content management system running in its own \
+#              Starman server under Server::Starter.
+# processname: xims
+# config: /opt/xims/conf/ximsconfig.xml
+# pidfile: /var/run/xims/xims.pid
+# statusfile: /var/run/xims/xims.status
+#
+### BEGIN INIT INFO
+# Provides: xims
+# Required-Start: $local_fs $remote_fs $network $named
+# Required-Stop: $local_fs $remote_fs $network
+# Should-Start: distcache
+# Short-Description: start and stop the XIMS content management system
+# Description: The XIMS content management system running in its own \
+#              Starman server under Server::Starter.
+### END INIT INFO
+
+# Source function library. (RedHat)
+#. /etc/rc.d/init.d/functions
+
+. /etc/xims.env
+
+WORKERS=20
+LOG_DIR=/var/log/xims
+prog=xims
+pidfile=${PIDFILE-/var/run/xims.pid}
+lockfile=${LOCKFILE-/var/lock/subsys/xims}
+statusfile=${STATUSFILE-/var/run/xims.status}
+PORT=80
+GROUP=wwwrun
+USER=wwwrun
+RETVAL=0
+OPTIONS="--dir ${XIMS_HOME}/lib --port ${PORT} --pid-file=${pidfile} --interval=5 --status-file=${statusfile} --signal-on-hup=QUIT --\
+                             starman --max-requests 90 --keepalive-timeout 5 --workers ${WORKERS} --user ${USER} --group ${GROUP} --access-log ${LOG_DIR}/access_log --error-log ${LOG_DIR}/error_log"
+
+start() {
+        echo -n $"Starting $prog: "
+        if [[ -e ${pidfile} ]] && ps -p $(cat ${pidfile}) > /dev/null 
+	then 
+		echo "is already running."
+          	RETVAL=1 
+       	else	
+		start_server ${OPTIONS} --preload-app xims.psgi >> ${LOG_DIR}/error_log 2>&1 &
+        	RETVAL=$?
+                echo
+        	[ $RETVAL = 0 ] && touch ${lockfile}
+        fi
+       	return $RETVAL
+}
+
+reap() {
+        sleep 5
+	pkill -9 start_server
+        pkill -9 starman
+}
+
+stop() {
+        echo -n $"Stopping $prog: "
+        [[ -e ${pidfile} ]] && kill `cat ${pidfile}` || reap
+        RETVAL=$?
+        echo
+        [ $RETVAL = 0 ] && rm -f ${lockfile} 
+}
+
+reload() {
+        echo -n $"Reloading $prog: "
+	[[ -e ${pidfile} ]] && start_server --restart ${OPTIONS} -- || start
+        RETVAL=$?
+        echo
+}
+
+case "$1" in 
+	start)
+        	start 
+        	;;
+        restart)
+	     	stop
+                sleep 2;
+                start   
+		;;
+        stop)
+		stop
+        	;;
+        status)
+	        echo $(cat ${statusfile}) $xims
+        	RETVAL=$?
+        	;;
+        reload)
+		reload
+		;;
+    	*)
+        	echo "Usage: $0 [status|start|reload|restart|stop]"
+                RETVAL=2
+esac
+exit $RETVAL
