@@ -19,6 +19,10 @@
 		<script  type="text/javascript" src="{$ximsroot}vendor/codemirror-ui/js/codemirror-ui.js"><xsl:comment/></script>
 		<script  type="text/javascript" src="{$ximsroot}vendor/codemirror-ui/lib/CodeMirror-2.3/lib/util/search.js"><xsl:comment/></script>
 		<script  type="text/javascript" src="{$ximsroot}vendor/codemirror-ui/lib/CodeMirror-2.3/lib/util/searchcursor.js"><xsl:comment/></script>
+                <!-- markdown needs xml preloaded -->
+		<xsl:if test="$cm_mode='markdown'">
+		  <script  type="text/javascript" src="{$ximsroot}vendor/codemirror-ui/lib/CodeMirror-2.3/mode/xml/xml.js"><xsl:comment/></script>
+		</xsl:if>
 		<script  type="text/javascript" src="{$ximsroot}vendor/codemirror-ui/lib/CodeMirror-2.3/mode/{$cm_mode}/{$cm_mode}.js"><xsl:comment/></script>
 	</xsl:template>
 
