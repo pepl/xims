@@ -18,8 +18,6 @@ INSERT INTO ci_languages ( id, fullname, code )
        VALUES ( nextval('ci_languages_id_seq'), 'Deutsch (Österreich)', 'de-at' );
 
 \echo inserting into ci_object_types...
-
-
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
        VALUES ( nextval('ci_object_types_id_seq'), 'Folder', 1, 1, 0, 0, 1 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
@@ -84,6 +82,8 @@ INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_
        VALUES ( nextval('ci_object_types_id_seq'), 'NewsLetter', 0, 1, 1, 0, 1, 1 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
        VALUES ( nextval('ci_object_types_id_seq'), 'Gallery', 1, 1, 0, 0, 1 );
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_mailable, menu_level, is_davgetable, davprivval )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Markdown', 0, 1, 1, 0, 1, 2, 1, 2 );
 
 \echo inserting into ci_data_formats...
 
@@ -191,6 +191,9 @@ INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'SLDX', 'application/vnd.openxmlformats-officedocument.presentationml.slide', 'sldx' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) 
        VALUES ( nextval('ci_data_formats_id_seq'), 'PPTX', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'pptx' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'Markdown', 'text/x-markdown', 'html' );
+
 
 \echo inserting into ci_mime_type_aliases...
 
@@ -323,8 +326,6 @@ INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
 -- JavaScript
 INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
        VALUES ( 5, 2, 28 );
-
-
 -- grants on the created folders should go here
 
 \echo inserting into ci_object_privs_granted...
