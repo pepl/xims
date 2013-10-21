@@ -82,7 +82,7 @@ var ImageDialog = {
 			nl.style.value = style;
 			
 			// classes for image popups
-			if(img.attr('class') != ""){
+			if(img.attr('class') && (img.attr('class') != "")){
 			 nl.popup.checked = "checked";
 			 nl.popupoption.value = img.attr('class');
 			}
