@@ -1218,7 +1218,6 @@ use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Handler );
 
 
-
 =head2    create()
 
 =head3 Parameter
@@ -1272,9 +1271,29 @@ sub create {
     XIMS::Debug( 4, "toggling publish state of the object" );
     $self->toggle_publish_state( '1' );
 
-    return 1;
+    my $binmeta_generator =  XIMS::Exporter::BinMeta->new( Provider   => $self->{Provider},
+                                                           Basedir    => $self->{Basedir},
+                                                           Object     => $self->{Object},
+                                                           User       => $self->{User},
+                                                           Stylesheet => XIMS::XIMSROOT() . "/stylesheets/exporter/export_binmeta.xsl",
+                                                       );
+
+    return $binmeta_generator->create();
 }
 
+sub remove {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $binmeta_generator =  XIMS::Exporter::BinMeta->new( Provider   => $self->{Provider},
+                                                           Basedir    => $self->{Basedir},
+                                                           Object     => $self->{Object},
+                                                           User       => $self->{User},
+                                                       );
+    $binmeta_generator->remove();
+
+    XIMS::Debug( 5, "done" );
+    return $self->SUPER::remove( @_ );
+}
 
 1;
 
@@ -2502,6 +2521,56 @@ sub generate_dom_galleryimages {
     $self->{Exportfile} = XIMS::PUBROOT() . $self->{Object}->location_path() . '/.images.htm'; # . XIMS::AUTOINDEXFILENAME();
 
     return $dom;
+}
+
+1;
+
+=head1 XIMS::Exporter::BinMeta
+
+export metadata for binary types as RDF/XML.
+
+=cut
+
+package XIMS::Exporter::BinMeta;
+
+use vars qw( @ISA );
+@ISA = qw( XIMS::Exporter::XMLChunk );
+
+# use XIMS::SAX::Filter::DepartmentExpander;
+# use XIMS::SAX::Filter::ContentIDPathResolver;
+use XIMS::SAX::Filter::Attributes;
+
+sub set_sax_filters {
+    XIMS::Debug( 5, "called" );
+    my $self  = shift;
+    my @filter = ();
+
+    push @filter, XIMS::SAX::Filter::Attributes->new();
+    
+    return @filter;
+}
+
+sub create {
+    XIMS::Debug( 5, "called");
+    my $self = shift;
+
+    $self->{Exportfile} = $self->_path;
+    return $self->SUPER::create( @_ );
+}
+
+sub remove {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    unlink( $self->_path );
+
+    XIMS::Debug( 5, "done" );
+    # return $self->SUPER::remove( @_ );
+}
+
+sub _path {
+    my $self = shift;
+    return XIMS::PUBROOT() . '/' . $self->{Object}->location_path() . '.rdf';
 }
 
 1;
