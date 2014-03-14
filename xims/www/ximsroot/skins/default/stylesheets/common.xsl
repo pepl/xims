@@ -423,7 +423,7 @@
                                value="{location}" 
                                id="input-location"
                                required="" 
-                               pattern="[-_A-Za-z0-9.]+">
+                               pattern="[-_A-Za-z0-9.()]+">
 				<xsl:choose>
 					<!--make location-field readonly if object published or object is a newsletter-->
 					<xsl:when test="($publish_gopublic = '0' and published = '1') or ($objecttype = '15')">
@@ -476,7 +476,7 @@
                                class="text"
                                id="input-location" 
                                required=""  
-                               pattern="[-_A-Za-z0-9.]+">
+                               pattern="[-_A-Za-z0-9.()]+">
 				<xsl:if test="$testlocation">
 					<xsl:attribute name="onchange">return
 					testlocation();</xsl:attribute>
@@ -544,7 +544,7 @@
                                        id="input-location" 
                                        value="{location}"
                                        required=""  
-                                       pattern="[-_A-Za-z0-9.]+">
+                                       pattern="[-_A-Za-z0-9.()]+">
 					<xsl:choose>
 						<xsl:when test="published = '1'">
 							<xsl:attribute name="readonly">readonly</xsl:attribute>
