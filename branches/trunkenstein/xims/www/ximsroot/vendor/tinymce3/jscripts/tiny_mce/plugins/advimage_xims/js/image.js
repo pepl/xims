@@ -82,7 +82,7 @@ var ImageDialog = {
 			nl.style.value = style;
 			
 			// classes for image popups
-			if(img.attr('class') != ""){
+			if(img.attr('class') && (img.attr('class') != "")){
 			 nl.popup.checked = "checked";
 			 nl.popupoption.value = img.attr('class');
 			}
@@ -208,6 +208,21 @@ var ImageDialog = {
 		});
 
 		el = ed.selection.getNode();
+		
+		var div;
+		if(el.parentNode.className.indexOf('caption') != -1){
+			div = el.parentNode;
+			tinymce.extend(args, {
+				src : nl.src.value,
+				width : nl.width.value,
+				height : nl.height.value,
+				alt : nl.alt.value,
+				title : nl.title.value,			
+				style : '',			
+				'class' : imgclass // classes for image popups - IE needs the quotes around class
+			});
+			ed.dom.setAttribs(div, {style: nl.style.value+' width: '+nl.width.value+'px'});
+		}
 
 		if (el && el.nodeName == 'IMG') {
 			ed.dom.setAttribs(el, args);
