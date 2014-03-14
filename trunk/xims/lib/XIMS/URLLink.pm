@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::URLLink -- A .... doing bla, bla, bla. (short)
+XIMS::URLLink
 
 =head1 VERSION
 

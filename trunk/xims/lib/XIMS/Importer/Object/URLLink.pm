@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Importer::Object::URLLink -- A .... doing bla, bla, bla. (short)
+XIMS::Importer::Object::URLLink
 
 =head1 VERSION
 

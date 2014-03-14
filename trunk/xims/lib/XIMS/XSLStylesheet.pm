@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::XSLStylesheet -- A .... doing bla, bla, bla. (short)
+XIMS::XSLStylesheet
 
 =head1 VERSION
 

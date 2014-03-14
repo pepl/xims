@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Importer::FileSystem::AxPointPresentation -- A .... doing bla, bla, bla. (short)
+XIMS::Importer::FileSystem::AxPointPresentation
 
 =head1 VERSION
 

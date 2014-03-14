@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SimpleDBItem -- A .... doing bla, bla, bla. (short)
+XIMS::SimpleDBItem
 
 =head1 VERSION
 

@@ -35,6 +35,8 @@
 <NewsLetter>Newsletter</NewsLetter>
 <Gallery>Bildergalerie</Gallery>
 <NewsItem2>Newseintrag mit Sprachkürzel</NewsItem2>
+<Document2>HTML5 Dokument</Document2>
+<Markdown>Markdown Dokument</Markdown>
 <!-- end objecttypes -->
 <!-- privileges -->
 <PrivView>Lesen</PrivView>

@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SimpleDBMemberPropertyValue -- A .... doing bla, bla, bla. (short)
+XIMS::SimpleDBMemberPropertyValue
 
 =head1 VERSION
 

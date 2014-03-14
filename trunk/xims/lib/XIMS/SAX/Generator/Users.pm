@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Generator::Users -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Generator::Users
 
 =head1 VERSION
 

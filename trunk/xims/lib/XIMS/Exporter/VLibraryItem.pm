@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Exporter::VLibraryItem -- A .... doing bla, bla, bla. (short)
+XIMS::Exporter::VLibraryItem
 
 =head1 VERSION
 

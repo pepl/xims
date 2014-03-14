@@ -38,6 +38,8 @@
 <NewsLetter>Newsletter</NewsLetter>
 <Gallery>Gallery</Gallery>
 <NewsItem2>NewsItem2</NewsItem2>
+<Document2>HTML5 Document</Document2>
+<Markdown>Markdown Document</Markdown>
 <!-- end objecttypes -->
 <!-- privileges -->
 <PrivView>View</PrivView>

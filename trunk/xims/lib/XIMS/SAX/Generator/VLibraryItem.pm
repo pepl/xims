@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Generator::VLibraryItem -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Generator::VLibraryItem
 
 =head1 VERSION
 

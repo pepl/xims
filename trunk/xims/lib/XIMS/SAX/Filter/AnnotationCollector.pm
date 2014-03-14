@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Filter::AnnotationCollector -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Filter::AnnotationCollector
 
 =head1 VERSION
 

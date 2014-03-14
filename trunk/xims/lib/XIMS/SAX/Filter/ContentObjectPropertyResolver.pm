@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Filter::ContentObjectPropertyResolver -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Filter::ContentObjectPropertyResolver
 
 =head1 VERSION
 

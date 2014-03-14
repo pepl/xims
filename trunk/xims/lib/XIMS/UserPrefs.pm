@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::UserPrefs -- Special Settings preferenced by user
+XIMS::UserPrefs -- Special Settings preferenced by user.
 
 =head1 VERSION
 

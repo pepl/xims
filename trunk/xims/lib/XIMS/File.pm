@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::File -- A .... doing bla, bla, bla. (short)
+XIMS::File
 
 =head1 VERSION
 

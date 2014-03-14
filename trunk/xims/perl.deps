@@ -1,6 +1,6 @@
 # This is a simple list of dependancies to be used with cpanm,
 # e.g. cpanm --skip-satisfied < perl.deps
-# Omit --skip-satisfied in case you want cpanm to update all mentioned modules.
+# perl.deps --skip-satisfied in case you want cpanm to update all mentioned modules.
 #
 # If you plan to use LDAP validation
 # Net::LDAP
@@ -20,6 +20,7 @@ DBIx::XHTML_Table
 Digest::MD5
 Email::Valid 
 File::Slurp 
+HTML::HTML5::Parser 
 HTTP::Exception
 HTTP::Headers::Util
 HTTP::Request
@@ -28,6 +29,7 @@ JSON::XS
 JavaScript::Minifier::XS
 URI
 LWP
+LWP::Protocol::https
 Locale::TextDomain 
 RJBS/MIME-Lite-3.028.tar.gz
 MIME::Lite::HTML 
@@ -35,7 +37,8 @@ Storable
 Task::Plack
 Term::ReadKey 
 Text::Diff 
-Text::Iconv 
+Text::Iconv
+Text::Markdown 
 Text::Template 
 Time::Piece 
 XML::LibXML~1.70
@@ -48,7 +51,6 @@ XML::Generator::PerlData
 XML::Filter::GenericChunk~0.04
 Net::Server::SS::PreFork
 Plack::Middleware::XForwardedFor
-Plack::Middleware::SizeLimit
 # If you plan to run all tests
 # XML::Schematron
 # Perl::Critic

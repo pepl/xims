@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Importer::Object::XMLChunk -- A .... doing bla, bla, bla. (short)
+XIMS::Importer::Object::XMLChunk
 
 =head1 VERSION
 

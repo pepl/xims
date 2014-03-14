@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Importer::FileSystem::SymbolicLink -- A .... doing bla, bla, bla. (short)
+XIMS::Importer::FileSystem::SymbolicLink
 
 =head1 VERSION
 

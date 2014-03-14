@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SiteRoot -- A .... doing bla, bla, bla. (short)
+XIMS::SiteRoot
 
 =head1 VERSION
 

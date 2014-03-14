@@ -25,7 +25,7 @@ package XIMS::Document2;
 use common::sense;
 use parent qw( XIMS::Document );
 use XIMS::DataFormat;
-
+use HTML::HTML5::Parser;
 
 
 =head2 new()
@@ -57,6 +57,55 @@ sub new {
 
     return $class->SUPER::new( %args );
 }
+
+
+=head2    balance_string()
+
+=head3 Parameter
+
+    $CDATAstring : input string
+    %args        : hash
+       recognized keys: keephtmlheader : per default, the html-header tidy
+                                         generates is stripped of the return
+                                         string and only the part between the
+                                         "body" tag is returned in case of
+                                         importing legacy html documents it
+                                         may be useful to keep the meta
+                                         information in the html header - the
+                                         keephtmlheader flag is your friend
+                                         for that.
+
+=head3 Returns
+
+    $wbCDATAstring : well balanced outputstring or undef in case of error
+
+=head3 Description
+
+my $wbCDATAstring = $object->balance_string( $CDATAstring, [$params] );
+
+takes a string and tries tidy, or if that fails XML::LibXML to well-balance it
+
+=cut
+
+sub balance_string {
+    XIMS::Debug( 5, "called" );
+    my ($self, $CDATAstring, %args) = @_;
+
+    return unless defined $CDATAstring;
+
+    my $parser = HTML::HTML5::Parser->new;
+    my $wbCDATAstring = $parser->parse_string( $CDATAstring )->toString();
+
+    if ( not exists $args{keephtmlheader} ) {
+        # strip everything before <BODY> and after </BODY>
+        $wbCDATAstring =~ s/^.*<body[^>]*>\n?//si;
+        $wbCDATAstring =~ s\</body[^>]*>.*$\\si;
+    }
+
+    return $wbCDATAstring || undef;
+}
+
+
 
 1;
 

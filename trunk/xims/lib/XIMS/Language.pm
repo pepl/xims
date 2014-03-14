@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Language -- A .... doing bla, bla, bla. (short)
+XIMS::Language
 
 =head1 VERSION
 

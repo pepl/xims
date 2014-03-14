@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Bookmark -- A .... doing bla, bla, bla. (short)
+XIMS::Bookmark
 
 =head1 VERSION
 

@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::users -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::users
 
 =head1 VERSION
 

@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Installer -- A .... doing bla, bla, bla. (short)
+XIMS::Installer
 
 =head1 VERSION
 

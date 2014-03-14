@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Generator::SimpleDB -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Generator::SimpleDB
 
 =head1 VERSION
 

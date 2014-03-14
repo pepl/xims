@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::ReferenceLibraryItem -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::ReferenceLibraryItem
 
 =head1 VERSION
 
