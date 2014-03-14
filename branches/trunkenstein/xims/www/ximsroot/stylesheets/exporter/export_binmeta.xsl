@@ -48,7 +48,6 @@
               </dcq:modified>
             </dc:date>
             <dc:format><xsl:value-of select="/document/data_formats/data_format[@id=$dataformat]/mime_type"/></dc:format>
-            <!-- better than a blatant lie... -->
           </rdf:Description>
         </rdf:RDF>
     </xsl:template>
