@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::SimpleDB -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::SimpleDB
 
 =head1 VERSION
 

@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::XSLStylesheet -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::XSLStylesheet
 
 =head1 VERSION
 

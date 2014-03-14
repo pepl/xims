@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Importer::FileSystem::JavaScript -- A .... doing bla, bla, bla. (short)
+XIMS::Importer::FileSystem::JavaScript
 
 =head1 VERSION
 

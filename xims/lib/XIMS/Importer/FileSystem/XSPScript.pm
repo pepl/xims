@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Importer::FileSystem::XSPScript -- A .... doing bla, bla, bla. (short)
+XIMS::Importer::FileSystem::XSPScript
 
 =head1 VERSION
 

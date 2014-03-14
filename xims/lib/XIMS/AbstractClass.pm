@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::AbstractClass -- A .... doing bla, bla, bla. (short)
+XIMS::AbstractClass
 
 =head1 VERSION
 

@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::QueryBuilder::SimpleDB -- A .... doing bla, bla, bla. (short)
+XIMS::QueryBuilder::SimpleDB
 
 =head1 VERSION
 

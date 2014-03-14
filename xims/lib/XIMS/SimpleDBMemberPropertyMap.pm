@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SimpleDBMemberPropertyMap -- A .... doing bla, bla, bla. (short)
+XIMS::SimpleDBMemberPropertyMap
 
 =head1 VERSION
 

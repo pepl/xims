@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::NewsItem -- A .... doing bla, bla, bla. (short)
+XIMS::NewsItem
 
 =head1 VERSION
 

@@ -1,11 +1,15 @@
 
 =head1 NAME
 
-XIMS::Middleware::AppContext -- prepares the XIMS::AppContext in PSGI’s environment
+XIMS::Middleware::AppContext -- prepares the XIMS::AppContext in PSGI's environment
 
 =head1 VERSION
 
 $Id: $
+
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
 
 =cut
 

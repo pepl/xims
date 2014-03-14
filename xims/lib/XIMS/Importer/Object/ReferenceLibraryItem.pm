@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Importer::Object::ReferenceLibraryItem -- A .... doing bla, bla, bla. (short)
+XIMS::Importer::Object::ReferenceLibraryItem
 
 =head1 VERSION
 

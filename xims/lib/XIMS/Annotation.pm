@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Annotation -- A .... doing bla, bla, bla. (short)
+XIMS::Annotation
 
 =head1 VERSION
 

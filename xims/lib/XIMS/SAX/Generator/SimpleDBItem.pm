@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Generator::SimpleDBItem -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Generator::SimpleDBItem
 
 =head1 VERSION
 

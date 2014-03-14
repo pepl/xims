@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::XSPScript -- A .... doing bla, bla, bla. (short)
+XIMS::XSPScript
 
 =head1 VERSION
 

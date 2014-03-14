@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::QuestionnaireResult -- A .... doing bla, bla, bla. (short)
+XIMS::QuestionnaireResult
 
 =head1 VERSION
 

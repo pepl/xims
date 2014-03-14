@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::ObjectTypePriv -- A .... doing bla, bla, bla. (short)
+XIMS::ObjectTypePriv
 
 =head1 VERSION
 

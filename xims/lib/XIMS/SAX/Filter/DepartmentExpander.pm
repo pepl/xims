@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Filter::DepartmentExpander -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Filter::DepartmentExpander
 
 =head1 VERSION
 

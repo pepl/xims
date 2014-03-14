@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Importer::Object::VLibraryItem::DocBookXML -- A .... doing bla, bla, bla. (short)
+XIMS::Importer::Object::VLibraryItem::DocBookXML
 
 =head1 VERSION
 

@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-GetChildren -- A .... doing bla, bla, bla. (short)
+GetChildren
 
 =head1 VERSION
 
