@@ -20,6 +20,7 @@ DBIx::XHTML_Table
 Digest::MD5
 Email::Valid 
 File::Slurp 
+HTML::HTML5::Parser 
 HTTP::Exception
 HTTP::Headers::Util
 HTTP::Request
