@@ -139,12 +139,12 @@ CREATE INDEX ci_obj_type_privs_grantee_idx
 \echo creating table 'ci_sessions'
 CREATE TABLE ci_sessions
  (id                    SERIAL       PRIMARY KEY
- ,session_id            VARCHAR(32)  NOT NULL UNIQUE
+ ,session_id            VARCHAR(60)  NOT NULL UNIQUE
  ,user_id               INTEGER      REFERENCES ci_users_roles ( id )
  ,attributes            VARCHAR(200)
  ,host                  VARCHAR(90)  NOT NULL
  ,last_access_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT now() NOT NULL
- ,salt                  INTEGER
+ ,salt                  VARCHAR(40)
  ,auth_module           VARCHAR(50)  NOT NULL
  )
 ;
