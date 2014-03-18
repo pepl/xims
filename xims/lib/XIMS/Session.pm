@@ -19,8 +19,11 @@ package XIMS::Session;
 
 use common::sense;
 use parent qw( XIMS::AbstractClass Class::XSAccessor::Compat );
-use Digest::MD5;
+use Digest::SHA3 qw(sha3_224_base64 sha3_224_hex);
+use Math::Random::Secure qw(irand);
+use Time::HiRes  qw(gettimeofday);
 use Time::Piece;
+
 
 our @Fields = (
     @{ XIMS::Names::property_interface_names( resource_type() ) },
@@ -111,16 +114,15 @@ sub new {
                 $hostnet = $1;
             }
 
-            my $salt = time();
-            substr( $salt, 0, 1, q{} );
-            substr( $salt, 0, 3, sprintf( "%03d", int( rand(999) ) ) );
+            # the salt is a hash from gettimeofday()'s microseconds, a 32 bit
+            # random number and the PID as the 'known unknowns'.
+            my $salt = sha3_224_base64((gettimeofday())[1] . irand() . $$);
 
-            # $salt will stored and given back as number, thus leading
-            # zeros in the string are lost. We take the easy way out and
-            # just do int($salt) to avoid corrupt $session_ids.
-            my $session_id = Digest::MD5::md5_hex( $args{user_id}
-                                                 . int($salt)
-                                                 . $hostnet );
+            # for the session_id, we hash the userid and the hostnet in.
+            my $session_id = sha3_224_hex( $args{user_id}
+                                         . $salt
+                                         . $hostnet );
+
 
             $args{session_id} = $session_id;
             $args{salt}       = $salt;
@@ -224,7 +226,7 @@ sub validate {
 
     if ( length $hostnet
          and $self->session_id() eq
-         Digest::MD5::md5_hex( $self->user_id() . $self->salt() . $hostnet ) )
+         sha3_224_hex( $self->user_id() . $self->salt() . $hostnet ) )
     {
 
         my $lat = Time::Piece->strptime( $self->last_access_timestamp(),
@@ -254,10 +256,10 @@ sub validate {
                   . " session: "
                   . $self->session_id()
                   . " validation string: "
-                  . Digest::MD5::md5_hex( $self->user_id()
-                                        . $self->salt()
-                                        . $hostnet
-                    )
+                  . sha3_224_hex( $self->user_id()
+                                   . $self->salt()
+                                   . $hostnet
+                  )
                   . " last_access_timestamp: "
                   . $self->last_access_timestamp()
     );
