@@ -1,3 +1,5 @@
+PROMPT Extending password field
+ALTER TABLE CI_USERS_ROLES MODIFY password VARCHAR2(60);
 PROMPT Truncating and extending ci_sessions
 TRUNCATE TABLE CI_SESSIONS;
 ALTER TABLE CI_SESSIONS MODIFY session_id  VARCHAR2(60);

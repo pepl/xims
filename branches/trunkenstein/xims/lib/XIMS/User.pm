@@ -23,6 +23,7 @@ use parent qw( XIMS::AbstractClass Class::XSAccessor::Compat );
 use XIMS::Bookmark;
 use XIMS::UserPrefs;
 use Digest::MD5 qw( md5_hex );
+use Authen::Passphrase;
 
 our @Fields = @{ XIMS::Names::property_interface_names( resource_type() ) };
 
@@ -52,14 +53,19 @@ __PACKAGE__->mk_accessors(@Fields);
 
 sub validate_password {
     XIMS::Debug( 5, "called" );
-    my $self       = shift;
-    my $raw_passwd = shift;
-    if ( defined($raw_passwd)
-        and $self->password() eq Digest::MD5::md5_hex($raw_passwd) )
-    {
-        return 1;
+    my ($self, $raw_passwd) = @_;
+    my $pwhash = $self->password();
+
+    return undef unless length($pwhash) and defined $raw_passwd and $self->enabled();
+
+    # we still need to support md5 hashes
+    # they contain no '$' separators
+    if ($pwhash =~ m/\$/) {
+        return Authen::Passphrase->from_crypt( $self->password() )->match( $raw_passwd );
     }
-    return;
+    else {
+        return $pwhash eq Digest::MD5::md5_hex($raw_passwd) ? 1 : undef;
+    }
 }
 
 =head2 creatable_object_types()

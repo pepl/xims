@@ -1,3 +1,5 @@
+\echo Extending password field
+ALTER TABLE CI_USERS_ROLES MODIFY password VARCHAR(60);
 \echo Truncating and extending ci_sessions
 TRUNCATE TABLE CI_SESSIONS;
 ALTER TABLE CI_SESSIONS MODIFY session_id  VARCHAR(60);
