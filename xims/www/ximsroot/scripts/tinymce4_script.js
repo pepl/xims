@@ -81,7 +81,7 @@ $().ready(function(){
 	        indentOnInit: true, // Whether or not to indent code on init. 
 	        //path: 'http://ximstest1.uibk.ac.at/ximsroot/editors/CodeMirror', // Path to CodeMirror distribution
 	        //path: '../../../../CodeMirror', // Path to CodeMirror distribution
-	        path: tinymceUrl + '/../../../../CodeMirror', // Path to CodeMirror distribution
+	        path: tinymceUrl + '/../../../../codemirror', // Path to CodeMirror distribution
 	        config: {           // CodeMirror config object
 	          lineNumbers: true,
 	          mode: 'htmlmixed'
