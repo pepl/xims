@@ -63,7 +63,7 @@ CREATE TABLE ci_object_types
 
 \echo creating table 'ci_users_roles'
 CREATE TABLE ci_users_roles
- (password            VARCHAR(32)
+ (password            VARCHAR(60)
  ,enabled             SMALLINT
  ,admin               SMALLINT
  ,id                  SERIAL        PRIMARY KEY
