@@ -8,6 +8,7 @@
 # IMAP::Admin
 Archive::Zip 
 Array::Iterator 
+Authen::Passphrase
 CSS::Minifier::XS 
 CSS::Tiny 
 Class::XSAccessor::Compat
