@@ -1,0 +1,16 @@
+tinymce.addI18n('de_AT',{
+"Extra icons":"Symbole",
+"Insert MS Word icon": "MS Word Icon einf\u00FCgen",
+"Insert MS Excel icon": "MS Word Excel einf\u00FCgen",
+"Insert MS Powerpoint icon": "MS Powerpoint Icon einf\u00FCgen",
+"Insert Document icon": "Dokument Icon einf\u00FCgen",
+"Insert PDF icon": "PDF Icon einf\u00FCgen",
+"Insert email icon": "Email Icon einf\u00FCgen",
+"Insert folder icon": "Ordner Icon einf\u00FCgen",
+"Insert intranet icon": "Intranet Icon einf\u00FCgen",
+"Insert image icon": "Bild Icon einf\u00FCgen",
+"Insert external link icon": "Externer Link Icon einf\u00FCgen",
+"Insert new icon": "Neu Icon einf\u00FCgen",
+"Insert black arrow icon": "Schwarzer Pfeil Icon einf\u00FCgen",
+"Insert orange arrow icon": "Oranger Pfeil Icon einf\u00FCgen",
+});

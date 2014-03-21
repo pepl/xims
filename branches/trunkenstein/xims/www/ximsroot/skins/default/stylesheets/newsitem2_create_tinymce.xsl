@@ -12,5 +12,6 @@
 <xsl:import href="newsitem_create_tinymce.xsl"/>
 
 <xsl:param name="testlocation" select="true()"/>
+<xsl:param name="tinymce_version" select="4"/>
 
 </xsl:stylesheet>
