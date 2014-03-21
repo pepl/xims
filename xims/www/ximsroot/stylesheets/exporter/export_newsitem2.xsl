@@ -23,11 +23,7 @@
     <xsl:variable name="dataformat">
       <xsl:value-of select="data_format_id"/>
     </xsl:variable>
-   
-    <!-- <xsl:variable name="valid_from_timestamp">
-      <xsl:apply-templates select="valid_from_timestamp" mode="ISO8601"/>
-    </xsl:variable> -->
-
+    
     <page>
       <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="{department_id}/ou.xml"/>
       <rdf:RDF xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -65,45 +61,44 @@
       </path>
       
       <body>
-        <div id="newsitem" class="hentry item">
+        <article id="newsitem" class="item" typeof="Article" resource="#newsitem">
        
           <!-- Title -->
-          <h1 id="newsitem-title">
-            <span class="entry-title">
-              <xsl:value-of select="title"/>
-            </span>
+          <h1  id="newsitem-title" property="name">
+            <xsl:value-of select="title"/>
           </h1>
-          
-          
-          <!-- when img existent, process it -->
-          <xsl:if test="image_id/location_path != ''">
-            <xsl:apply-templates select="image_id"/>
-          </xsl:if>
+     
+          <!-- Text: Lead und Story -->
+          <div property="articleBody">
 
           <!-- date -->
-          <div id="newsitem-date" class="date published">
-            <span class="value-title">
-              <xsl:attribute name="title">
-	        <xsl:apply-templates select="valid_from_timestamp" mode="ISO8601"/>
-	      </xsl:attribute>
-            </span>
+          <time id="newsitem-date" property="datePublished">
+            <xsl:attribute name="datetime">
+              <xsl:apply-templates select="valid_from_timestamp" mode="ISO8601"/>
+            </xsl:attribute>
             <xsl:value-of select="valid_from_timestamp/day"/>
             <xsl:text>.</xsl:text>
             <xsl:value-of select="valid_from_timestamp/month"/>
             <xsl:text>.</xsl:text>
             <xsl:value-of select="valid_from_timestamp/year"/>
-          </div>
+          </time>
 
           <!-- lead -->
-          <div id="newsitem-lead" class="lead entry-summary">
+          <div id="newsitem-lead" class="lead">
             <xsl:apply-templates select="abstract"/>
           </div>
 
           <!-- story -->
-          <div id="newsitem-story" class="story entry-content">
+          <div id="newsitem-story" class="story">
+            <!-- when img existent, process it -->
+            <xsl:if test="image_id/location_path != ''">
+              <xsl:apply-templates select="image_id"/>
+            </xsl:if>
+          
             <xsl:apply-templates select="body"/>
           </div>
-        </div> <!-- close div with class newsitem -->
+          </div>
+        </article>
       </body>
 
       <links>
@@ -140,30 +135,17 @@
   </xsl:template>
   
   <xsl:template match="image_id">
-    <div id="newsitem-image" class="hmedia">
-      <a rel="enclosure" 
-         type="{concat('image/', translate(@data_format_name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))}" 
-         title="{abstract}"
-         href="{location_path}">
+    <figure id="newsitem-image" typeof="ImageObject">
+      <a  property="contentUrl" 
+          type="{concat('image/', translate(@data_format_name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))}" 
+          title="{abstract}"
+          href="{location_path}">
         <img class="photo" alt="{title}" src="{location_path}"/>
       </a>
-      <xsl:if test="normalize-space(image/@longdesc) != ''">
-        <span class="fn"><xsl:value-of select="@longdesc"/></span>
+      <xsl:if test="normalize-space(abstract) != ''">
+        <figcaption property="description"><xsl:value-of select="abstract"/></figcaption>
       </xsl:if>
-    </div>
+    </figure>
   </xsl:template>
-
-  <!-- <image_id> -->
-  <!--   <abstract>&#xA0;</abstract> -->
-  <!--   <id>223602</id> -->
-  <!--   <document_id>263592</document_id> -->
-  <!--   <parent_id>79973</parent_id> -->
-  <!--   <object_type_id>3</object_type_id> -->
-  <!--   <data_format_id>9</data_format_id> -->
-  <!--   <symname_to_doc_id/> -->
-  <!--   <location>copy_of_info.gif</location> -->
-  <!--   <location_path>/test/copy_of_info.gif</location_path> -->
-  <!--   <title>Copy of InfoBild</title> -->
-  <!-- </image_id> -->
 
 </xsl:stylesheet>

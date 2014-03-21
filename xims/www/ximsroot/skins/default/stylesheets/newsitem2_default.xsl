@@ -10,6 +10,11 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="newsitem_default.xsl"/>
-
+<xsl:output method="xml" 
+                encoding="utf-8" 
+                media-type="text/html"
+                indent="no"
+                doctype-system="about:legacy-compat"
+                omit-xml-declaration="yes"/>
 </xsl:stylesheet>
 

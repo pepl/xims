@@ -9,12 +9,21 @@
 	            xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  
                 xmlns="http://www.w3.org/1999/xhtml">
 	
+	<xsl:param name="tinymce_version">3</xsl:param>
+	
 	<xsl:template name="tinymce_scripts">
-		<xsl:call-template name="tinymce_load" />
+		<xsl:call-template name="tinymce_load"/>
 		<!-- <xsl:call-template name="jqtinymce_load" /> -->
 		<xsl:call-template name="mk-inline-js">
 			<xsl:with-param name="code">
-					var tinymceUrl = '<xsl:value-of	select="concat($ximsroot,'vendor/tinymce3/jscripts/tiny_mce/tiny_mce.js')" />';
+				<xsl:choose>
+		     		<xsl:when test="$tinymce_version = '4'">
+						var tinymceUrl = '<xsl:value-of	select="concat($ximsroot,'vendor/tinymce4/js/tinymce/tinymce.min.js')" />';
+					</xsl:when>
+		     		<xsl:otherwise>
+		     			var tinymceUrl = '<xsl:value-of	select="concat($ximsroot,'vendor/tinymce3/jscripts/tiny_mce/tiny_mce.js')" />';
+		     		</xsl:otherwise>
+		     	</xsl:choose>
 					//var origbody = null;
 					var editor = null;
 					// language
@@ -27,15 +36,29 @@
 					var css = '<xsl:value-of select="$defaultcss" /><xsl:if test="css_id != ''">,<xsl:value-of select="concat($xims_box,$goxims_content,css_id,'?plain=1')" /></xsl:if>';			
 			</xsl:with-param>
 		</xsl:call-template>
-
-		<script type="text/javascript" src="{$ximsroot}scripts/tinymce_script.js"><xsl:comment/></script>
+		
+		<xsl:choose>
+     		<xsl:when test="$tinymce_version = '4'">
+				<script type="text/javascript" src="{$ximsroot}scripts/tinymce4_script.js"><xsl:comment/></script>
+			</xsl:when>
+     		<xsl:otherwise>
+     			<script type="text/javascript" src="{$ximsroot}scripts/tinymce_script.js"><xsl:comment/></script>
+     		</xsl:otherwise>
+     	</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template name="tinymce_load">
-     
-		<script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/jquery.tinymce.js" ><xsl:comment/></script>
-		<script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/tiny_mce.js" ><xsl:comment/></script>
-
+     	<xsl:choose>
+     		<xsl:when test="$tinymce_version = '4'">
+     			<script  type="text/javascript" src="{$ximsroot}vendor/tinymce4/js/tinymce/jquery.tinymce.min.js" ><xsl:comment/></script>
+     			<script  type="text/javascript" src="{$ximsroot}vendor/tinymce4/js/tinymce/tinymce.min.js" ><xsl:comment/></script>
+     		</xsl:when>
+     		<xsl:otherwise>
+     			<script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/jquery.tinymce.js" ><xsl:comment/></script>
+				<script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/tiny_mce.js" ><xsl:comment/></script>
+     		</xsl:otherwise>
+     	</xsl:choose>
+     	
 		<!-- ### load minimized tinymce ### -->
 <!--
 		<script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/tiny_mce_gzip.js"><xsl:comment/></script>
