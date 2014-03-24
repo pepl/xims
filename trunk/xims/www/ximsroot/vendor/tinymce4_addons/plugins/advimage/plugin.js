@@ -150,7 +150,7 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 					return;
 				}
 				
-				if(data.caption){
+				if(data.captiontext != ''){
 					var figdata = {
 							style: data.style
 					};
@@ -164,7 +164,7 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 						};
 					var inner = dom.createHTML('img', imgdata)+' '+dom.createHTML('figcaption',{},data.captiontext);
 					if (!imgElm) {
-						data.id = '__mcenew';						
+						figdata.id = '__mcenew';						
 						editor.selection.setContent(dom.createHTML('figure', figdata, inner));
 						imgElm = dom.get('__mcenew');
 						dom.setAttrib(imgElm, 'id', null);
@@ -198,6 +198,12 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 						imgElm = dom.get('__mcenew');
 						dom.setAttrib(imgElm, 'id', null);
 					} else {
+						//alert("imgElm: "+imgElm.tagName+"\nparent: "+imgElm.parentNode.tagName);
+						if(imgElm.parentNode.tagName == 'FIGURE'){
+							//editor.selection.setContent(dom.remove(imgElm.nextElementSibling));
+							//editor.selection.setContent(dom.replace(imgElm, imgElm.parentNode));
+							dom.replace(imgElm, imgElm.parentNode);
+						}
 						dom.setAttribs(imgElm, data);
 					}
 				}
@@ -253,7 +259,7 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 				alt: dom.getAttrib(imgElm, 'alt'),
 				width: width,
 				height: height,
-				caption: true,
+				//caption: true,
 				captiontext: imgElm.parentNode.getElementsByTagName("FIGCAPTION")[0].innerHTML
 			};
 		}
@@ -290,7 +296,7 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 			{name: 'src', type: 'filepicker', filetype: 'image', label: 'Source', autofocus: true, onchange: updateSize},
 			{name: 'title', type: 'textbox', label: 'Title', 'class': 'id-input-title'},
 			{name: 'alt', type: 'textbox', label: 'Image description'},
-			{label: '', name: 'caption', type: 'checkbox', checked: checkCaption(), text: 'Insert as caption'},
+			//{label: '', name: 'caption', type: 'checkbox', checked: checkCaption(), text: 'Insert as caption'},
 			{name: 'captiontext', type: 'textbox', label: 'Image caption', multiline: true},
 		];
 		
@@ -399,7 +405,6 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 				if (value.length > 0 && /^[0-9]+$/.test(value)) {
 					value += 'px';
 				}
-
 				return value;
 			}
 
@@ -413,7 +418,11 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 			css['margin-bottom'] = addPixelSuffix(data.vspace_bottom);
 			css['margin-left'] = addPixelSuffix(data.hspace_left);
 			css['margin-right'] = addPixelSuffix(data.hspace_right);
-			css['border-width'] = addPixelSuffix(data.border);
+			//css['border-width'] = addPixelSuffix(data.border);
+			if(data.border != ""){
+				css['border'] = addPixelSuffix(data.border)+ " solid black";
+			}
+			
 			if(data.align=='top'|| data.align=='center' || data.align=='bottom'){
 				css['vertical-align'] = data.align;
 				css['float'] = '';

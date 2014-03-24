@@ -113,6 +113,7 @@ $().ready(function(){
 	        {title: 'Test template 1', content: 'Test 1'},
 	        {title: 'Test template 2', content: 'Test 2'}
 	    ],
+	    /*
 	    formats: {
 	        alignleft: {selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes: 'left'},
 	        aligncenter: {selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes: 'center'},
@@ -124,6 +125,7 @@ $().ready(function(){
 	        strikethrough: {inline: 'del'},
 	        customformat: {inline: 'span', styles: {color: '#00ff00', fontSize: '20px'}, attributes: {title: 'My custom format'}}
 	    },
+	    */
 	 // Style formats
 	style_formats : [
 	  /*{title: 'Headers', items: [
@@ -181,14 +183,15 @@ $().ready(function(){
 
   ],
   file_browser_callback: function(field_name, url, type, win) { 
+	  //alert(type);
 	  if (type == "file") {
-	        var browseurl = brUrl + 'style=tinymcelink';
+	        var browseurl = brUrl + 'style=tinymcelink&tinymce_version=4';
 	    }
 	    else if (type == "gallery") {
-	        var browseurl = brUrl + 'style=tinymcelink&otfilter=Gallery';
+	        var browseurl = brUrl + 'style=tinymcelink&otfilter=Gallery&tinymce_version=4';
 	    }
 	    else {
-	        var browseurl = brUrl + 'style=tinymceimage&otfilter=Image';
+	        var browseurl = brUrl + 'style=tinymceimage&otfilter=Image&tinymce_version=4';
 	    }
 
 	    tinyMCE.get('body').windowManager.open({
@@ -202,14 +205,12 @@ $().ready(function(){
 	        //data: data,
 	        classes: "ximsfilebrowser",
 	        close_previous: "no",
-	        buttons: [{
-	            text: 'Close',
-	            onclick: 'close'
-	        },
+	        buttons: [
 	        {
-	            text: 'Store Back',
+	            text: 'Ok',
 	            onclick: function(e){
 	            	var path = $('iframe', win.document).contents().find('#input-image').val();
+	            	if (type == "gallery") { path = $('iframe', win.document).contents().find('#input-path').val();}
 	            	var title = $('iframe', win.document).contents().find('#input-title').val();
 	            	var target;
 	            	if($('iframe', win.document).contents().find('#input-target')){
@@ -222,7 +223,7 @@ $().ready(function(){
 	            	var title_id = fn_id + 1;
 	            	var title_inp = "mce_"+ (fn_id+1);
 	            	//alert(fn_id+", "+title_id+", "+title_inp);
-	            	alert(path+", "+title);
+	            	//alert(path+", "+title);
 	            	$('#'+title_inp).val(title);
 	            	var mywin = win;
 	            	if(target != ''){
@@ -230,7 +231,12 @@ $().ready(function(){
 	            	}
 			        tinyMCE.activeEditor.windowManager.close();
 			      }
-	        }],
+	        },
+	        {
+	            text: 'Cancel',
+	            onclick: 'close'
+	        }
+	        ],
 	    }, {
 	        window: win,
 	        input: field_name
