@@ -114,10 +114,11 @@ sub new {
                 $hostnet = $1;
             }
 
-            # the salt is a hash from gettimeofday()'s microseconds, a 32 bit
-            # random number and the PID as the 'known unknowns'.
-            my $salt = sha3_224_base64((gettimeofday())[1] . irand() . $$);
-
+            # the salt is a hash from gettimeofday()'s microseconds, two 32 bit
+            # random numbers and the PID as the 'known unknowns'.
+            my $salt = sha3_224_base64((gettimeofday())[1] . irand() . $$ . irand());
+            # prepare a second token for CSRF prevention
+            my $token      = sha3_224_base64((gettimeofday())[1] . $$ . irand());
             # for the session_id, we hash the userid and the hostnet in.
             my $session_id = sha3_224_hex( $args{user_id}
                                          . $salt
@@ -127,6 +128,7 @@ sub new {
             $args{session_id} = $session_id;
             $args{salt}       = $salt;
             $args{host}       = $host;
+            $args{token}      = $token;
             $args{id}         = 1;
             my $id = $self->data_provider->createSession(%args);
             $real_session = $self->data_provider->getSession( id => $id );
