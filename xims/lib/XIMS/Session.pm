@@ -24,7 +24,6 @@ use Math::Random::Secure qw(irand);
 use Time::HiRes  qw(gettimeofday);
 use Time::Piece;
 
-
 our @Fields = (
     @{ XIMS::Names::property_interface_names( resource_type() ) },
     qw( error_msg   warning_msg message
@@ -92,6 +91,14 @@ sub new {
 
     if ( scalar( keys(%args) ) > 0 ) {
         if ( defined( $args{session_id} ) ) {
+
+            # Don't instantiate voided sessions (There is also a regex check
+            # upfront in the Auth middleware.)
+            if ( ($args{session_id}) =~ /^!/ ) {
+                XIMS::Debug(1, "Eek! Attempt to instantiate voided Session!");
+                return;
+            }
+
             XIMS::Debug( 5, "fetching session by id." );
             $real_session = $self->data_provider->getSession(%args);
 
@@ -175,15 +182,14 @@ sub create {
 =head3 Description
 
 Calls the DataProviders deleteSession method, then undefs the objects
-atributes.
+attributes.
 
 =cut
 
-# XXX: Subroutine name is a homonym for a builtin function.
-# XXX: Seems unused at the moment. pepl?
 sub delete {
     XIMS::Debug( 5, "called" );
     my $self   = shift;
+
     my $retval = $self->data_provider->deleteSession( $self->data() );
     if ($retval) {
         map { $self->$_(undef) } @Fields;
@@ -193,6 +199,40 @@ sub delete {
         return;
     }
 }
+
+
+=head2 void()
+
+=head3 Returns
+
+1 on success, nothing on failure.
+
+=head3 Description
+
+Invalidates the session_id and removes salt and token in the sessions table,
+then undefs the objects attributes.
+
+=cut
+
+sub void {
+    XIMS::Debug( 5, "called" );
+    my $self   = shift;
+
+    # session_id must be unique and not null...
+    $self->session_id( q{!} . $self->session_id );
+    $self->salt( q{} );
+    $self->token( q{} );
+
+    my $retval = $self->update();
+    if ($retval) {
+        map { $self->$_(undef) } @Fields;
+        return 1;
+    }
+    else {
+        return;
+    }
+}
+
 
 =head2 validate($host)
 
