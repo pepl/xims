@@ -43,10 +43,10 @@
 					text: 'To embed or link to an XML document simply type in the URL to the XML file or browse for a local XML document and optionally add a xPointer expression. Optionally set a fallback text which serves as placeholder in the editor/for the link. You can modify or delete your entry at any time.'
 				},
 				{name: 'href', classes: 'xmlpath', size: 35,  type: 'filepicker', filetype: 'file', label: 'URL of XML file', autofocus: true},
-				{name: 'xpointer', type: 'textbox', label: 'xPointer Expression'},
 				{name: 'text', type: 'textbox', size: 40, label: 'Fallback text', onchange: function() {
 					data.text = this.value();
-				}}
+				}},
+				{name: 'xpointer', type: 'textbox', label: 'xPointer Expression'},
 			];
 
 			win = editor.windowManager.open({

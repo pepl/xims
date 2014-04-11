@@ -50,7 +50,9 @@
           <option value="_top">Browser Window (_top)</option>
         </select>
       </div>
-      <div><button type="button" class="button" onclick="inserthyperlink();"><xsl:value-of select="$i18n/l/StoreBack"/></button></div>
+      <xsl:if test="$tinymce_version != '4'">
+    	<div><button type="button" class="button" onclick="inserthyperlink();"><xsl:value-of select="$i18n/l/StoreBack"/></button></div>
+	  </xsl:if>
       <p><xsl:value-of select="$i18n/l/Search_objTree_obj"/><br/>
         <xsl:apply-templates select="targetparents/object[@id !='1']"/>
         <xsl:apply-templates select="target/object"/>

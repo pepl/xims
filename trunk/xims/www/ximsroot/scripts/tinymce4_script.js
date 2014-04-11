@@ -209,8 +209,9 @@ $().ready(function(){
 	        {
 	            text: 'Ok',
 	            onclick: function(e){
-	            	var path = $('iframe', win.document).contents().find('#input-image').val();
-	            	if (type == "gallery") { path = $('iframe', win.document).contents().find('#input-path').val();}
+	            	var path;
+	            	if (type == "image") {path = $('iframe', win.document).contents().find('#input-image').val();}
+	            	else { path = $('iframe', win.document).contents().find('#input-path').val();}
 	            	var title = $('iframe', win.document).contents().find('#input-title').val();
 	            	var target;
 	            	if($('iframe', win.document).contents().find('#input-target')){
