@@ -1,8 +1,8 @@
 sql/setup_db.log
 *jquery_min.css
 *jquery_min.js
-*min.css
-*min.js
+#*min.css
+#*min.js
 *Thumbs.db
 
 # /
