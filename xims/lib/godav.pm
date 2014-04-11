@@ -34,6 +34,7 @@ use Digest::MD5;
 use HTTP::Exception;
 #use Data::Dumper::Concise;
 use HTTP::Date;
+use POSIX qw(setlocale LC_ALL);
 
 
 =head2 handler()
@@ -48,6 +49,8 @@ sub handler {
     my $user   = $env->{'xims.appcontext'}->session->user();
 
     HTTP::Exception->throw(403) unless defined $user;
+
+    setlocale( LC_ALL, 'C' ); # intl date formats
 
     unless ( $method eq 'put' or $method eq 'mkcol' ) {
 
@@ -592,7 +595,7 @@ sub propfind {
         $creationdate->setAttribute( "b:dt", "dateTime.tz" );
 
         #$creationdate->appendText($t->datetime());
-        $creationdate->appendText( $t->strftime("%Y-%m-%dT%T -0000") )
+        $creationdate->appendText( $t->strftime("%Y-%m-%dT%T-00:00") )
             ;    # be IS8601 compliant
         $prop->addChild($creationdate);
 
@@ -612,7 +615,7 @@ sub propfind {
             my $getlastmodified = $dom->createElement("D:getlastmodified");
             $getlastmodified->setAttribute( "b:dt", "dateTime.rfc1123" );
             $getlastmodified->appendText(
-                $t->strftime("%a, %d %b %Y %T -0000") )
+                $t->strftime("%a, %d %b %Y %T GMT") )
                 ;    # be RFC(2)822 compliant
             $prop->addChild($getlastmodified);
 
