@@ -29,6 +29,7 @@ use XIMS::User;
 use XIMS::Importer::Object;
 use URI::Escape; # for uri_unescape
 use XML::LibXML;
+use XML::LibXML::XPathContext;
 #use Data::UUID;
 use Digest::MD5;
 use HTTP::Exception;
@@ -52,16 +53,17 @@ sub handler {
 
     setlocale( LC_ALL, 'C' ); # intl date formats
 
+    my $doc;
     unless ( $method eq 'put' or $method eq 'mkcol' ) {
 
         # Slurp in XML body of request (and ignore it for now...)
         my $ctt;
         if ( $env->{CONTENT_LENGTH} ) {
             $env->{'psgi.input'}->read( $ctt, $env->{CONTENT_LENGTH} );
+            #warn "xml-in" . $ctt;
             my $p = XML::LibXML->new;
             eval {
-                my $doc = $p->parse_string($ctt);
-                #warn "xml-in" . $ctt;
+                $doc = $p->parse_string($ctt);
             };
             if ($@) {
                 HTTP::Exception->throw(400);
@@ -72,7 +74,7 @@ sub handler {
     ## no critic (ProhibitNoStrict)
     no strict 'refs';
     ## no critic (ProhibitNoStrict)
-    my $resp = &{$method}( $env, $user );
+    my $resp = &{$method}( $env, $user, $doc );
 
     push $resp->[1],
         (
@@ -104,10 +106,61 @@ sub options {
 
 =head2 proppatch()
 
+   In practice still unimplemented, but Windows7+ won't accept a simple FORBIDDEN.
+
 =cut
 
 sub proppatch {
-    HTTP::Exception->throw(403);
+    my ( $env, $user, $doc ) = @_;
+
+    my $godav = $env->{SCRIPT_NAME};
+    my $path  = _get_path($env);
+
+
+    XIMS::Debug(5, "called: $path");
+
+    my $object = XIMS::Object->new(
+        User           => $user,
+        path           => $path,
+        marked_deleted => 0
+    );
+    HTTP::Exception->throw(404) unless defined $object;
+
+    my $privmask = $user->object_privmask($object);
+    HTTP::Exception->throw(403) unless $privmask & XIMS::Privileges::WRITE;
+
+    my $xc = XML::LibXML::XPathContext->new($doc);
+    my @nodes = $xc->findnodes('/D:propertyupdate/D:set/D:prop/*');
+
+    my $uri      = $env->{REQUEST_URI};
+    my $response = <<EOS;
+<D:multistatus xmlns:D="DAV:">
+  <D:response>
+    <D:href>$uri</D:href>
+EOS
+
+    foreach my $node (@nodes) {
+        my $pr = $node->prefix();
+        my $ln = $node->localname();
+        my $ns = $node->namespaceURI();
+
+        $response .= "        <D:propstat>\n";
+        $response .= "          <D:prop><$pr:$ln xmlns:$pr=\"$ns\"/></D:prop>\n";
+        $response .= "          <D:status>HTTP/1.1 403 Forbidden</D:status>\n";
+        $response .= "        </D:propstat>\n";
+    }
+
+    $response .= <<EOS;
+    <D:responsedescription>One thing more absurd than the ‘unknown unknowns’ is an implemented unimplemented.</D:responsedescription>
+  </D:response>
+</D:multistatus>
+EOS
+
+    return [
+        '207',
+        [ 'Content-Type' => 'application/xml; charset="UTF-8"' ],
+        [$response]
+    ];
 }
 
 =head2 get()
@@ -382,7 +435,7 @@ EOS
             my $uri      = $env->{REQUEST_URI};
             my $response = <<EOS;
 <?xml version="1.0" encoding="UTF-8" ?>
-<d:multistatus xmlns:D="DAV:">
+<D:multistatus xmlns:D="DAV:">
     <D:response>
         <D:href>$uri</D:href>
         <D:status>HTTP/1.1 423 Locked</D:status>
