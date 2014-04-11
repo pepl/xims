@@ -9,6 +9,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+	<xsl:import href="document_common.xsl"/>
   	<xsl:import href="view_common.xsl"/>
             
 <!-- parameter to allow loading of css-styles needed to match  xims- with public-layout-->
