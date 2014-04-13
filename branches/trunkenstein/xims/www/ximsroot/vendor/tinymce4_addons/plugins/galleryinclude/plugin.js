@@ -40,7 +40,7 @@
 			        minHeight: 100,
 			        text: 'To embed a Gallery simply type in the URL to the Gallery or browse for a local Gallery object. Set a fallback text which serves as placeholder in the editor/for the link. You can modify or delete your entry at any time.'
 			    },
-				{name: 'href', classes: 'xmlpath', size: 35,  type: 'filepicker', filetype: 'file', label: 'URL of XML file', autofocus: true},
+				{name: 'href', classes: 'xmlpath', size: 35,  type: 'filepicker', filetype: 'gallery', label: 'URL of XML file', autofocus: true},
 				{name: 'text', type: 'textbox', size: 40, label: 'Fallback text', onchange: function() {
 					data.text = this.value();
 				}}

@@ -65,8 +65,9 @@
       <input type="hidden" name="imgwidth" value="" id="input-imgwidth"/>
       <input type="hidden" name="imgheight" value="" id="input-imgheight"/>
     </div>
-    <div><button onclick="insertfile();" class="button" ><xsl:value-of select="$i18n/l/StoreBack"/></button> </div>
-
+    <xsl:if test="$tinymce_version != '4'">
+    	<div><button onclick="insertfile();" class="button" ><xsl:value-of select="$i18n/l/StoreBack"/></button> </div>
+	</xsl:if>
     <p><xsl:value-of select="$i18n/l/Search_objTree_img"/><br/>
     <xsl:apply-templates select="targetparents/object[@id !='1']"/>
     <xsl:apply-templates select="target/object"/>
@@ -86,7 +87,9 @@
      <xsl:call-template name="pagenav"></xsl:call-template>
     <input type="hidden" name="id" value="{@id}"/>
     </form>
+    <xsl:if test="$tinymce_version != '4'">
     <script type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/tiny_mce_popup.js"><xsl:comment/></script>
+    </xsl:if>
     <xsl:call-template name="scripts"/>
 </xsl:template>
 

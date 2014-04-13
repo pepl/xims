@@ -157,7 +157,7 @@
 		</xsl:if>
 	</xsl:template>
 	<xsl:template match="abbr|acronym|address|b|bdo|big|blockquote|br|cite|code|div|del|dfn|em|hr|h1|h2|h3|h4|h5|h6    |i|u|ins|kbd|p|pre|q|samp|small|span|strong|sub|sup|tt|var|
-    dl|dt|dd|li|ol|ul|
+    dl|dt|dd|li|ol|ul|figure|figcaption|
     a|
     img|map|area|
     caption|col|colgroup|table|tbody|td|tfoot|th|thead|tr|
