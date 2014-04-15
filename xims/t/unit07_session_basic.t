@@ -7,7 +7,7 @@ use XIMS::Session;
 #use Data::Dumper;
 
 BEGIN {
-    plan tests => 9;
+    plan tests => 24;
 }
 
 my $sess = XIMS::Session->new();
@@ -15,17 +15,61 @@ ok( $sess );
 
 # now create a session in the DB
 $sess = undef;
+my ($sid, $ssid);
 
 $sess = XIMS::Session->new( user_id => 1, auth_module => 'Fake' );
 ok( $sess );
+
+ok( defined( $sid = $sess->id() ) );
+ok( defined( $ssid = $sess->session_id() ) );
 ok( $sess->user_id() == 1 );
-ok( defined( $sess->id() ) );
 ok( defined( $sess->salt() ) );
-ok( defined( $sess->session_id() ) );
+ok( defined( $sess->token() ) );
 ok( defined( $sess->last_access_timestamp() ) );
-ok( defined($sess->host() ) );
+ok( defined( $sess->creation_timestamp() ) );
+ok( defined( $sess->host() ) );
+ok( defined( $sess->auth_module() eq 'Fake' ) );
 ok( not defined $sess->attributes() );
 
+# instanitate by session_id
+$sess = undef;
+$sess = XIMS::Session->new( session_id => $ssid );
+ok($sess);
+
+# test session validation and last_access_time updating
+sleep 1;
+ok($sess->validate('127.0.0.1'));
+ok(not $sess->validate('127.0.0.2'));
+ok(my $lat = Time::Piece->strptime($sess->last_access_timestamp(), '%Y-%m-%d %T') );
+ok(my $ct  = Time::Piece->strptime($sess->creation_timestamp(),    '%Y-%m-%d %T') );
+ok( $lat - $ct > 0 );
+
+# void session
+ok( $sess->void );
+
+# fetching by ci_sessions.session_id must fail
+$sess = undef;
+$sess = XIMS::Session->new( session_id => $ssid );
+ok(not defined $sess);
+
+# fetching by the locked ci_sessions.session_id  (i.e. '!' prepended) must fail
+$sess = undef;
+$sess = XIMS::Session->new( session_id => "!$ssid" );
+ok(not defined $sess);
+
+# fetch by ci_sessions.id (that's why we kept it around)
+$sess = undef;
+$sess = XIMS::Session->new( id => $sid );
+ok($sess);
+
+# load missing data and delete.
+$sess->data( %{ $sess->data_provider->getSession( id => $sid ) } );
+ok( $sess->delete );
+
+# getSession must fail now.
+ok(not $sess->data_provider->getSession( id => $sid ) );
+
+# done :)
 
 __END__
 # Local Variables:
