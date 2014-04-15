@@ -144,6 +144,7 @@ CREATE TABLE ci_sessions
  ,attributes            VARCHAR(200)
  ,host                  VARCHAR(90)  NOT NULL
  ,last_access_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT now() NOT NULL
+ ,creation_timestamp    TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT now() NOT NULL
  ,salt                  VARCHAR(40)
  ,token                 VARCHAR(40)
  ,auth_module           VARCHAR(50)  NOT NULL
