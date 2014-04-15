@@ -24,7 +24,7 @@ sub call {
             XIMS::Debug( 4, "Logout user '" . $env->{'xims.appcontext'}->session->user->name . "'" );
 
             # so we void your XIMS session
-            $env->{'xims.appcontext'}->session()->delete();
+            $env->{'xims.appcontext'}->session()->void();
 
             # congratulation, you have logged out
             $res = $self->unauthorized($env, 'logout');

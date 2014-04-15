@@ -55,8 +55,9 @@
         <!--
             # Session time out limit (in seconds)
             # 86400 = ONE_DAY
+            # 28800 = 8h
         -->
-        <SessionTimeout>86400</SessionTimeout>
+        <SessionTimeout>28800</SessionTimeout>
 
         <!--
         # Path to the tidy binary

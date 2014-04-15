@@ -8,6 +8,7 @@
 # IMAP::Admin
 Archive::Zip 
 Array::Iterator 
+Authen::Passphrase
 CSS::Minifier::XS 
 CSS::Tiny 
 Class::XSAccessor::Compat
@@ -18,6 +19,8 @@ DBD::Pg~1.31
 DBIx::SQLEngine~0.017
 DBIx::XHTML_Table
 Digest::MD5
+Digest::SHA3
+Math::Random::Secure
 Email::Valid 
 File::Slurp 
 HTML::HTML5::Parser 
@@ -41,6 +44,7 @@ Text::Iconv
 Text::Markdown 
 Text::Template 
 Time::Piece 
+Time::HiRes
 XML::LibXML~1.70
 XML::LibXML::Iterator 
 XML::LibXSLT~1.70
