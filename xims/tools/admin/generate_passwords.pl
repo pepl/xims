@@ -6,11 +6,15 @@
 
 use strict;
 use Crypt::GeneratePassword qw(word);
-use Digest::MD5 qw(md5_hex);
-
+use Authen::Passphrase::BlowfishCrypt;
+ 
 while (<>) {
     my $username = $_;
     chomp $username;
-    my $password = word(8,8,'en',0, 3 );
-    print $username . "\t" . $password . "\t" . md5_hex($password) . "\n";
+    my $password = word(10,10,'en',0, 3);
+    my $ppr = Authen::Passphrase::BlowfishCrypt->new( cost => 12, 
+                                                      salt_random => 1,
+                                                      passphrase => $password );
+ 
+    print $username . "\t" . $password . "\t" . $ppr->as_crypt . "\n";
 }

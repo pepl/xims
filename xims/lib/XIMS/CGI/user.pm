@@ -26,7 +26,6 @@ use parent qw( XIMS::CGI );
 use XIMS::User;
 use XIMS::UserPrefs;
 use XIMS::Bookmark;
-use XIMS::UserPrefs;
 use XIMS::DepartmentRoot;
 use XIMS::Object;
 use XIMS::ObjectPriv;
@@ -36,7 +35,9 @@ use XIMS::Term;
 use Getopt::Std;
 use XIMS::Exporter;
 use Digest::MD5 qw( md5_hex );
+use Authen::Passphrase::BlowfishCrypt;
 use Locale::TextDomain ('info.xims');
+
 
 
 =head2 registerEvents()
@@ -173,7 +174,12 @@ sub event_passwd_update {
 
     if ( $user->validate_password( $pass ) ) {
         if ($pass1 eq $pass2 and length ($pass1) > 0) {
-            $user->password( Digest::MD5::md5_hex( $pass1 ) );
+            my $ppr = Authen::Passphrase::BlowfishCrypt->new( cost => 12,
+                                                              salt_random => 1,
+                                                              passphrase => $pass1 );
+
+
+            $user->password( $ppr->as_crypt() );
 
             if ( $user->update() ) {
                 $ctxt->properties->application->style( 'update' );

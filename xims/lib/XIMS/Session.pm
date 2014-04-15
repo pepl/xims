@@ -19,7 +19,9 @@ package XIMS::Session;
 
 use common::sense;
 use parent qw( XIMS::AbstractClass Class::XSAccessor::Compat );
-use Digest::MD5;
+use Digest::SHA3 qw(sha3_224_base64 sha3_224_hex);
+use Math::Random::Secure qw(irand);
+use Time::HiRes  qw(gettimeofday);
 use Time::Piece;
 
 our @Fields = (
@@ -89,6 +91,14 @@ sub new {
 
     if ( scalar( keys(%args) ) > 0 ) {
         if ( defined( $args{session_id} ) ) {
+
+            # Don't instantiate voided sessions (There is also a regex check
+            # upfront in the Auth middleware.)
+            if ( ($args{session_id}) =~ /^!/ ) {
+                XIMS::Debug(1, "Eek! Attempt to instantiate voided Session!");
+                return;
+            }
+
             XIMS::Debug( 5, "fetching session by id." );
             $real_session = $self->data_provider->getSession(%args);
 
@@ -111,20 +121,21 @@ sub new {
                 $hostnet = $1;
             }
 
-            my $salt = time();
-            substr( $salt, 0, 1, q{} );
-            substr( $salt, 0, 3, sprintf( "%03d", int( rand(999) ) ) );
+            # the salt is a hash from gettimeofday()'s microseconds, two 32 bit
+            # random numbers and the PID as the 'known unknowns'.
+            my $salt = sha3_224_base64((gettimeofday())[1] . irand() . $$ . irand());
+            # prepare a second token for CSRF prevention
+            my $token      = sha3_224_base64((gettimeofday())[1] . $$ . irand());
+            # for the session_id, we hash the userid and the hostnet in.
+            my $session_id = sha3_224_hex( $args{user_id}
+                                         . $salt
+                                         . $hostnet );
 
-            # $salt will stored and given back as number, thus leading
-            # zeros in the string are lost. We take the easy way out and
-            # just do int($salt) to avoid corrupt $session_ids.
-            my $session_id = Digest::MD5::md5_hex( $args{user_id}
-                                                 . int($salt)
-                                                 . $hostnet );
 
             $args{session_id} = $session_id;
             $args{salt}       = $salt;
             $args{host}       = $host;
+            $args{token}      = $token;
             $args{id}         = 1;
             my $id = $self->data_provider->createSession(%args);
             $real_session = $self->data_provider->getSession( id => $id );
@@ -171,15 +182,14 @@ sub create {
 =head3 Description
 
 Calls the DataProviders deleteSession method, then undefs the objects
-atributes.
+attributes.
 
 =cut
 
-# XXX: Subroutine name is a homonym for a builtin function.
-# XXX: Seems unused at the moment. pepl?
 sub delete {
     XIMS::Debug( 5, "called" );
     my $self   = shift;
+
     my $retval = $self->data_provider->deleteSession( $self->data() );
     if ($retval) {
         map { $self->$_(undef) } @Fields;
@@ -189,6 +199,40 @@ sub delete {
         return;
     }
 }
+
+
+=head2 void()
+
+=head3 Returns
+
+1 on success, nothing on failure.
+
+=head3 Description
+
+Invalidates the session_id and removes salt and token in the sessions table,
+then undefs the objects attributes.
+
+=cut
+
+sub void {
+    XIMS::Debug( 5, "called" );
+    my $self   = shift;
+
+    # session_id must be unique and not null...
+    $self->session_id( q{!} . $self->session_id );
+    $self->salt( q{} );
+    $self->token( q{} );
+
+    my $retval = $self->update();
+    if ($retval) {
+        map { $self->$_(undef) } @Fields;
+        return 1;
+    }
+    else {
+        return;
+    }
+}
+
 
 =head2 validate($host)
 
@@ -224,7 +268,7 @@ sub validate {
 
     if ( length $hostnet
          and $self->session_id() eq
-         Digest::MD5::md5_hex( $self->user_id() . $self->salt() . $hostnet ) )
+         sha3_224_hex( $self->user_id() . $self->salt() . $hostnet ) )
     {
 
         my $lat = Time::Piece->strptime( $self->last_access_timestamp(),
@@ -254,10 +298,10 @@ sub validate {
                   . " session: "
                   . $self->session_id()
                   . " validation string: "
-                  . Digest::MD5::md5_hex( $self->user_id()
-                                        . $self->salt()
-                                        . $hostnet
-                    )
+                  . sha3_224_hex( $self->user_id()
+                                   . $self->salt()
+                                   . $hostnet
+                  )
                   . " last_access_timestamp: "
                   . $self->last_access_timestamp()
     );
