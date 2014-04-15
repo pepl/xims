@@ -37,7 +37,7 @@ $sess = XIMS::Session->new( session_id => $ssid );
 ok($sess);
 
 # test session validation and last_access_time updating
-sleep 1;
+sleep 2;
 ok($sess->validate('127.0.0.1'));
 ok(not $sess->validate('127.0.0.2'));
 ok(my $lat = Time::Piece->strptime($sess->last_access_timestamp(), '%Y-%m-%d %T') );
