@@ -56,7 +56,7 @@ $().ready(function(){
 	    toolbar1: "styleselect | formatselect | removeformat | bold italic underline superscript subscript | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | indent2ndline outdent2ndline",
 	    toolbar2: "anchor link unlink | nonbreaking | table | charmap extraicons | advhr | galleryinclude advimage clearbr | xmlinclude | media | visualchars visualblocks | code | fullscreen",
 	   // toolbar3: "visualchars visualblocks | code | fullscreen",
-	    content_css: 'https://www.uibk.ac.at/stylesheets/12/css/formats.css',
+	    content_css: css,
 	    body_id: 'content',
 	    element_format: 'xml',
 	    external_plugins: {
