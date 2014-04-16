@@ -126,7 +126,6 @@ $().ready(function(){
 		'Blockquote=blockquote;' +
 		'div=div;' +		
 		'aside=aside;' +
-		'XMLInclude=p span.xml_include;' +
 		'section=section',
 	 // Style formats
 	style_formats : [
@@ -196,9 +195,14 @@ $().ready(function(){
 	            	//dirty but working by now (undocumented TinyMCE4 API)
 	            	//$('#'+field_name).parents('.mce-container-body').parent().find('input').last().val(title);
 	            	var fn_id = parseInt(field_name.replace("mce_","").replace("-inp",""));
-	            	var title_id = fn_id + 1;
+	            	var title_id = fn_id + 1;	            	
 	            	var title_inp = "mce_"+ (fn_id+2);
+	            	if (type == "image"){
+	            		var title_inp = "mce_"+ (fn_id+1);
+	            		var alt_inp = "mce_"+ (fn_id+2);
+	            	}
 	            	$('#'+title_inp).val(title);
+	            	if (type == "image"){$('#'+alt_inp).val(title);}
 	            	var mywin = win;
 	            	if(target != ''){
 	            		$('#'+field_name).siblings('input').siblings('input').val(target);
