@@ -77,6 +77,7 @@ $().ready(function(){
 	    visualblocks_default_state: true,
 	    end_container_on_empty_block: true,
 	    object_resizing: 'img',
+	    keep_styles: false,
 	    insertdatetime_formats: ["%Y.%m.%d", "%H:%M"],
 	    codemirror: {
 	        indentOnInit: true, // Whether or not to indent code on init. 
@@ -230,6 +231,16 @@ $().ready(function(){
 						'<source src="' + data.source1 + '"' + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' +
 						(data.source2 ? '<source src="' + data.source2 + '"' + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') +
 					'</video>'
+				);
+	    	return html;
+	    },
+	    audio_template_callback: function insertVideo(data){
+	    	var html = '';
+	    	html = (
+					'<audio class="media '+data.medialayout+'" width="' + data.width + '" height="' + data.height + '"' + (data.poster ? ' poster="' + data.poster + '"' : '') + ' controls="controls">\n' +
+						'<source src="' + data.source1 + '"' + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' +
+						(data.source2 ? '<source src="' + data.source2 + '"' + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') +
+					'</audio>'
 				);
 	    	return html;
 	    }
