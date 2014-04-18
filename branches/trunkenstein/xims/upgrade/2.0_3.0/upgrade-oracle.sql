@@ -21,3 +21,8 @@ PROMPT Create OPG_GPC_COMBINED_I
 CREATE INDEX OPG_GPC_COMBINED_I ON CI_OBJECT_PRIVS_GRANTED 
 (GRANTEE_ID, PRIVILEGE_MASK, CONTENT_ID)
 /
+PROMPT Create objecttype Document2 and update suffix
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level ) 
+  VALUES ( OBT_SEQ.NEXTVAL, 'Document2', 0, 1, 1, 0, 1 );
+UPDATE CI_DATA_FORMATS SET SUFFIX = 'html' WHERE NAME = 'XHTML5';
+/

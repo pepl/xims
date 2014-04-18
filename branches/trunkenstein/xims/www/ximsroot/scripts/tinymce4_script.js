@@ -45,7 +45,7 @@ $().ready(function(){
 	  	  menu: { 
 	          //file: {title: 'File', items: 'newdocument'}, 
 	          edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'}, 
-	          insert: {title: 'Insert', items: 'advimage clearbr | media | charmap extraicons'}, //insertdatetime
+	          insert: {title: 'Insert', items: 'advimage clearbr | media | charmap | template'}, //insertdatetime
 	          //view: {title: 'View', items: 'visualaid visualchars visualblocks | code | fullscreen'}, 
 	          view: {title: 'View', items: 'visualchars visualblocks | code | fullscreen'}, 
 	          format: {title: 'Format', items: 'bold italic underline superscript subscript | formats | removeformat'}, 
@@ -56,7 +56,7 @@ $().ready(function(){
 	    toolbar1: "styleselect | formatselect | removeformat | bold italic underline superscript subscript | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | indent2ndline outdent2ndline",
 	    toolbar2: "anchor link unlink | nonbreaking | table | charmap extraicons | advhr | galleryinclude advimage clearbr | xmlinclude | media | visualchars visualblocks | code | fullscreen",
 	   // toolbar3: "visualchars visualblocks | code | fullscreen",
-	    content_css: 'https://www.uibk.ac.at/stylesheets/12/css/formats.css',
+	    content_css: css,
 	    body_id: 'content',
 	    element_format: 'xml',
 	    external_plugins: {
@@ -76,6 +76,8 @@ $().ready(function(){
 	    visual: true,
 	    visualblocks_default_state: true,
 	    end_container_on_empty_block: true,
+	    object_resizing: 'img',
+	    keep_styles: false,
 	    insertdatetime_formats: ["%Y.%m.%d", "%H:%M"],
 	    codemirror: {
 	        indentOnInit: true, // Whether or not to indent code on init. 
@@ -110,34 +112,24 @@ $().ready(function(){
 		      ],*/
 		//video_template_callback: 'insertVideo',
 	    templates: [
-	        {title: 'Test template 1', content: 'Test 1'},
-	        {title: 'Test template 2', content: 'Test 2'}
+	        {title: 'Ein-/ausblenden', content: '<p><a class="link-ein" href="#">[Linktext]&nbsp;</a>&nbsp;</p><div class="text-ein"><p>[Inhalt]</p></div>'},
+	        //{title: 'Test template 2', content: 'Test 2'}
 	    ],
-	    /*
-	    formats: {
-	        alignleft: {selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes: 'left'},
-	        aligncenter: {selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes: 'center'},
-	        alignright: {selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes: 'right'},
-	        alignfull: {selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes: 'full'},
-	        bold: {inline: 'strong'},
-	        italic: {inline: 'em'},
-	        underline: {inline: 'span', 'classes': 'underline', exact: true},
-	        strikethrough: {inline: 'del'},
-	        customformat: {inline: 'span', styles: {color: '#00ff00', fontSize: '20px'}, attributes: {title: 'My custom format'}}
-	    },
-	    */
+	    block_formats : 'Paragraph=p;' +
+		'Address=address;' +
+		'Pre=pre;' +
+		'Heading 1=h1;' +
+		'Heading 2=h2;' +
+		'Heading 3=h3;' +
+		'Heading 4=h4;' +
+		'Heading 5=h5;' +
+		'Heading 6=h6;' +
+		'Blockquote=blockquote;' +
+		'div=div;' +		
+		'aside=aside;' +
+		'section=section',
 	 // Style formats
 	style_formats : [
-	  /*{title: 'Headers', items: [
-	    {title: 'h1', block: 'h1'},
-	    {title: 'h2', block: 'h2'},
-	  	{title: 'h3', block: 'h3'},
-	  	{title: 'h4', block: 'h4'},
-		{title: 'h5', block: 'h5'},
-		{title: 'h6', block: 'h6'}
-	  ]},*/
-	  
-      {title: 'Custom', items: [
         {title : 'Schriftfarbe rot', inline : 'span', classes: 'red'},
         {title : 'Schriftfarbe orange', inline : 'span', classes: 'orange'},
         {title : 'Schriftfarbe blau', inline : 'span', classes: 'blue'},
@@ -161,29 +153,12 @@ $().ready(function(){
         {title : 'Liste Document', selector : 'li,ul', classes: 'documentlist'},
         {title : 'Liste Intranet', selector : 'li,ul', classes: 'intranetlist'},
         {title : 'Liste Email', selector : 'li,ul', classes: 'emaillist'},
-        {title : 'Liste Externer Link', selector : 'li,ul', classes: 'externallinklist'}
-      ]},
-      {title: 'Blocks', items: [
-	    //{title: 'Absatz', block: 'p'},
-        {title: 'div', block: 'div'},
-        {title: 'pre', block: 'pre'},
-        {title: 'blockquote', block: 'blockquote', wrapper: true},
-        {title: 'aside', block: 'aside', wrapper: true},
-        {title: 'section', block: 'section', wrapper: true, merge_siblings: false}
-      ]},
-      /*
-      {title: 'Containers', items: [
-        {title: 'section', block: 'section', wrapper: true, merge_siblings: false},
-        //{title: 'article', block: 'article', wrapper: true, merge_siblings: false},
-        {title: 'blockquote', block: 'blockquote', wrapper: true},
-        //{title: 'hgroup', block: 'hgroup', wrapper: true},
-        {title: 'aside', block: 'aside', wrapper: true},
-        //{title: 'figure', block: 'figure', wrapper: true}
-       ]}*/
-
+        {title : 'Liste Externer Link', selector : 'li,ul', classes: 'externallinklist'},
+        {title : 'Galerie Popup', selector : 'a', classes: 'gallery-opener'},
+        {title : 'Ein-/ausblenden Link', selector : 'a', classes: 'link-ein'},
+        {title : 'Ein-/ausblenden Text', selector : 'div', classes: 'text-ein'}
   ],
   file_browser_callback: function(field_name, url, type, win) { 
-	  //alert(type);
 	  if (type == "file") {
 	        var browseurl = brUrl + 'style=tinymcelink&tinymce_version=4';
 	    }
@@ -221,11 +196,14 @@ $().ready(function(){
 	            	//dirty but working by now (undocumented TinyMCE4 API)
 	            	//$('#'+field_name).parents('.mce-container-body').parent().find('input').last().val(title);
 	            	var fn_id = parseInt(field_name.replace("mce_","").replace("-inp",""));
-	            	var title_id = fn_id + 1;
-	            	var title_inp = "mce_"+ (fn_id+1);
-	            	//alert(fn_id+", "+title_id+", "+title_inp);
-	            	//alert(path+", "+title);
+	            	var title_id = fn_id + 1;	            	
+	            	var title_inp = "mce_"+ (fn_id+2);
+	            	if (type == "image"){
+	            		var title_inp = "mce_"+ (fn_id+1);
+	            		var alt_inp = "mce_"+ (fn_id+2);
+	            	}
 	            	$('#'+title_inp).val(title);
+	            	if (type == "image"){$('#'+alt_inp).val(title);}
 	            	var mywin = win;
 	            	if(target != ''){
 	            		$('#'+field_name).siblings('input').siblings('input').val(target);
@@ -244,8 +222,6 @@ $().ready(function(){
 	    });
 
 	    return false;
-                                                          			//alert("browse");
-                                                          	        //win.document.getElementById(field_name).value = 'my browser value'; 
       },//end filebrowser callback
 
       video_template_callback: function insertVideo(data){
@@ -256,17 +232,16 @@ $().ready(function(){
 						(data.source2 ? '<source src="' + data.source2 + '"' + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') +
 					'</video>'
 				);
-	    	/*html = '<div class="media '+data.medialayout+'"><a href="javascript:openVideoDlg('+data.source1+','+data.source2+')">'+
-	    		'<img src="'+data.poster+'" alt="" width="'+data.width+'" height="'+data.height+'" />'+
-	    		'</a>'+
-	    		'</div>'+
-	    		'<div id="video-dialog"><div id="video-container">Loading the player ...</div></div>'+
-	    		'<script type="text/javascript" src="www.uibk.ac.at/scripts/jwplayer/jwplayer.js">// <![CDATA[// ]]></script>'+
-'<script type="text/javascript">// <![CDATA['+
-'$(function() {     if(typeof jwplayer!="undefined"){       jwplayer("video-container").setup({         autostart: false,         file: data.source1,         modes: [             { type: "html5" },             { type: "flash", src: "/scripts/jwplayer/jwplayer.flash.swf" }         ]       });   	} '+  
-    '$("#video-dialog").dialog({       autoOpen: false,       modal: true,       width: $("#video-dialog").children().first().width() + 40,       height: $("#video-dialog").children().first().height() + 65,       open: function(){         jwplayer("video-container").pause(false);       },       close: function(){         jwplayer("video-container").pause(true);       } 	}); });'+
-  'function openVideoDlg(){     $("#video-dialog").dialog( "open" );   }'+
-'// ]]></script>'; */
+	    	return html;
+	    },
+	    audio_template_callback: function insertVideo(data){
+	    	var html = '';
+	    	html = (
+					'<audio class="media '+data.medialayout+'" width="' + data.width + '" height="' + data.height + '"' + (data.poster ? ' poster="' + data.poster + '"' : '') + ' controls="controls">\n' +
+						'<source src="' + data.source1 + '"' + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' +
+						(data.source2 ? '<source src="' + data.source2 + '"' + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') +
+					'</audio>'
+				);
 	    	return html;
 	    }
 	});
