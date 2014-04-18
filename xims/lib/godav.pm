@@ -130,7 +130,7 @@ sub proppatch {
     HTTP::Exception->throw(403) unless $privmask & XIMS::Privileges::WRITE;
 
     my $xc = XML::LibXML::XPathContext->new($doc);
-    my @nodes = $xc->findnodes('/D:propertyupdate/D:set/D:prop/*');
+    my @nodes = $xc->findnodes('/D:propertyupdate/*[D:set|D:remove]/D:prop/*');
 
     my $uri      = $env->{REQUEST_URI};
     my $response = <<EOS;
@@ -311,7 +311,7 @@ sub put {
         # update existing object
         if ( $object->body($body) ) {
             if ( $object->update() ) {
-                return [ 201, ['Location' => $godav. $object->location_path()], [] ];
+                return [ 201, ['Content-Location' => $godav. $object->location_path()], [] ];
             }
             else {
                 XIMS::Debug( 3,
@@ -528,7 +528,7 @@ sub mkcol {
         if ( not $importer->import($folder) ) {
             HTTP::Exception->throw(405);
         }
-        return [ 201, ['Location' => $godav . $folder->location_path()], [] ];
+        return [ 201, ['Content-Location' => $godav . $folder->location_path()], [] ];
     }
     else {
         HTTP::Exception->throw(405);
