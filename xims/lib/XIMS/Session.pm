@@ -90,11 +90,13 @@ sub new {
     my $real_session;
 
     if ( scalar( keys(%args) ) > 0 ) {
-        if ( defined( $args{session_id} ) ) {
-
+        if ( $args{session_id} eq 'ephemeral' and defined($args{user_id}) ) {
+            # return ephemeral session, attributes get set below...
+        }
+        elsif ( defined( $args{session_id} ) ) {
             # Don't instantiate voided sessions (There is also a regex check
             # upfront in the Auth middleware.)
-            if ( ($args{session_id}) =~ /^!/ ) {
+            if ( $args{session_id} =~ /^!/ ) {
                 XIMS::Debug(1, "Eek! Attempt to instantiate voided Session!");
                 return;
             }
@@ -106,7 +108,7 @@ sub new {
             # for an existing session and it wasn't found
             return unless $real_session;
         }
-        elsif ( defined( $args{user_id} ) ) {
+        elsif ( defined($args{user_id}) ) {
             XIMS::Debug( 5, "attempting to create new user session." );
 
             # for session id validation we use the first two bytes of the
@@ -290,6 +292,7 @@ sub validate {
         }
         else {
             XIMS::Debug( 4, "session timed out" );
+            $self->void();
         }
     }
 
