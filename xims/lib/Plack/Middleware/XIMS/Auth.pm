@@ -41,17 +41,20 @@ sub call {
             XIMS::Debug( 6, 'this is a login request, creating a new session' );
 
             $res = $self->app->($env);
-            # all fine, you get a fresh XIMS session cookie
+            # all fine, you get a fresh XIMS session cookie, unless we have an
+            # ephemeral session (e.g. BasicAuth) 
             # TODO: this should find out when to set the cookies secure flag...
-            Plack::Util::response_cb(
-                $res,
-                sub {
-                    my $res = shift;
-                    push @{ $res->[1] },
+            unless ($session_id eq 'ephemeral') {
+                Plack::Util::response_cb(
+                    $res,
+                    sub {
+                        my $res = shift;
+                        push @{ $res->[1] },
                         'Set-Cookie' => "session=$session_id;path=/;httponly;";
-                    return;
-                }
-            );
+                        return;
+                    }
+                );
+            }
             return $res;
         }
         else {
