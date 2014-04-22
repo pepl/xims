@@ -31,8 +31,8 @@ sub create_new_session {
         {
             $env->{'xims.appcontext'}->session(
                 XIMS::Session->new(
+                    'session_id'  => 'ephemeral',
                     'user_id'     => $user->id(),
-                    'user_name'   => $user->name(),
                     'host'        => $env->{REMOTE_ADDR},
                     'auth_module' => ref($login)
                 )

@@ -25,7 +25,7 @@ $ENV{PATH} = '/bin'; # CWD.pm needs '/bin/pwd'
 $ENV{ENV} = '';
 
 my %args;
-getopts('hd:u:p:m:ranf', \%args);
+getopts('hd:u:p:m:raAnf', \%args);
 
 my $term = XIMS::Term->new( debuglevel => $args{d} );
 print $term->banner( "Object Publisher" );
@@ -70,12 +70,13 @@ $ungranted = 0;
 
 if ( $args{r} or $method eq 'unpublish' ) {
     my %param = (User => $user, marked_deleted => 0 );
-    $param{published} = 1 if ( $args{a} or $method eq 'unpublish' );
+    $param{published} = 1 if ( $args{a} or $args{A} or $method eq 'unpublish' );
 
     # process the tree depth first, needed for unpublishing and handy for publishing since things like
     # auto-indices and portlets are correctly published in a single step
     my @descendants = reverse sort { $a->{level} <=> $b->{level} } $object->descendants_granted( %param );
     $options{no_dependencies_update} = 1 if scalar @descendants > 0;
+    $options{no_pubber} = 1 if $args{A} and $user->admin();
 
     my $path;
     my %seencontainers;
@@ -160,6 +161,7 @@ sub usage {
         -m Either 'unpublish' or 'publish'; the latter is the default.
         -r Recursively publish descendants.
         -a If specified, published objects will be republished only
+        -A Same, but without modifying metadata (Admin only)
         -n If specified, publishing dependencies of the object will not be updated
            Will have no effect for publishing trees recursively.
 
@@ -225,6 +227,10 @@ Recursively publish descendants.
 =item B<-a>
 
 If specified, published objects will be republished only.
+
+=item B<-A>
+
+Admin can re-publish objects without changing metadata (timestamps et al.)
 
 =item B<-n>
 
