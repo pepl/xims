@@ -47,7 +47,7 @@
           </dc:date>
           <dc:format>text/html</dc:format>
           <!-- better than a blatant lie... -->
-          <dc:language><xsl:value-of select="substring-after(location, 'md.')"/></dc:language>
+          <dc:language><xsl:value-of select="substring-after(location, 'html.')"/></dc:language>
         </rdf:Description>
       </rdf:RDF>
       
@@ -63,6 +63,9 @@
         <xsl:apply-templates select="children/object">
           <xsl:sort select="position" data-type="number"/>
         </xsl:apply-templates>
+        <xsl:if test="attributes/gen-social-bookmarks='1'">
+          <gen-social-bookmarks/>
+        </xsl:if>
       </links>
     </page>
   </xsl:template>
@@ -73,6 +76,24 @@
       <xsl:copy-of select="@*"/>
       <xsl:apply-templates/>
     </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="children/object">
+    <xsl:variable name="dataformat">
+      <xsl:value-of select="data_format_id"/>
+    </xsl:variable>
+    <xsl:variable name="objecttype">
+      <xsl:value-of select="object_type_id"/>
+    </xsl:variable>
+    <!-- this should be switched to xlink spec -->
+    <xsl:choose>
+      <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='URL'">
+        <link type="locator" title="{title}" href="{location}"/>
+      </xsl:when>
+      <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='SymbolicLink'">
+        <link type="locator" title="{title}" href="{symname_to_doc_id}" />
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>

@@ -25,7 +25,7 @@
 					<xsl:call-template name="prettyprint"/>
 					&#160;
 	</div>-->
-	
+	<xsl:call-template name="social-bookmarks"/>
 	<xsl:call-template name="form-metadata"/>
 	<xsl:call-template name="form-grant"/>
 </xsl:template>

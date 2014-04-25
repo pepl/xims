@@ -11,5 +11,16 @@
 
   <xsl:import href="javascript_create.xsl"/>
 
+  <xsl:template name="create-content">
+	<xsl:call-template name="form-locationtitle-create"/>
+	<xsl:call-template name="form-marknew-pubonsave"/>
+	<xsl:call-template name="form-body-create"/>	
+	<xsl:call-template name="jsorigbody"/>
+	<xsl:call-template name="social-bookmarks"/>
+	<xsl:call-template name="form-keywordabstract"/>
+	<xsl:call-template name="form-grant"/>
+  </xsl:template>
+
   <xsl:template name="form-minify"/>
+
 </xsl:stylesheet>

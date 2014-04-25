@@ -95,6 +95,7 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 
 			width = newWidth;
 			height = newHeight;
+			updateStyle();
 		}
 
 		function onSubmitForm() {
@@ -152,7 +153,9 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 				
 				if(data.captiontext != ''){
 					var figdata = {
-							style: data.style
+							style: data.style,
+							width: data.width,
+							height: data.height
 					};
 					var imgdata = {
 							src: data.src,
@@ -293,7 +296,6 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 
 		// General settings shared between simple and advanced dialogs
 		var generalFormItems = [
-			{name: 'src', type: 'filepicker', filetype: 'image', label: 'Source', autofocus: true, onchange: updateSize},
 			{name: 'title', type: 'textbox', label: 'Title', 'class': 'id-input-title'},
 			{name: 'alt', type: 'textbox', label: 'Image description'},
 			//{label: '', name: 'caption', type: 'checkbox', checked: checkCaption(), text: 'Insert as caption'},
@@ -431,6 +433,9 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 				css['float'] = data.align;
 				css['vertical-align'] = '';
 			}
+				css['width'] = addPixelSuffix(data.width);
+				css['height'] = addPixelSuffix(data.height);
+			
 			
 
 			win.find('#style').value(dom.serializeStyle(dom.parseStyle(dom.serializeStyle(css))));

@@ -51,6 +51,9 @@
                 <owned_by_lastname><xsl:apply-templates select="owned_by_lastname"/></owned_by_lastname>
                 <links>
                     <xsl:apply-templates select="children/object"/>
+                    <xsl:if test="attributes/gen-social-bookmarks='1'">
+                      <gen-social-bookmarks/>
+                    </xsl:if>
                 </links>
             </newsitem>
         </newsitems>

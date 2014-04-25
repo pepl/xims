@@ -65,6 +65,9 @@
                 <xsl:apply-templates select="children/object">
                     <xsl:sort select="position" data-type="number"/>
                 </xsl:apply-templates>
+                <xsl:if test="attributes/gen-social-bookmarks='1'">
+                  <gen-social-bookmarks/>
+                </xsl:if>
             </links>
         </page>
     </xsl:template>
