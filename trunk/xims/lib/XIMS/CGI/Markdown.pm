@@ -54,13 +54,11 @@ sub registerEvents {
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
+    return 0 if $self->SUPER::event_default( $ctxt );
 
-    warn $ctxt->object->body();
+    $ctxt->properties->content->getchildren->objecttypes( [ qw( Text URLLink SymbolicLink ) ] );
 
     my $newbody = markdown( $ctxt->object->body() );
-
-    warn $newbody;
-
     $ctxt->object->body( $newbody );
 
     return 0;
