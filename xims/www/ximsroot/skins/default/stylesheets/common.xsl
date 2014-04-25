@@ -2257,4 +2257,21 @@
 		</p>-->
 		<a class="button" href="{$xims_box}{$goxims}/user"><xsl:value-of select="$i18n/l/cancel"/></a>
 	</xsl:template>
+
+    <xsl:template name="social-bookmarks">
+      <div id="social-bookmarks">
+        <fieldset>
+          <br/>
+          <input name="gen-social-bookmarks" type="checkbox" id="gen-social-bookmarks" class="checkbox">
+            <xsl:if test="attributes/gen-social-bookmarks='1'">
+              <xsl:attribute name="checked"/>
+            </xsl:if>
+          </input>
+          <label for="gen-social-bookmarks">
+            <xsl:value-of select="$i18n/l/create"/> Social Bookmarks
+          </label>
+        </fieldset>
+      </div>
+    </xsl:template>
+    
 </xsl:stylesheet>

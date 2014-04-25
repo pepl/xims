@@ -129,6 +129,13 @@ sub event_store {
         $object->body( XIMS::xml_escape( $body ) );
     }
 
+    if ( $self->param( 'gen-social-bookmarks' ) ) {
+        $ctxt->object->attribute( 'gen-social-bookmarks' => 1 );
+    }
+    else {
+        $ctxt->object->attribute( 'gen-social-bookmarks' => undef );
+    }
+
     return $self->SUPER::event_store( $ctxt );
 }
 
