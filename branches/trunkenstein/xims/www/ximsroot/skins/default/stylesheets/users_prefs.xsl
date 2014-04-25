@@ -24,7 +24,11 @@
 			<h1 class="bluebg"><xsl:value-of select="$i18n/l/ManagePersonalSettings"/>&#160;<xsl:value-of select="$i18n/l/of"/>&#160;<xsl:value-of select="$i18n/l/User"/>&#160;<xsl:value-of select="context/user/name"/></h1>
 			<!--<xsl:apply-templates select="/document/context/user"/>-->
 			
-			<form name="userEdit" action="{$xims_box}{$goxims}/userprefs" method="post" id="create-edit-form">
+			<form name="userEdit" 
+                  action="{$xims_box}{$goxims}/userprefs"
+                  method="post" 
+                  id="create-edit-form">
+              <xsl:call-template name="input-token"/>
 				<!--
 				<strong><xsl:value-of select="$i18n/l/SelectSkin"/></strong><br/>
 				<input type="radio" id="skin_def" class="radio-button" name="skin" value="default">

@@ -20,7 +20,8 @@
 					<!--<xsl:with-param name="noncontent">true</xsl:with-param>-->
 				</xsl:call-template>
 				<div id="content-container">
-					<form action="{$xims_box}{$goxims_content}" method="get">
+					<form action="{$xims_box}{$goxims_content}" method="post">
+                        <xsl:call-template name="input-token"/>
 						<h1 class="bluebg"><xsl:value-of select="$i18n/l/DeleteConfirm"/></h1>
 						<p><xsl:value-of select="$i18n/l/AboutDeletion1"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/AboutDeletion2"/></p>
 						<p><xsl:value-of select="$i18n/l/ClickCancelConf"/></p>

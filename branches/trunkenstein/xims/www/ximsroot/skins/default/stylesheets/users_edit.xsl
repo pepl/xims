@@ -44,47 +44,46 @@
 </xsl:template>
 
 <xsl:template match="user">
-    <form name="userEdit" action="{$xims_box}{$goxims_users}" method="post">
+  <form name="userEdit" action="{$xims_box}{$goxims_users}" method="post">
+    <xsl:call-template name="input-token"/>
+	<div class="form-div block">
+	  <div>
+        <div class="label-med">ID:</div>
+        <xsl:value-of select="@id"/>
+      </div>
 
-				<div class="form-div block">
-					<div>
-                <div class="label-med">ID:</div>
-                <xsl:value-of select="@id"/>
-                </div>
+      <div>
+        <div class="label-med"><label for="name"><xsl:value-of select="$i18n/l/Username"/></label>*:</div>
+        <input size="30" maxlength="30" id="name" name="name" type="text" value="{name}">
+          <xsl:if test="/document/context/session/user/system_privileges/change_user_name != 1">
+            <xsl:attribute name="readonly">readonly</xsl:attribute>
+		  </xsl:if>
+        </input>
+	  </div>
+      
 
-                  
-                      <div>
-                <div class="label-med"><label for="name"><xsl:value-of select="$i18n/l/Username"/></label>*:</div>
-                  <input size="30" maxlength="30" id="name" name="name" type="text" value="{name}">
-                  	<xsl:if test="/document/context/session/user/system_privileges/change_user_name != 1">
-                  		<xsl:attribute name="readonly">readonly</xsl:attribute>
-					</xsl:if>
-                  </input>
-				</div>
-                  
+      <xsl:if test="/document/context/session/user/system_privileges/change_user_fullname = 1">
+        <xsl:call-template name="usermeta"/>
+      </xsl:if>
+	</div>
+	<div class="form-div">
+      <xsl:if test="/document/context/session/user/system_privileges/change_sysprivs_mask = 1">
+        <xsl:call-template name="system_privileges"/>
+      </xsl:if>
+	</div>
+	<div class="form-div">
+      <xsl:if test="/document/context/session/user/system_privileges/set_admin_equ = 1">
+        <xsl:call-template name="user_isadmin"/>
+      </xsl:if>
+      <xsl:if test="/document/context/session/user/system_privileges/set_status = 1">
+        <xsl:call-template name="account_enabled"/>
+      </xsl:if>
+	</div>
+    <xsl:call-template name="exitform">
+      <xsl:with-param name="action" select="'update'"/>
+    </xsl:call-template>
 
-                  <xsl:if test="/document/context/session/user/system_privileges/change_user_fullname = 1">
-                      <xsl:call-template name="usermeta"/>
-                  </xsl:if>
-				  </div>
-				  <div class="form-div">
-                  <xsl:if test="/document/context/session/user/system_privileges/change_sysprivs_mask = 1">
-                      <xsl:call-template name="system_privileges"/>
-                  </xsl:if>
-				  </div>
-				  <div class="form-div">
-                  <xsl:if test="/document/context/session/user/system_privileges/set_admin_equ = 1">
-                      <xsl:call-template name="user_isadmin"/>
-                  </xsl:if>
-                  <xsl:if test="/document/context/session/user/system_privileges/set_status = 1">
-                      <xsl:call-template name="account_enabled"/>
-                  </xsl:if>
-				  </div>
-                <xsl:call-template name="exitform">
-                    <xsl:with-param name="action" select="'update'"/>
-                </xsl:call-template>
-
-    </form>
+  </form>
 </xsl:template>
 
 </xsl:stylesheet>

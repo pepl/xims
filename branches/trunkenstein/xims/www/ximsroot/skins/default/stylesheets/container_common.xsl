@@ -394,18 +394,20 @@
 	
   <xsl:template name="childrentable">
     <xsl:variable name="location" select="concat($goxims_content,$absolute_path)"/>
-    <form method="get" name="multi">
-    <xsl:attribute name="action">
-      <xsl:choose>
+    <form method="post" name="multi">
+   
+      <xsl:attribute name="action">
+        <xsl:choose>
 	      <xsl:when test="$absolute_path != ''">
 	        <xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>
 	      </xsl:when>
 	      <xsl:otherwise>
 	        <xsl:value-of select="concat($xims_box,$goxims,'/user')"/>
 	      </xsl:otherwise>
-      </xsl:choose>
-    </xsl:attribute>
+        </xsl:choose>
+      </xsl:attribute>
 
+      <xsl:call-template name="input-token"/>
     <table class="obj-table">
       <tbody>
         <tr>

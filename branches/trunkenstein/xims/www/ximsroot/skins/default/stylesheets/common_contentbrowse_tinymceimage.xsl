@@ -55,6 +55,7 @@
 
 <xsl:template name="selectform">
   <form action="{$xims_box}{$goxims_content}" method="post" name="selectform" id="select-form">
+    <xsl:call-template name="input-token"/>
     <div>
       <div class="label-std"><label for="input-image"><xsl:value-of select="$i18n/l/Path_to_img"/></label></div>
       <input type="text" name="imgpath" size="60" id="input-image"/>

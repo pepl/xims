@@ -53,6 +53,7 @@
       <xsl:text>','default-dialog')</xsl:text>
     </xsl:variable> 
 	<form action="{$xims_box}{$goxims_content}" method="post" name="selectform">
+        <xsl:call-template name="input-token"/>
 		<p>
 			<xsl:value-of select="$i18n/l/Browse_to"/>:
 			<br/>&#xa0;

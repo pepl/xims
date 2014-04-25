@@ -412,6 +412,7 @@
                           <form name="logout" 
                               method="post"
                               action="{$goxims_content}{$absolute_path}">
+                            <xsl:call-template name="input-token"/>
                             <input type="hidden" name="reason" value="logout"/>
                             <!-- <input type="submit" name="logout"
                                  value="{$i18n/l/logout}"/> -->
