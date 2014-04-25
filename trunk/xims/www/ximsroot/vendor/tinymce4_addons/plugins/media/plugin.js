@@ -566,8 +566,9 @@ tinymce.PluginManager.add('media', function(editor, url) {
 					innerNode.value = unescape(innerHtml);
 					realElm.append(innerNode);
 				}
-
-				node.replace(realElm);
+				//placeholder img is wrapped in p, so replace parent
+				node.parent.replace(realElm);
+				
 			}
 		});
 
