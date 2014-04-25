@@ -538,34 +538,34 @@
 </xsl:if>
    <!-- begin options bar -->
 <td>
-	<form action="{$xims_box}{$goxims_content}" method="get">
-
-<div>
-<xsl:attribute name="id">buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/></xsl:attribute><xsl:comment/>
+  <form action="{$xims_box}{$goxims_content}" method="post">
+    <xsl:call-template name="input-token"/>
+    <div>
+      <xsl:attribute name="id">buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/></xsl:attribute><xsl:comment/>
 	</div>
-<script type="text/javascript">
-	$(document).ready(function() {
-		if($('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html() == ''){
-			$.get('<xsl:value-of select="concat($goxims_content,'?obj_acllight=1;userid=',@id,';id=',/document/context/object/@id)"/>',
-				function(data){
-					$('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html(data)
-					$('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').buttonset();
-			});
-		}		
-	});
+    <script type="text/javascript">
+	  $(document).ready(function() {
+	      if($('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html() == ''){
+	          $.get('<xsl:value-of select="concat($goxims_content,'?obj_acllight=1;userid=',@id,';id=',/document/context/object/@id)"/>',
+	          function(data){
+	             $('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html(data)
+	             $('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').buttonset();
+	          });
+	      }		
+	  });
 	</script>	
-	 <xsl:if test="$tooltip= ''">
-	 	&#160;
-	<button class="button" name="obj_aclgrant" type="submit"><xsl:value-of select="$i18n/l/save"/></button>
-	<input name="userid" type="hidden" >
+	<xsl:if test="$tooltip= ''">
+	  &#160;
+	  <button class="button" name="obj_aclgrant" type="submit"><xsl:value-of select="$i18n/l/save"/></button>
+	  <input name="userid" type="hidden" >
 		<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
-	</input>
-	<input name="id" type="hidden" value="{/document/context/object/@id}"/>
-	<xsl:call-template name="rbacknav"/>
-	&#160;
-	<button class="button" name="obj_aclrevoke" type="submit"><xsl:value-of select="$i18n/l/Revoke_grants"/></button>
+	  </input>
+	  <input name="id" type="hidden" value="{/document/context/object/@id}"/>
+	  <xsl:call-template name="rbacknav"/>
+	  &#160;
+	  <button class="button" name="obj_aclrevoke" type="submit"><xsl:value-of select="$i18n/l/Revoke_grants"/></button>
 	</xsl:if>
-	</form>
+  </form>
 </td>
    <!-- end options bar -->
   </tr>

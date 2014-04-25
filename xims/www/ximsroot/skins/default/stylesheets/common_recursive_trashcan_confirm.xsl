@@ -24,7 +24,8 @@
 			</xsl:call-template>
 
 			<div id="content-container">
-				<form name="recursiveobjectdeletion" action="{$xims_box}{$goxims_content}?id={@id}" method="get">
+				<form name="recursiveobjectdeletion" action="{$xims_box}{$goxims_content}" method="post">
+                  <xsl:call-template name="input-token"/>
 					<h1 class="bluebg"><xsl:value-of select="$i18n/l/DeleteConfirm"/> - <xsl:value-of select="$i18n/l/ChildObjectsFound"/></h1>
 						<p><xsl:value-of select="$i18n/l/AboutDeletion1"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/AboutDeletion2"/></p>		
 						<p>

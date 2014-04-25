@@ -20,6 +20,7 @@
 			</xsl:call-template>
 		<div id="content-container">
 		<form name="userEdit" action="{$xims_box}{$goxims}/user" method="post">
+            <xsl:call-template name="input-token"/>
 			<p><xsl:call-template name="message"/></p>
 
 			<h1 class="bluebg"><xsl:value-of select="$i18n/l/ChangePwdFor"/>&#160;'<xsl:value-of select="/document/context/session/user/name"/>'</h1>

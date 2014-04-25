@@ -96,22 +96,23 @@
 		</div>
 	</xsl:template>
 
-<xsl:template name="cancelcreateform">
-		<div class="cancel-save">
-			<form class="cancelsave-form" action="{$xims_box}{$goxims_content}{$absolute_path}" method="post">
-			<xsl:call-template name="save_jsbutton"/>			
-			<!--<button type="submit" name="send_as_mail" value="{$i18n/l/Send}" accesskey="S">
-				<xsl:value-of select="$i18n/l/Send"/>
-			</button> -->
-				<xsl:call-template name="rbacknav"/>
-				<button type="submit" name="cancel_create button" class="button" accesskey="C">
-					<span class="text">
-						<xsl:value-of select="$i18n/l/cancel"/>
-					</span>
-				</button>
-			</form>
-			&#160;<br/>
-		</div>
+    <xsl:template name="cancelcreateform">
+	  <div class="cancel-save">
+		<form class="cancelsave-form" action="{$xims_box}{$goxims_content}{$absolute_path}" method="post">
+          <xsl:call-template name="input-token"/>
+		  <xsl:call-template name="save_jsbutton"/>			
+		  <!--<button type="submit" name="send_as_mail" value="{$i18n/l/Send}" accesskey="S">
+			  <xsl:value-of select="$i18n/l/Send"/>
+			  </button> -->
+		  <xsl:call-template name="rbacknav"/>
+		  <button type="submit" name="cancel_create button" class="button" accesskey="C">
+			<span class="text">
+			  <xsl:value-of select="$i18n/l/cancel"/>
+			</span>
+		  </button>
+		</form>
+		&#160;<br/>
+	  </div>
 	</xsl:template>
 	
 	<xsl:template name="save_jsbutton">
