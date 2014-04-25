@@ -192,7 +192,7 @@ INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix )
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) 
        VALUES ( nextval('ci_data_formats_id_seq'), 'PPTX', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'pptx' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) 
-       VALUES ( nextval('ci_data_formats_id_seq'), 'Markdown', 'text/x-markdown', 'html' );
+       VALUES ( nextval('ci_data_formats_id_seq'), 'Markdown', 'text/x-markdown', 'md' );
 
 
 \echo inserting into ci_mime_type_aliases...
