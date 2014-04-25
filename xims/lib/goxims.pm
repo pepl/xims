@@ -54,8 +54,6 @@ use XIMS::CGI::Image;
 use XIMS::CGI::Portlet;
 use XIMS::CGI::Questionnaire;
 
-
-
 BEGIN {
     # gettext encoding
     bind_textdomain_filter( 'info.xims', \&turn_utf_8_on );
@@ -73,6 +71,20 @@ sub handler {
     my $req = Plack::Request->new($env);
 
     XIMS::Debug( 5, "'" . $req->script_name() . "' called from " . $req->address() );
+
+    # CSRF-Protection
+    unless ( $req->method eq 'GET'
+          or $req->method eq 'HEAD'
+          or $req->param('token') eq $ctxt->session->token() ) {
+
+        XIMS::Debug(1, $req->address . ' '
+                     . $req->method . " to "
+                     . $req->request_uri . ", referer "
+                     . $req->referer
+                     . ": Missing or wrong CSRF-token!");
+
+        http_throw('Forbidden');
+    }
 
     http_throw('NotFound') unless $interface_type = get_interface($req);
 
@@ -258,7 +270,8 @@ FORM
 return [ 200,
          [ 'Content-Type' => 'text/html;charset=UTF-8',
            'Set-Cookie' => 'session=; path=/; expires=-1Y',
-           'Content-Security-Policy' => "default-src 'none'; img-src 'self'; style-src 'self'", ],
+           'Content-Security-Policy' => "default-src 'none'; img-src 'self'; style-src 'self'",
+           'X-Frame-Options' => "DENY", ],
          [ encode('UTF-8', $body) ]
      ];
 };
@@ -367,8 +380,6 @@ sub run_app {
 }
 
 1;
-
-
 
 __END__
 
