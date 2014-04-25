@@ -11,5 +11,14 @@
 
   <xsl:import href="javascript_edit.xsl"/>
 
+  <xsl:template name="edit-content">
+	<xsl:call-template name="form-locationtitle-edit"/>
+	<xsl:call-template name="form-marknew-pubonsave"/>
+	<xsl:call-template name="form-body-edit"/>
+	<xsl:call-template name="jsorigbody"/>
+    <xsl:call-template name="social-bookmarks"/>
+	<xsl:call-template name="form-keywordabstract"/>
+  </xsl:template>
+  
   <xsl:template name="form-minify"/>
 </xsl:stylesheet>

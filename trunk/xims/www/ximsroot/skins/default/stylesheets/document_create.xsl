@@ -17,6 +17,7 @@
 		<xsl:call-template name="form-marknew-pubonsave"/>
 		<xsl:call-template name="form-body-create"/>
 		<xsl:call-template name="jsorigbody"/>
+        <xsl:call-template name="social-bookmarks"/>
 		<xsl:call-template name="form-keywordabstract"/>
 		<xsl:call-template name="form-grant"/>
 	</xsl:template>
