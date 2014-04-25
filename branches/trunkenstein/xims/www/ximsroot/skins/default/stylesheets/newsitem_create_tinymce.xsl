@@ -23,6 +23,7 @@
 	<xsl:call-template name="form-leadimage-create"/>
 	<xsl:call-template name="form-body-create_tinymce"/>
 	<xsl:call-template name="jsorigbody"/>
+    <xsl:call-template name="social-bookmarks"/>
 	<xsl:call-template name="form-metadata"/>
 	
 	<xsl:call-template name="form-grant"/>

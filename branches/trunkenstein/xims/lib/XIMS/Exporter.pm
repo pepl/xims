@@ -1509,7 +1509,7 @@ use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
-
+use XIMS::SAX::Filter::Attributes;
 
 
 =head2   remove()
@@ -1575,6 +1575,7 @@ sub set_sax_filters {
                                                                  ResolveContent => [ qw( DEPARTMENT_ID
                                                                                          SYMNAME_TO_DOC_ID ) ] );
 
+    push @retval, XIMS::SAX::Filter::Attributes->new();
     # the following is needed to give the ContentLinkResolver SAXy events from the body
     # (i.e. have XIMS::SAX::Filter::ContentLinkResolver AFTER XIMS::SAX::Filter::CharacterChunk in the filter list)
     $self->{Options}->{appendexportfilters} = 1;
@@ -1861,6 +1862,8 @@ sub set_sax_filters {
                                                                          ResolveContent => [ qw( image_id ) ],
                                                                          Properties     => [ qw( abstract ) ]
                                                                          );
+
+    push @retval, XIMS::SAX::Filter::Attributes->new();
 
     $self->{Options}->{appendexportfilters} = 1;
 

@@ -134,6 +134,13 @@ sub event_store {
         $trytobalance = $self->param( 'trytobalance' );
     }
 
+    if ( $self->param( 'gen-social-bookmarks' ) ) {
+        $ctxt->object->attribute( 'gen-social-bookmarks' => 1 );
+    }
+    else {
+        $ctxt->object->attribute( 'gen-social-bookmarks' => undef );
+    }
+
     my $body = $self->param( 'body' );
     if ( defined $body and length $body ) {
         my $object = $ctxt->object();

@@ -20,6 +20,7 @@
 		<xsl:call-template name="form-leadimage-edit"/>
 		<xsl:call-template name="form-body-edit_tinymce"/>
 		<xsl:call-template name="jsorigbody"/>
+        <xsl:call-template name="social-bookmarks"/>
 		<xsl:call-template name="form-metadata"/>
 		<xsl:call-template name="expandrefs"/>
 	</xsl:template>

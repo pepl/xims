@@ -18,6 +18,7 @@
     <xsl:call-template name="form-marknew-pubonsave"/>
     <xsl:call-template name="form-body-edit_tinymce"/>
     <xsl:call-template name="jsorigbody"/>
+    <xsl:call-template name="social-bookmarks"/>
     <xsl:call-template name="form-keywordabstract"/>
     <xsl:call-template name="expandrefs"/>
   </xsl:template>

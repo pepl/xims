@@ -34,7 +34,8 @@ use XML::LibXML::XPathContext;
 use Digest::MD5;
 use HTTP::Exception;
 #use Data::Dumper::Concise;
-use HTTP::Date;
+#use HTTP::Date;
+use Time::Piece;
 use POSIX qw(setlocale LC_ALL);
 
 
@@ -173,7 +174,6 @@ sub get {
     my $godav = $env->{SCRIPT_NAME};
     my $path  = _get_path($env);
 
-
     XIMS::Debug(5, "called: $path");
 
     my $object = XIMS::Object->new(
@@ -221,12 +221,14 @@ sub get {
     }
     else {
         my $mime_type =  $object->data_format->mime_type();
+        my $last_modified = Time::Piece->strptime( $object->last_modification_timestamp(), "%Y-%m-%d %H:%M:%S" );
+        $last_modified -= localtime->tzoffset;
 
         if ($mime_type =~ /^text/ ) {
             return [
                 200,
                 [   'Content-Type' => "$mime_type; charset=UTF-8",
-                    'Last-Modified' => time2str( str2time( $object->last_modification_timestamp(), 'CET') )
+                    'Last-Modified' => $last_modified->strftime("%a, %d %b %Y %T GMT"),
                 ],
                 [  Encode::encode('UTF-8', $object->body()) ]
             ];
@@ -235,7 +237,7 @@ sub get {
             return [
                 200,
                 [   'Content-Type' => $mime_type,
-                    'Last-Modified' => time2str( str2time( $object->last_modification_timestamp(), 'CET') )
+                    'Last-Modified' => $last_modified->strftime("%a, %d %b %Y %T GMT"),
                 ],
                 [  $object->body() ]
             ];
@@ -345,7 +347,7 @@ sub put {
             unless $privmask & XIMS::Privileges::CREATE;
 
         my $importer
-            = XIMS::Importer::Object->new( User => $user, Parent => $parent );
+            = XIMS::Importer::Object->new( User => $user, Parent => $parent);
         my ( $object_type, $data_format )
             = $importer->resolve_filename($path);
 
@@ -376,7 +378,7 @@ sub put {
         # not-quite-DAV-aware applications
         my $id = $importer->import( $object, undef, _tmpsafe($location) );
         if ( defined $id ) {
-            return [ 201, ['Location' => $godav. $object->location_path()], [] ];
+            return [ 201, ['Content-Location' => $godav. $object->location_path()], [] ];
         }
         else {
             XIMS::Debug( 3, "Import failed." );
@@ -611,6 +613,8 @@ sub propfind {
             = $object->object_type->{is_fs_container};
     }
 
+    my $tzoffset = localtime->tzoffset;
+
     foreach my $o (@objects) {
         my $is_fs_container = $is_fs_container{ $o->object_type_id };
         my $status          = "HTTP/1.1 200 OK";
@@ -644,12 +648,14 @@ sub propfind {
 
         $t = Time::Piece->strptime( $o->creation_timestamp(),
             "%Y-%m-%d %H:%M:%S" );
+        # from local to GMT
+        $t -= $tzoffset;
+
         my $creationdate = $dom->createElement("D:creationdate");
         $creationdate->setAttribute( "b:dt", "dateTime.tz" );
 
-        #$creationdate->appendText($t->datetime());
-        $creationdate->appendText( $t->strftime("%Y-%m-%dT%T-00:00") )
-            ;    # be IS8601 compliant
+        # be IS8601 compliant
+        $creationdate->appendText( $t->strftime("%Y-%m-%dT%T-00:00") );
         $prop->addChild($creationdate);
 
         # put get* properties only for non-collections, as GET is unsupported
@@ -665,11 +671,13 @@ sub propfind {
 
             $t = Time::Piece->strptime( $o->last_modification_timestamp(),
                 "%Y-%m-%d %H:%M:%S" );
+            # from local to GMT
+            $t -= $tzoffset;
+
             my $getlastmodified = $dom->createElement("D:getlastmodified");
             $getlastmodified->setAttribute( "b:dt", "dateTime.rfc1123" );
-            $getlastmodified->appendText(
-                $t->strftime("%a, %d %b %Y %T GMT") )
-                ;    # be RFC(2)822 compliant
+            $getlastmodified->appendText( $t->strftime("%a, %d %b %Y %T GMT") );
+                    # be RFC(2)822 compliant
             $prop->addChild($getlastmodified);
 
             my $size = $o->content_length();

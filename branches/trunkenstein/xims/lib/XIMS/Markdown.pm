@@ -53,7 +53,7 @@ sub new {
     my %args = @_;
 
     if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
-        $args{data_format_id} = XIMS::DataFormat->new( name => 'Markdown' )->id() unless defined $args{data_format_id};
+        $args{data_format_id} = XIMS::DataFormat->new( name => 'HTML' )->id() unless defined $args{data_format_id};
     }
 
     return $class->SUPER::new( %args );

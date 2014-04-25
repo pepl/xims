@@ -54,13 +54,11 @@ sub registerEvents {
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
+    return 0 if $self->SUPER::event_default( $ctxt );
 
-    warn $ctxt->object->body();
+    $ctxt->properties->content->getchildren->objecttypes( [ qw( Text URLLink SymbolicLink ) ] );
 
     my $newbody = markdown( $ctxt->object->body() );
-
-    warn $newbody;
-
     $ctxt->object->body( $newbody );
 
     return 0;
@@ -129,6 +127,13 @@ sub event_store {
     if ( defined $body and length $body ) {
         my $object = $ctxt->object();
         $object->body( XIMS::xml_escape( $body ) );
+    }
+
+    if ( $self->param( 'gen-social-bookmarks' ) ) {
+        $ctxt->object->attribute( 'gen-social-bookmarks' => 1 );
+    }
+    else {
+        $ctxt->object->attribute( 'gen-social-bookmarks' => undef );
     }
 
     return $self->SUPER::event_store( $ctxt );
