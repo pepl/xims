@@ -33,6 +33,8 @@ sub set_sax_filters {
         Properties     => [qw( abstract data_format_name )]
         );
 
+    push @retval, XIMS::SAX::Filter::Attributes->new();
+
     $self->{Options}->{appendexportfilters} = 1;
 
     return @retval;

@@ -1862,6 +1862,8 @@ sub set_sax_filters {
                                                                          Properties     => [ qw( abstract ) ]
                                                                          );
 
+    push @retval, XIMS::SAX::Filter::Attributes->new();
+
     $self->{Options}->{appendexportfilters} = 1;
 
     return @retval;
