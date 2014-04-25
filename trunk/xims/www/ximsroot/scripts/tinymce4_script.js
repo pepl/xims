@@ -168,6 +168,7 @@ $().ready(function(){
 	    else {
 	        var browseurl = brUrl + 'style=tinymceimage&otfilter=Image&tinymce_version=4';
 	    }
+	  console.log(browseurl);
 
 	    tinyMCE.get('body').windowManager.open({
 	        file: browseurl,

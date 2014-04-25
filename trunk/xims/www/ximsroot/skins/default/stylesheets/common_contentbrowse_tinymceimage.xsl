@@ -94,7 +94,7 @@
 </xsl:template>
 
 <xsl:template match="targetparents/object|target/object">
- / <a class="" href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};page=1"><xsl:value-of select="location"/></a>
+ / <a class="" href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};tinymce_version={$tinymce_version};page=1"><xsl:value-of select="location"/></a>
 </xsl:template>
 
 <xsl:template match="targetchildren/object">
@@ -108,7 +108,7 @@
         <xsl:choose>
             <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
             <span class="xims-sprite sprite-list sprite-list_{/document/data_formats/data_format[@id=$dataformat]/name}"><span><xsl:value-of select="/document/data_formats/data_format[@id=$dataformat]/name"/></span>&#160;</span>
-                <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};page=1"><xsl:value-of select="title"/></a>
+                <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};tinymce_version={$tinymce_version};page=1"><xsl:value-of select="title"/></a>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:if test="/document/object_types/object_type[@id=$objecttype]/name = $otfilter">
@@ -140,7 +140,7 @@
         <xsl:otherwise><xsl:value-of select="$page"/></xsl:otherwise>
       </xsl:choose>
     </xsl:param>
-    <xsl:param name="url" select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,';contentbrowse=1;to=',/document/context/object/target/object/@id,';otfilter=',$otfilter,';style=',$style,';order=',$order,';sb=',$sb,';')"/>
+    <xsl:param name="url" select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,';contentbrowse=1;to=',/document/context/object/target/object/@id,';otfilter=',$otfilter,';style=',$style,';tinymce_version=',$tinymce_version,';order=',$order,';sb=',$sb,';')"/>
     <xsl:if test="$totalpages &gt; 1">
       <div class="pagenav">
         <div>
@@ -233,6 +233,7 @@
 	<xsl:with-param name="code">
 	
 	var style = "tinymceimage";
+	console.log("tinymce_version = "+<xsl:value-of select="$tinymce_version"/>);
 		function popupClose() {
     if (tinyMCEPopup) tinyMCEPopup.close();
     else window.close();

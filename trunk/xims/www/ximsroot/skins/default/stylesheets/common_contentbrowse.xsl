@@ -19,6 +19,7 @@
 <xsl:param name="urllink" />
 <xsl:param name="order" />
 <xsl:param name="sb" />
+<xsl:param name="tinymce_version" />
 
 <xsl:param name="pagerowlimit" select="$searchresultrowlimit"/> 
 <xsl:variable name="totalpages">
@@ -46,6 +47,9 @@
       <xsl:if test="$pagerowlimit != $searchresultrowlimit">
         <xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit,';')"/>
       </xsl:if>
+      <xsl:if test="$tinymce_version != ''">
+        <xsl:value-of select="concat('tinymce_version=',$tinymce_version,';')"/>
+      </xsl:if>
       <xsl:text>','default-dialog')</xsl:text>
     </xsl:variable> 
 	<form action="{$xims_box}{$goxims_content}" method="post" name="selectform">
@@ -68,7 +72,7 @@
         <xsl:with-param name="url" select="$navurl"/>
       </xsl:call-template>
     </xsl:if>
-    <br class="clear"/>
+    <br class="clear"/><xsl:value-of select="$navurl"/>
       <xsl:apply-templates select="targetchildren/object[marked_deleted != '1']">
         <xsl:sort select="$sb" order="{concat($order,'ending')}" case-order="lower-first"/> 
       </xsl:apply-templates>    
@@ -88,6 +92,7 @@
 	</form>
 	<xsl:call-template name="mk-inline-js">
 		<xsl:with-param name="code">
+		console.log("navurl : "+<xsl:value-of select="$navurl"/>);
 			function storeBack(target) {
 					document.<xsl:value-of select="$sbfield"/>.value=target;
 					$("#default-dialog").dialog("close");
@@ -115,6 +120,9 @@
         <xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit,';')"/>
       </xsl:if>
       <xsl:value-of select="concat('page=',$page,';')"/>
+      <xsl:if test="$tinymce_version">
+        <xsl:value-of select="concat('tinymce_version=',$tinymce_version,';')"/>
+      </xsl:if>
       <xsl:text>','default-dialog')</xsl:text>
   </xsl:template>
   
@@ -203,7 +211,8 @@
       //console.log("style: "+style);
       //console.log($('#select-sb').val()+'\n'+$('input[name=defaultsorting]:checked').val()+'\n');
       if (typeof(style) !== 'undefined' &amp;&amp; style != '' ){        
-        var br_url = '<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/@id"/>;contentbrowse=1;to=<xsl:value-of select="target/object/@id"/>;otfilter=<xsl:value-of select="$otfilter"/>;notfilter=<xsl:value-of select="$notfilter"/>;style='+style+';sbfield=<xsl:value-of select="$sbfield"/>;urllink=<xsl:value-of select="$urllink"/>;order='+$('input[name=defaultsorting]:checked').val()+';sb='+$('#select-sb').val();
+        var br_url = '<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/@id"/>;contentbrowse=1;to=<xsl:value-of select="target/object/@id"/>;otfilter=<xsl:value-of select="$otfilter"/>;notfilter=<xsl:value-of select="$notfilter"/>;style='+style+';tinymce_version='+<xsl:value-of select="$tinymce_version"/>+';sbfield=<xsl:value-of select="$sbfield"/>;urllink=<xsl:value-of select="$urllink"/>;order='+$('input[name=defaultsorting]:checked').val()+';sb='+$('#select-sb').val();
+        console.log(br_url);
         window.location = br_url;
       }
       else{
