@@ -296,6 +296,7 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 
 		// General settings shared between simple and advanced dialogs
 		var generalFormItems = [
+		    {name: 'src', type: 'filepicker', filetype: 'image', label: 'Source', autofocus: true, onchange: updateSize},
 			{name: 'title', type: 'textbox', label: 'Title', 'class': 'id-input-title'},
 			{name: 'alt', type: 'textbox', label: 'Image description'},
 			//{label: '', name: 'caption', type: 'checkbox', checked: checkCaption(), text: 'Insert as caption'},
