@@ -313,7 +313,8 @@ sub put {
         # update existing object
         if ( $object->body($body) ) {
             if ( $object->update() ) {
-                return [ 201, ['Content-Location' => $godav. $object->location_path()], [] ];
+                # c.f. http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
+                return [ 204, [], [] ]; # No Content
             }
             else {
                 XIMS::Debug( 3,
@@ -363,6 +364,16 @@ sub put {
         }
         ## use critic
         my ($location) = ( $path =~ m|([^/]+)$| );
+
+        ## It would be correct to send a 301 if we want a clean URI; c.f. 
+        ## http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
+        ## In practice, this "almost" works. We might have some success if we
+        ## tried to rewrite *every* request to a funny path for clients that 
+        ## support redirection. 
+        #my $cleaned_location = $importer->check_location($location);
+        #warn "Location: $location, Cleaned Path: $godav . $parentpath . $cleaned_location\n";
+        #HTTP::Exception->throw(301, location =>  $godav . $parentpath .  $cleaned_location) unless ($cleaned_location eq $location or _tmpsafe($location));
+        
         $object = $object_class->new( User => $user, location => $location );
         $object->data_format_id( $data_format->id() ) if defined $data_format;
 
@@ -378,7 +389,7 @@ sub put {
         # not-quite-DAV-aware applications
         my $id = $importer->import( $object, undef, _tmpsafe($location) );
         if ( defined $id ) {
-            return [ 201, ['Content-Location' => $godav. $object->location_path()], [] ];
+            return [ 201, ['Location' => $godav. $object->location_path()], [] ];
         }
         else {
             XIMS::Debug( 3, "Import failed." );
@@ -530,7 +541,7 @@ sub mkcol {
         if ( not $importer->import($folder) ) {
             HTTP::Exception->throw(405);
         }
-        return [ 201, ['Content-Location' => $godav . $folder->location_path()], [] ];
+        return [ 201, ['Location' => $godav . $folder->location_path()], [] ];
     }
     else {
         HTTP::Exception->throw(405);
@@ -869,7 +880,7 @@ sub unlock {
             HTTP::Exception->throw(412);
         }
         else {
-            return [ 204, [], [] ];
+            return [ 204, [], [] ]; # No Content
         }
     }
     else {
@@ -957,7 +968,7 @@ sub copymove {
                 )
                 )
             {
-                return [ 204, [], [] ];
+                return [ 204, [], [] ]; # No Content
             }
             else {
                 XIMS::Debug( 3,
