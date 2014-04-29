@@ -79,17 +79,16 @@ tinymce.PluginManager.add('media', function(editor, url) {
 		height = data.height;
 
 		win = editor.windowManager.open({
-			//title: 'Insert/edit video',
 			title: 'Insert/edit media',
 			data: data,
-			bodyType: 'tabpanel',
+			//bodyType: 'tabpanel',
 			body: [
 				{
-					title: 'General',
+					//title: 'General',
 					type: "form",
-					onShowTab: function() {
-						this.fromJSON(htmlToData(this.next().find('#embed').value()));
-					},
+					/*onShowTab: function() {
+						this.fromJSON(htmlToData(this.find('#embed').value()));
+					},*/
 					items: [
 						{name: 'source1', type: 'filepicker', filetype: 'file', size: 40, autofocus: true, label: 'Source'},
 						{name: 'source2', type: 'filepicker', filetype: 'file', size: 40, label: 'Alternative source'},
@@ -115,7 +114,7 @@ tinymce.PluginManager.add('media', function(editor, url) {
 							]
 						}
 					]
-				},
+				}/*,
 
 				{
 					title: 'Embed',
@@ -142,7 +141,7 @@ tinymce.PluginManager.add('media', function(editor, url) {
 							label: 'Source'
 						}
 					]
-				}
+				}*/
 			],
 			onSubmit: function() {
 				editor.insertContent(dataToHtml(this.toJSON()));
@@ -295,10 +294,10 @@ tinymce.PluginManager.add('media', function(editor, url) {
 	}
 
 	function getData(element) {
-		if (element.getAttribute('data-mce-object')) {
-			return htmlToData(editor.serializer.serialize(element, {selection: true}));
+		if (element.getAttribute('class') && element.getAttribute('class').indexOf('mce-object') != -1) {
+		//if (element.getAttribute('data-mce-object')) {
+			return htmlToData(editor.serializer.serialize(element, {selection: false}));
 		}
-
 		return {};
 	}
 
