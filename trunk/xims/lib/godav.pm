@@ -52,6 +52,25 @@ sub handler {
 
     HTTP::Exception->throw(403) unless defined $user;
 
+    # It is correct to send a 301 on PUT if we insist on a clean URI; c.f.
+    # http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6 In
+    # practice, even with clients that support redirection, this only "sort
+    # of" works, as they usually don't update their original idea of the
+    # resource and still attempt to PROPPATCH, LOCK, etc. it on subsequent
+    # requests. RFC 4918 does not talk explicitly about this, but if handling
+    # requirements would deviate from RFC 2616, they would say so. (E.g. as
+    # regarding DELETE) MS-Clients seem to profit from redirects, Apple and
+    # Cadaver do not.
+    if ($env->{HTTP_USER_AGENT} =~ /^Microsoft/) {
+        my $path = _get_path($env);
+        my $location;
+        ($path, $location) = ($path =~ m/^(\/.*?)([^\/]*)\/?$/);
+        my $clean_location = XIMS::Importer::clean_location(undef, $location);
+        if ($location ne $clean_location) {
+            return [ 301, ['Location' => 'https://' . $env->{HTTP_HOST} . $env->{SCRIPT_NAME} . $path . $clean_location], [] ];
+        }
+    }
+
     setlocale( LC_ALL, 'C' ); # intl date formats
 
     my $doc;
@@ -80,7 +99,8 @@ sub handler {
     push $resp->[1],
         (
         'X-Server'      => "XIMS::DAVServer $XIMS::VERSION",
-        'MS-Author-Via' => 'DAV'
+        'MS-Author-Via' => 'DAV',
+        'Cache-Control' => 'no-cache',
         );
     ##use critic
 
@@ -114,7 +134,7 @@ sub options {
 sub proppatch {
     my ( $env, $user, $doc ) = @_;
 
-    my $godav = $env->{SCRIPT_NAME};
+    my $godav = 'https://' . $env->{HTTP_HOST} . $env->{SCRIPT_NAME};
     my $path  = _get_path($env);
 
 
@@ -171,7 +191,7 @@ EOS
 sub get {
     my ( $env, $user ) = @_;
 
-    my $godav = $env->{SCRIPT_NAME};
+    my $godav = 'https://' . $env->{HTTP_HOST} . $env->{SCRIPT_NAME};
     my $path  = _get_path($env);
 
     XIMS::Debug(5, "called: $path");
@@ -311,7 +331,7 @@ sub put {
         }
 
         # update existing object
-        if ( $object->body($body) ) {
+        if ( length($body) == 0 or $object->body($body) ) {
             if ( $object->update() ) {
                 # c.f. http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
                 return [ 204, [], [] ]; # No Content
@@ -365,15 +385,6 @@ sub put {
         ## use critic
         my ($location) = ( $path =~ m|([^/]+)$| );
 
-        ## It would be correct to send a 301 if we want a clean URI; c.f. 
-        ## http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
-        ## In practice, this "almost" works. We might have some success if we
-        ## tried to rewrite *every* request to a funny path for clients that 
-        ## support redirection. 
-        #my $cleaned_location = $importer->check_location($location);
-        #warn "Location: $location, Cleaned Path: $godav . $parentpath . $cleaned_location\n";
-        #HTTP::Exception->throw(301, location =>  $godav . $parentpath .  $cleaned_location) unless ($cleaned_location eq $location or _tmpsafe($location));
-        
         $object = $object_class->new( User => $user, location => $location );
         $object->data_format_id( $data_format->id() ) if defined $data_format;
 
@@ -419,6 +430,8 @@ sub delete {
         path           => $path,
         marked_deleted => 0
     );
+
+    HTTP::Exception->throw(404) unless $object;
 
     my $privmask = $user->object_privmask($object);
     HTTP::Exception->throw(403) unless $privmask & XIMS::Privileges::DELETE;
