@@ -170,6 +170,12 @@
 			<xsl:apply-templates/>
 		</xsl:element>
 	</xsl:template>
+	<xsl:template match="video">
+		<div class="placeholder-media" style="width:{@width}px;height:{@height}px;"></div>
+	</xsl:template>
+	<xsl:template match="audio">
+		<div class="placeholder-media" style="width:300px;height:50px;"></div>
+	</xsl:template>
 	<xsl:template name="head_default">
 		<head>
 			<title>
