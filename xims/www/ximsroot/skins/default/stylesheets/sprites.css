@@ -278,3 +278,7 @@
 .sprite-list_ZIP {
     background-position: -37px -36px;
 }
+div.placeholder-media{
+	border: 1px dotted #3A3A3A;
+	background: #d5d5d5 url(../images/object.gif) no-repeat center;
+}
