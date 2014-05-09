@@ -170,7 +170,9 @@ sub authenticate {
     my ( $self, $username, $password, $env ) = @_;
     XIMS::Debug(5, 'called');
 
-    return unless ( $username and $password );
+    # username/password sanity check  
+    return unless ( $username =~ /^[-a-zA-Z0-9.:]{3,30}$/ 
+                and $password =~ /^[-a-zA-Z0-9.:_&!?*\$%+,<=#@;>\/\(\)\[\]{~}]{6,60}$/ );
 
     my @authmods = split(',', XIMS::AUTHSTYLE());
 

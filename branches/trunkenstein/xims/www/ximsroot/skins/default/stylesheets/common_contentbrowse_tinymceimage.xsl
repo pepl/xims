@@ -234,7 +234,6 @@
 	<xsl:with-param name="code">
 	
 	var style = "tinymceimage";
-	console.log("tinymce_version = "+<xsl:value-of select="$tinymce_version"/>);
 		function popupClose() {
     if (tinyMCEPopup) tinyMCEPopup.close();
     else window.close();
