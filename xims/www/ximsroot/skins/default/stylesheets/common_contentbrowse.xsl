@@ -92,7 +92,7 @@
 	</form>
 	<xsl:call-template name="mk-inline-js">
 		<xsl:with-param name="code">
-		console.log("navurl : "+<xsl:value-of select="$navurl"/>);
+		//console.log("navurl : <xsl:value-of select="$navurl"/>");
 			function storeBack(target) {
 					document.<xsl:value-of select="$sbfield"/>.value=target;
 					$("#default-dialog").dialog("close");
@@ -210,14 +210,19 @@
     $('#select-sb, input[name=defaultsorting]').change(function(){    
       //console.log("style: "+style);
       //console.log($('#select-sb').val()+'\n'+$('input[name=defaultsorting]:checked').val()+'\n');
-      if (typeof(style) !== 'undefined' &amp;&amp; style != '' ){        
+      /*if (typeof(style) !== 'undefined' &amp;&amp; style != '' ){        
         var br_url = '<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/@id"/>;contentbrowse=1;to=<xsl:value-of select="target/object/@id"/>;otfilter=<xsl:value-of select="$otfilter"/>;notfilter=<xsl:value-of select="$notfilter"/>;style='+style+';tinymce_version='+<xsl:value-of select="$tinymce_version"/>+';sbfield=<xsl:value-of select="$sbfield"/>;urllink=<xsl:value-of select="$urllink"/>;order='+$('input[name=defaultsorting]:checked').val()+';sb='+$('#select-sb').val();
         console.log(br_url);
+        window.location = br_url;
+      }*/
+      if (typeof(style) !== 'undefined' &amp;&amp; style != '' ){        
+        var br_url = '<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/@id"/>;contentbrowse=1;to=<xsl:value-of select="target/object/@id"/>;otfilter=<xsl:value-of select="$otfilter"/>;notfilter=<xsl:value-of select="$notfilter"/>;style='+style+';tinymce_version=<xsl:value-of select="$tinymce_version"/>;sbfield=<xsl:value-of select="$sbfield"/>;urllink=<xsl:value-of select="$urllink"/>;order='+$('input[name=defaultsorting]:checked').val()+';sb='+$('#select-sb').val();
+        //console.log(br_url);
         window.location = br_url;
       }
       else{
         var br_url='<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/><xsl:value-of select="/document/context/object/location_path"/>?contentbrowse=1;to=<xsl:value-of select="target/object/@id"/>;otfilter=<xsl:value-of select="$otfilter"/>;notfilter=<xsl:value-of select="$notfilter"/>;sbfield=<xsl:value-of select="$sbfield"/>;urllink=<xsl:value-of select="$urllink"/>;order='+$('input[name=defaultsorting]:checked').val()+';sb='+$('#select-sb').val();
-        console.log(br_url);
+        //console.log(br_url);
         return reloadDialog(br_url,'default-dialog');
       }
     });
