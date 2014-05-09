@@ -244,7 +244,7 @@ sub void {
 
 =head3 Returns
 
-1 on success, undef on failure
+1 on success, -1 on timout, undef otherwise
 
 =head3 Description
 
@@ -273,14 +273,16 @@ sub validate {
          sha3_224_hex( $self->user_id() . $self->salt() . $hostnet ) )
     {
 
-        my $lat = Time::Piece->strptime( $self->last_access_timestamp(),
-            "%Y-%m-%d %H:%M:%S" );
+        my $lat = Time::Piece->strptime( $self->last_access_timestamp(), "%Y-%m-%d %H:%M:%S" );
+        my $ct  = Time::Piece->strptime( $self->creation_timestamp(),    "%Y-%m-%d %H:%M:%S" );
         my $now = localtime();
 
         # Time::Piece believes this to be UTC
         $lat -= $now->tzoffset;
+        $ct  -= $now->tzoffset;
 
-        if ( ( $now - $lat ) < XIMS::Config::SessionTimeout() ) {
+        if ( ( $now - $lat ) < XIMS::Config::SessionTimeout()
+         and ( $now - $ct  ) < XIMS::Config::SessionMaxAge() ) {
             $self->last_access_timestamp(
                 $now->strftime("%Y-%m-%d %H:%M:%S") );
             if ( $self->update() ) {
@@ -293,6 +295,8 @@ sub validate {
         else {
             XIMS::Debug( 4, "session timed out" );
             $self->void();
+            $self->error_msg('timeout');
+            return -1;
         }
     }
 
