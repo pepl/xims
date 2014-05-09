@@ -208,7 +208,10 @@ sub login_screen {
     #my ($env, $reason) = @_;
     my $req = Plack::Request->new($env);  
     my %messages = (mismatch => '<div class="message"><span>Login failed.<br/>Try again with your correct username and password.</span></div>',
-                    logout => '<div class="message"><span>Logout successful.<br/>To log in again, enter your username and password.</span></div>');
+                    logout => '<div class="message"><span>Logout successful.<br/>To log in again, enter your username and password.</span></div>',
+                    timeout => '<div class="message"><span>Sorry, your session timed out.<br/>To log in again, enter your username and password.</span></div>'
+                );
+    
     my $message = $messages{ $req->param('reason') };
     my $action = $req->param('r');
     my $goxims = XIMS::GOXIMS();
