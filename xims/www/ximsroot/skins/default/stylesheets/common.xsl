@@ -1332,7 +1332,7 @@
 		<xsl:choose>
 			<xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
 				<a class="xims-sprite sprite-locked">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',@id,'&amp;cancel=1&amp;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order)"/></xsl:if></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',@id,'&amp;cancel=1&amp;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat('&amp;page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order)"/></xsl:if></xsl:attribute>
 					<span>
 						<xsl:value-of select="$l_Release_lock"/>
 					</span>
