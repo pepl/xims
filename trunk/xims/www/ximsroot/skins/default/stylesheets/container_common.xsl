@@ -248,7 +248,10 @@
 	<xsl:template name="pagelink-href">
 	 <xsl:param name="url"/>
 	 <xsl:param name="page"/>
-	 <xsl:value-of select="concat($url,'&amp;page=',$page,'&amp;')"/>
+	 <xsl:variable name="url_ends" select="substring($url, string-length($url))"/>
+	 <xsl:value-of select="$url"/>
+	 <xsl:if test="$url_ends != '?' and $url_ends != '&amp;'"><xsl:text>&amp;</xsl:text></xsl:if>
+	 <xsl:value-of select="concat('page=',$page)"/>
 	</xsl:template>
 	
 	<xsl:template name="pagenavtable">
