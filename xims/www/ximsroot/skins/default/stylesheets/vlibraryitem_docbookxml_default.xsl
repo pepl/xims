@@ -45,7 +45,7 @@
   </xsl:template>
 
   <xsl:template match="keyword">
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?keyword=1;keyword_id={id}">
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?keyword=1&amp;keyword_id={id}">
       <xsl:value-of select="name"/>
     </a>
     <xsl:if test="position()!=last()">
@@ -54,7 +54,7 @@
   </xsl:template>
 
   <xsl:template match="subject">
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?subject=1;subject_id={id}">
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?subject=1&amp;subject_id={id}">
       <xsl:value-of select="name"/>
     </a>
     <xsl:if test="position()!=last()">
@@ -75,7 +75,7 @@
   </xsl:template>
 
   <xsl:template name="author_link">
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?author=1;author_id={id}">
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?author=1&amp;author_id={id}">
       <xsl:value-of select="firstname"/>
       <xsl:text> </xsl:text>
       <xsl:if test="middlename">
@@ -86,7 +86,7 @@
   </xsl:template>
 
   <xsl:template match="publication">
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?publication=1;publication_id={id}"><xsl:value-of select="name"/><xsl:text> (</xsl:text><xsl:value-of select="volume"/>)</a>
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?publication=1&amp;publication_id={id}"><xsl:value-of select="name"/><xsl:text> (</xsl:text><xsl:value-of select="volume"/>)</a>
     <xsl:if test="isbn != ''">
       ISBN: <xsl:value-of select="isbn"/>
     </xsl:if>

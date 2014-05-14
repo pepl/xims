@@ -33,7 +33,7 @@
 					<xsl:with-param name="totalitems" select="/document/context/session/searchresultcount"/>
 					<xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
 					<xsl:with-param name="currentpage" select="$page"/>
-					<xsl:with-param name="url" select="concat($xims_box,$goxims_content,$absolute_path,'?s=',$s,';search=1;start_here=',$start_here,';')"/>
+					<xsl:with-param name="url" select="concat($xims_box,$goxims_content,$absolute_path,'?s=',$s,'&amp;search=1&amp;start_here=',$start_here,'&amp;')"/>
 				</xsl:call-template>
 			</xsl:if>
 		</div>
@@ -63,7 +63,7 @@
 			<xsl:choose>
 				<xsl:when test="$order='asc'">
 					<th id="th-title" class="sorting">
-						<a href="{$location}?s={$s};search=1;sb=title;order=desc" class="th-icon-right">
+						<a href="{$location}?s={$s}&amp;search=1&amp;sb=title&amp;order=desc" class="th-icon-right">
 							<span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
 							<xsl:value-of select="$i18n/l/Title"/>&#160;						
 						</a>
@@ -71,7 +71,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<th id="th-title" class="sorting">
-						<a href="{$location}?s={$s};search=1;sb=title;order=asc" class="th-icon-right">
+						<a href="{$location}?s={$s}&amp;search=1&amp;sb=title&amp;order=asc" class="th-icon-right">
 							<span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
 							<xsl:value-of select="$i18n/l/Title"/>&#160;						
 						</a>
@@ -81,7 +81,7 @@
 		</xsl:when>
 		<xsl:otherwise>
 			<th id="th-title" class="sorting">
-				<a href="{$location}?s={$s};search=1;sb=title;order=asc" class="th-icon-right">
+				<a href="{$location}?s={$s}&amp;search=1&amp;sb=title&amp;order=asc" class="th-icon-right">
 					<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 					<xsl:value-of select="$i18n/l/Title"/>&#160;						
 				</a>
@@ -94,7 +94,7 @@
 			<xsl:choose>
 				<xsl:when test="$order='asc'">
 					<th id="th-lastmod" class="sorting">
-						<a href="{$location}?s={$s};search=1;sb=date;order=desc" class="th-icon-right">
+						<a href="{$location}?s={$s}&amp;search=1&amp;sb=date&amp;order=desc" class="th-icon-right">
 							<span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
 							<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
 						</a>
@@ -102,7 +102,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<th id="th-lastmod" class="sorting">
-						<a href="{$location}?s={$s};search=1;sb=date;order=asc" class="th-icon-right">
+						<a href="{$location}?s={$s}&amp;search=1&amp;sb=date&amp;order=asc" class="th-icon-right">
 							<span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
 							<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
 						</a>
@@ -112,7 +112,7 @@
 		</xsl:when>
 		<xsl:otherwise>
 			<th id="th-lastmod" class="sorting">
-				<a href="{$location}?s={$s};search=1;sb=date;order=desc" class="th-icon-right">
+				<a href="{$location}?s={$s}&amp;search=1&amp;sb=date&amp;order=desc" class="th-icon-right">
 					<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 					<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
 				</a>

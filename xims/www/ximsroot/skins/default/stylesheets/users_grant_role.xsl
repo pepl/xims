@@ -25,7 +25,7 @@
 				<h1 class="bluebg">
 					<xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>'
 				</h1>
-				<a href="{$xims_box}{$goxims_users}?name={$name};manage_roles=1;explicit_only=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Manage_Existing_Roles"/></a>
+				<a href="{$xims_box}{$goxims_users}?name={$name}&amp;manage_roles=1&amp;explicit_only=1&amp;sort-by={$sort-by}&amp;order-by={$order-by}&amp;userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Manage_Existing_Roles"/></a>
 	
 				<xsl:apply-templates select="userlist"/>
 			</div>
@@ -36,7 +36,7 @@
 
 <xsl:template name="options">
 	<td>
-		<a class="button" href="{$xims_box}{$goxims_users}?name={$name};role={name};grant_role_update=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Grant_Role"/></a>
+		<a class="button" href="{$xims_box}{$goxims_users}?name={$name}&amp;role={name}&amp;grant_role_update=1&amp;sort-by={$sort-by}&amp;order-by={$order-by}&amp;userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Grant_Role"/></a>
 	</td>
 </xsl:template>
 

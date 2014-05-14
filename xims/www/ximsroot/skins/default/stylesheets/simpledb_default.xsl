@@ -56,7 +56,7 @@
 				<xsl:with-param name="totalitems" select="$objectitems_count"/>
 				<xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
 				<xsl:with-param name="currentpage" select="$page"/>
-				<xsl:with-param name="url" select="concat($xims_box,$goxims_content,$absolute_path,'?searchstring=',$searchstring,';')"/>
+				<xsl:with-param name="url" select="concat($xims_box,$goxims_content,$absolute_path,'?searchstring=',$searchstring,'&amp;')"/>
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
@@ -161,7 +161,7 @@
 	<div id="create-widget">
 		<button><xsl:value-of select="$i18n/l/Create"/></button>
 		<ul style="position:absolute !important;">
-			<li><a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype=SimpleDBItem">SimpleDBItem</a></li>
+			<li><a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1&amp;objtype=SimpleDBItem">SimpleDBItem</a></li>
 		</ul>
 		<noscript>Fehler!</noscript>
 	</div>

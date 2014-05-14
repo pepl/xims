@@ -125,17 +125,17 @@
                     <xsl:choose>
                         <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='Container'">
                             <xsl:attribute name="href">
-                                <xsl:value-of select="concat($goxims_content,'?id=',@id,';sb=',$sb,';order=',$order,';m=',$m)"/>
+                                <xsl:value-of select="concat($goxims_content,'?id=',@id,'&amp;sb=',$sb,'&amp;order=',$order,'&amp;m=',$m)"/>
                             </xsl:attribute>
                         </xsl:when>
                         <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='URL'">
                             <xsl:attribute name="href">
-                                <xsl:value-of select="concat(location,'?sb=',$sb,';order=',$order,';m=',$m)"/>
+                                <xsl:value-of select="concat(location,'?sb=',$sb,'&amp;order=',$order,'&amp;m=',$m)"/>
                             </xsl:attribute>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:attribute name="href">
-                                <xsl:value-of select="concat($goxims_content,'?id=',@id,';m=',$m)"/>
+                                <xsl:value-of select="concat($goxims_content,'?id=',@id,'&amp;m=',$m)"/>
                             </xsl:attribute>
                         </xsl:otherwise>
                     </xsl:choose>
@@ -168,7 +168,7 @@
 <!-- No checking at UI level for now here... :-/ -->
 <!--                <xsl:choose>
                     <xsl:when test="user_privileges/delete">
--->                        <a href="{$goxims_content}?id={@id};undelete=1">
+-->                        <a href="{$goxims_content}?id={@id}&amp;undelete=1">
                             <img src="{$skimages}option_undelete.png"
                                  border="0"
                                  alt="Undelete"

@@ -39,7 +39,7 @@
 					<xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Target"/>
 				</xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:createDialog('{$xims_box}{$goxims_content}{$absolute_path}?contentbrowse=1;sbfield=eform.target','default-dialog','{$i18n/l/browse_target}')" class="button" id="buttonBrTarget">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}{$absolute_path}?contentbrowse=1&amp;sbfield=eform.target','default-dialog','{$i18n/l/browse_target}')" class="button" id="buttonBrTarget">
 				<xsl:value-of select="$i18n/l/browse_target"/>
 			</a>
 		</div>

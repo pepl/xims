@@ -65,7 +65,7 @@
 	<xsl:template match="targetparents/object|target/object">
       / <a class="">
 			<xsl:attribute name="href">
-				<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,';move_browse=1;to=',@id)"/>
+				<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,'&amp;move_browse=1&amp;to=',@id)"/>
 			</xsl:attribute>
 			<xsl:value-of select="location"/>
 		</a>
@@ -75,7 +75,7 @@
 		<img src="{$ximsroot}images/icons/list_Container.gif" alt="Container" width="20" height="18"/>
 		<a>
 			<xsl:attribute name="href">
-				<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,';move_browse=1;to=',@id)"/>
+				<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,'&amp;move_browse=1&amp;to=',@id)"/>
 				<xsl:call-template name="rbacknav_qs"/>
 			</xsl:attribute>
 			<xsl:value-of select="title"/>

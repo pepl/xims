@@ -217,7 +217,7 @@
     </xsl:variable>
 
     <span class="property_link">
-      <a class="name" href="{$xims_box}{$goxims_content}{$absolute_path}?{$mo}=1;{$mo}_id={id}">
+      <a class="name" href="{$xims_box}{$goxims_content}{$absolute_path}?{$mo}=1&amp;{$mo}_id={id}">
         <xsl:value-of select="$display_name"/>
       </a>
 			
@@ -270,8 +270,8 @@
   </xsl:template>
 
   <xsl:template name="mode_switcher">
-    <xsl:variable name="vlqs" select="concat('publication=',$publication,';publication_id=',$publication_id,';author=',$author,';author_id=',$author_id,';subject=',$subject,';subject_id=',$subject_id,';publications=',$publications,';authors=',$authors,';page=',$page,';most_recent=',$most_recent)"/>
-        <a href="{$goxims_content}{$absolute_path}?m=b;{$vlqs}">
+    <xsl:variable name="vlqs" select="concat('publication=',$publication,'&amp;publication_id=',$publication_id,'&amp;author=',$author,'&amp;author_id=',$author_id,'&amp;subject=',$subject,'&amp;subject_id=',$subject_id,'&amp;publications=',$publications,'&amp;authors=',$authors,'&amp;page=',$page,'&amp;most_recent=',$most_recent)"/>
+        <a href="{$goxims_content}{$absolute_path}?m=b&amp;{$vlqs}">
           <xsl:value-of select="$i18n/l/switch_to_browse"/>
         </a>
   </xsl:template>
@@ -329,7 +329,7 @@
 	<xsl:param name="mo"/>	
 	<xsl:param name="property"><xsl:value-of select="$i18n_vlib/l/*[name()=$mo]"/></xsl:param>
 	<xsl:variable name="id" select="@id"/>				
-  <a class="option-edit ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="javascript:createDialog('{$xims_box}{$goxims_content}{$absolute_path}?property_edit=1;property_id={id};property={$mo};','default-dialog','{$i18n/l/edit} {$property}')" role="button" aria-disabled="false">
+  <a class="option-edit ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="javascript:createDialog('{$xims_box}{$goxims_content}{$absolute_path}?property_edit=1&amp;property_id={id}&amp;property={$mo}&amp;','default-dialog','{$i18n/l/edit} {$property}')" role="button" aria-disabled="false">
     <xsl:attribute name="title"><xsl:value-of select="$l_Edit"/></xsl:attribute>
     <span class="ui-button-icon-primary ui-icon sprite-option_edit xims-sprite"><xsl:comment/></span>
     <span class="ui-button-text"><xsl:value-of select="$l_Edit"/></span>
@@ -339,7 +339,7 @@
 <xsl:template name="vl-button.options.delete">
 	<xsl:param name="mo"/>	
 	<xsl:variable name="id" select="@id"/>		
-  <a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$xims_box}{$goxims_content}{$absolute_path}?property_delete_prompt=1;property_id={id};property={$mo};display_name={name}" role="button" aria-disabled="false">
+  <a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$xims_box}{$goxims_content}{$absolute_path}?property_delete_prompt=1&amp;property_id={id}&amp;property={$mo}&amp;display_name={name}" role="button" aria-disabled="false">
     <xsl:attribute name="title"><xsl:value-of select="$l_delete"/></xsl:attribute>
     <span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
     <span class="ui-button-text"><xsl:value-of select="$l_delete"/></span>

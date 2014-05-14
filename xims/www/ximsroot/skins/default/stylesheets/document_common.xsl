@@ -71,7 +71,7 @@
         <xsl:choose>
     <xsl:when test="children/object[location='.diff_to_second_last'] and /document/context/session/user/userprefs/profile_type != 'standard'">
           &#xa0;
-          <a href="javascript:diffWindow('{$xims_box}{$goxims_content}{$absolute_path}/.diff_to_second_last?bodyonly=1;pre=1')">
+          <a href="javascript:diffWindow('{$xims_box}{$goxims_content}{$absolute_path}/.diff_to_second_last?bodyonly=1&amp;pre=1')">
       <xsl:value-of select="$i18n/l/See_changes_latest_edit"/>&#xa0;<span class="ui-icon ui-icon-newwin" title="{$i18n/l/Opens_in_new_window}"></span>
     </a>
     </xsl:when>
@@ -107,7 +107,7 @@
                   <xsl:value-of select="location"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="concat($goxims_content,symname_to_doc_id,'?sb=',$sb,';order=',$order)"/>
+                  <xsl:value-of select="concat($goxims_content,symname_to_doc_id,'?sb=',$sb,'&amp;order=',$order)"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
@@ -198,7 +198,7 @@
         <td colspan="3">
           <img src="{$ximsroot}images/spacer_white.gif" alt="" width="{10*@level}" height="10"/>
           <img src="{$ximsroot}images/icons/list_HTML.gif" alt="" width="20" height="18"/>
-          <a href="{$goxims_content}{$absolute_path}?id={@document_id};view=1;m={$m}">
+          <a href="{$goxims_content}{$absolute_path}?id={@document_id}&amp;view=1&amp;m={$m}">
             <xsl:value-of select="title"/>
           </a>
           by <xsl:call-template name="creatorfullname"/>
@@ -214,7 +214,7 @@
             <xsl:when test="/document/context/object/user_privileges/write 
                           and locked_time = '' 
                           or locked_by = /document/session/user/@id">
-              <a href="{$goxims_content}?id={@id};edit=1">
+              <a href="{$goxims_content}?id={@id}&amp;edit=1">
                 <img src="{$skimages}option_edit.png" border="0" alt="Bearbeiten" title="Dieses Objekt bearbeiten" width="32" height="19" align="left" onmouseover="pass('edit{@document_id}','edit','h'); return true;" onmouseout="pass('edit{@document_id}','edit','c'); return true;" onmousedown="pass('edit{@document_id}','edit','s'); return true;" onmouseup="pass('edit{@document_id}','edit','c'); return true;" name="edit{@document_id}"/>
               </a>
             </xsl:when>

@@ -81,7 +81,7 @@
 					&#160;
             <xsl:choose>
                 <xsl:when test="stdhome != '1'">
-                    <a href="{$xims_box}{$goxims}/bookmark?id={id};setdefault=1;name={$name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/set_as"/>&#160;<xsl:value-of select="$i18n/l/default_bookmark"/></a>
+                    <a href="{$xims_box}{$goxims}/bookmark?id={id}&amp;setdefault=1&amp;name={$name}&amp;sort-by={$sort-by}&amp;order-by={$order-by}&amp;userquery={$userquery}"><xsl:value-of select="$i18n/l/set_as"/>&#160;<xsl:value-of select="$i18n/l/default_bookmark"/></a>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="$i18n/l/default_bookmark"/>
@@ -90,7 +90,7 @@
         </td>
         <td>
             &#160;&#160;
-            <a class="option-delete ui-button ui-widget ui-corner-all ui-button-icon-only ui-state-default" title="{$l_delete}" href="{$xims_box}{$goxims}/bookmark?id={id};delete=1;name={$name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
+            <a class="option-delete ui-button ui-widget ui-corner-all ui-button-icon-only ui-state-default" title="{$l_delete}" href="{$xims_box}{$goxims}/bookmark?id={id}&amp;delete=1&amp;name={$name}&amp;sort-by={$sort-by}&amp;order-by={$order-by}&amp;userquery={$userquery}">
              <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_delete"><xsl:comment/></span>
              <span class="ui-button-text"><xsl:value-of select="$i18n/l/delete"/>&#160;</span>
             </a>
