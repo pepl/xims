@@ -73,15 +73,15 @@
             </p>
             <p>
                     <xsl:value-of select="$i18n_qn/l/Overview" />&#160;(<xsl:value-of select="$i18n_qn/l/with_text_answers" />) : 
-                    <a class="text" type="submit" target="_blank" href="?download_results=html;full_text_answers=1">HTML</a>,
-                    <a class="text" type="submit" target="_self" href="?download_results=excel;full_text_answers=1">Excel</a>,
-                    <a class="text" type="submit" href="?download_results_pdf=1;full_text_answers=1">PDF</a>
+                    <a class="text" type="submit" target="_blank" href="?download_results=html&amp;full_text_answers=1">HTML</a>,
+                    <a class="text" type="submit" target="_self" href="?download_results=excel&amp;full_text_answers=1">Excel</a>,
+                    <a class="text" type="submit" href="?download_results_pdf=1&amp;full_text_answers=1">PDF</a>
             </p>
             <p>
                     <xsl:value-of select="$i18n_qn/l/All_results" /> : 
                     <a class="text" type="submit" href="?download_all_results=HTML">HTML</a>,
-                    Excel (<a class="text" type="submit" target="_self" href="?download_all_results=XLS;encoding=Latin1">Latin1</a>,
-                    <a class="text" type="submit" href="?download_all_results=XLS;encoding=UTF8">UTF-8</a>)
+                    Excel (<a class="text" type="submit" target="_self" href="?download_all_results=XLS&amp;encoding=Latin1">Latin1</a>,
+                    <a class="text" type="submit" href="?download_all_results=XLS&amp;encoding=UTF8">UTF-8</a>)
             </p>
             <p>
                     <xsl:value-of select="$i18n_qn/l/Raw_results" /> : 

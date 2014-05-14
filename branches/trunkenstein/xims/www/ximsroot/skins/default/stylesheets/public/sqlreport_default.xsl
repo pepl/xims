@@ -43,7 +43,7 @@
                                 <xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
                                 <xsl:with-param name="currentpage" select="$page"/>
                                 <xsl:with-param name="url"
-                                                select="concat($xims_box,$goxims_content,$absolute_path,'?m=',$m,';',$navparam)"/>
+                                                select="concat($xims_box,$goxims_content,$absolute_path,'?m=',$m,'&amp;',$navparam)"/>
                             </xsl:call-template>
                         </td>
                     </tr>

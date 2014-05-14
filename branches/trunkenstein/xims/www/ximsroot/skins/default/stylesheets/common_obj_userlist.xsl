@@ -65,10 +65,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=id',
-                                                       ';order-by=descending', 
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=id',
+                                                       '&amp;order-by=descending', 
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -81,10 +81,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=id',
-                                                       ';order-by=ascending',
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=id',
+                                                       '&amp;order-by=ascending',
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -99,10 +99,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=id',
-                                                       ';order-by=ascending',
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=id',
+                                                       '&amp;order-by=ascending',
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -121,10 +121,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=name',
-                                                       ';order-by=descending',
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=name',
+                                                       '&amp;order-by=descending',
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -137,10 +137,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=name',
-                                                       ';order-by=ascending',
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=name',
+                                                       '&amp;order-by=ascending',
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -155,10 +155,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=name',
-                                                       ';order-by=ascending',
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=name',
+                                                       '&amp;order-by=ascending',
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -179,10 +179,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=fullname',
-                                                       ';order-by=descending',
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=fullname',
+                                                       '&amp;order-by=descending',
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -195,10 +195,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=fullname',
-                                                       ';order-by=ascending',
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=fullname',
+                                                       '&amp;order-by=ascending',
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -213,10 +213,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=fullname',
-                                                       ';order-by=ascending',
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=fullname',
+                                                       '&amp;order-by=ascending',
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -235,10 +235,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=enabled',
-                                                       ';order-by=descending',
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=enabled',
+                                                       '&amp;order-by=descending',
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -251,10 +251,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=enabled',
-                                                       ';order-by=ascending', 
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=enabled',
+                                                       '&amp;order-by=ascending', 
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -269,10 +269,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=enabled',
-                                                       ';order-by=ascending', 
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=enabled',
+                                                       '&amp;order-by=ascending', 
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -407,10 +407,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=name',
-                                                       ';order-by=descending',
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=name',
+                                                       '&amp;order-by=descending',
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -423,10 +423,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=name',
-                                                       ';order-by=ascending',
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=name',
+                                                       '&amp;order-by=ascending',
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -441,10 +441,10 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?obj_acllist=1;sort-by=name',
-                                                       ';order-by=ascending',
-                                                       ';userquery=', $userquery,
-                                                       ';usertype=', $usertype
+                                                       '?obj_acllist=1&amp;sort-by=name',
+                                                       '&amp;order-by=ascending',
+                                                       '&amp;userquery=', $userquery,
+                                                       '&amp;usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
@@ -546,7 +546,7 @@
     <script type="text/javascript">
 	  $(document).ready(function() {
 	      if($('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html() == ''){
-	          $.get('<xsl:value-of select="concat($goxims_content,'?obj_acllight=1;userid=',@id,';id=',/document/context/object/@id)"/>',
+	          $.get('<xsl:value-of select="concat($goxims_content,'?obj_acllight=1&amp;userid=',@id,'&amp;id=',/document/context/object/@id)"/>',
 	          function(data){
 	             $('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html(data)
 	             $('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').buttonset();

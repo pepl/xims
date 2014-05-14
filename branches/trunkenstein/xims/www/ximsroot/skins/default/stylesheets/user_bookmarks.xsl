@@ -115,21 +115,21 @@
   
   <xsl:template match="bookmark[owner_id=/document/context/session/user/name]">
     <tr class="objrow">
-      <td>
-        <span class="sprite-list sprite-list_SymbolicLink"><xsl:call-template name="bookmark_link"/></span>
-      </td>
-      <td>
-		&#160;
-        <xsl:choose>
-          <xsl:when test="stdhome != '1'">
-            <a href="{$xims_box}{$goxims}/bookmark?id={id};setdefault=1"><xsl:value-of select="$i18n/l/set_as"/>&#160;<xsl:value-of select="$i18n/l/default_bookmark"/></a>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="$i18n/l/default_bookmark"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </td>
-      <td>
+        <td>
+            <span class="sprite-list sprite-list_SymbolicLink"><xsl:call-template name="bookmark_link"/></span>
+        </td>
+        <td>
+					&#160;
+            <xsl:choose>
+                <xsl:when test="stdhome != '1'">
+                    <a href="{$xims_box}{$goxims}/bookmark?id={id}&amp;setdefault=1"><xsl:value-of select="$i18n/l/set_as"/>&#160;<xsl:value-of select="$i18n/l/default_bookmark"/></a>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$i18n/l/default_bookmark"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </td>
+        <td>
         &#160;&#160;
         <form action="{$xims_box}{$goxims}/bookmark" method="post">
           <xsl:call-template name="input-token"/>

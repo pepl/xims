@@ -28,24 +28,24 @@
 		<div id="content-container">
 			<h1 class="bluebg"><xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>'</h1>
 			<p>
-				<a class="button" href="{$xims_box}{$goxims_users}?name={$name};grant_role=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery};object_type=1"><xsl:value-of select="$i18n_users/l/Grant_Role"/></a>
+				<a class="button" href="{$xims_box}{$goxims_users}?name={$name}&amp;grant_role=1&amp;sort-by={$sort-by}&amp;order-by={$order-by}&amp;userquery={$userquery}&amp;object_type=1"><xsl:value-of select="$i18n_users/l/Grant_Role"/></a>
 				<!--&#160;<xsl:value-of select="$i18n/l/or"/>&#160;
 				<a href="{$xims_box}{$goxims_users}?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/go_back"/></a>-->
 			</p>
 			<p>
 				<xsl:choose>
 					<xsl:when test="$explicit_only = '1'">
-						<a class="button" href="{$xims_box}{$goxims_users}?name={$name};manage_roles=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Show_implicitly_granted"/></a>
+						<a class="button" href="{$xims_box}{$goxims_users}?name={$name}&amp;manage_roles=1&amp;sort-by={$sort-by}&amp;order-by={$order-by}&amp;userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Show_implicitly_granted"/></a>
 					</xsl:when>
 					<xsl:otherwise>
-						<a class="button" href="{$xims_box}{$goxims_users}?name={$name};manage_roles=1;explicit_only=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Show_explicitly_granted"/></a>
+						<a class="button" href="{$xims_box}{$goxims_users}?name={$name}&amp;manage_roles=1&amp;explicit_only=1&amp;sort-by={$sort-by}&amp;order-by={$order-by}&amp;userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Show_explicitly_granted"/></a>
 					</xsl:otherwise>
 				</xsl:choose>
 			</p>
 			<br/>
 			<xsl:apply-templates select="userlist"/>
 			<br/>
-			<a class="button" href="{$xims_box}{$goxims_users}?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/cancel"/></a>
+			<a class="button" href="{$xims_box}{$goxims_users}?sort-by={$sort-by}&amp;order-by={$order-by}&amp;userquery={$userquery}"><xsl:value-of select="$i18n/l/cancel"/></a>
 		</div>
 		<xsl:call-template name="script_bottom"/>
 	</body>
@@ -58,7 +58,7 @@
     <!--<td width="250" align="left">-->
 	<td>
         <xsl:if test="$explicit_only = '1'">
-            <a class="button" href="{$xims_box}{$goxims_users}?name={$name};role={name};revoke_role=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Revoke_Role_Grant"/></a>
+            <a class="button" href="{$xims_box}{$goxims_users}?name={$name}&amp;role={name}&amp;revoke_role=1&amp;sort-by={$sort-by}&amp;order-by={$order-by}&amp;userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Revoke_Role_Grant"/></a>
         </xsl:if>
     </td>
     <!-- end options bar -->

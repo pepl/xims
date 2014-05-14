@@ -413,7 +413,7 @@
 		</ul>
 		
 		<div>			
-		<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={parents/object[@document_id=current()/@parent_id]/@id};contentbrowse=1;otfilter=TAN_List;sbfield=eform.TAN_List','default-dialog','{$i18n_qn/l/browse_TAN_List}')" class="button">
+		<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={parents/object[@document_id=current()/@parent_id]/@id}&amp;contentbrowse=1&amp;otfilter=TAN_List&amp;sbfield=eform.TAN_List','default-dialog','{$i18n_qn/l/browse_TAN_List}')" class="button">
 				<xsl:value-of select="$i18n_qn/l/browse_TAN_List"/>
 			</a>&#xa0;	
 		<input type="text" name="TAN_List" id="TAN_List" size="40" class="text" />&#xa0;

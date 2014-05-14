@@ -14,7 +14,7 @@
       <div class="deptportlets-item">
         <a href="{$goxims_content}{location_path}"><xsl:value-of select="title"/></a>
       </div>
-      <a href="{$goxims_content}{$absolute_path}?portlet_id={id};rem_portlet=1">
+      <a href="{$goxims_content}{$absolute_path}?portlet_id={id}&amp;rem_portlet=1">
 	      <img src="{$skimages}option_delete.png"
 	            border="0"
 	            width="37"
