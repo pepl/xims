@@ -15,7 +15,7 @@
 	
 	<xsl:variable name="selected">
 		<xsl:for-each select="/document/objectlist/object">
-			multiselect=<xsl:value-of select="@id"/>;
+			multiselect=<xsl:value-of select="@id"/>&amp;
 		</xsl:for-each>
 	</xsl:variable>
 	
@@ -93,7 +93,7 @@
 	<xsl:template match="targetparents/object|target/object">
       / <a class="">
 			<xsl:attribute name="href">
-				<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,';movemultiple_browse=1;to=',@id,';',$selected)"/>
+				<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,'&amp;movemultiple_browse=1&amp;to=',@id,'&amp;',$selected)"/>
 			</xsl:attribute>
 			<xsl:value-of select="location"/>
 		</a>
@@ -103,7 +103,7 @@
 		<img src="{$ximsroot}images/icons/list_Container.gif" alt="Container" width="20" height="18"/>
 		<a>
 			<xsl:attribute name="href">
-				<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,';movemultiple_browse=1;to=',@id,';',$selected)"/>
+				<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,'&amp;movemultiple_browse=1&amp;to=',@id,'&amp;',$selected)"/>
 				<xsl:call-template name="rbacknav_qs"/>
 			</xsl:attribute>
 			<xsl:value-of select="title"/>

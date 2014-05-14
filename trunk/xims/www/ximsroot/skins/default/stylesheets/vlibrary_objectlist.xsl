@@ -174,26 +174,26 @@
               <xsl:variable name="pagenav.params">
                 <xsl:choose>
                   <xsl:when test="$subject">
-                    <xsl:value-of select="concat('?subject=1;subject_id=',$subjectID)"/>
+                    <xsl:value-of select="concat('?subject=1&amp;subject_id=',$subjectID)"/>
                   </xsl:when>
                   <xsl:when test="$author">
-                    <xsl:value-of select="concat('?author=1;author_id=',$author_id)"/>
+                    <xsl:value-of select="concat('?author=1&amp;author_id=',$author_id)"/>
                   </xsl:when>
                   <xsl:when test="$keyword">
-                    <xsl:value-of select="concat('?keyword=1;keyword_id=',$keyword_id)"/>
+                    <xsl:value-of select="concat('?keyword=1&amp;keyword_id=',$keyword_id)"/>
                   </xsl:when>
                   <xsl:when test="$publication">
-                    <xsl:value-of select="concat('?publication=1;publication_id=',$publication_id)"/>
+                    <xsl:value-of select="concat('?publication=1&amp;publication_id=',$publication_id)"/>
                   </xsl:when>
                   <xsl:when test="$filter">
                       <xsl:call-template name="filterparams"/>
                   </xsl:when>
                   <xsl:when test="/document/context/session/searchresultcount != ''">
-                    <xsl:value-of select="concat('?vls=',$vls,';vlsearch=1;start_here=1')"/>
+                    <xsl:value-of select="concat('?vls=',$vls,'&amp;vlsearch=1&amp;start_here=1')"/>
                   </xsl:when>
                 </xsl:choose>
                 <xsl:if test="$pagerowlimit != $searchresultrowlimit">
-                  <xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit)"/>
+                  <xsl:value-of select="concat('&amp;pagerowlimit=',$pagerowlimit)"/>
                 </xsl:if>
               </xsl:variable>
 

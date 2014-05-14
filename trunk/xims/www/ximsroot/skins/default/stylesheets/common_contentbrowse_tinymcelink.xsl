@@ -103,7 +103,7 @@
     <span class="xims-sprite sprite-list sprite-list_{/document/data_formats/data_format[@id=$dataformat]/name}"><span><xsl:value-of select="/document/data_formats/data_format[@id=$dataformat]/name"/></span>&#160;</span>
     <xsl:choose>
       <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
-          <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};tinymce_version={$tinymce_version};"><xsl:value-of select="title"/></a>
+          <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id}&amp;contentbrowse=1&amp;to={@id}&amp;otfilter={$otfilter}&amp;notfilter={$notfilter}&amp;style={$style}&amp;tinymce_version={$tinymce_version}&amp;"><xsl:value-of select="title"/></a>
       </xsl:when>
       <xsl:otherwise>
           <xsl:value-of select="title"/>

@@ -63,12 +63,12 @@
 			</xsl:if>
 			<xsl:choose>
 			<xsl:when test="$mo='subject'">
-				<a class="button" href="javascript:createTinyMCEDialog('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo};objid={@id}','default-dialog','{$i18n/l/create} {$property}','vlsubject_description')">
+				<a class="button" href="javascript:createTinyMCEDialog('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1&amp;property={$mo}&amp;objid={@id}','default-dialog','{$i18n/l/create} {$property}','vlsubject_description')">
 				<xsl:value-of select="concat($i18n/l/create, ' ', $property)"/>
 			</a>
 			</xsl:when>
 			<xsl:otherwise>
-			<a class="button" href="javascript:createDialog('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo};objid={@id}','default-dialog','{$i18n/l/create} {$property}')">
+			<a class="button" href="javascript:createDialog('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1&amp;property={$mo}&amp;objid={@id}','default-dialog','{$i18n/l/create} {$property}')">
 				<xsl:value-of select="concat($i18n/l/create, ' ', $property)"/>
 			</a>
 			</xsl:otherwise>

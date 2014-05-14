@@ -50,10 +50,10 @@
 				<xsl:attribute name="href">
 					<xsl:choose>
 						<xsl:when test="/document/context/object/parents/object[position() = last()]/object_type_id = 2 or /document/context/object/parents/object[position() = last()]/title = 'departmentlinks' or /document/context/object/parents/object[position() = last()]/title = 'subdepartmentlinks' or /document/context/object/parents/object[position() = last()]/title = 'speciallinks'">
-							javascript:createDialog('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/parents/object[position() = (last() - 1)]/@id"/>;contentbrowse=1;sbfield=eform.name;urllink=1','default-dialog','<xsl:value-of select="$i18n/l/browse_target"/>')
+							javascript:createDialog('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/parents/object[position() = (last() - 1)]/@id"/>&amp;contentbrowse=1&amp;sbfield=eform.name&amp;urllink=1','default-dialog','<xsl:value-of select="$i18n/l/browse_target"/>')
 						</xsl:when>
 						<xsl:otherwise>
-							javascript:createDialog('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;contentbrowse=1;sbfield=eform.name;urllink=1','default-dialog','<xsl:value-of select="$i18n/l/browse_target"/>')
+							javascript:createDialog('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>&amp;contentbrowse=1&amp;sbfield=eform.name&amp;urllink=1','default-dialog','<xsl:value-of select="$i18n/l/browse_target"/>')
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:attribute>

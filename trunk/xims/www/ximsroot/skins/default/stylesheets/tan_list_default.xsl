@@ -20,16 +20,16 @@
 		<xsl:value-of select="$i18n_qn/l/Download"/>:
     <ul>
 			<li>
-				<a href="{$xims_box}{$goxims_content}{$absolute_path}?id={@id};target=_blank;download=HTML">HTML</a>
+				<a href="{$xims_box}{$goxims_content}{$absolute_path}?id={@id}&amp;target=_blank&amp;download=HTML">HTML</a>
 			</li>
 			<li>
-				<a href="{$xims_box}{$goxims_content}{$absolute_path}?id={@id};target=_blank;download=TXT">Text</a>
+				<a href="{$xims_box}{$goxims_content}{$absolute_path}?id={@id}&amp;target=_blank&amp;download=TXT">Text</a>
 			</li>
 			<li>
-				<a href="{$xims_box}{$goxims_content}{$absolute_path}?id={@id};target=_blank;download=CSV">CSV</a>
+				<a href="{$xims_box}{$goxims_content}{$absolute_path}?id={@id}&amp;target=_blank&amp;download=CSV">CSV</a>
 			</li>
 			<li>
-				<a href="{$xims_box}{$goxims_content}{$absolute_path}?id={@id};target=_blank;download=Excel">MS Excel</a>
+				<a href="{$xims_box}{$goxims_content}{$absolute_path}?id={@id}&amp;target=_blank&amp;download=Excel">MS Excel</a>
 			</li>
 		</ul>
 	</xsl:template>

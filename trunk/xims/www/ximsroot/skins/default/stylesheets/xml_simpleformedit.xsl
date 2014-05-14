@@ -53,7 +53,7 @@
 	<xsl:call-template name="form-locationtitle-edit_xml"/>
 	<xsl:call-template name="form-marknew-pubonsave"/>
 	<div class="form-div block">
-		<a href="{$xims_box}{$goxims_content}?id={@id};edit=1" class="button"><xsl:value-of select="$i18n_xml/l/Edit_XML_source"/></a>
+		<a href="{$xims_box}{$goxims_content}?id={@id}&amp;edit=1" class="button"><xsl:value-of select="$i18n_xml/l/Edit_XML_source"/></a>
 	</div>
 	<div class="form-div block">
 		<xsl:if test="$message != ''">
@@ -115,7 +115,7 @@
 		<li>
 			<xsl:choose>
 				<xsl:when test="$maxelements != @id">
-					<a class="button up" href="{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1;eid={@id};seid=moveup">&#xa0;</a>
+					<a class="button up" href="{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1&amp;eid={@id}&amp;seid=moveup">&#xa0;</a>
 				</xsl:when>
 				<xsl:otherwise>
 					<a class="button option-disabled">&#160;</a>
@@ -123,19 +123,19 @@
 			</xsl:choose>
 			<xsl:choose>
 				<xsl:when test="@id != 1">
-					<a class="button down" href="{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1;eid={@id};seid=movedown">&#xa0;</a>
+					<a class="button down" href="{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1&amp;eid={@id}&amp;seid=movedown">&#xa0;</a>
 				</xsl:when>
 				<xsl:otherwise>
 					<a class="button option-disabled">&#160;</a>
 				</xsl:otherwise>
 			</xsl:choose>
 			&#160;&#160;&#160;
-			<a href="{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1;eid={@id}" class="button option-edit">
+			<a href="{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1&amp;eid={@id}" class="button option-edit">
 				<xsl:value-of select="$i18n/l/Edit"/>
 			</a>
 			<xsl:if test="/document/context/object/user_privileges/delete">
 				<xsl:text> </xsl:text>
-				<a class="button option-delete" href="{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1;eid={@id};seid=delete" onclick="javascript:rv=confirm('{$i18n_xml/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1;eid={@id};seid=delete'; return false">
+				<a class="button option-delete" href="{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1&amp;eid={@id}&amp;seid=delete" onclick="javascript:rv=confirm('{$i18n_xml/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1&amp;eid={@id}&amp;seid=delete'; return false">
 					<xsl:value-of select="$i18n/l/delete"/>
 				</a>
 			</xsl:if>

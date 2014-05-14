@@ -107,7 +107,7 @@
 				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('NewsItemImage')" class="doclink">(?)</a>-->
 				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$parentid};to={$parentid};otfilter=Folder,DepartmentRoot,SiteRoot;contentbrowse=1;sbfield=eform.imagefolder','default-dialog','{$i18n/l/browse_target}')" class="button">
+				<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$parentid}&amp;to={$parentid}&amp;otfilter=Folder,DepartmentRoot,SiteRoot&amp;contentbrowse=1;sbfield=eform.imagefolder','default-dialog','{$i18n/l/browse_target}')" class="button">
 					<xsl:value-of select="$i18n/l/browse_target"/>
 				</a>
 			</div>
@@ -130,7 +130,7 @@
     </div>
     <input type="text" name="image" size="60" value="{image_id}" class="text" id="input-image"/>
     <xsl:text>&#160;</xsl:text>
-    <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$curr_id};contentbrowse=1;to={$curr_id};otfilter=Image;sbfield=eform.image','default-dialog','{$i18n/l/Browse_image}')" class="button"><xsl:value-of select="$i18n/l/Browse_image"/></a>
+    <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$curr_id}&amp;contentbrowse=1&amp;to={$curr_id}&amp;otfilter=Image&amp;sbfield=eform.image','default-dialog','{$i18n/l/Browse_image}')" class="button"><xsl:value-of select="$i18n/l/Browse_image"/></a>
     </xsl:if>
     <!-- Upload image -->
     <xsl:if test="$mode='create'">

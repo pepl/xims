@@ -94,7 +94,7 @@
 </xsl:template>
 
 <xsl:template match="targetparents/object|target/object">
- / <a class="" href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};tinymce_version={$tinymce_version};page=1"><xsl:value-of select="location"/></a>
+ / <a class="" href="{$xims_box}{$goxims_content}?id={/document/context/object/@id}&amp;contentbrowse=1&amp;to={@id}&amp;otfilter={$otfilter}&amp;notfilter={$notfilter}&amp;style={$style}&amp;tinymce_version={$tinymce_version}&amp;page=1"><xsl:value-of select="location"/></a>
 </xsl:template>
 
 <xsl:template match="targetchildren/object">
@@ -108,7 +108,7 @@
         <xsl:choose>
             <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
             <span class="xims-sprite sprite-list sprite-list_{/document/data_formats/data_format[@id=$dataformat]/name}"><span><xsl:value-of select="/document/data_formats/data_format[@id=$dataformat]/name"/></span>&#160;</span>
-                <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};tinymce_version={$tinymce_version};page=1"><xsl:value-of select="title"/></a>
+                <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id}&amp;contentbrowse=1&amp;to={@id}&amp;otfilter={$otfilter}&amp;notfilter={$notfilter}&amp;style={$style}&amp;tinymce_version={$tinymce_version}&amp;page=1"><xsl:value-of select="title"/></a>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:if test="/document/object_types/object_type[@id=$objecttype]/name = $otfilter">
@@ -140,19 +140,19 @@
         <xsl:otherwise><xsl:value-of select="$page"/></xsl:otherwise>
       </xsl:choose>
     </xsl:param>
-    <xsl:param name="url" select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,';contentbrowse=1;to=',/document/context/object/target/object/@id,';otfilter=',$otfilter,';style=',$style,';tinymce_version=',$tinymce_version,';order=',$order,';sb=',$sb,';')"/>
+    <xsl:param name="url" select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,'&amp;contentbrowse=1&amp;to=',/document/context/object/target/object/@id,'&amp;otfilter=',$otfilter,'&amp;style=',$style,'&amp;tinymce_version=',$tinymce_version,'&amp;order=',$order,'&amp;sb=',$sb,'&amp;')"/>
     <xsl:if test="$totalpages &gt; 1">
       <div class="pagenav">
         <div>
           <xsl:if test="$currentpage &gt; 1">
-            <a href="{$url}page={number($currentpage)-1};">&lt; <xsl:value-of select="$i18n/l/Previous_page"/>
+            <a href="{$url}page={number($currentpage)-1}&amp;">&lt; <xsl:value-of select="$i18n/l/Previous_page"/>
             </a>
           </xsl:if>
           <xsl:if test="$currentpage &gt; 1 and $currentpage &lt; $totalpages">
                 |
               </xsl:if>
           <xsl:if test="$currentpage &lt; $totalpages">
-            <a href="{$url}page={number($currentpage)+1};">&gt; <xsl:value-of select="$i18n/l/Next_page"/>
+            <a href="{$url}page={number($currentpage)+1}&amp;">&gt; <xsl:value-of select="$i18n/l/Next_page"/>
             </a>
           </xsl:if>
         </div>
@@ -194,7 +194,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:if test="$page = $first_in_list - 1">
-      <a href="{$url}page=1;">1</a> ...
+      <a href="{$url}page=1&amp;">1</a> ...
   </xsl:if>
     <xsl:if test="$page &gt;= $first_in_list">
       <xsl:choose>

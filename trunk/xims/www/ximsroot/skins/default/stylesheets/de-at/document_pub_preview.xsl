@@ -140,9 +140,6 @@
 </xsl:template>
 
 <xsl:template name="powerdbyfooter">
-    <p style="color: #a9a9a9; font-size: 8pt; margin-right:3px;">
-        Powered by <a href="http://axkit.org/"><img src="http://www.hampton.ws/skins/corporate/images/pb_axkit.gif" width="87" height="30" alt="Powered by AxKit" title="Powered by AxKit" border="0"/></a><xsl:text>&#160;&amp;&#160;</xsl:text><a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=42250" width="88" height="31" border="0" alt="SourceForge Logo"/></a>
-    </p>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -22,7 +22,7 @@
     <!--<xsl:text>&#160;</xsl:text>
     <a href="javascript:openDocWindow('PortletTarget')" class="doclink">(?)</a>-->
     <xsl:text>&#160;</xsl:text>
-    <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;otfilter=Folder,DepartmentRoot,SiteRoot;sbfield=eform.target','default-dialog','{$i18n/l/browse_target}')" class="button" id="buttonBrTarget">
+    <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id}&amp;contentbrowse=1&amp;otfilter=Folder,DepartmentRoot,SiteRoot&amp;sbfield=eform.target','default-dialog','{$i18n/l/browse_target}')" class="button" id="buttonBrTarget">
         <xsl:value-of select="$i18n/l/browse_target"/>
     </a>
   </div>

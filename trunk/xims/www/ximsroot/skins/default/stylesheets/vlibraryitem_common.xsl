@@ -57,7 +57,7 @@
 				<button type="button" name="create_mapping" class="button" onclick="createMapping('{$mo}', $('#svl{$mo}').val(), '{$i18n_vlib/l/select_name}')"><xsl:value-of select="$i18n_vlib/l/Create_mapping" /></button>
 				<xsl:text>&#160;</xsl:text>
 			</xsl:if>
-			<a class="button" href="javascript:createDialog('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo}','default-dialog','{$i18n/l/create} {$property}')">
+			<a class="button" href="javascript:createDialog('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1&amp;property={$mo}','default-dialog','{$i18n/l/create} {$property}')">
 				<xsl:value-of select="concat($i18n/l/create, ' ', $property)"/>
 			</a>
 			<xsl:text>&#160;</xsl:text>
@@ -183,7 +183,7 @@
 	</xsl:template>
 	
 	<xsl:template match="keywordset/keyword|subjectset/subject|publicationset/publication">
-		<a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}" target="_blank" title="Browse in a new window">
+		<a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1&amp;{concat(name(),'_id')}={id}" target="_blank" title="Browse in a new window">
 			<xsl:value-of select="name"/>
 			<xsl:if test="volume != ''">
 				<xsl:text> (</xsl:text>
@@ -203,7 +203,7 @@
 	</xsl:template>
 	
 	<xsl:template match="authorgroup/author">
-		<a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}" target="_blank" title="Browse in a new window">
+		<a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1&amp;{concat(name(),'_id')}={id}" target="_blank" title="Browse in a new window">
 			<xsl:value-of select="firstname"/>&#160;<xsl:value-of select="lastname"/>
 		</a>
 		<xsl:text>&#160;</xsl:text>

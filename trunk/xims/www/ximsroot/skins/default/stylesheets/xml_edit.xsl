@@ -47,13 +47,13 @@
         <!--<xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Schema')" class="doclink">(?)</a>-->
         <xsl:text>&#160;</xsl:text>
-		<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={./schema_id};otfilter=XML;sbfield=eform.schema','default-dialog','{$i18n_xml/l/Browse_schema}')" class="button"><xsl:value-of select="$i18n_xml/l/Browse_schema"/></a>
+		<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id}&amp;contentbrowse=1&amp;to={./schema_id}&amp;otfilter=XML&amp;sbfield=eform.schema','default-dialog','{$i18n_xml/l/Browse_schema}')" class="button"><xsl:value-of select="$i18n_xml/l/Browse_schema"/></a>
     </div>
 </xsl:template>
 
 <xsl:template name="sfe-edit">
 	<div class="form-div block">
-		<a href="{$xims_box}{$goxims_content}?id={@id};simpleformedit=1" class="button"><xsl:value-of select="$i18n_xml/l/Edit_with_SFE"/></a>
+		<a href="{$xims_box}{$goxims_content}?id={@id}&amp;simpleformedit=1" class="button"><xsl:value-of select="$i18n_xml/l/Edit_with_SFE"/></a>
 	</div>
 </xsl:template>
 

@@ -141,7 +141,7 @@
 						<xsl:attribute name="href">
 							<xsl:value-of select="concat($goxims_content,$parent_path)"/>
 							<xsl:if test="$currobjmime='application/x-container' and $defsorting != 1">
-								<xsl:value-of select="concat('?sb=',$sb,';order=',$order)"/>
+								<xsl:value-of select="concat('?sb=',$sb,'&amp;order=',$order)"/>
 							</xsl:if>
 						</xsl:attribute>
 						<img src="{$skimages}navigate-up.png" alt="{$i18n/l/Up}" title="{$i18n/l/Up}"/>
@@ -312,7 +312,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		<li>
-			<a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype={$fullname};page={$page};r={/document/context/object/@id}{$sorting}">
+			<a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1&amp;objtype={$fullname}&amp;page={$page}&amp;r={/document/context/object/@id}{$sorting}">
 				<!--<xsl:value-of select="$fullname"/>-->
 				<xsl:call-template name="objtype_name">
 					<xsl:with-param name="ot_name">
@@ -399,7 +399,7 @@
 									<li id="new-bm">
 										<a href="#">
 											<xsl:attribute name="onclick">
-												$.get('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims"/>/bookmark?create=1;path=<xsl:value-of select="/document/context/object/location_path"/>;redir_self=1')
+												$.get('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims"/>/bookmark?create=1&amp;path=<xsl:value-of select="/document/context/object/location_path"/>&amp;redir_self=1')
 											</xsl:attribute>
 											<span class="ui-icon ui-icon-star"><xsl:comment/></span><xsl:value-of select="$i18n/l/SetBMforCurrentObj"/>
 										</a>
