@@ -55,7 +55,7 @@
 							<xsl:call-template name="dav_otprivileges"/>
 					</div>
 					<br class="clear"/>
-					<a class="button" href="{$xims_box}{$goxims}/users?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/cancel"/></a>
+					<a class="button" href="{$xims_box}{$goxims}/users?sort-by={$sort-by}&amp;order-by={$order-by}&amp;userquery={$userquery}"><xsl:value-of select="$i18n/l/cancel"/></a>
 				</div>
 				<xsl:call-template name="script_bottom"/>
 			</body>
@@ -137,7 +137,7 @@
         </xsl:variable>
         <li>
             <xsl:value-of select="$fullname"/>&#160;       
-				    <a class="option-delete ui-button ui-widget ui-corner-all ui-button-icon-only ui-state-default" title="{$l_delete}" href="{$xims_box}{$goxims}/users?name={$name};objecttypeprivs=1;delpriv=1;grantor_id={grantor_id};object_type_id={@id};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
+				    <a class="option-delete ui-button ui-widget ui-corner-all ui-button-icon-only ui-state-default" title="{$l_delete}" href="{$xims_box}{$goxims}/users?name={$name}&amp;objecttypeprivs=1&amp;delpriv=1&amp;grantor_id={grantor_id}&amp;object_type_id={@id}&amp;sort-by={$sort-by}&amp;order-by={$order-by}&amp;userquery={$userquery}">
              <xsl:attribute name="title"><xsl:value-of select="$i18n/l/delete"/></xsl:attribute>
              <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_delete"><xsl:comment/></span>
              <span class="ui-button-text"><xsl:value-of select="$i18n/l/delete"/>&#160;</span>

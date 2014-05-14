@@ -30,7 +30,7 @@
                                 <a href="{$goxims_content}{$absolute_path}?m={$m}"><xsl:value-of select="$i18n/l/Defaultview"/></a>
                             </xsl:when>
                             <xsl:otherwise>
-                                <a href="{$goxims_content}{$absolute_path}?m={$m};printview=1"><xsl:value-of select="$i18n/l/Printview"/></a>
+                                <a href="{$goxims_content}{$absolute_path}?m={$m}&amp;printview=1"><xsl:value-of select="$i18n/l/Printview"/></a>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:otherwise>

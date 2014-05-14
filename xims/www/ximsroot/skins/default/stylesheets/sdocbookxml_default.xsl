@@ -127,7 +127,7 @@
 							<!-- begin TOC page (section 0) for multi-page mode -->
 							<xsl:if test="$section-view='true' and $section = 0">
 								<!-- <a href="{$_uri}?section-view=true;section={count(preceding-sibling::section) +1}"> -->
-								<a href="{$_uri}?section-view=true;section={$page-number};">
+								<a href="{$_uri}?section-view=true&amp;section={$page-number};">
 									<xsl:value-of select="title"/>
 								</a>
 							</xsl:if>
@@ -135,7 +135,7 @@
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:variable name="page-number" select="count(ancestor::section[count(ancestor-or-self::section) = 1]/preceding-sibling::section) + 1"/>
-							<a href="{$_uri}?section-view=true;section={$page-number};#{translate(title, ' -)(?:&#xA;', '')}">
+							<a href="{$_uri}?section-view=true&amp;section={$page-number}&amp;#{translate(title, ' -)(?:&#xA;', '')}">
 								<xsl:value-of select="title"/>
 							</a>
 						</xsl:otherwise>

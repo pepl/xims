@@ -37,18 +37,18 @@
  <xsl:variable name="navurl">
       <xsl:text>javascript:reloadDialog('</xsl:text>
       <xsl:value-of select="concat($xims_box,$goxims_content,'?')"/>
-      <xsl:value-of select="concat('id=',@id,';')"/>
-      <xsl:text>contentbrowse=1;</xsl:text>
-      <xsl:text>otfilter=</xsl:text><xsl:value-of select="$otfilter"/><xsl:text>;</xsl:text>
-      <xsl:text>notfilter=</xsl:text><xsl:value-of select="$notfilter"/><xsl:text>;</xsl:text>
+      <xsl:value-of select="concat('id=',@id,'&amp;')"/>
+      <xsl:text>contentbrowse=1&amp;</xsl:text>
+      <xsl:text>otfilter=</xsl:text><xsl:value-of select="$otfilter"/><xsl:text>&amp;</xsl:text>
+      <xsl:text>notfilter=</xsl:text><xsl:value-of select="$notfilter"/><xsl:text>&amp;</xsl:text>
       <xsl:if test="$defsorting != 1">
-        <xsl:value-of select="concat('sb=',$sb,';order=',$order,';')"/>
+        <xsl:value-of select="concat('sb=',$sb,'&amp;order=',$order,'&amp;')"/>
       </xsl:if>
       <xsl:if test="$pagerowlimit != $searchresultrowlimit">
-        <xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit,';')"/>
+        <xsl:value-of select="concat('&amp;pagerowlimit=',$pagerowlimit,'&amp;')"/>
       </xsl:if>
       <xsl:if test="$tinymce_version != ''">
-        <xsl:value-of select="concat('tinymce_version=',$tinymce_version,';')"/>
+        <xsl:value-of select="concat('tinymce_version=',$tinymce_version,'&amp;')"/>
       </xsl:if>
       <xsl:text>','default-dialog')</xsl:text>
     </xsl:variable> 
@@ -107,22 +107,22 @@
    <xsl:param name="page"/>
    <xsl:text>javascript:reloadDialog('</xsl:text>
       <xsl:value-of select="concat($xims_box,$goxims_content,'?')"/>
-      <xsl:value-of select="concat('id=',@id,';')"/>
-      <xsl:text>contentbrowse=1;</xsl:text>
-      <xsl:text>otfilter=</xsl:text><xsl:value-of select="$otfilter"/><xsl:text>;</xsl:text>
-      <xsl:text>notfilter=</xsl:text><xsl:value-of select="$notfilter"/><xsl:text>;</xsl:text>
-      <xsl:text>urllink=</xsl:text><xsl:value-of select="$urllink"/><xsl:text>;</xsl:text>
-      <xsl:value-of select="concat('to=',target/object/@id,';')"/>
+      <xsl:value-of select="concat('id=',@id,'&amp;')"/>
+      <xsl:text>contentbrowse=1&amp;</xsl:text>
+      <xsl:text>otfilter=</xsl:text><xsl:value-of select="$otfilter"/><xsl:text>&amp;</xsl:text>
+      <xsl:text>notfilter=</xsl:text><xsl:value-of select="$notfilter"/><xsl:text>&amp;</xsl:text>
+      <xsl:text>urllink=</xsl:text><xsl:value-of select="$urllink"/><xsl:text>&amp;</xsl:text>
+      <xsl:value-of select="concat('to=',target/object/@id,'&amp;')"/>
       <!-- <xsl:if test="$defsorting != 1"> -->
-        <xsl:value-of select="concat('sb=',$sb,';order=',$order,';')"/>
+        <xsl:value-of select="concat('sb=',$sb,';order=',$order,'&amp;')"/>
       <!-- </xsl:if> -->
-      <xsl:value-of select="concat('sbfield=',$sbfield,';')"/>
+      <xsl:value-of select="concat('sbfield=',$sbfield,'&amp;')"/>
       <xsl:if test="$pagerowlimit != $searchresultrowlimit">
-        <xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit,';')"/>
+        <xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit,'&amp;')"/>
       </xsl:if>
-      <xsl:value-of select="concat('page=',$page,';')"/>
+      <xsl:value-of select="concat('page=',$page,'&amp;')"/>
       <xsl:if test="$tinymce_version">
-        <xsl:value-of select="concat('tinymce_version=',$tinymce_version,';')"/>
+        <xsl:value-of select="concat('tinymce_version=',$tinymce_version,'&amp;')"/>
       </xsl:if>
       <xsl:text>','default-dialog')</xsl:text>
   </xsl:template>
@@ -143,7 +143,7 @@
 </xsl:template>
 
 <xsl:template match="targetparents/object|target/object">
-	/ <a class="" href="javascript:reloadDialog('{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};sbfield={$sbfield};urllink={$urllink}','default-dialog')">	
+	/ <a class="" href="javascript:reloadDialog('{$xims_box}{$goxims_content}?id={/document/context/object/@id}&amp;contentbrowse=1&amp;to={@id}&amp;otfilter={$otfilter}&amp;notfilter={$notfilter}&amp;sbfield={$sbfield}&amp;urllink={$urllink}','default-dialog')">	
 		<xsl:value-of select="location"/>
 	</a>
 </xsl:template>
@@ -160,7 +160,7 @@
 	<xsl:call-template name="cttobject.dataformat"/>
 	<xsl:choose>
 	<xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
-		<a href="javascript:reloadDialog('{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};sbfield={$sbfield};urllink={$urllink}','default-dialog')"><xsl:value-of select="title"/></a>
+		<a href="javascript:reloadDialog('{$xims_box}{$goxims_content}?id={/document/context/object/@id}&amp;contentbrowse=1&amp;to={@id}&amp;otfilter={$otfilter}&amp;notfilter={$notfilter}&amp;sbfield={$sbfield}&amp;urllink={$urllink}','default-dialog')"><xsl:value-of select="title"/></a>
 	</xsl:when>
 	<xsl:otherwise>
 		<xsl:value-of select="title"/>
@@ -212,17 +212,17 @@
       //console.log("style: "+style);
       //console.log($('#select-sb').val()+'\n'+$('input[name=defaultsorting]:checked').val()+'\n');
       /*if (typeof(style) !== 'undefined' &amp;&amp; style != '' ){        
-        var br_url = '<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/@id"/>;contentbrowse=1;to=<xsl:value-of select="target/object/@id"/>;otfilter=<xsl:value-of select="$otfilter"/>;notfilter=<xsl:value-of select="$notfilter"/>;style='+style+';tinymce_version='+<xsl:value-of select="$tinymce_version"/>+';sbfield=<xsl:value-of select="$sbfield"/>;urllink=<xsl:value-of select="$urllink"/>;order='+$('input[name=defaultsorting]:checked').val()+';sb='+$('#select-sb').val();
+        var br_url = '<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/@id"/>&amp;contentbrowse=1&amp;to=<xsl:value-of select="target/object/@id"/>&amp;otfilter=<xsl:value-of select="$otfilter"/>&amp;notfilter=<xsl:value-of select="$notfilter"/>&amp;style='+style+'&amp;tinymce_version='+<xsl:value-of select="$tinymce_version"/>+'&amp;sbfield=<xsl:value-of select="$sbfield"/>&amp;urllink=<xsl:value-of select="$urllink"/>&amp;order='+$('input[name=defaultsorting]:checked').val()+'&amp;sb='+$('#select-sb').val();
         console.log(br_url);
         window.location = br_url;
       }*/
       if (typeof(style) !== 'undefined' &amp;&amp; style != '' ){        
-        var br_url = '<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/@id"/>;contentbrowse=1;to=<xsl:value-of select="target/object/@id"/>;otfilter=<xsl:value-of select="$otfilter"/>;notfilter=<xsl:value-of select="$notfilter"/>;style='+style+';tinymce_version=<xsl:value-of select="$tinymce_version"/>;sbfield=<xsl:value-of select="$sbfield"/>;urllink=<xsl:value-of select="$urllink"/>;order='+$('input[name=defaultsorting]:checked').val()+';sb='+$('#select-sb').val();
+        var br_url = '<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/@id"/>&amp;contentbrowse=1&amp;to=<xsl:value-of select="target/object/@id"/>&amp;otfilter=<xsl:value-of select="$otfilter"/>&amp;notfilter=<xsl:value-of select="$notfilter"/>&amp;style='+style+'&amp;tinymce_version=<xsl:value-of select="$tinymce_version"/>&amp;sbfield=<xsl:value-of select="$sbfield"/>&amp;urllink=<xsl:value-of select="$urllink"/>&amp;order='+$('input[name=defaultsorting]:checked').val()+'&amp;sb='+$('#select-sb').val();
         //console.log(br_url);
         window.location = br_url;
       }
       else{
-        var br_url='<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/><xsl:value-of select="/document/context/object/location_path"/>?contentbrowse=1;to=<xsl:value-of select="target/object/@id"/>;otfilter=<xsl:value-of select="$otfilter"/>;notfilter=<xsl:value-of select="$notfilter"/>;sbfield=<xsl:value-of select="$sbfield"/>;urllink=<xsl:value-of select="$urllink"/>;order='+$('input[name=defaultsorting]:checked').val()+';sb='+$('#select-sb').val();
+        var br_url='<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/><xsl:value-of select="/document/context/object/location_path"/>?contentbrowse=1&amp;to=<xsl:value-of select="target/object/@id"/>&amp;otfilter=<xsl:value-of select="$otfilter"/>&amp;notfilter=<xsl:value-of select="$notfilter"/>&amp;sbfield=<xsl:value-of select="$sbfield"/>&amp;urllink=<xsl:value-of select="$urllink"/>&amp;order='+$('input[name=defaultsorting]:checked').val()+'&amp;sb='+$('#select-sb').val();
         //console.log(br_url);
         return reloadDialog(br_url,'default-dialog');
       }

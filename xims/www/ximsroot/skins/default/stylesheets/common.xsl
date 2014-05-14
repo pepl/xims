@@ -813,7 +813,7 @@
 			<a href="javascript:openDocWindow('Stylesheet')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Stylesheet"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id}&amp;contentbrowse=1&amp;to={@id}&amp;otfilter=XSLStylesheet,Folder&amp;sbfield=eform.stylesheet','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_stylesheet"/>
 			</a>
 		</div>
@@ -841,7 +841,7 @@
 			<a href="javascript:openDocWindow('CSS')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/CSS"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=CSS,Folder;sbfield=eform.css','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id}&amp;contentbrowse=1&amp;to={@id}&amp;otfilter=CSS,Folder&amp;sbfield=eform.css','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_css"/>
 			</a>
 		</div>
@@ -869,7 +869,7 @@
 			<a href="javascript:openDocWindow('JavaScript')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/JavaScript"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=JavaScript,Folder;sbfield=eform.script','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id}&amp;contentbrowse=1&amp;to={@id}&amp;otfilter=JavaScript,Folder&amp;sbfield=eform.script','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_script"/>
 			</a>
 		</div>
@@ -897,7 +897,7 @@
 			<a href="javascript:openDocWindow('Portlet')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/RSSFeed"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Portlet,Folder;sbfield=eform.feed','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id}&amp;contentbrowse=1&amp;to={@id}&amp;otfilter=Portlet,Folder&amp;sbfield=eform.feed','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_feed"/>
 			</a>
 		</div>
@@ -925,7 +925,7 @@
 			<a href="javascript:openDocWindow('Image')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Image"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$curr_id};contentbrowse=1;to={$curr_id};otfilter=Image;sbfield=eform.image','default-dialog','{$i18n/l/Browse_image}')" class="button">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$curr_id}&amp;contentbrowse=1&amp;to={$curr_id}&amp;otfilter=Image&amp;sbfield=eform.image','default-dialog','{$i18n/l/Browse_image}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_image"/>
 			</a>
 		</div>
@@ -1248,8 +1248,8 @@
 				<a class="option-trashcan ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
 				  <xsl:attribute name="title"><xsl:value-of select="$i18n/l/Trashcan"/></xsl:attribute>
 					<xsl:attribute name="href">
-						<xsl:value-of select="concat($goxims_content,'?id=',@id,';showtrashcan=1;r=',/document/context/object/@id)"/>
-						<xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
+						<xsl:value-of select="concat($goxims_content,'?id=',@id,'&amp;showtrashcan=1&amp;r=',/document/context/object/@id)"/>
+						<xsl:if test="$defsorting != 1"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order)"/></xsl:if>
 					</xsl:attribute>
 					<span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_trashcan"><xsl:comment> blubb</xsl:comment></span>
 					<span class="ui-button-text"><xsl:value-of select="$i18n/l/Trashcan"/></span>
@@ -1339,7 +1339,7 @@
 		<xsl:choose>
 			<xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
 				<a class="xims-sprite sprite-locked">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',@id,'&amp;cancel=1&amp;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat('&amp;page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order)"/></xsl:if></xsl:attribute>
 					<span>
 						<xsl:value-of select="$l_Release_lock"/>
 					</span>
@@ -1411,7 +1411,7 @@
 			<xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
 				<a class="option-edit ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
 				  <xsl:attribute name="title"><xsl:value-of select="$l_Edit"/></xsl:attribute>
-				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,'&amp;edit=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order,'&amp;page=',$page,'&amp;r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_edit"><xsl:comment/></span>
 				  <span class="ui-button-text"><xsl:value-of select="$l_Edit"/></span>
 				</a>
@@ -1432,7 +1432,7 @@
 				</a>-->
 				<a class="option-copy ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
 				  <xsl:attribute name="title"><xsl:value-of select="$l_Copy"/></xsl:attribute>
-				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';copy=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,'&amp;copy=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order,'&amp;page=',$page,'&amp;r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_copy"><xsl:comment/></span>
 				  <span class="ui-button-text"><xsl:value-of select="$l_Copy"/></span>
 				</a>
@@ -1460,7 +1460,7 @@
 			<xsl:when test="marked_deleted != '1' and user_privileges/move and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
 				<a class="option-move ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
 				  <xsl:attribute name="title"><xsl:value-of select="$l_Move"/></xsl:attribute>
-				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';move_browse=1;to=',$to)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,'&amp;move_browse=1&amp;to=',$to)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order,'&amp;page=',$page,'&amp;r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_move"><xsl:comment/></span>
 				  <span class="ui-button-text"><xsl:value-of select="$l_Move"/></span></a>
 			</xsl:when>
@@ -1476,7 +1476,7 @@
 			<xsl:when test="marked_deleted != '1' and (user_privileges/publish|user_privileges/publish_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id) ">
 				<a class="option-publish ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
 				  <xsl:attribute name="title"><xsl:value-of select="$l_Publishing_options"/></xsl:attribute>
-				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';publish_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,'&amp;publish_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order,'&amp;page=',$page,'&amp;r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_pub"><xsl:comment/></span>
 				  <span class="ui-button-text"><xsl:value-of select="$l_Publishing_options"/></span>
 				</a>
@@ -1494,7 +1494,7 @@
 				<a id="option-acl_656065" class="option-acl ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
 				  <xsl:attribute name="title"><xsl:value-of select="$l_Access_control"/></xsl:attribute>
 				  <xsl:attribute name="id">option-acl_<xsl:value-of select="$id"/></xsl:attribute>
-          <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+          <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,'&amp;obj_acllist=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order,'&amp;page=',$page,'&amp;r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_acl"><xsl:comment/></span>
 				  <span class="ui-button-text"><xsl:value-of select="$l_Access_control"/></span>
 				</a>
@@ -1564,7 +1564,7 @@
 			<xsl:when test="user_privileges/delete">
 				<a class="option-purge ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
 				  <xsl:attribute name="title"><xsl:value-of select="$l_purge"/></xsl:attribute>
-				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';delete_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,'&amp;delete_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order,'&amp;page=',$page,'&amp;hd=',$hd,'&amp;r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_purge"><xsl:comment/></span>
 				  <span class="ui-button-text"><xsl:value-of select="$l_purge"/></span></a>
 			</xsl:when>
@@ -1581,11 +1581,11 @@
 				<a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
 				  <xsl:attribute name="title"><xsl:value-of select="$l_delete"/></xsl:attribute>
 				  <xsl:attribute name="href">
-				    <xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/>
+				    <xsl:value-of select="concat($goxims_content,'?id=',$id,'&amp;trashcan_prompt=1')"/>
 				    <!--trashcan_prompt does not check wether the object has any children-->
 				    <!--   <xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan=1')"/>-->
 				    <xsl:if test="$currobjmime='application/x-container'">
-				    <xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/>
+				    <xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order,'&amp;page=',$page,'&amp;hd=',$hd,'&amp;r=',/document/context/object/@id)"/>
 				    </xsl:if>
 				 </xsl:attribute>
 				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_delete"><xsl:comment/></span>
@@ -1611,7 +1611,7 @@
                   and published = '1'">
 				<a class="option-send_mail ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
 				  <xsl:attribute name="title"><xsl:value-of select="$i18n/l/Send"/></xsl:attribute>
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';prepare_mail=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,'&amp;prepare_mail=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order,'&amp;page=',$page,'&amp;r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 					<span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_email"><xsl:comment/></span>
 					<span class="ui-button-text"><xsl:value-of select="$i18n/l/Send"/></span>
 				</a>
@@ -1717,7 +1717,7 @@
 			<xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
 				<a class="status-locked ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
 				  <xsl:attribute name="title"><xsl:value-of select="$l_Release_lock"/></xsl:attribute>
-				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',@id,'&amp;cancel=1&amp;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat('&amp;page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order)"/></xsl:if></xsl:attribute>
 				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-locked"><xsl:comment/></span>
 				  <span class="ui-button-text"><xsl:value-of select="$l_Release_lock"/></span>
 				</a>
@@ -2251,7 +2251,7 @@
 				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Bookmark')" class="doclink">(?)</a>-->
 				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:createDialog('{$xims_box}{$goxims_content}{$stdhome}?contentbrowse=1;sbfield=eform.path','default-dialog','{$i18n/l/Browse_for} {$i18n/l/Object}')" class="button">
+				<a href="javascript:createDialog('{$xims_box}{$goxims_content}{$stdhome}?contentbrowse=1&amp;sbfield=eform.path','default-dialog','{$i18n/l/Browse_for} {$i18n/l/Object}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_for"/>&#160;<xsl:value-of select="$i18n/l/Object"/>
 			</a>
 			</p>

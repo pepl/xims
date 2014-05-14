@@ -98,7 +98,7 @@
 	
 <xsl:template match="reference_type" mode="getoptions">
 	<!--<li><a href="javascript:submitReferenceTypeUpdate(this.value);"><xsl:value-of select="name"/></a></li>-->
-	<li><a href="{$xims_box}{$goxims_content}?change_reference_type=1;id={/document/context/object/@id};reference_type_id={@id}"><xsl:value-of select="name"/></a></li>
+	<li><a href="{$xims_box}{$goxims_content}?change_reference_type=1&amp;id={/document/context/object/@id}&amp;reference_type_id={@id}"><xsl:value-of select="name"/></a></li>
 </xsl:template>
 
 <xsl:template match="/document/reference_types/reference_type">

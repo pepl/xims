@@ -33,7 +33,7 @@
     <tr>
         <td colspan="3">
             <a href="{$xims_box}{$goxims_content}{$absolute_path}?download_pdf=1"><xsl:value-of select="$i18n/l/Download_PDF"/></a>
-            (<a href="{$xims_box}{$goxims_content}{$absolute_path}?download_pdf=1;printmode=1"><xsl:value-of select="$i18n/l/print_version"/></a>)
+            (<a href="{$xims_box}{$goxims_content}{$absolute_path}?download_pdf=1&amp;printmode=1"><xsl:value-of select="$i18n/l/print_version"/></a>)
         </td>
     </tr>
 </xsl:template>

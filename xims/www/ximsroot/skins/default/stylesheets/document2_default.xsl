@@ -61,7 +61,7 @@
 			<p>
 			<br/>
 				<xsl:if test="user_privileges/create">
-					<a href="{$goxims_content}{$absolute_path}?create=1;objtype=URLLink">
+					<a href="{$goxims_content}{$absolute_path}?create=1&amp;objtype=URLLink">
 						<xsl:value-of select="$i18n/l/Add_link"/>
 					</a>
 				</xsl:if>

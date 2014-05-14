@@ -261,17 +261,17 @@
 			&#160;&#160;
 			</td>
 			<td>
-			<a class="option-edit ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$xims_box}{$goxims_content}{$absolute_path}?edit=1;property_id={@id}" role="button" aria-disabled="false" >
+			<a class="option-edit ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$xims_box}{$goxims_content}{$absolute_path}?edit=1&amp;property_id={@id}" role="button" aria-disabled="false" >
         <xsl:attribute name="title"><xsl:value-of select="$l_Edit"/></xsl:attribute>
         <span class="ui-button-icon-primary ui-icon sprite-option_edit xims-sprite"><xsl:comment/></span>
         <span class="ui-button-text"><xsl:value-of select="$l_Edit"/></span>
       </a>
 			<xsl:if test="/document/context/object/user_privileges/delete">
 				<xsl:text> </xsl:text>
-				<a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false" onclick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
+				<a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false" onclick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id}&amp;delete_property_mapping=1'; return false;">
           <xsl:attribute name="title"><xsl:value-of select="$l_delete"/></xsl:attribute>
           <xsl:attribute name="href">
-            <xsl:value-of select="concat($xims_box,$goxims_content, $absolute_path, '?property_id=', @id, ';delete_property_mapping=1')"></xsl:value-of>
+            <xsl:value-of select="concat($xims_box,$goxims_content, $absolute_path, '?property_id=', @id, '&amp;delete_property_mapping=1')"></xsl:value-of>
           </xsl:attribute>
           <span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
           <span class="ui-button-text"><xsl:value-of select="$l_delete"/></span>
@@ -294,7 +294,7 @@
 			<a href="javascript:openDocWindow('Stylesheet')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Stylesheet"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$parentid}&amp;contentbrowse=1&amp;to={$parentid}&amp;otfilter=XSLStylesheet,Folder&amp;sbfield=eform.stylesheet','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_stylesheet"/>
 			</a>
 		</div>

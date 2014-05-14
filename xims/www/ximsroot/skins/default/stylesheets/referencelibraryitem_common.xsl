@@ -266,19 +266,19 @@
     <xsl:variable name="title" select="/document/context/object/reference_values/reference_value[property_id=/document/reference_properties/reference_property[name='title']/@id]/value"/>
     <xsl:if test="$current_pos!=1">
         <xsl:text> </xsl:text>
-        <a href="{$xims_box}{$goxims_content}{$absolute_path}?reposition_author=1;author_id={id};role={$role};old_position={$current_pos};new_position={$current_pos - 1};date={$date};title={$title}"
+        <a href="{$xims_box}{$goxims_content}{$absolute_path}?reposition_author=1&amp;author_id={id}&amp;role={$role}&amp;old_position={$current_pos}&amp;new_position={$current_pos - 1}&amp;date={$date}&amp;title={$title}"
            title="{i18n/l/Reposition}">&lt;</a>
         <xsl:text> </xsl:text>
     </xsl:if>
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}" target="_blank" title="{$i18n/l/Opens_in_new_window}">
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1&amp;{concat(name(),'_id')}={id}" target="_blank" title="{$i18n/l/Opens_in_new_window}">
         <xsl:call-template name="authorfullname"/>
     </a>
     <xsl:text> </xsl:text>
-    <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_author_mapping=1;property={name()};property_id={id};role={$role};date={$date};title={$title}"
+    <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_author_mapping=1&amp;property={name()}&amp;property_id={id}&amp;role={$role}&amp;date={$date}&amp;title={$title}"
        title="{i18n_vlib/l/Delete_mapping}">(x)</a>
     <xsl:if test="position()!=last()">
         <xsl:text> </xsl:text>
-        <a href="{$xims_box}{$goxims_content}{$absolute_path}?reposition_author=1;author_id={id};role={$role};old_position={$current_pos};new_position={$current_pos + 1};date={$date};title={$title}"
+        <a href="{$xims_box}{$goxims_content}{$absolute_path}?reposition_author=1&amp;author_id={id}&amp;role={$role}&amp;old_position={$current_pos}&amp;new_position={$current_pos + 1}&amp;date={$date}&amp;title={$title}"
            title="{i18n/l/Reposition}">&gt;</a>
         <xsl:text>, </xsl:text>
     </xsl:if>
@@ -316,7 +316,7 @@
 <xsl:template match="serial" mode="edit">
     <xsl:value-of select="title"/>
     <xsl:text> </xsl:text>
-	<a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$xims_box}{$goxims_content}{$absolute_path}?remove_serial_mapping=1;serial_id={@id}" role="button" aria-disabled="false" >
+	<a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$xims_box}{$goxims_content}{$absolute_path}?remove_serial_mapping=1&amp;serial_id={@id}" role="button" aria-disabled="false" >
 		<xsl:attribute name="title"><xsl:value-of select="$i18n_vlib/l/Delete_mapping"/></xsl:attribute>
 		<span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
 		<span class="ui-button-text"><xsl:value-of select="$i18n_vlib/l/Delete_mapping"/></span>

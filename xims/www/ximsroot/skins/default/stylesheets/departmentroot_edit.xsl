@@ -23,7 +23,7 @@
 	
 	<xsl:template match="objectlist/object">
             <a class="label-large" href="{$goxims_content}{location_path}"><xsl:value-of select="title"/></a>
-            <a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$goxims_content}{$absolute_path}?portlet_id={id};rem_portlet=1" role="button" aria-disabled="false" >
+            <a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$goxims_content}{$absolute_path}?portlet_id={id}&amp;rem_portlet=1" role="button" aria-disabled="false" >
               <xsl:attribute name="title"><xsl:value-of select="$i18n/l/delete"/></xsl:attribute>
               <span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
               <span class="ui-button-text"><xsl:value-of select="$i18n/l/delete"/>&#160;</span>
@@ -66,7 +66,7 @@
 					<xsl:value-of select="$i18n/l/create_portlet"/>
 				</label>
 			</div>
-			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Portlet;sbfield=eform.portlet','default-dialog','{$i18n/l/Browse_for}')" class="button">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id}&amp;contentbrowse=1&amp;to={@id}&amp;otfilter=Portlet&amp;sbfield=eform.portlet','default-dialog','{$i18n/l/Browse_for}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_for"/>
 			</a>
 			<input type="text" name="portlet" size="40" class="text" value="{portlet_id}" id="input-createportlet"/>

@@ -37,8 +37,8 @@
     <!--<xsl:variable name="subjectcolumns" select="'3'"/>-->
     
 	<xsl:variable name="pagenavurl">
-		<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id,';')"/>
-		<xsl:if test="$reflibsearch != ''"><xsl:value-of select="concat(';reflibsearch=',$reflibsearch,';')"/></xsl:if>
+		<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,'&amp;serial_id=',$serial_id,'&amp;author_id=',$author_id,'&amp;author_lname=',$author_lname,'&amp;workgroup_id=',$workgroup_id,'&amp;')"/>
+		<xsl:if test="$reflibsearch != ''"><xsl:value-of select="concat('&amp;reflibsearch=',$reflibsearch,'&amp;')"/></xsl:if>
 	</xsl:variable>
 	
 	<!--<xsl:variable name="reflib" select="true()"/>-->
@@ -114,7 +114,7 @@
 </xsl:template>
 
 <xsl:template match="reference_type" mode="getoptions">
-    <li><a href="{$xims_box}{$goxims_content}{$absolute_path}?reftype={@id};create=1;r={/document/context/object/@id};objtype=ReferenceLibraryItem"><xsl:value-of select="name"/></a></li>
+    <li><a href="{$xims_box}{$goxims_content}{$absolute_path}?reftype={@id}&amp;create=1&amp;r={/document/context/object/@id}&amp;objtype=ReferenceLibraryItem"><xsl:value-of select="name"/></a></li>
 </xsl:template>
 
 <xsl:template match="reference_type" mode="selectoptions">

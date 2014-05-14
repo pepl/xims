@@ -30,7 +30,7 @@
         <!--<xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Stylesheet')" class="doclink">(?)</a>-->
         <xsl:text>&#160;</xsl:text>
-        <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=Folder;sbfield=eform.stylesheet','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
+        <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$parentid}&amp;contentbrowse=1&amp;to={$parentid}&amp;otfilter=Folder&amp;sbfield=eform.stylesheet','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
         	<xsl:value-of select="$i18n/l/Browse_stylesheet"/>&#160;(<xsl:value-of select="$i18n/l/Folder" />)
 		</a>
 </div>
