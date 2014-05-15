@@ -531,8 +531,8 @@
     <!-- begin options bar -->
     <td>
 	  <form action="{$xims_box}{$goxims_content}" method="get">
+        <xsl:variable name="buttonset_id" select="concat('buttonset_',@id,'_',/document/context/object/@id)"/>
         <div>
-          <xsl:variable name="buttonset_id" select="concat('buttonset_',@id,'_',/document/context/object/@id)"/>
           <xsl:attribute name="id"><xsl:value-of select="$buttonset_id"/></xsl:attribute><xsl:comment/>
         </div>
         <script type="text/javascript">
