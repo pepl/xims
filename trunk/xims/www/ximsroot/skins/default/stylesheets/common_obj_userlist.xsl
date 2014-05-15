@@ -541,20 +541,25 @@
 	<form action="{$xims_box}{$goxims_content}" method="get">
 
 <div>
-<xsl:attribute name="id">buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/></xsl:attribute><xsl:comment/>
-	</div>
+  <xsl:variable name="buttonset_id" select="concat('buttonset_',@id,'_',/document/context/object/@id)"/>
+  <xsl:attribute name="id"><xsl:value-of select="$buttonset_id"/></xsl:attribute><xsl:comment/>
+</div>
 <script type="text/javascript">
+	  $(document).ready(function() {
+	      if($('#<xsl:value-of select="$buttonset_id"/>').html() == ''){
+	          $.get('<xsl:value-of select="$goxims_content"/>', { 
+                    obj_acllight: 1,
+                    userid: <xsl:value-of select="@id"/>,
+                    id: <xsl:value-of select="/document/context/object/@id"/> 
+                 }, function(data){
+	                $('#<xsl:value-of select="$buttonset_id"/>').html(data)
+	                $('#<xsl:value-of select="$buttonset_id"/>').buttonset();
+	             }
+              );
+	      }		
+	  });
+</script>	
 
-	$(document).ready(function() {
-		if($('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html() == ''){
-			$.get('<xsl:value-of select="concat($goxims_content,'?obj_acllight=1&amp;userid=',@id,'&amp;id=',/document/context/object/@id)"/>',
-				function(data){
-					$('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html(data)
-					$('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').buttonset();
-			});
-		}		
-	});
-	</script>	
 	 <xsl:if test="$tooltip= ''">
 	 	&#160;
 	<button class="button" name="obj_aclgrant" type="submit"><xsl:value-of select="$i18n/l/save"/></button>
