@@ -519,59 +519,54 @@
 </xsl:template>
 
 <xsl:template match="/document/context/granteelist/user|/document/userlist/user">
-	<!-- uibk special: hide privs granted to UIBK:WEBADMIN from normal users
-		we don't wan't users to manipulate or delete privs granted to our admins
-		change UIBK:WEBADMIN to the admin-role or user in your instance
-	-->
-	<xsl:if test="not(name = 'UIBK:WEBADMIN' and not (/document/context/session/user/admin = 1 or /document/context/session/user/userprefs/profile_type = 'webadmin'))">
-	<!-- end uibk special -->
-	<tr class="objrow">
-	
- <xsl:if test="$tooltip= ''">
-   <td><xsl:value-of select="@id"/><xsl:comment/></td>
- </xsl:if>
-   <xsl:apply-templates select="name"/>
-
-<xsl:if test="$tooltip= ''">
-   <td><xsl:call-template name="userfullname"/><xsl:comment/></td>
-   <xsl:apply-templates select="enabled"/>
-</xsl:if>
-   <!-- begin options bar -->
-<td>
-  <form action="{$xims_box}{$goxims_content}" method="post">
-    <xsl:call-template name="input-token"/>
-    <div>
-      <xsl:attribute name="id">buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/></xsl:attribute><xsl:comment/>
-	</div>
-    <script type="text/javascript">
-	  $(document).ready(function() {
-	      if($('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html() == ''){
-	          $.get('<xsl:value-of select="concat($goxims_content,'?obj_acllight=1&amp;userid=',@id,'&amp;id=',/document/context/object/@id)"/>',
-	          function(data){
-	             $('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html(data)
-	             $('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').buttonset();
-	          });
-	      }		
-	  });
-	</script>	
-	<xsl:if test="$tooltip= ''">
-	  &#160;
-	  <button class="button" name="obj_aclgrant" type="submit"><xsl:value-of select="$i18n/l/save"/></button>
-	  <input name="userid" type="hidden" >
-		<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
-	  </input>
-	  <input name="id" type="hidden" value="{/document/context/object/@id}"/>
-	  <xsl:call-template name="rbacknav"/>
-	  &#160;
-	  <button class="button" name="obj_aclrevoke" type="submit"><xsl:value-of select="$i18n/l/Revoke_grants"/></button>
-	</xsl:if>
-  </form>
-</td>
-   <!-- end options bar -->
+  <tr class="objrow">	
+    <xsl:if test="$tooltip= ''">
+      <td><xsl:value-of select="@id"/><xsl:comment/></td>
+    </xsl:if>
+    <xsl:apply-templates select="name"/>
+    <xsl:if test="$tooltip= ''">
+      <td><xsl:call-template name="userfullname"/><xsl:comment/></td>
+      <xsl:apply-templates select="enabled"/>
+    </xsl:if>
+    <!-- begin options bar -->
+    <td>
+	  <form action="{$xims_box}{$goxims_content}" method="post">
+        <xsl:call-template name="input-token"/>
+        <xsl:variable name="buttonset_id" select="concat('buttonset_',@id,'_',/document/context/object/@id)"/>
+        <div>
+          <xsl:attribute name="id"><xsl:value-of select="$buttonset_id"/></xsl:attribute><xsl:comment/>
+        </div>
+        <script type="text/javascript">
+	      $(document).ready(function() {
+	        if($('#<xsl:value-of select="$buttonset_id"/>').html() == ''){
+	          $.get('<xsl:value-of select="$goxims_content"/>', { 
+                      obj_acllight: 1,
+                      userid: <xsl:value-of select="@id"/>,
+                      id: <xsl:value-of select="/document/context/object/@id"/> 
+                    }, function(data){
+	                  $('#<xsl:value-of select="$buttonset_id"/>').html(data)
+	                  $('#<xsl:value-of select="$buttonset_id"/>').buttonset();
+	                }
+                );
+	          }		
+	        }
+          );
+        </script>	
+	    <xsl:if test="$tooltip= ''">
+	 	  &#160;
+	      <button class="button" name="obj_aclgrant" type="submit"><xsl:value-of select="$i18n/l/save"/></button>
+	      <input name="userid" type="hidden" >
+		    <xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
+	      </input>
+	      <input name="id" type="hidden" value="{/document/context/object/@id}"/>
+	      <xsl:call-template name="rbacknav"/>
+	      &#160;
+	      <button class="button" name="obj_aclrevoke" type="submit"><xsl:value-of select="$i18n/l/Revoke_grants"/></button>
+	    </xsl:if>
+	  </form>
+    </td>
+    <!-- end options bar -->
   </tr>
-  <!-- uibk scecial -->
-  </xsl:if> 
-  <!-- end uibk special --> 
 </xsl:template>
 
 <xsl:template match="lastname|name">
