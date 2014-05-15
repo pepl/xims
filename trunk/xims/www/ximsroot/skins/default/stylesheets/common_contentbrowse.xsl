@@ -117,7 +117,7 @@
       <!-- </xsl:if> -->
       <xsl:value-of select="concat('sbfield=',$sbfield,'&amp;')"/>
       <xsl:if test="$pagerowlimit != $searchresultrowlimit">
-        <xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit,'&amp;')"/>
+        <xsl:value-of select="concat('&amp;pagerowlimit=',$pagerowlimit,'&amp;')"/>
       </xsl:if>
       <xsl:value-of select="concat('page=',$page,'&amp;')"/>
       <xsl:if test="$tinymce_version">
