@@ -119,7 +119,7 @@ sub options {
         '200',
         [   'DAV' => '1, 2, <http://apache.org/dav/propset/fs/1>',
             'Allow' =>
-                'OPTIONS, GET, HEAD, POST, DELETE, TRACE, PROPFIND, LOCK, UNLOCK, MOVE'
+                'OPTIONS, GET, HEAD, PUT, DELETE, PROPFIND, PROPPATCH, LOCK, UNLOCK, MOVE'
         ],
         [] 
     ];
@@ -265,23 +265,15 @@ sub get {
     }
 }
 
-=head2 post()
-
-=cut
-
-sub post {
-    XIMS::Debug( 5, "called" );
-    get(@_);
-}
-
 =head2 head()
 
 =cut
 
 sub head {
     XIMS::Debug( 5, "called" );
-    get(@_);
-}    # TODO
+    my $resp = get(@_);
+    return [$resp->[0], $resp->[1], []]
+}
 
 =head2 put()
 
@@ -900,6 +892,17 @@ sub unlock {
         HTTP::Exception->throw(412);
     }
 }
+
+=head2 AUTOLOAD()
+
+    handle unimplemented methods by resbonding 405 METHOD NOT ALOWED
+
+=cut
+
+sub AUTOLOAD {
+    HTTP::Exception->throw(405);
+}
+
 
 =head2 copymove()
 
