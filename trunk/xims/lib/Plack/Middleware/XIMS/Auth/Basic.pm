@@ -55,7 +55,6 @@ sub unauthorized {
         {   status_code        => 401,
             reason             => 'Unauthorized',
             additional_headers => [
-                'Set-Cookie'       => 'session=; path=/; expires=-1Y',
                 'WWW-Authenticate' => 'Basic realm="Login to XIMS"',
                 'X-Reason' => $reason ? $reason : 'none'
             ]
