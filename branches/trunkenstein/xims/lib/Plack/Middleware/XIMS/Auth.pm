@@ -177,7 +177,7 @@ sub unauthorized {
     HTTP::Throwable::Factory->throw({
              status_code => 302,
              reason      => "Found",
-             additional_headers => ['Set-Cookie' => 'session=; path=/; expires=-1Y',
+             additional_headers => ['Set-Cookie' => 'session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT',
                                     'Location'   => "/login?reason=$reason&r=" . $env->{SCRIPT_NAME} . $env->{PATH_INFO},
                                     'X-Reason'   => $reason ? $reason : 'none' ]
          });
