@@ -487,8 +487,8 @@ sub event_property_edit {
     my $ed = '';
 
     if ($property eq 'subject') {
-        $ed = $self->set_wysiwyg_editor($self, $ctxt);
-        # either Plain or HTMLArea
+        $ed = $self->set_wysiwyg_editor($ctxt);
+        # either Plain or TinyMCE
         if (length($ed)) {$ed = '_tinymce';}
     }
 
