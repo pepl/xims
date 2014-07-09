@@ -886,12 +886,12 @@ sub redirect_uri {
         . XIMS::USERMANAGEMENTINTERFACE()
         . '?name='
         . $self->param('name')
-        . ";$event=1"
-        . ';sort-by='
+        . "&$event=1"
+        . '&sort-by='
         . $self->param('sort-by')
-        . ';order-by='
+        . '&order-by='
         . $self->param('order-by')
-        . ';userquery='
+        . '&userquery='
         . $self->param('userquery');
 }
 

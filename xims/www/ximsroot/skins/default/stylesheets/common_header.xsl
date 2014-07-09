@@ -298,7 +298,7 @@
 		<xsl:variable name="parent_id" select="parent_id"/>
 		<xsl:variable name="sorting">
 			<xsl:if test="$defsorting != 1">
-				<xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/>
+				<xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order)"/>
 			</xsl:if>
 		</xsl:variable>
 		<xsl:variable name="fullname">
