@@ -231,7 +231,7 @@ sub redirect_uri {
 
     if ( $query =~ /name=([^(;|&)]+)/ ) {
         $uri->path( XIMS::GOXIMS() . '/users' );
-        $uri->query("userquery=$1;");
+        $uri->query("userquery=$1");
     }
     else {
         $uri->path( XIMS::GOXIMS() . '/user' );

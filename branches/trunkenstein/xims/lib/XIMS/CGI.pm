@@ -1228,36 +1228,36 @@ sub redirect_uri {
 	# preserve some selected params
 	$params .= "sb=$sb" if defined $sb;
 	if ( defined $m ) {
-		$params .= ";" if length $params;
+		$params .= "&" if length $params;
 		$params .= "m=$m";
 	}
 	if ( defined $order ) {
-		$params .= ";" if length $params;
+		$params .= "&" if length $params;
 		$params .= "order=$order";
 	}
 	if ( defined $hd ) {
-		$params .= ";" if length $params;
+		$params .= "&" if length $params;
 		$params .= "hd=$hd";
 	}
 	if ( defined $hls ) {
-		$params .= ";" if length $params;
+		$params .= "&" if length $params;
 		$params .= "hls=$hls";
 	}
 
 	if ( defined $bodyonly ) {
-		$params .= ";" if length $params;
+		$params .= "&" if length $params;
 		$params .= "bodyonly=$bodyonly";
 	}
 	if ( defined $plain ) {
-		$params .= ";" if length $params;
+		$params .= "&" if length $params;
 		$params .= "plain=$plain";
 	}
 	if ( defined $page ) {
-		$params .= ";" if length $page;
+		$params .= "&" if length $page;
 		$params .= "page=$page";
 	}
 	if ( defined $showtrashcan ) {
-		$params .= ";" if length $showtrashcan;
+		$params .= "&" if length $showtrashcan;
 		$params .= "showtrashcan=$showtrashcan";
 	}
 
