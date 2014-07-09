@@ -64,6 +64,7 @@ sub event_default {
     $self->skipSerialization(1);
 
     my $mtime = $ctxt->object->mtime();
+    my $mt    = $ctxt->object->data_format->mime_type();
 
     # Conditional requests for XIMS::File and derived objects. This pays off
     # as these are often embedded in other pages -- think of images -- and do
@@ -75,7 +76,7 @@ sub event_default {
         $self->{RES} = $self->{REQ}->new_response(
             $self->psgi_header(
                 -last_modified => $mtime,
-                -type => $ctxt->object->data_format->mime_type()
+                -type => $mt eq 'text/html' ? "text/html;charset=UTF-8" : $mt
             ),
             $ctxt->object->body()
         );
