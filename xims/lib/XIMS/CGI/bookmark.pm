@@ -238,16 +238,16 @@ sub redirect_uri {
     my $uri   = URI->new( $self->url(-absolute => 1, -path => 1, -query => 1) );
     my $query = $uri->query();
 
-    # get rid of event identifiers
-    $query =~ s/(delete|create|setdefault)=([^(;|&)]+)//g;
+    # get rid of event identifiers and old ids
+    $query =~ s/(delete|create|setdefault|id)=([^&]+)//g;
 
-    if ( $query =~ /name=([^(;|&)]+)/ ) {
+    if ( $query =~ /name=([^&]+)/ ) {
         $uri->path( XIMS::GOXIMS() . '/users' );
-        $uri->query("name=$1;bookmarks=1;$query");
+        $uri->query("name=$1\&bookmarks=1\&$query");
     }
     else {
         $uri->path( XIMS::GOXIMS() . '/user' );
-        $uri->query("bookmarks=1;$query");
+        $uri->query("bookmarks=1\&$query");
     }
 
     return $uri;

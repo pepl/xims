@@ -110,7 +110,7 @@
                     <xsl:if test="$submit.x != '' or $submit != ''">
                     tl = Timeline.create(document.getElementById("tl1"), bandInfos);
                     // TODO: get rid of hardcoded demo timespan
-                    Timeline.loadXML("?vlchronicle=1;onepage=1;style=simile_timeline_src;chronicle_from=<xsl:value-of select="$chronicle_from"/>;chronicle_to=<xsl:value-of select="$chronicle_to"/>", function(xml, url) { eventSource.loadXML(xml, url); });
+                    Timeline.loadXML("?vlchronicle=1&amp;onepage=1&amp;style=simile_timeline_src&amp;chronicle_from=<xsl:value-of select="$chronicle_from"/>;chronicle_to=<xsl:value-of select="$chronicle_to"/>", function(xml, url) { eventSource.loadXML(xml, url); });
 
                     setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
                     </xsl:if>
