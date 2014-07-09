@@ -28,9 +28,14 @@ use common::sense;
 # ################################################################
 # inheritance
 # ################################################################
-use Plack::Request;
+
+BEGIN{
+  use CGI qw(-oldstyle_urls);
+  use CGI::PSGI;
+  push @XIMS::XMLApplication::ISA, 'CGI::PSGI';
+}
 use XIMS;
-use parent qw( CGI::PSGI );
+use Plack::Request;
 
 # ################################################################
 
@@ -223,10 +228,8 @@ sub run {
     if ( $sid >= 0 ) {
         # redirect?
         if ( my $uri = $self->redirectToURI() ) {
-            my %h = $self->setHttpHeader( $ctxt );
-            $h{-uri} = $uri;
-
-            return [$self->psgi_redirect( %h ),[]];
+            $self->{RES} = $self->{REQ}->new_response(302, {'Location' => $uri}, "Found: $uri.");
+            return $self->{RES}->finalize;
         }
         # serialize unless told otherwise
         elsif ( not $self->skipSerialization() ) {

@@ -205,7 +205,7 @@
                                 select="concat($xims_box
                                         ,$goxims_content
                                         ,$absolute_path
-                                        ,$pagenav.params,';')"/>
+                                        ,$pagenav.params,'&amp;')"/>
               </xsl:call-template>
             </xsl:if>
   </xsl:template>
@@ -356,7 +356,7 @@
     <xsl:text>?filter=1</xsl:text>
     <xsl:for-each select="exslt:node-set($filterparams)/*">
         <xsl:variable name="paramvalue" select="dyn:evaluate(concat('$',@name))"/>
-        <xsl:if test="$paramvalue"><xsl:value-of select="concat(';',@name,'=',$paramvalue)"/></xsl:if>
+        <xsl:if test="$paramvalue"><xsl:value-of select="concat('&amp;',@name,'=',$paramvalue)"/></xsl:if>
     </xsl:for-each>
 </xsl:template>
 
