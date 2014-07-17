@@ -73,7 +73,7 @@
         <xsl:with-param name="url" select="$navurl"/>
       </xsl:call-template>
     </xsl:if>
-    <br class="clear"/><xsl:value-of select="$navurl"/>
+    <br class="clear"/>
       <xsl:apply-templates select="targetchildren/object[marked_deleted != '1']">
         <xsl:sort select="$sb" order="{concat($order,'ending')}" case-order="lower-first"/> 
       </xsl:apply-templates>    
