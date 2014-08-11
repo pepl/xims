@@ -445,7 +445,7 @@ tinymce.PluginManager.add('advimage', function(editor, url) {
 		if (editor.settings.image_advtab) {
 			// Parse styles from img
 			if (imgElm && imgElm.nodeName == 'IMG') {
-				if(imgElm.parentNode.nodeName = 'FIGURE'){
+				if(imgElm.parentNode.nodeName == 'FIGURE'){
 					data.hspace_left = removePixelSuffix(imgElm.parentNode.style.marginLeft);
 					data.hspace_right = removePixelSuffix(imgElm.parentNode.style.marginRight);
 					data.vspace_top = removePixelSuffix(imgElm.parentNode.style.marginTop);
