@@ -174,6 +174,7 @@ tinymce.PluginManager.add('advimage', function(editor) {
 				width: data.width,
 				height: data.height,
 				style: data.style,
+				captiontext: data.captiontext,
 				//"class": data["class"]
 				'class': imgClass+' '+(data.popupclass||'')
 			};
@@ -189,6 +190,7 @@ tinymce.PluginManager.add('advimage', function(editor) {
 					return;
 				}
 				if(data.captiontext && data.captiontext != ''){
+					alert(data.captiontext);
 					var figdata = {
 							style: data.style,
 							width: data.width,
@@ -202,6 +204,7 @@ tinymce.PluginManager.add('advimage', function(editor) {
 							height: data.height,
 							'class': imgClass+' '+(data.popupclass||'')
 						};
+					alert(figdata.style);
 					var inner = dom.createHTML('img', imgdata)+' '+dom.createHTML('figcaption',{},data.captiontext);
 					if (!imgElm) {
 						figdata.id = '__mcenew';						
@@ -231,6 +234,11 @@ tinymce.PluginManager.add('advimage', function(editor) {
 						dom.setAttrib(imgElm, 'id', null);
 					} else {
 						dom.setAttribs(imgElm, data);
+						//delete figure & figcaption if captiontext was removed
+						if(imgElm.parentNode.nodeName == 'FIGURE'){
+							imgElm.parentNode.parentNode.replaceChild(imgElm, imgElm.parentNode);
+							//imgElm.parentNode.parentNode.removeChild(imgElm.parentNode);
+						}
 					}
 				}
 
