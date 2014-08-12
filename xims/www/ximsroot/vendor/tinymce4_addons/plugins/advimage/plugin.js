@@ -190,7 +190,6 @@ tinymce.PluginManager.add('advimage', function(editor) {
 					return;
 				}
 				if(data.captiontext && data.captiontext != ''){
-					alert(data.captiontext);
 					var figdata = {
 							style: data.style,
 							width: data.width,
@@ -204,7 +203,6 @@ tinymce.PluginManager.add('advimage', function(editor) {
 							height: data.height,
 							'class': imgClass+' '+(data.popupclass||'')
 						};
-					alert(figdata.style);
 					var inner = dom.createHTML('img', imgdata)+' '+dom.createHTML('figcaption',{},data.captiontext);
 					if (!imgElm) {
 						figdata.id = '__mcenew';						
@@ -237,7 +235,6 @@ tinymce.PluginManager.add('advimage', function(editor) {
 						//delete figure & figcaption if captiontext was removed
 						if(imgElm.parentNode.nodeName == 'FIGURE'){
 							imgElm.parentNode.parentNode.replaceChild(imgElm, imgElm.parentNode);
-							//imgElm.parentNode.parentNode.removeChild(imgElm.parentNode);
 						}
 					}
 				}
