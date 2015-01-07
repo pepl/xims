@@ -26,7 +26,6 @@ use XIMS::Names;
 use DBIx::SQLEngine 0.017;
 use DBIx::SQLEngine::Criteria::And;
 use XIMS::DataProvider;
-use DBIx::Connector;
 
 
 our %PropertyAttributes = XIMS::Config::DataProvider::DBI::PropertyAttributes();
