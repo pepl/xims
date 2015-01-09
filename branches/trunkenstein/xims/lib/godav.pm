@@ -96,12 +96,9 @@ sub handler {
     ## no critic (ProhibitNoStrict)
     my $resp = &{$method}( $env, $user, $doc );
 
-    push $resp->[1],
-        (
-        'X-Server'      => "XIMS::DAVServer $XIMS::VERSION",
-        'MS-Author-Via' => 'DAV',
-        'Cache-Control' => 'no-cache',
-        );
+    push @{$resp->[1]}, ('X-Server'      => "XIMS::DAVServer $XIMS::VERSION",
+                         'MS-Author-Via' => 'DAV',
+                         'Cache-Control' => 'no-cache');
     ##use critic
 
     #warn $env->{REQUEST_METHOD} . ' ' . $env->{REQUEST_URI} . "\n\n" . Dumper($resp)  . "\n\n";
@@ -1166,7 +1163,7 @@ PROPPATCH?
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2013 The XIMS Project.
+Copyright (c) 2002-2015 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

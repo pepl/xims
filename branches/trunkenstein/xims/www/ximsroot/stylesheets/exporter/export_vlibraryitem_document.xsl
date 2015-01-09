@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2013 The XIMS Project.
+# Copyright (c) 2002-2015 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: export_document.xsl,v 1.10 2005/08/11 15:16:13 pepl Exp $
