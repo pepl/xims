@@ -17,7 +17,7 @@ RDBMS for its data repository.
 
 License
 -------
-XIMS is copyrighted 2002-2013 by The XIMS Project. See the file "LICENSE" for
+XIMS is copyrighted 2002-2015 by The XIMS Project. See the file "LICENSE" for
 information and conditions for use, reproduction, and distribution of this work,
 and for a DISCLAIMER OF ALL WARRANTIES.
 

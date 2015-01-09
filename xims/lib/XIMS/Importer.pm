@@ -514,13 +514,15 @@ sub clean_location {
         '°'  => '-',
     );
 
+    # substitute badchars
     my $badchars = join( '', sort(keys %escapes));
     $location =~ s/
                     ([$badchars])     # more flexible :)
                   /
                     $escapes{$1}
-                  /segxu;    # *coff*
-    $location =~ s/[^-.\w]//sag; # ascii!
+                  /segx; # *coff*
+    # strip the rest
+    $location =~ s/[^-_.a-zA-Z0-9]//sg;
 
     return ( not (ref $self and $self->{ArchiveMode}) # sometimes used as a function
              and XIMS::Config::LowerCaseLocations() )
@@ -544,7 +546,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2013 The XIMS Project.
+Copyright (c) 2002-2015 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
