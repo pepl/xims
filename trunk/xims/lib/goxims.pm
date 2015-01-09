@@ -141,8 +141,8 @@ sub handler {
 
     # run app and return
     if ( $res = run_app($app_class, $env) ) {
-        push $res->[1], ('Cache-Control', 'private, must-revalidate',
-                         'X-UA-Compatible', 'IE=10');
+        push @{$res->[1]}, ('Cache-Control', 'private, must-revalidate',
+                            'X-UA-Compatible', 'IE=10');
         return $res;
     }
 
@@ -173,10 +173,8 @@ sub quick_handler {
 
     if ( $res = run_app("XIMS::CGI::$ot_fullname", $env) ) {
         # add some headers
-        push $res->[1],      (
-            'Last-Modified', $env->{'xims.appcontext'}->{mtime},
-            'Cache-Control', 'public, s-maxage=300' # 5 Min
-        );
+        push @{$res->[1]}, ('Last-Modified', $env->{'xims.appcontext'}->{mtime},
+                            'Cache-Control', 'public, s-maxage=300'); # 5 Min
 
         return $res;
     }
