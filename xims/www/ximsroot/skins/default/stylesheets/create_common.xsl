@@ -44,17 +44,22 @@
 					<xsl:call-template name="cancelcreateform"/>
 					
 					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-						<form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" id="create-edit-form" enctype="multipart/form-data">
+					  <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}"
+                            name="eform" 
+                            method="post" 
+                            id="create-edit-form"
+                            enctype="multipart/form-data">
+                        <xsl:call-template name="input-token"/>
 						<input type="hidden" name="objtype" value="{$objtype}"/>
 						
 						<xsl:call-template name="create-content"/>
 						
 						<xsl:call-template name="saveedit"/>
-						</form>
-						<br/>
+					  </form>
+					  <br/>
 					</div>
 
-						<xsl:call-template name="cancelcreateform"/>
+					<xsl:call-template name="cancelcreateform"/>
 				</div>
 				<xsl:call-template name="script_bottom">
 					<xsl:with-param name="tinymce" select="$tinymce"/>

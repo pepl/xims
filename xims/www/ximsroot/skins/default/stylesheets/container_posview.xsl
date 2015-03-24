@@ -38,11 +38,12 @@
 			</button>
 		</p>
 	</form>
-	<form name="reposition{@id}" method="get" action="{$xims_box}{$goxims_content}">
-					<input type="hidden" name="id" value="{@id}"/>
-					<input type="hidden" name="reposition" value="yes"/>
-					<input type="hidden" name="new_position" value=""/>
-				</form>
+	<form name="reposition{@id}" method="post" action="{$xims_box}{$goxims_content}">
+      <xsl:call-template name="input-token"/>
+	  <input type="hidden" name="id" value="{@id}"/>
+	  <input type="hidden" name="reposition" value="yes"/>
+	  <input type="hidden" name="new_position" value=""/>
+	</form>
 	<script type="text/javascript">
 		function storeBack(value) {
 			document.<xsl:value-of select="$sbfield"/>.value=value;

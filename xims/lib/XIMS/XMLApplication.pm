@@ -163,10 +163,14 @@ sub event_default { return 0 }
 # this is required by the eventhandling
 sub checkPush {
     my $self = shift;
+    my $event;
     my ( $pushed ) = grep {
-        defined $self->param( $_ ) ||  defined $self->param( $_.'.x')
+        ($event) = split(':', $_);
+        defined $self->param( $event ) ||  defined $self->param("$event.x")
     } @_;
+
     $pushed =~ s/\.x$//i if defined $pushed;
+
     return $pushed;
 }
 
@@ -206,11 +210,15 @@ sub run {
     my $self = shift;
     my $sid = -1;
     my $ctxt = (!@_ or scalar(@_) > 1) ? {@_} : shift; # nothing, hash or context object
-
+    
     $self->event_init($ctxt);
+    
+    my ($event, $required_method) = split(':', $self->testEvent($ctxt));
+    #warn "Run: Event $event, Reqired Method: $required_method\n";
+    HTTP::Exception->throw(405) if $required_method and $required_method ne $self->request_method;
 
-    if ( my $n = $self->testEvent($ctxt) ) {
-        if ( my $func = $self->can('event_'.$n) ) {
+    if ( $event ) {
+        if ( my $func = $self->can('event_'.$event) ) {
             $sid = $self->$func($ctxt);
         }
         else {

@@ -23,7 +23,8 @@
 					<xsl:with-param name="nopath">true</xsl:with-param>-->
 				</xsl:call-template>
 				<div id="content-container">
-					<form name="objectdeletion" action="{$xims_box}{$goxims_content}" method="get">
+					<form name="objectdeletion" action="{$xims_box}{$goxims_content}" method="post">
+                      <xsl:call-template name="input-token"/>
 						<h1 class="bluebg"><xsl:value-of select="$i18n/l/DeleteConfirm"/></h1>
 						<p><xsl:value-of select="$i18n/l/AboutDeletion1"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/AboutDeletion2"/></p>
 						<p><strong><xsl:value-of select="$i18n/l/WarnNoUndo"/></strong></p>

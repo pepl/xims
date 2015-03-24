@@ -9,26 +9,26 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="view_common.xsl"/>
-<xsl:import href="text_common.xsl"/>
+  <xsl:import href="view_common.xsl"/>
+  <xsl:import href="text_common.xsl"/>
 
-<xsl:template name="view-content">
+  <xsl:template name="view-content">
 	<div id="docbody"><xsl:comment/>
-				<xsl:apply-templates select="body"/>
-		<!--<xsl:call-template name="body_display_format_switcher"/>-->
+	<xsl:apply-templates select="body"/>
+	<!--<xsl:call-template name="body_display_format_switcher"/>-->
 	</div>
-</xsl:template>
-
-    <xsl:template name="body_display_format_switcher">
-        <xsl:choose>
-            <xsl:when test="$pre = '0'">
-                <a href="{$xims_box}{$goxims_content}{$absolute_path}?pre=1">Zeige Body vorformatiert</a>
-            </xsl:when>
-            <xsl:otherwise>
-                <a href="{$xims_box}{$goxims_content}{$absolute_path}?pre=0">Zeige Body in Standardformatierung</a>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-
+  </xsl:template>
+  
+  <xsl:template name="body_display_format_switcher">
+    <xsl:choose>
+      <xsl:when test="$pre = '0'">
+        <a href="{$xims_box}{$goxims_content}{$absolute_path}?pre=1">Zeige Body vorformatiert</a>
+      </xsl:when>
+      <xsl:otherwise>
+        <a href="{$xims_box}{$goxims_content}{$absolute_path}?pre=0">Zeige Body in Standardformatierung</a>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
 </xsl:stylesheet>
 

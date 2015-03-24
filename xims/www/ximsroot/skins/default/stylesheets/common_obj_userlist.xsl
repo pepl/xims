@@ -530,7 +530,8 @@
     </xsl:if>
     <!-- begin options bar -->
     <td>
-	  <form action="{$xims_box}{$goxims_content}" method="get">
+	  <form action="{$xims_box}{$goxims_content}" method="post">
+        <xsl:call-template name="input-token"/>
         <xsl:variable name="buttonset_id" select="concat('buttonset_',@id,'_',/document/context/object/@id)"/>
         <div>
           <xsl:attribute name="id"><xsl:value-of select="$buttonset_id"/></xsl:attribute><xsl:comment/>

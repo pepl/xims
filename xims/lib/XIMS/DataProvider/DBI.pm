@@ -27,7 +27,6 @@ use DBIx::SQLEngine 0.017;
 use DBIx::SQLEngine::Criteria::And;
 use XIMS::DataProvider;
 
-
 our %PropertyAttributes = XIMS::Config::DataProvider::DBI::PropertyAttributes();
 our %PropertyRelations = XIMS::Config::DataProvider::DBI::PropertyRelations();
 our %Tables = XIMS::Config::DataProvider::DBI::Tables();
@@ -925,6 +924,8 @@ sub get_object_id_by_path {
     #my $requested_lang = $param{language_id};
     #$requested_lang ||= $fallbacklangid;
 
+    # strip possible queries and fragment identifiers
+    $param{path} =~ s/[#?].*$//;
     # no trailing slashes there...
     $param{path} =~ s#/$##;
 

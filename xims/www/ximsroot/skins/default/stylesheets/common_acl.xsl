@@ -11,7 +11,8 @@
   
   <xsl:template name="grant-form">
     <xsl:param name="multiple" select="false()"/>
-    <form action="{$xims_box}{$goxims_content}" method="get">
+    <form action="{$xims_box}{$goxims_content}" method="post">
+      <xsl:call-template name="input-token"/>
       <xsl:choose>
         <xsl:when test="$multiple">
           <xsl:apply-templates select="/document/objectlist/object"/>

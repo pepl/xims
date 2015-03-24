@@ -23,6 +23,7 @@
 				<xsl:value-of select="$i18n/l/ManagePersonalSettings"/>
 				</h1>
 				<form name="userEdit" action="{$xims_box}{$goxims}/userprefs" method="post" id="create-edit-form">
+                    <xsl:call-template name="input-token"/>
 				<!--
 				<strong><xsl:value-of select="$i18n/l/SelectSkin"/></strong><br/>
 				<input type="radio" id="skin_def" class="radio-button" name="skin" value="default">
