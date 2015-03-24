@@ -68,7 +68,7 @@ sub new {
 
     $self->process_file($general);
     $self->process_dbi($dbi);
-    $self->gen_xsl_config($general);
+    $self->gen_xsl_config($general) unless $args{ro};
 
     return $self;
 }
