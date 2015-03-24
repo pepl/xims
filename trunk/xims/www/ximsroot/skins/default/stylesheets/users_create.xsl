@@ -24,6 +24,7 @@
 		
 		<div id="content-container">
 			<form name="userAdd" action="{$xims_box}{$goxims_users}" method="post">
+                <xsl:call-template name="input-token"/>
 				<xsl:if test="/document/context/session/warning_msg != ''">
 					<div>
 						<xsl:call-template name="message"/>

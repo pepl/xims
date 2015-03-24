@@ -9,6 +9,7 @@
 	<!ENTITY lc "'aäbcdefghijklmnoöpqrstuüvwxyz'">
 	<!ENTITY uc "'AÄBCDEFGHIJKLMNOÖPQRSTUÜVWXYZ'">
 ]>
+
 <xsl:stylesheet version="1.0" 
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"              
                 xmlns:dyn="http://exslt.org/dynamic" 
@@ -89,7 +90,8 @@
 		<xsl:param name="with_save" select="'yes'"/>
 		<!-- method get is needed, because goxims does not handle a PUTed 'id' -->
 		<div class="cancel-save">
-			<form class="cancelsave-form" action="{$xims_box}{$goxims_content}" name="cform" method="get">
+			<form class="cancelsave-form" action="{$xims_box}{$goxims_content}" name="cform" method="post">
+              <xsl:call-template name="input-token"/>
 				<input type="hidden" name="id" value="{@id}"/>
 				<xsl:if test="$with_save = 'yes'">
 					<xsl:call-template name="save_jsbutton"/>
@@ -120,19 +122,22 @@
 	</xsl:template>
 	
 	<xsl:template name="cancelcreateform">
-		<xsl:param name="with_save" select="'yes'"/>
-		<div class="cancel-save">
-			<form class="cancelsave-form" action="{$xims_box}{$goxims_content}{$absolute_path}" method="post">
-				<xsl:if test="$with_save = 'yes'">
-					<xsl:call-template name="save_jsbutton"/>
-				</xsl:if>
-				<xsl:call-template name="rbacknav"/>
-				<button type="submit" name="cancel_create" accesskey="C" class="button">
-					<xsl:value-of select="$i18n/l/cancel"/>
-				</button>
-			</form>
-			&#160;<br/>
-		</div>
+	  <xsl:param name="with_save" select="'yes'"/>
+	  <div class="cancel-save">
+		<form class="cancelsave-form"
+              action="{$xims_box}{$goxims_content}{$absolute_path}"
+              method="post">
+          <xsl:call-template name="input-token"/>
+		  <xsl:if test="$with_save = 'yes'">
+			<xsl:call-template name="save_jsbutton"/>
+		  </xsl:if>
+		  <xsl:call-template name="rbacknav"/>
+		  <button type="submit" name="cancel_create" accesskey="C" class="button">
+			<xsl:value-of select="$i18n/l/cancel"/>
+		  </button>
+		</form>
+		&#160;<br/>
+	  </div>
 	</xsl:template>
 	
 	<!--	legacy-->
@@ -167,7 +172,9 @@
 	<xsl:template name="exitredirectform">
 		<xsl:variable name="object_type_id" select="object_type_id"/>
 		<xsl:variable name="parent_id" select="@parent_id"/>
-		<form name="userConfirm" action="{$xims_box}{$goxims_content}" method="get">
+		<form name="userConfirm" action="{$xims_box}{$goxims_content}"
+              method="put">
+          <xsl:call-template name="input-token"/>
 			<button name="exit" type="submit" class="button">
 				<xsl:value-of select="$i18n/l/Done"/>
 			</button>
@@ -1502,12 +1509,27 @@
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="user_privileges/delete">
-				<a class="option-undelete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
-				  <xsl:attribute name="title"><xsl:value-of select="$l_Undelete"/></xsl:attribute>
-				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,'&amp;undelete=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat('&amp;sb=',$sb,'&amp;order=',$order,'&amp;page=',$page,'&amp;hd=',$hd,'&amp;r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
-				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_undelete"><xsl:comment/></span>
+             
+                <xsl:call-template name="input-token"/>
+                <input type="hidden" name="id" value="{$id}"/>
+                <xsl:if test="$currobjmime='application/x-container'">
+                  <input type="hidden" name="sb" value="{$sb}"/>
+                  <input type="hidden" name="order" value="{$order}"/>
+                  <input type="hidden" name="page" value="{$page}"/>
+                  <input type="hidden" name="hd" value="{$hd}"/>
+                  <input type="hidden" name="r" value="{/document/context/object/@id}"/> 
+                </xsl:if>
+                <button class="option-undelete ui-button ui-widget
+                               ui-state-default ui-corner-all
+                               ui-button-icon-only" 
+                        role="button"
+                        aria-disabled="false"
+                        name="undelete"
+                        value="1"
+                        type="submit">
+                  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_undelete"><xsl:comment/></span>
 				  <span class="ui-button-text"><xsl:value-of select="$l_Undelete"/></span>
-				</a>
+                </button>
 			</xsl:when>
 			<xsl:otherwise>
 				<a class="button option-disabled">&#160;</a>
@@ -2219,8 +2241,9 @@
 		<h2>
 			<xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$i18n/l/Bookmark"/>
 		</h2>
-		<form action="{$xims_box}{$goxims}/bookmark" name="eform">
-			<p>
+		<form action="{$xims_box}{$goxims}/bookmark" method="post" name="eform">
+          <xsl:call-template name="input-token"/>
+		  <p>
 				<label for="input-path">
 					<xsl:value-of select="$i18n/l/Path"/>
 				</label>: 
@@ -2257,6 +2280,10 @@
 		</p>-->
 		<a class="button" href="{$xims_box}{$goxims}/user"><xsl:value-of select="$i18n/l/cancel"/></a>
 	</xsl:template>
+
+	<xsl:template name="input-token">
+	    <input type="hidden" name="token" value="{/document/context/session/token}"/>
+    </xsl:template>
 
     <xsl:template name="social-bookmarks">
       <div id="social-bookmarks">

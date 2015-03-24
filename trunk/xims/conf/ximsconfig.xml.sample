@@ -58,6 +58,7 @@
             # 28800 = 8h
         -->
         <SessionTimeout>28800</SessionTimeout>
+        <SessionMaxAge>86400</SessionMaxAge>
 
         <!--
         # Path to the tidy binary

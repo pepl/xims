@@ -28,6 +28,7 @@
 		
 		<div id="content-container">
         <form name="userRemove" action="{$xims_box}{$goxims_users}" method="post">
+          <xsl:call-template name="input-token"/>
                   <h1 class="bluebg"><xsl:value-of select="$i18n_users/l/Confirm_User_Deletion"/></h1>
 	<p><xsl:value-of select="$i18n/l/AboutDeletionUser"/> '<xsl:value-of select="$name"/>' <xsl:value-of select="$i18n/l/AboutDeletion2"/>.</p>
             <p>

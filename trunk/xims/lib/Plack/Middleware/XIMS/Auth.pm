@@ -25,9 +25,10 @@ sub call {
 
             # so we void your XIMS session
             $env->{'xims.appcontext'}->session()->void();
-
+          
             # congratulation, you have logged out
-            $res = $self->unauthorized($env, 'logout');
+            $env->{'xims.appcontext'}->{reason} = 'logout';
+            $res = $self->unauthorized($env);
         }
 
         return $res;
@@ -59,7 +60,8 @@ sub call {
         }
         else {
             # no session for you, but you certainly may try again ...
-            return $self->unauthorized($env, 'mismatch');
+            $env->{'xims.appcontext'}->{reason} = 'mismatch';
+            return $self->unauthorized($env);
         }
     }
     else {
@@ -107,18 +109,32 @@ sub get_session_from_cookie {
             XIMS::Debug( 2, "no session found!" . $@ );
         }
 
-        # (still) TODO: Think of separately checking for session timeout and
-        # display a corresponding message to the user in case
-        if (    $session
-            and $session->validate( $env->{REMOTE_ADDR} )
-            and $self->has_acceptable_authenticator( $session ) )
-        {
-            XIMS::Debug( 4, "session cookie validated!" );
-            $env->{'xims.appcontext'}->session($session);
-        }
-        else {
-            XIMS::Debug( 2, "rejecting session cookie" );
-            $session = undef;
+        if ( $session ) {
+            my $session_valid = $session->validate( $env->{REMOTE_ADDR} );
+            # Session OK 
+            if ( $session_valid == 1 ) {
+                # check for forbidden authenticators, e.g. XIMS::Auth::Public
+                # (see below)
+                if ( $self->has_acceptable_authenticator( $session ) )
+                {
+                    XIMS::Debug( 4, "session cookie validated!" );
+                    $env->{'xims.appcontext'}->session($session);
+                }
+                else {
+                    XIMS::Debug( 2, "Authenticator '" . $session->auth_module() . "' not acceptable." );
+                }
+            }
+            # Session Timeout
+            elsif ( $session_valid == -1 ) {
+                $env->{'xims.appcontext'}->{reason} = 'timeout';
+                XIMS::Debug( 4, "session timeout" );
+                $session = undef;
+            }
+            # Sessionhash did not match.
+            else {    
+                XIMS::Debug( 2, "rejecting session cookie" );
+                $session = undef;
+            }
         }
     }
     return $session;    # session or undef
@@ -154,7 +170,8 @@ sub create_new_session {
 }
 
 sub unauthorized {
-    my ($self, $env, $reason) = @_;
+    my ($self, $env) = @_;
+    my $reason = $env->{'xims.appcontext'}->{reason};
     XIMS::Debug( 5, "called" );
     $env->{HTTP_AUTHORIZATION} = undef;
     HTTP::Throwable::Factory->throw({
