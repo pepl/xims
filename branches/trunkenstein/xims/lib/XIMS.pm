@@ -40,7 +40,7 @@ our $_DEBUGLEVEL_;
 our %STYLE_CACHE;
 
 BEGIN {
-    $_CONFIG_ = XIMS::Config->new();
+    $_CONFIG_ = XIMS::Config->new(ro => $ENV{XIMS_NO_XSLCONFIG});
 
     require XIMS::DataProvider;
     my $dp = XIMS::DataProvider->new();
