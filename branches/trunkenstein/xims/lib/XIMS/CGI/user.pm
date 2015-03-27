@@ -34,8 +34,6 @@ use XIMS::Importer::Object;
 use XIMS::Term;
 use Getopt::Std;
 use XIMS::Exporter;
-use Digest::MD5 qw( md5_hex );
-use Authen::Passphrase::BlowfishCrypt;
 use Locale::TextDomain ('info.xims');
 
 
@@ -50,11 +48,11 @@ sub registerEvents {
         qw(
           default
           passwd
-          passwd_update
+          passwd_update:POST
           prefs
           bookmarks
           newwebsite
-          gen_website
+          gen_website:POST
           )
         );
 }
@@ -91,11 +89,6 @@ sub event_default {
     # fill $ctxt->objectlist with the 5 last modified objects readable by the user
     # we do not want to see the auto-generated .diff_to_second_last here
     my $object = XIMS::Object->new( User => $ctxt->session->user() );
-    
-    #deactivated because this information mighty confuse the normal users
-#    my @lmobjects = $object->find_objects_granted( criteria => "title <> '.diff_to_second_last'",
-#                                                   limit => 5 );
-#    $ctxt->objectlist( \@lmobjects );
 
     # fill $ctxt->userobjectlist with the 5 objects most recently created or modified by the user
     my $qbdriver;
@@ -161,44 +154,31 @@ sub event_passwd {
 sub event_passwd_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+    my $user = $ctxt->session->user();
 
-    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::CHANGE_PASSWORD() ) {
+    unless ( $user->system_privs_mask() & XIMS::Privileges::System::CHANGE_PASSWORD() ) {
         return $self->event_access_denied( $ctxt );
     }
 
-    my $user = $ctxt->session->user();
+    my $oldpw         = $self->param('password');
+    my $newpw         = $self->param('password1');
+    my $newpw_confirm = $self->param('password2');
 
-    my $pass = $self->param('password');
-    my $pass1 = $self->param('password1');
-    my $pass2 = $self->param('password2');
+    my $rv = $user->update_passwd($oldpw, $newpw, $newpw_confirm);
 
-    if ( $user->validate_password( $pass ) ) {
-        if ($pass1 eq $pass2 and length ($pass1) > 0) {
-            my $ppr = Authen::Passphrase::BlowfishCrypt->new( cost => 12,
-                                                              salt_random => 1,
-                                                              passphrase => $pass1 );
+    use Data::Dumper;
+    warn Dumper($rv, $rv->[0], $rv->[1]);
 
-
-            $user->password( $ppr->as_crypt() );
-
-            if ( $user->update() ) {
-                $ctxt->properties->application->style( 'update' );
-                $ctxt->session->message( __"Password updated successfully." );
-            }
-            else {
-                $self->sendError( $ctxt,"Password update failed. Please check with your system adminstrator.");
-            }
-        }
-        # otherwise, entered passwds were not the same, kick
-        # 'em back to the prompt.
-        else {
-            $ctxt->properties->application->style( 'passwd' );
-            $ctxt->session->warning_msg( __"Passwords did not match." );
-        }
+    if ($rv->[0] == 1) {
+        $ctxt->properties->application->style( 'update' );
+        $ctxt->session->message( $rv->[1] );
+    }
+    elsif ($rv->[0] == 0) {
+        $ctxt->properties->application->style( 'passwd' );
+        $ctxt->session->warning_msg( $rv->[1] );
     }
     else {
-        $ctxt->properties->application->style( 'passwd' );
-        $ctxt->session->warning_msg( __"Wrong Password." );
+        $self->sendError( $ctxt, $rv->[1]);
     }
 }
 
@@ -242,7 +222,6 @@ sub event_newwebsite {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-	
     $ctxt->properties->application->style( 'newwebsite' );
 
     $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
@@ -258,7 +237,7 @@ sub event_newwebsite {
 sub event_gen_website {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    
+
     my $user = $ctxt->session->user();
 
 #    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::ADMIN() ) {
