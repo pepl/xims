@@ -24,6 +24,9 @@ use XIMS::Bookmark;
 use XIMS::UserPrefs;
 use Digest::MD5 qw( md5_hex );
 use Authen::Passphrase;
+use Authen::Passphrase::BlowfishCrypt;
+use Data::Password::passwdqc;
+use Locale::TextDomain ('info.xims');
 
 our @Fields = @{ XIMS::Names::property_interface_names( resource_type() ) };
 
@@ -560,6 +563,52 @@ sub fullname {
 
     return $fullname;
 }
+
+
+sub update_passwd {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $oldpw, $newpw, $newpw_confirm ) = @_;
+
+    if ( $self->validate_password( $oldpw ) ) {
+
+        if ($newpw eq $newpw_confirm and length ($newpw) > 0) {
+
+            # password quality check
+            my $pwdqc = Data::Password::passwdqc->new;
+            if ( $pwdqc->validate_password($newpw, $oldpw) ) {
+
+                my $ppr = Authen::Passphrase::BlowfishCrypt->new( cost => XIMS::BCryptWorkFactor(),
+                                                                  salt_random => 1,
+                                                                  passphrase => $newpw );
+
+
+                $self->password( $ppr->as_crypt() );
+
+                if ( $self->update() ) {
+                    return( [1, __"Password updated successfully."] );
+                }
+                else {
+                    return( [-1, "Password update failed. Please check with your system adminstrator."] );
+                }
+            }
+            # lousy password detected
+            else {
+                return( [0, __x( "The new password is too weak! (Reason: {reason})", reason => $pwdqc->reason ) ] );
+            }
+        }
+        # otherwise, entered passwds were not the same, kick
+        # 'em back to the prompt.
+        else {
+            return( [0, __"Passwords did not match."] );
+        }
+    }
+    # old password did not validate
+    else {
+        return( [0, __"Wrong Password."] );
+    }
+}
+
+
 
 
 1;

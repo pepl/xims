@@ -31,6 +31,7 @@ use Digest::MD5 qw( md5_hex );
 use Locale::TextDomain ('info.xims');
 
 
+
 =head2 registerEvents()
 
 =cut
@@ -40,16 +41,16 @@ sub registerEvents {
     $_[0]->SUPER::registerEvents(
         qw(
           create
-          create_update
+          create_update:POST
           update
           edit
           remove
-          remove_update
+          remove_update:POST
           passwd
-          passwd_update
+          passwd_update:POST
           manage_roles
           grant_role
-          grant_role_update
+          grant_role_update:POST
           revoke_role
           bookmarks
           objecttypeprivs
@@ -182,6 +183,7 @@ sub event_create_update {
     ##
 
     # first, check for passwd mismatch
+    # no password quality check, let admins decide here.
     my $pass1 = $self->param('password1');
     my $pass2 = $self->param('password2');
 
@@ -192,7 +194,10 @@ sub event_create_update {
             return 0;
         }
         if ( $pass1 eq $pass2 ) {
-            $udata{password} = Digest::MD5::md5_hex( $pass1 );
+            $udata{password} = Authen::Passphrase::BlowfishCrypt->new(
+                cost => XIMS::BCryptWorkFactor(),
+                salt_random => 1,
+                passphrase => $pass1 )->as_crypt();
         }
         else {
             $ctxt->properties->application->style( 'create' );
@@ -394,44 +399,27 @@ sub event_passwd_update {
         return $self->event_access_denied( $ctxt );
     }
 
-    my $uname = $self->param('name');
-    my $pass1 = $self->param('password1');
-    my $pass2 = $self->param('password2');
-    # check for user error first
-    if ( defined $pass1 and length ($pass1) > 0 ) {
-        if ( defined $pass2 and $pass1 eq $pass2 ) {
-            my $user = XIMS::User->new( name => $uname );
+    my $user = XIMS::User->new( name => $self->param('name') );
+    unless ( $user and $user->id() ) {
+        $self->sendError( $ctxt, "Could not find user. Please check with your system adminstrator." );
+    }
 
-            $user->password( Digest::MD5::md5_hex( $pass1 ) );
+    my $oldpw         = $self->param('password');
+    my $newpw         = $self->param('password1');
+    my $newpw_confirm = $self->param('password2');
 
-            if ( $user and $user->id() ) {
-                if ( $user->update() ) {
-                    $ctxt->properties->application->style( 'update' );
-                    $ctxt->session->message( 
-                        __x("Password for user '{name}' updated successfully.", name => $user->name )
-                    );
-                }
-                else {
-                    $self->sendError( $ctxt,
-                                      __x( "Password update failed for user '{name}'.", name => $user->name )
-                                          . __"Please check with your system adminstrator."
-                                      );
-                }
-            }
-            else {
-                $self->sendError( $ctxt, "Could not find user. Please check with your system adminstrator." );
-            }
-        }
-        # otherwise, entered passwds were not the same, kick
-        # 'em back to the prompt.
-        else {
-            $ctxt->properties->application->style( 'passwd_edit' );
-            $ctxt->session->warning_msg( __"Passwords did not match." );
-        }
+    my $rv = $user->update_passwd($oldpw, $newpw, $newpw_confirm);
+
+    if ($rv->[0] == 1) {
+        $ctxt->properties->application->style( 'update' );
+        $ctxt->session->message( $rv->[1] );
+    }
+    elsif ($rv->[0] == 0) {
+        $ctxt->properties->application->style( 'passwd' );
+        $ctxt->session->warning_msg( $rv->[1] );
     }
     else {
-        $ctxt->properties->application->style( 'passwd_edit' );
-        $ctxt->session->warning_msg( __"Please specify a new password." );
+        $self->sendError( $ctxt, $rv->[1]);
     }
 }
 

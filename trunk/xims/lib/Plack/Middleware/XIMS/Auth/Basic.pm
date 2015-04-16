@@ -1,20 +1,16 @@
 package Plack::Middleware::XIMS::Auth::Basic;
 use common::sense;
 use parent qw(Plack::Middleware::XIMS::Auth);
-use Plack::Util::Accessor qw( realm );
 use MIME::Base64;
 
-# WARNING: may contain parts of Plack::Middleware::Auth::Basic :-)
-
-# automatically
-sub is_login_request  { 1 }
+# WARNING: may contain traces of Plack::Middleware::Auth::Basic :-)
 
 #  Do BasicAuths
-sub create_new_session {
+sub call {
     my ( $self, $env ) = @_;
     my ( $session_id, $login, $user );
     XIMS::Debug( 5, 'called' );
-
+    
     my $auth = $env->{HTTP_AUTHORIZATION}
         or return $self->unauthorized;
 
@@ -39,11 +35,14 @@ sub create_new_session {
             );
 
             $env->{REMOTE_USER} = $user->name();
-            $session_id = $env->{'xims.appcontext'}->session->session_id;
+
+            return $self->app->($env);
         }
     }
-    return $session_id;    # session-id or undef
+
+    return $self->unauthorized;
 }
+
 
 sub unauthorized {
     my ( $self, $env, $reason ) = @_;
@@ -61,5 +60,7 @@ sub unauthorized {
         }
     );
 }
+
+
 
 1;

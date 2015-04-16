@@ -41,9 +41,9 @@ sub registerEvents {
 
     return $self->SUPER::registerEvents(
         qw( default
-            setdefault
-            create
-            delete
+            setdefault:POST
+            create:POST
+            delete:POST
           )
     );
 }
