@@ -123,6 +123,11 @@
         <UIFallbackLang>en-us</UIFallbackLang>
 
         <!--
+	        BlowfishCrypt work factor for password hashes stored in XIMS’ database.
+	    -->
+        <BCryptWorkFactor>12</BCryptWorkFactor>
+
+        <!--
         # Name or comma-separated list of names of the authentification module(s).
         # Modules in a list will be tried consecutively.
         -->

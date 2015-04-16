@@ -30,22 +30,15 @@ use godav;
 
 builder {
     enable "ConditionalGET";
-    enable SizeLimit => (
-           max_unshared_size_in_kb => '500000',
-           check_every_n_requests => 4 );
-    #enable "ErrorDocument", 401 => XIMS::PUBROOT() . '/access.html';
-    enable "ContentLength";
     enable "HTTPExceptions";
 
-    enable_if { length(XIMS::TRUSTPROXY()) }
-        "Plack::Middleware::XForwardedFor", trust => [split( /,/, XIMS::TRUSTPROXY() )];
+    #enable_if { length(XIMS::TRUSTPROXY()) }
+    #    "Plack::Middleware::XForwardedFor", trust => [split( /,/, XIMS::TRUSTPROXY() )];
 
     # /goxims
-    mount '/login' => \&goxims::login_screen;
     mount XIMS::GOXIMS() => builder {
-        #enable 'Profiler::NYTProf';
         enable 'XIMS::AppContext';
-        enable 'XIMS::Auth';
+        enable 'XIMS::Auth'; # form authentication as default; see XIMS::Auth::Ext for Shibboleth et al.
         enable 'XIMS::UILang';
         mount XIMS::CONTENTINTERFACE()        => \&goxims::handler; # /content
         mount XIMS::PERSONALINTERFACE()       => \&goxims::handler; # /user
@@ -76,21 +69,6 @@ builder {
         enable "XIMS::ConditionalGET";
         mount '/' => \&goxims::quick_handler;
     };
-
-    # /gobaxims
-    # mount XIMS::GOBAXIMS() => builder {
-    #     enable "XIMS::AppContext";
-    #     enable "XIMS::Auth::Basic";
-    #     enable 'XIMS::UILang';
-    #     mount XIMS::CONTENTINTERFACE()        => builder {$goxims}; # /content
-    #     mount XIMS::PERSONALINTERFACE()       => builder {$goxims}; # /user
-    #     mount XIMS::USERMANAGEMENTINTERFACE() => builder {$goxims}; # /users
-    #     mount '/userprefs'                    => builder {$goxims};
-    #     mount '/bookmark'                     => builder {$goxims};
-    #     mount '/defaultbookmark'              => builder {$goxims};
-    #     mount '/search_intranet'              => builder {$goxims};
-    #     mount '/' => http_exception(Found => { location => XIMS::GOBAXIMS() . XIMS::PERSONALINTERFACE() });
-    # };
 
     # WebDAV
     mount XIMS::GODAV() => builder {

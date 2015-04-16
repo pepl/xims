@@ -12,6 +12,7 @@ Authen::Passphrase
 CSS::Minifier::XS 
 CSS::Tiny 
 Class::XSAccessor::Compat
+Data::Password::passwdqc
 DBI
 # If you’re on Oracle, you may deactive this one; 
 DBD::Pg~1.31           

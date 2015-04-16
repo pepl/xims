@@ -35,8 +35,20 @@
 </xsl:template>
 
 <xsl:template name="options">
-	<td>
-		<a class="button" href="{$xims_box}{$goxims_users}?name={$name}&amp;role={name}&amp;grant_role_update=1&amp;sort-by={$sort-by}&amp;order-by={$order-by}&amp;userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Grant_Role"/></a>
+  <td>
+    <form action="{$xims_box}{$goxims_users}" method="post">
+      <xsl:call-template name="input-token"/>
+      <input type="hidden" name="name" value="{$name}"/>
+      <input type="hidden" name="role" value="{name}"/>
+      <input type="hidden" name="sort-by" value="{$sort-by}"/>
+      <input type="hidden" name="order-by" value="{$order-by}"/>
+      <input type="hidden" name="userquery" value="{$userquery}"/>
+      <button class="button"
+              type="submit"
+              name="grant_role_update">
+        <xsl:value-of select="$i18n_users/l/Grant_Role"/>
+      </button>
+    </form>
 	</td>
 </xsl:template>
 
