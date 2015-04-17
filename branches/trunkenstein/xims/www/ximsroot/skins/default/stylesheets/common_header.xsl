@@ -411,9 +411,10 @@
 						<li>
                           <form name="logout" 
                               method="post"
-                              action="{$goxims_content}{$absolute_path}">
+                              action="{$goxims}/logout">
                             <xsl:call-template name="input-token"/>
                             <input type="hidden" name="reason" value="logout"/>
+                            <input type="hidden" name="redirect" value="{$goxims}{$contentinterface}{$absolute_path}"/>
                             <!-- <input type="submit" name="logout"
                                  value="{$i18n/l/logout}"/> -->
                             <a href="javascript:document.logout.submit()">
@@ -445,7 +446,7 @@
 						</span>
 					</a>
 									&#160;&#160;
-									<a href="{$goxims_content}{$absolute_path}?reason=logout">
+									<a href="{$goxims}/logout?reason=logout&amp;redirect={$goxims}{$contentinterface}{$absolute_path}">
 						<span class="text">
 							<xsl:value-of select="$i18n/l/logout"/>
 						</span>
