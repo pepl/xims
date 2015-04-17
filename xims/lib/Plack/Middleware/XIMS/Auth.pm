@@ -132,7 +132,7 @@ sub create_new_session {
 sub unauthorized {
     my ($self, $env) = @_;
     my $reason = $env->{'xims.appcontext'}->{reason};
-    my $redirect = $env->{SCRIPT_NAME} . $env->{PATH_INFO} unless $env->{PATH_INFO} =~ m!^/(?:logout|logout)!;
+    my $redirect = $env->{PATH_INFO} eq '/logout' ? q{} : $env->{PATH_INFO};
     XIMS::Debug( 5, "called" );
     $env->{HTTP_AUTHORIZATION} = undef;
 
