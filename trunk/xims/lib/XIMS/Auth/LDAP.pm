@@ -39,7 +39,9 @@ sub new {
         # using hardcoded port atm
         if ( my $ldap = Net::LDAP->new( $param{Server}, port => 1389 ) ) {
             # using hardcoded base atm
-            my $dn = "uid=" . uc($param{Login}) . ",ou=people,o=Universitaet Innsbruck,c=AT";
+            my $uid = uc($param{Login});
+            $uid =~ s/\@UIBK\.AC\.AT$//;
+            my $dn = "uid=$uid,ou=people,o=Universitaet Innsbruck,c=AT";
             my $msg = $ldap->bind( $dn, password => $param{Password} );
             if ( $msg->code() == LDAP_SUCCESS ) {
                 my $user = XIMS::User->new( name => $param{Login} );
