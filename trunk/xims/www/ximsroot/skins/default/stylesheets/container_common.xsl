@@ -397,7 +397,7 @@
 	
   <xsl:template name="childrentable">
     <xsl:variable name="location" select="concat($goxims_content,$absolute_path)"/>
-    <form method="post" name="multi">
+    <form method="post" name="multi" id="multi">
    
       <xsl:attribute name="action">
         <xsl:choose>
