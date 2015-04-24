@@ -37,11 +37,10 @@ sub new {
 
     if ( $param{Server} and $param{Login} and $param{Password} ) {
         # using hardcoded port atm
-        if ( my $ldap = Net::LDAP->new( $param{Server}, port => 1389 ) ) {
-            # using hardcoded base atm
-            my $uid = uc($param{Login});
-            $uid =~ s/\@UIBK\.AC\.AT$//;
-            my $dn = "uid=$uid,ou=people,o=Universitaet Innsbruck,c=AT";
+        if ( my $ldap = Net::LDAP->new( $param{Server} ) ) {
+            my $uid = lc($param{Login});
+            $uid =~ s/\@.+$//; # remove domain part
+            my $dn = "uid=$uid," . XIMS::LDAPBase();
             my $msg = $ldap->bind( $dn, password => $param{Password} );
             if ( $msg->code() == LDAP_SUCCESS ) {
                 my $user = XIMS::User->new( name => $param{Login} );
