@@ -214,9 +214,8 @@ sub login {
             
             XIMS::Debug( 6, 'this is a login request, creating a new session' );
             my $redirect = $self->sanitize_redirect($env, $req->param('redirect'));
-            my $res = [ 302, [Location => $redirect], ["<html><body><a href=\"$redirect\">Back</a></body></html>"]];
+            my $res = [ 302, [Location => "$redirect?from_login=1"], ["<html><body><a href=\"$redirect\">Back</a></body></html>"]];
 
-            $res = $self->app->($env);
             # all fine, you get a fresh XIMS session cookie, unless we have an
             # ephemeral session (e.g. BasicAuth) 
             # TODO: this should find out when to set the cookies secure flag...
@@ -242,7 +241,7 @@ sub login {
 sub sanitize_redirect {
     my ($self, $env, $path) = @_;
     my $script_name = $env->{SCRIPT_NAME};
-
+    
     if ($path =~ /^$script_name/) {
         $path =~ s!(^/[a-z]+(?:/[-_a-z0-9]+(?:\.[a-z0-9]+){0,2})*/?)?.*!$1!i;
         return $path;
@@ -299,7 +298,6 @@ sub _render_form {
           <input tabindex="2" type="password" name="password" id="password" class="text" required/>
         </div>
         <div class="submit">
-          <input type="hidden" name="dologin" value="1" />
           <input type="hidden" name="redirect" value="$redirect">
           <input tabindex="3" type="submit" name="login" value="Login" class="control"/>
         </div>
