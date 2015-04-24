@@ -132,7 +132,8 @@ sub create_new_session {
 sub unauthorized {
     my ($self, $env) = @_;
     my $reason = $env->{'xims.appcontext'}->{reason};
-    my $redirect = $env->{PATH_INFO} eq '/logout' ? q{} : $env->{PATH_INFO};
+    my $redirect = $env->{PATH_INFO} eq '/logout' ? q{} : $env->{SCRIPT_NAME} . $env->{PATH_INFO};
+
     XIMS::Debug( 5, "called" );
     $env->{HTTP_AUTHORIZATION} = undef;
 
@@ -228,7 +229,13 @@ sub login {
         else {
             # fail, no session for you, but you certainly may try again ...
             $env->{'xims.appcontext'}->{reason} = 'mismatch';
-            $env->{PATH_INFO} = $self->sanitize_redirect($env, $req->param('redirect'));
+
+            # set $env->{PATH_INFO} from redirect parameter for unauthorized() 
+            my $script_name = $env->{SCRIPT_NAME}; 
+            my $path_info = $self->sanitize_redirect($env, $req->param('redirect'));
+            $path_info =~ s/^$script_name//; 
+            $env->{PATH_INFO} = $path_info;
+
             return $self->unauthorized($env);
         }
     }
