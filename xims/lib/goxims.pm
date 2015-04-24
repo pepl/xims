@@ -105,13 +105,10 @@ sub handler {
     if ( "/$interface_type" eq XIMS::CONTENTINTERFACE() ) {
         # try to get the content-object ...
         unless ( $ctxt->object( get_object($req) ) and $ctxt->object->id() ) {
-            # during login, we silently redirect to the user page, if the
-            # requested object does not exist. (e.g. due to a stale bookmark,
-            # etc.)
-            # XXX Once we start support for CAS, we should move this whole
-            # logic out (again) into something like a
-            # Plack::Middleware::XIMS::Auth::Form.
-            if ($req->method eq 'POST' and $req->param('dologin') == 1) {
+            # when coming from login, we silently redirect to the user page,
+            # if the requested object does not exist. (e.g. due to a stale
+            # bookmark, etc.)
+            if ( $req->param('from_login') == 1) {
                 # Raise no exeption here, as it might bypass
                 # Plack::Middleware::XIMS::Auth.
                 return [302, ['Location' => XIMS::GOXIMS . XIMS::PERSONALINTERFACE()], []];
