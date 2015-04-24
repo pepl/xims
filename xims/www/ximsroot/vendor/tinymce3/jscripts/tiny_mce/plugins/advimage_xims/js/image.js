@@ -67,8 +67,8 @@ var ImageDialog = {
 			nl.src.value = img.attr('src');
 			nl.width.value = img.width();
 			nl.height.value = img.height();
-			nl.alt.value = img.attr('alt');
-			nl.title.value = img.attr('title');
+			nl.alt.value = img.attr('alt')||"";
+			nl.title.value = img.attr('title')||"";
 			
 			var style = "";
 			if (div) {
@@ -141,7 +141,7 @@ var ImageDialog = {
 
 		if (tinyMCEPopup.getParam("accessibility_warnings", 1)) {
 			if (!f.alt.value) {
-				tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimagescale_dlg.missing_alt'), function(s) {
+				tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimage_dlg.missing_alt'), function(s) {
 					if (s)
 						t.insertAndClose();
 				});
