@@ -34,6 +34,24 @@ sub login {
         additional_headers => ['Set-Cookie' => 'session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT',] 
     });
 }
+
+sub unauthorized {
+    my ($self, $env) = @_;
+    XIMS::Debug( 5, "called" );
+    
+    $env->{HTTP_AUTHORIZATION} = undef;
+
+    # remove cookie and redirect to self
+    HTTP::Throwable::Factory->throw({
+             status_code => 302,
+             reason      => "Found",
+             additional_headers => ['Set-Cookie' => 'session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT',
+                                    'Location'   => $env->{REQUEST_URI},
+                                   ]
+    });
+}
+
+
     
 # accept public authentication only
 sub has_acceptable_authenticator {
