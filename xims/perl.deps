@@ -35,7 +35,7 @@ URI
 LWP
 LWP::Protocol::https
 Locale::TextDomain 
-RJBS/MIME-Lite-3.028.tar.gz
+MIME::Lite@3.028
 MIME::Lite::HTML 
 Storable
 Task::Plack
@@ -52,10 +52,11 @@ XML::LibXSLT~1.70
 XML::Parser::PerlSAX
 XML::SAX::Machines 
 XML::Generator::DBI 
-XML::Generator::PerlData
+XML::Generator::PerlData@0.91
 XML::Filter::GenericChunk~0.04
 Net::Server::SS::PreFork
 Plack::Middleware::XForwardedFor
+Plack::Middleware::SetEnvFromHeader
 # If you plan to run all tests
 # XML::Schematron
 # Perl::Critic
