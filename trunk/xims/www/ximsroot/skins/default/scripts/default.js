@@ -7,11 +7,11 @@ $.ajaxSetup({
 });
 	
 function post_async(jsonQuery, property) {
-	
-	$.post(abspath, jsonQuery, function(data){ 		
-								mkHandleMapResponse(data, property);
-								initOptionsButtons();
-								}, "html" );		
+    jsonQuery.token = $("input[name='token']").attr('value');	
+    $.post(abspath, jsonQuery, function(data){ 		
+        mkHandleMapResponse(data, property);
+        initOptionsButtons();
+    }, "html" );		
 }
 	
 function trim(str){
