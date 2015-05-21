@@ -77,7 +77,8 @@
             </div>
         </xsl:when>
         <xsl:when test="$current_question >= 1">
-            <form action="?q={$current_question + 1}" method="post">
+          <form action="?q={$current_question + 1}" method="post">
+                <xsl:call-template name="input-token"/>
                 <xsl:call-template name="questionnaire_title" />
                 <input type="hidden" name="tan" value="{$tan}" />
                 <input type="hidden" name="q" value="{$current_question + 1}" />
@@ -94,7 +95,8 @@
                 <xsl:call-template name="questionnaire_title" />
                 <xsl:call-template name="questionnaire_intro" />
                 <p>
-                    <form action="?q=1" method="post">
+                   <form action="?q=1" method="post">
+                        <xsl:call-template name="input-token"/>
                         <input type="hidden" name="q" value="1" />
                         <input type="hidden" name="docid" value="{/document/context/object/@document_id}" />
                         <xsl:if test="count(tanlist) > 0">
