@@ -106,7 +106,7 @@
         <xsl:if test="meta/subtitle != ''">
           <li><strong>Subtitle:</strong> <xsl:value-of select="meta/subtitle"/></li>
         </xsl:if>
-        <xsl:if test="abstract != ''">
+        <xsl:if test="abstract != '' and not(object_type_id = /document/object_types/*[fullname='VLibraryItem::NewsItem']/@id)">
           <li><strong>Abstract:</strong> <span><xsl:apply-templates select="abstract"/></span></li>
         </xsl:if>
         <xsl:if test="count(authorgroup/author) &gt; 0">

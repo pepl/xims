@@ -55,7 +55,16 @@ sub prepare {
     $doc_data->{context}->{object}->{body} =~ s/^<\?xml[^>]+>//;
 
     $self->_insert_vle_common($ctxt, $doc_data);
-    
+
+    # if ( $ctxt->object->object_type->name() eq 'NewsItem' ) {
+    #     push(
+    #         @{ $self->{FilterList} },
+    #         XML::Filter::CharacterChunk->new(
+    #             TagName => [qw(abstract bibliosource)]
+    #         )
+    #       );
+    # }
+
     return $doc_data;
 }
 

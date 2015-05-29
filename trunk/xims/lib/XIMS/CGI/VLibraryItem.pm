@@ -48,18 +48,18 @@ sub registerEvents {
         qw(
           create
           edit
-          store
+          store:POST
           obj_acllist
           obj_acllight
-          obj_aclgrant
-          obj_aclrevoke
-          publish
+          obj_aclgrant:POST
+          obj_aclrevoke:POST
+          publish:POST
           publish_prompt
-          unpublish
-          remove_mapping
-          remove_mapping_async
-          create_mapping
-          create_mapping_async
+          unpublish:POST
+          remove_mapping:POST
+          remove_mapping_async:POST
+          create_mapping:POST
+          create_mapping_async:POST
           show_mapping_async
           )
     );
