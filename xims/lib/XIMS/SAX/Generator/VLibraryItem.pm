@@ -116,6 +116,15 @@ sub prepare {
             )
         );
     }
+    # elsif ( $ctxt->object->object_type->name() eq 'NewsItem' ) {
+    #    push(
+    #         @{ $self->{FilterList} },
+    #         XML::Filter::CharacterChunk->new(
+    #             TagName => [qw(abstract bibliosource)]
+    #         )
+    #    );
+    # }
+
 
     return $doc_data;
 }

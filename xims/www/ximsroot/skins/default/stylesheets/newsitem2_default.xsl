@@ -62,7 +62,8 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<div id="body-content" style="clear:both;">
-			<xsl:apply-templates select="body"/>
+          <xsl:call-template name="pre-body-hook"/>
+		  <xsl:apply-templates select="body"/>
 		</div>
 		
 		<div id="validity">
