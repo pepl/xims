@@ -62,7 +62,7 @@ sub _build {
 
     my $now = localtime();
 
-    my $allowedusernamechars = '-A-Za-z0-9öäüßàáâãåæèçéêëìíîïðñòóôõøùúûýÿ_';
+    my $allowedusernamechars = '-A-Za-z0-9öäüßàáâãåæèçéêëìíîïðñòóôõøùúûýÿ_@.';
 
     for ( my $i = 0; $i <= scalar(@{$search})-1; $i++ ) {
         # handle fieldbased-searches first
