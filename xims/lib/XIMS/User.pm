@@ -54,6 +54,46 @@ __PACKAGE__->mk_accessors(@Fields);
 
 =cut
 
+sub new {
+    my $proto = shift;
+    my $class = ref( $proto ) || $proto;
+    my %args = @_;
+
+    my $self = bless {}, $class;
+
+    if ( scalar( keys(%args)) > 0 ) {
+        if ( defined( $args{id} ) or defined( $args{name} ) ) {
+            # Expand username to default domain
+            if ( length(XIMS::UserNameDefaultDomain())
+                     and defined( $args{name} )
+                     # (Roles contain ':', full usernames '@')
+                     and $args{name} !~ /[:@].+$/ ) {
+                $args{name} .= '@' . XIMS::UserNameDefaultDomain();
+            }
+            my $rt = ref($self);
+            $rt =~ s/.*://;
+            my $method = 'get'.$rt;
+            my $data = $self->data_provider->$method( %args );
+            if ( defined( $data )) {
+               $self->data( %{$data} );
+            }
+            else {
+                return;
+            }
+        }
+        else {
+            $self->data( %args );
+        }
+    }
+    return $self;
+}
+
+
+
+=head2 validate_password()
+
+=cut
+
 sub validate_password {
     XIMS::Debug( 5, "called" );
     my ($self, $raw_passwd) = @_;

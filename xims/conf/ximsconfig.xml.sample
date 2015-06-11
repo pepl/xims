@@ -128,15 +128,31 @@
         <BCryptWorkFactor>12</BCryptWorkFactor>
 
         <!--
-        # Name or comma-separated list of names of the authentification module(s).
-        # Modules in a list will be tried consecutively.
+            Name or comma-separated list of names of the authentification module(s).
+            Modules in a list will be tried consecutively.
+            <AuthStyle>XIMS::Auth::LDAP,XIMS::Auth::Password</AuthStyle>
         -->
         <AuthStyle>XIMS::Auth::Password</AuthStyle>
-        <!--
-        # FQDN of the Server used for LDAP or IMAP authentification
+        <!-- URL/FQDN of the Server used for LDAP or IMAP authentification
+             
+             <AuthServer>ldaps://ldap.example.com</AuthServer>
+             <LDAPBase>ou=example,ou=people,dc=example,dc=com</LDAPBase>
         -->
         <AuthServer></AuthServer>
+        <LDAPBase></LDAPBase>
 
+        <!-- If you need user names with domain endings (e.g. Shibboleth), let
+             XIMS expand the local name for convenience (e.g. mustermeier to
+             mustermeier@example.com). Local names that should not be expanded
+             (e. g. local roles) MUST contain a colon, like 'XIMS:ALL'. Leave
+             empty if not used. N.b.: The example data does NOT use this
+             naming convention.
+             
+             <UserNameDefaultDomain>example.com</UserNameDefaultDomain>
+        -->
+        <UserNameDefaultDomain></UserNameDefaultDomain>
+
+        
         <!--
         # Path to an existing XIMS content object users will be redirected after login, if no specific
         # object has been requested by him and no bookmark could be found.

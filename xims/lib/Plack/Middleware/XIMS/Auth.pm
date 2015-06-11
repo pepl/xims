@@ -153,10 +153,7 @@ sub authenticate {
     # username/password sanity check  
     return unless ( $username =~ /^[-a-zA-Z0-9.:@]{3,40}$/ 
                 and $password =~ /^[-a-zA-Z0-9.:_&!?*\$%+,<=#@;>\/\(\)\[\]{~}]{6,60}$/ );
-
-    # expand domain unless given
-    $username .= '@uibk.ac.at' unless $username =~ /@.+$/; 
-    
+ 
     my @authmods = split(',', XIMS::AUTHSTYLE());
 
     foreach my $authmod ( @authmods ) {
