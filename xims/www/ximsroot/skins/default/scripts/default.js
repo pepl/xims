@@ -304,7 +304,9 @@ function wfcheck() {
                 }
             };
             xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
-            xmlhttp.send('test_wellformedness=1&amp;body='+encodeURIComponent(document.eform.body.value));
+            xmlhttp.send('test_wellformedness=1' +
+                         '&token='+encodeURIComponent($("input[name='token']").attr('value')) +
+                         '&body='+encodeURIComponent(document.eform.body.value));
             return false;
         }
 		
@@ -312,18 +314,19 @@ function prettyprint(container_id) {
 		if (ppmethod == "htmltidy") {
 			var jsonQuery = {
 				htmltidy: "1",
-			body: $(container_id).val()
+                                token: $("input[name='token']").attr('value'),
+ 			        body: $(container_id).val()
 			};
 		}
 		else {
 			if (ppmethod == "prettyprintxml") {
 				var jsonQuery = {
 					prettyprintxml: "1",
-				body: $(container_id).val()
+                                        token: $("input[name='token']").attr('value'),
+				        body: $(container_id).val()
 				};
 			}
 		}
-	
     $.ajax({
         url: url,
         type: 'POST',
