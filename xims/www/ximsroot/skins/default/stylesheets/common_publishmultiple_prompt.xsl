@@ -55,7 +55,9 @@
 						<button name="default" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 					</xsl:when>
 					<xsl:otherwise>
-					<form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="get">						
+					<form name="objPublish" id="objPublish"
+                          action="{$xims_box}{$goxims_content}" method="post">
+					  <xsl:call-template name="input-token"/>
 						<p><xsl:value-of select="$i18n/l/AboutPublishMultiple"/></p>
 						<xsl:apply-templates select="/document/objectlist/object" />
 						<p><xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/PublishingNotice"/></p>
