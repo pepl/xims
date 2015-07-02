@@ -22,7 +22,8 @@
 				<xsl:call-template name="header"/>
 					<div id="content-container">
 					<h1 class="bluebg"><xsl:value-of select="$i18n/l/Move_object"/> '<xsl:value-of select="title"/>'</h1>
-						<form action="{$xims_box}{$goxims_content}" method="get" id="create-edit-form" name="eform">
+					<form action="{$xims_box}{$goxims_content}" method="post" id="create-edit-form" name="eform">
+                      <xsl:call-template name="input-token"/>
 							<xsl:value-of select="$i18n/l/from"/> '<xsl:value-of select="$parent_path"/>'
 							<label for="input-to">
 								<xsl:value-of select="$i18n/l/to"/>

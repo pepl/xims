@@ -20,7 +20,9 @@
         <body>
         	<xsl:call-template name="header"/>
 <div id="content-container">
-        <form name="recursiveobjectcopy" action="{$xims_box}{$goxims_content}?id={@id}" method="get">
+        <form name="recursiveobjectcopy"
+              action="{$xims_box}{$goxims_content}?id={@id}" method="post">
+          <xsl:call-template name="input-token"/>
                 <h1 class="bluebg"><xsl:value-of select="$i18n/l/ChildObjectsFound"/>!</h1>
                     <p>
                         <xsl:value-of select="/document/context/session/warning_msg"/>

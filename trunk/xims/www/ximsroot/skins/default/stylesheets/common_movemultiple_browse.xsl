@@ -34,8 +34,9 @@
 						<p><xsl:value-of select="$i18n/l/NoObjects"/></p>
 					</xsl:when>
 					<xsl:otherwise>
-						<form action="{$xims_box}{$goxims_content}" method="get" id="create-edit-form" name="eform">
-							<p><xsl:value-of select="$i18n/l/AboutMoveMultiple"/></p>
+						<form action="{$xims_box}{$goxims_content}" method="post" id="create-edit-form" name="eform">
+                          <xsl:call-template name="input-token"/>
+	                      <p><xsl:value-of select="$i18n/l/AboutMoveMultiple"/></p>
 						<xsl:apply-templates select="/document/objectlist/object" />
 						<p><xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/MoveNotice"/></p>
 
