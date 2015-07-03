@@ -205,6 +205,8 @@ CREATE TABLE ci_content
  ,abstract                      VARCHAR(2000)
  ,body                          TEXT
  ,title                         VARCHAR(400)  NOT NULL
+ ,nav_title                     VARCHAR(60)
+ ,nav_hide                      SMALLINT      DEFAULT 0 NOT NULL
  ,keywords                      VARCHAR(200)
  ,status                        VARCHAR(100)
  ,status_checked_timestamp      TIMESTAMP(0)  WITHOUT TIME ZONE
