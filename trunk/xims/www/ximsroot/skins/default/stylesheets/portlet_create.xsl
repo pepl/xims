@@ -14,13 +14,10 @@
 		<!--<xsl:call-template name="tr-locationtitletarget-create"/>-->
 		<xsl:call-template name="form-locationtitletarget-create"/>
 		<xsl:call-template name="form-marknew-pubonsave"/>
-
+        <xsl:call-template name="form-nav-options"/>
 		<xsl:call-template name="form-keywordabstract"/>
-
 		<xsl:call-template name="form-grant"/>
-		
 		<xsl:call-template name="form-obj-specific"/>
-		
 		<xsl:call-template name="contentfilters"/>
 		<br class="clear"/>
 	</xsl:template>
