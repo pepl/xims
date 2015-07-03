@@ -63,6 +63,8 @@
                 <item>content.abstract</item>
                 <item>content.body</item>
                 <item>content.title</item>
+                <item>content.nav_title</item>
+                <item>content.nav_hide</item>
                 <item>content.keywords</item>
                 <item>content.status</item>
                 <item>content.status_checked_timestamp</item>
@@ -127,6 +129,8 @@
                 <item>content.abstract</item>
                 <item>content.body</item>
                 <item>content.title</item>
+                <item>content.nav_title</item>
+                <item>content.nav_hide</item>
                 <item>content.keywords</item>
                 <item>content.status</item>
                 <item>content.status_checked_timestamp</item>
