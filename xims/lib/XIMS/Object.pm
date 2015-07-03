@@ -188,6 +188,7 @@ sub new {
         $self->marked_deleted( delete $args{marked_deleted} ? 1 : 0 );
         $self->marked_new(     delete $args{marked_new}     ? 1 : 0 );
         $self->published(      delete $args{published}      ? 1 : 0 );
+        $self->nav_hide(       delete $args{nav_hide}       ? 1 : 0 );
 
         if ( scalar( keys(%args) ) > 0 ) {
             # make sure those two ids come first, since things like body()
