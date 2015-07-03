@@ -16,6 +16,7 @@
 	<xsl:variable name="id" select="@id"/>
 	<xsl:call-template name="form-locationtitle-create"/>
 	<xsl:call-template name="form-marknew-pubonsave"/>
+    <xsl:call-template name="form-nav-options"/>
 	<xsl:call-template name="form-obj-specific"/>
 	<xsl:call-template name="form-grant"/>
 </xsl:template>
