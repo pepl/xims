@@ -1,4 +1,4 @@
-use Test::More tests => 47;
+use Test::More tests => 52;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
@@ -40,6 +40,9 @@ is( $o->object_type_id(), 1, 'testobject has correct object_type_id' );
 is( $o->department_id(), 2, 'testobject has correct department_id' );
 is( $o->data_format_id(), 18 , 'testobject has correct data_format_id' );
 is( $o->symname_to_doc_id(), undef, 'testobject has undefined symname_to_doc_id' );
+is( $o->nav_title(), undef, 'testobject has undefined navigation title');
+is( $o->nav_hide(), 0, 'testobject is not set to be hidden from navigation');
+
 
 # now, change something
 $o->title( 'Renamed Test Dir' );
@@ -75,6 +78,10 @@ $o->valid_from_timestamp( $valid_from );
 $o->valid_to_timestamp( $valid_to );
 ok( $o->update(), 'update valid_from and valid_to' );
 
+$o->nav_title( "Navigation" );
+$o->nav_hide( 1 );
+ok( $o->update(), 'update navigation properties' );
+
 # attributes
 my $val1 = 'dbi:Pg:dbname=ddd;host=10.0.0.1;mx_id=gonk234';
 my $val2 = 'Bender is no "Dahut".';
@@ -100,7 +107,8 @@ $o = undef;
 $o = XIMS::Object->new( id => $id, User => $user, marked_deleted => 0 );
 is($o->valid_from_timestamp(), $valid_from, 'valid_from_timestamp has correct value');
 is($o->valid_to_timestamp(), $valid_to, 'valid_to_timestamp has correct value');
-
+is($o->nav_title(), "Navigation", 'correct value in nav_title');
+is($o->nav_hide(), 1, 'correct value in nav_hide');
 # now, delete the object (still not sure if we do this or
 # just set 'marked_deleted' on the object;
 ok ( $o->delete(), 'delete testobject' );
