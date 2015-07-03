@@ -523,4 +523,6 @@
 <Email_Subject>Betreff</Email_Subject>
 <Email_Send>Versende</Email_Send>
 <Container_View>Container Ansicht</Container_View>
+<NavHide>Objekt von der Navigation ausnehmen</NavHide>
+<NavTitle>Optionaler Kurztitel für die Navigation</NavTitle>
 </l>

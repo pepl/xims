@@ -26,7 +26,8 @@
 						<button name="default" type="button" class="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 					</xsl:when>
 					<xsl:otherwise>
-					<form action="{$xims_box}{$goxims_content}" method="get">
+					  <form action="{$xims_box}{$goxims_content}" method="post">
+                        <xsl:call-template name="input-token"/>
 						<p><xsl:value-of select="$i18n/l/AboutDeletionMultiple"/></p>
 						<xsl:apply-templates select="/document/objectlist/object" />
 						<p><xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/DeletionNotice"/></p>

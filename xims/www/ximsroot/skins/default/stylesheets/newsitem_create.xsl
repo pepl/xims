@@ -17,6 +17,7 @@
 <xsl:template name="create-content">
 	<xsl:call-template name="form-locationtitle-create"/>
 	<xsl:call-template name="form-marknew-pubonsave"/>
+    <xsl:call-template name="form-nav-options"/>
 	<xsl:call-template name="form-leadimage-create"/>
 	<xsl:call-template name="form-body-create"/>
 	<xsl:call-template name="jsorigbody"/>
