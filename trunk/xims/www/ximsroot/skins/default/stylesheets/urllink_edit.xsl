@@ -12,9 +12,10 @@
   <xsl:import href="edit_common.xsl"/>
   
   	<xsl:template name="edit-content">
-			<xsl:call-template name="form-locationtitle-edit"/>
-			<xsl:call-template name="form-marknew-pubonsave"/>
-			<xsl:call-template name="form-metadata"/>
+	  <xsl:call-template name="form-locationtitle-edit"/>
+	  <xsl:call-template name="form-marknew-pubonsave"/>
+      <xsl:call-template name="form-nav-options"/>
+	  <xsl:call-template name="form-metadata"/>
 	</xsl:template>
 
   <xsl:template name="form-location-edit">

@@ -17,6 +17,7 @@
 		<input type="hidden" name="objtype" value="{$objtype}"/>
 		<xsl:call-template name="form-locationtitle-create"/>
 		<xsl:call-template name="form-marknew-pubonsave"/>
+        <xsl:call-template name="form-nav-options"/>
 		<xsl:call-template name="form-body-create_tinymce"/>
 		<xsl:call-template name="social-bookmarks"/>
 		<xsl:call-template name="form-keywordabstract"/>

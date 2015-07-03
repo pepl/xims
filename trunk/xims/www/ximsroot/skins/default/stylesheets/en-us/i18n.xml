@@ -525,4 +525,6 @@
 <Email_Subject>Subject</Email_Subject>
 <Email_Send>Send</Email_Send>
 <Container_View>Container view</Container_View>
+<NavHide>Hide this object from navigation</NavHide>
+<NavTitle>Optional short title for navigation</NavTitle>
 </l>

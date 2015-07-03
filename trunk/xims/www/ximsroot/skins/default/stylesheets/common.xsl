@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-		# Copyright (c) 2002-2015 The XIMS Project. # See the file "LICENSE"
+		# Copright (c) 2002-2015 The XIMS Project. # See the file "LICENSE"
 		for information and conditions for use, reproduction, # and
 		distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES. #
 		$Id: common.xsl 2248 2009-08-10 10:27:04Z haensel $
@@ -1199,6 +1199,41 @@
 			<a href="javascript:openDocWindow('PageRowLimit')" class="doclink">(?)</a>-->
 		</div>
 	</xsl:template>
+
+    <xsl:template name="form-nav-title">
+	  <div id="tr-navtitle">
+		<div class="label-large">
+		  <label for="input-nav-title">
+			<xsl:value-of select="$i18n/l/NavTitle"/>
+		  </label>
+		</div>
+		<input type="text" name="nav-title" size="40" maxlength="50" value="{nav_title}" class="text input" id="input-nav-title"/>
+	  </div>
+	</xsl:template>
+    
+    <xsl:template name="form-nav-hide">
+	  <div id="tr-navtitle">
+		<div class="label-large">
+		  <label for="input-nav-hide">
+			<xsl:value-of select="$i18n/l/NavHide"/>
+		  </label>
+		</div>
+        <input type="checkbox" class="checkbox" name="nav-hide" id="input-nav-hide">
+		  <xsl:if test="nav_hide = '1'">
+			<xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
+		  </xsl:if>
+		</input>
+	  </div>
+	 </xsl:template>
+
+	<xsl:template name="form-nav-options">
+     <div class="block form-div">
+	   <h2>Navigation</h2>
+       <xsl:call-template name="form-nav-title"/>
+       <xsl:call-template name="form-nav-hide"/>
+     </div>
+    </xsl:template>
+    
 	<xsl:template name="options-menu-bar">
 		<xsl:param name="createwidget" select="$createwidget"/>
 		<xsl:param name="parent_id" select="$parent_id"/>
@@ -1436,6 +1471,23 @@
 				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_copy"><xsl:comment/></span>
 				  <span class="ui-button-text"><xsl:value-of select="$l_Copy"/></span>
 				</a>
+                <!-- <button class="option-copy ui-button ui-widget ui-corner-all ui-button-icon-only ui-state-default" -->
+                <!--         title="Kopieren" -->
+                <!--         aria-disabled="false" -->
+                <!--         role="button" -->
+                <!--         id="copy_{$id}" -->
+                <!--         data-copy="1" -->
+                <!--         data-token="{/document/context/session/token}" -->
+                <!--         data-id="{$id}"> -->
+                <!--   <xsl:if test="$currobjmime='application/x-container'"> -->
+                <!--     <xsl:attribute name="data-sb"><xsl:value-of select="$sb"/></xsl:attribute> -->
+                <!--     <xsl:attribute name="data-order"><xsl:value-of select="$order"/></xsl:attribute> -->
+                <!--     <xsl:attribute name="data-page"><xsl:value-of select="$page"/></xsl:attribute> -->
+                <!--     <xsl:attribute name="data-r"><xsl:value-of select="/document/context/object/@id"/></xsl:attribute> -->
+                <!--   </xsl:if> -->
+                <!--   <span class="ui-button-icon-primary ui-icon sprite-option_copy xims-sprite"></span> -->
+                <!--   <span class="ui-button-text">Kopieren</span> -->
+                <!-- </button> -->
 			</xsl:when>
 			<xsl:otherwise>
 				<a class="button option-disabled">&#160;</a>

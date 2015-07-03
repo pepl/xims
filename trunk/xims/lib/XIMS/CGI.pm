@@ -59,7 +59,7 @@ Derived classes may use this to register their own events.
 =cut
 
 sub registerEvents {
-	my $self = shift;
+    my $self = shift;
 	return (
 		'dbhpanic',        'access_denied',  'move_browse',
 		'move',            'copy',           'cancel',
@@ -1848,6 +1848,17 @@ sub init_store_object {
 	{
 		$object->valid_to_timestamp( $object->valid_from_timestamp() );
 	}
+
+
+    my $nav_hide = $self->param('nav-hide');
+    $object->nav_hide( (defined $nav_hide and $nav_hide eq 'on') ? 1 : 0 );
+
+    my $nav_title = $self->param('nav-title');
+    if ( defined $nav_title ) {
+        if ( length($nav_title) < 60 and length($nav_title) > 0 ) {
+            $object->nav_title($nav_title)
+        }
+    }
 
 	return 1;
 }
