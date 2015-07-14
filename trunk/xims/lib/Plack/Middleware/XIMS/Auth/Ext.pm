@@ -5,29 +5,22 @@ use XIMS;
 use XIMS::User;
 use Encode qw(encode);
 
+
+
 # Let someone else (say, mod_shibboleth) do the autorisation and trust what they
 # leave in REMOTE_USER for us. We try to set up a session from this.
-sub call {
-    my ( $self, $env ) = @_;
-    my ($user, $remote_user);
+sub login {
+    my ($self, $env) = @_;
+    my $req = Plack::Request->new($env);
+    my ($remote_user, $user);
     XIMS::Debug( 5, 'called' );
 
-    if ( my $session = $self->get_session_from_cookie($env) ) {
-        XIMS::Debug( 6, 'got session from cookie' );
-        $env->{REMOTE_USER} = $session->user->name;
-       
-        # but you want to logout?
-        if ( $self->is_logout_request($env) ) {
-            return $self->logout($env);
-        }
-   
-        # return app
-        return $self->app->($env);
-    }
-    elsif ( $remote_user = $env->{REMOTE_USER}
-            and $user = XIMS::User->new( name => $remote_user )
-            and $user->id() and $user->enabled() eq '1' )
+    if ( $remote_user = $env->{REMOTE_USER}
+             and $user = XIMS::User->new( name => $remote_user )
+             and $user->id() and $user->enabled() eq '1' )
     {
+        XIMS::Debug( 6, 'this is a login request, creating a new session' );
+        
         $env->{'xims.appcontext'}->session(
             XIMS::Session->new(
                 'user_id'     => $user->id(),
@@ -35,13 +28,16 @@ sub call {
                 'auth_module' => $env->{AUTH_TYPE}
             )
             );
+        
+        my $redirect = $self->sanitize_redirect($env, $req->param('redirect'));
+        
+        my $res = [ 302, [Location => "$redirect?from_login=1"], ["<html><body><a href=\"$redirect\">Back</a></body></html>"]];
 
-        my $res = $self->app->($env);
-        # TODO: this should find out when to set the cookies secure flag...
         if (my $session_id = $env->{'xims.appcontext'}->session->session_id ) {
             push @{ $res->[1] },
             'Set-Cookie' => "session=$session_id;path=/;httponly;secure;";
         } 
+        
         return $res;   
     }
     
@@ -61,8 +57,8 @@ sub logout {
 
     my $msg;
     my $path = $self->sanitize_redirect($env, $req->param('redirect'));
-    
-    if ($env->{'Shib_Session_ID'}) {
+
+    if ($env->{'HTTP_COOKIE'} =~ /shibsession/) {
         $msg = qq(However, you likely still have a valid Session from Shibboleth Single Sign On. You can
                 <ul>
                   <li><a href="/Shibboleth.sso/Logout">Log off Shibboleth</a> as well.</li> 
@@ -71,7 +67,6 @@ sub logout {
                 <ul>);
     }
     else {
-        
         q(However, your authentication provider might still have you down so 
           that you will be automatically logged on XIMS again unless you take 
           an extra step to log off there. 
@@ -113,20 +108,7 @@ LOGOUT
             [encode('UTF-8', $body)]]
    
 }
+    
 
-
-sub unauthorized {
-    my ( $self, $env, $reason ) = @_;
-    XIMS::Debug( 5, 'called' );
-
-    HTTP::Throwable::Factory->throw(
-        {   status_code        => 403,
-            reason             => 'You are not entitled to use this system. Go away!',
-            additional_headers => [
-                'X-Reason' => $reason ? $reason : 'none'
-            ]
-        }
-    );
-}
 
 1;
