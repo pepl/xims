@@ -40,14 +40,14 @@ sub registerEvents {
         qw(
           create
           edit
-          store
-          publish
+          store:POST
+          publish:POST
           publish_prompt
-          unpublish
+          unpublish:POST
           obj_acllist
           obj_acllight
-          obj_aclgrant
-          obj_aclrevoke
+          obj_aclgrant:POST
+          obj_aclrevoke:POST
       )
     );
 }

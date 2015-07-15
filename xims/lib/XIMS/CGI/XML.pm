@@ -38,15 +38,15 @@ sub registerEvents {
         qw(
           create
           edit
-          store
+          store:POST
           obj_acllist
           obj_acllight
-          obj_aclgrant
-          obj_aclrevoke
-          publish
+          obj_aclgrant:POST
+          obj_aclrevoke:POST
+          publish:POST
           publish_prompt
-          unpublish
-          test_wellformedness
+          unpublish:POST
+          test_wellformedness:POST
           pub_preview
           simpleformedit
           unescapebody

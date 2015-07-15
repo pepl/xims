@@ -60,17 +60,21 @@ Derived classes may use this to register their own events.
 
 sub registerEvents {
     my $self = shift;
-	return (
-		'dbhpanic',        'access_denied',  'move_browse',
-		'move',            'copy',           'cancel',
-		'contentbrowse',   'search',         'sitemap',
-		'reposition',      'posview',        'plain',
-		'trashcan_prompt', 'trashcan',       'delete',
-		'delete_prompt',   'undelete',       'trashcan_content',
-		'error',           'prettyprintxml', 'htmltidy',
-		'aclgrantmultiple', 'aclrevokemultiple',
-		'test_location',   @_
-	);
+    return (
+        'dbhpanic',               'access_denied',
+        'move_browse',            'move:POST',
+        'copy',                   'cancel',
+        'contentbrowse',          'search',
+        'sitemap',                'reposition:POST',
+        'posview',                'plain',
+        'trashcan_prompt',        'trashcan:POST',
+        'delete:POST',            'delete_prompt',
+        'undelete:POST',          'trashcan_content',
+        'error',                  'prettyprintxml:POST',
+        'htmltidy:POST',          'aclgrantmultiple:POST',
+        'aclrevokemultiple:POST', 'test_location:POST',
+        @_
+    );
 }
 
 =head2 event_init()

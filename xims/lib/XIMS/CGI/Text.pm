@@ -32,19 +32,15 @@ use parent qw( XIMS::CGI );
 sub registerEvents {
     my $self = shift;
     $self->SUPER::registerEvents(
-                                'create',
-                                'edit',
-                                'store',
-                                'publish',
-                                'publish_prompt',
-                                'unpublish',
-                                'obj_acllist',
-                                'obj_aclgrant',
-                                'obj_aclrevoke',
-                                'obj_acllight',
-                                @_
-                                );
+        'edit',               'obj_aclgrant:POST',
+        'obj_acllight',       'obj_acllist',
+        'obj_aclrevoke:POST', 'publish:POST',
+        'publish_prompt',     'store:POST',
+        'unpublish:POST',     'create',
+        @_
+    );
 }
+
 
 =head2 event_edit()
 

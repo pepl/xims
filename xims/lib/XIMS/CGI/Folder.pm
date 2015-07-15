@@ -40,21 +40,24 @@ sub registerEvents {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->SUPER::registerEvents(
-        (
-            'create',       'edit',
-            'store',        'obj_acllist',	'obj_acllight',
-            'obj_aclgrant', 'obj_aclrevoke',
-            'publish',      'publish_prompt', 'unpublish',
-            'test_wellformedness', 'showtrashcan', 
-            'deletemultiple_prompt','deletemultiple', 'undeletemultiple',
-            'trashcanmultiple_prompt', 'trashcanmultiple', 
-            'publishmultiple_prompt', 'publishmultiple', 'unpublishmultiple',
-            'movemultiple_browse', 'movemultiple', 'copymultiple',
-            'aclmultiple_prompt','aclgrantmultiple','aclrevokemultiple',
+        (   'create',                   'edit',
+            'store:POST',               'obj_acllist',
+            'obj_acllight',             'obj_aclgrant:POST',
+            'obj_aclrevoke:POST',       'publish:POST',
+            'publish_prompt',           'unpublish:POST',
+            'test_wellformedness:POST', 'showtrashcan',
+            'deletemultiple_prompt',    'deletemultiple:POST',
+            'undeletemultiple:POST',    'trashcanmultiple_prompt',
+            'trashcanmultiple:POST',    'publishmultiple_prompt',
+            'publishmultiple:POST',     'unpublishmultiple:POST',
+            'movemultiple_browse',      'movemultiple:POST',
+            'copymultiple:POST',        'aclmultiple_prompt',
+            'aclgrantmultiple:POST',    'aclrevokemultiple:POST',
             @_
         )
     );
 }
+
 
 # END GLOBAL SETTINGS
 # #############################################################################
