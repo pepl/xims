@@ -40,18 +40,18 @@ sub registerEvents {
     $self->SUPER::registerEvents(
                                 'create',
                                 'edit',
-                                'store',
-                                'publish',
+                                'store:POST',
+                                'publish:POST',
                                 'publish_prompt',
-                                'unpublish',
+                                'unpublish:POST',
                                 'obj_acllist',
                                 'obj_acllight',
-                                'obj_aclgrant',
-                                'obj_aclrevoke',
-                                'test_wellformedness',
+                                'obj_aclgrant:POST',
+                                'obj_aclrevoke:POST',
+                                'test_wellformedness:POST',
                                 'pub_preview',
                                 'prepare_mail',
-                                'send_as_mail',
+                                'send_as_mail:POST',
                                 @_
                                 );
 }

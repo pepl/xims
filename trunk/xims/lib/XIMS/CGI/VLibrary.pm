@@ -40,14 +40,14 @@ sub registerEvents {
         qw(
           create
           edit
-          store
+          store:POST
           obj_acllist
           obj_acllight
-          obj_aclgrant
-          obj_aclrevoke
-          publish
+          obj_aclgrant:POST
+          obj_aclrevoke:POST
+          publish:POST
           publish_prompt
-          unpublish
+          unpublish:POST
           subject
           subject_view
           keywords
@@ -58,16 +58,16 @@ sub registerEvents {
           publication
           property_edit
           property_show
-          property_store
+          property_store:POST
           property_delete_prompt
-          property_delete
+          property_delete:POST
           list_properties_items
           vlsearch
           vlchronicle
           most_recent
           simile
           filter
-          filter_create
+          filter_create:POST
           )
     );
 }

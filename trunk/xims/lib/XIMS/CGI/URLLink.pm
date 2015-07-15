@@ -35,19 +35,20 @@ use Locale::TextDomain ('info.xims');
 sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
-               qw( create
-                   edit
-                   store
-                   publish
-                   publish_prompt
-                   unpublish
-                   obj_acllist
-                   obj_acllight
-                   obj_aclgrant
-                   obj_aclrevoke
-               )
-           );
+        qw( create
+            edit
+            store:POST
+            publish:POST
+            publish_prompt
+            unpublish:POST
+            obj_acllist
+            obj_acllight
+            obj_aclgrant:POST
+            obj_aclrevoke:POST
+            )
+    );
 }
+
 
 # END GLOBAL SETTINGS
 # #############################################################################

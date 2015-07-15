@@ -38,7 +38,7 @@ This might not work in every situation, you might need to add the events
 
 sub registerEvents {
     my $self = shift;
-    $self->SUPER::registerEvents( 'prepare_mail', 'send_as_mail', @_ );
+    $self->SUPER::registerEvents( 'prepare_mail', 'send_as_mail:POST', @_ );
 }
 
 =head2 event_prepare_mail()

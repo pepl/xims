@@ -33,8 +33,8 @@ sub registerEvents {
     XIMS::Debug( 5, "called");
     $_[0]->SUPER::registerEvents(
         qw(
-          add_portlet
-          rem_portlet
+          add_portlet:POST
+          rem_portlet:POST
           )
         );
 }

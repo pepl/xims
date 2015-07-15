@@ -34,7 +34,7 @@ use parent qw( XIMS::CGI::Document XIMS::CGI::Mailable );
 
 sub registerEvents {
     my $self = shift;
-    $self->SUPER::registerEvents( 'prepare_mail', 'send_as_mail', @_ );
+    $self->SUPER::registerEvents( 'prepare_mail', 'send_as_mail:POST', @_ );
 }
 
 1;
