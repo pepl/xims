@@ -527,4 +527,8 @@
 <Container_View>Container view</Container_View>
 <NavHide>Hide this object from navigation</NavHide>
 <NavTitle>Optional short title for navigation</NavTitle>
+<NavHidden>This object is hidden from the navigation.</NavHidden>
+<NavShows>This object shows up in the navigation.</NavShows>
+<NavShowsIfPub>This object will show up in the navigation once it is published.</NavShowsIfPub>
+<NavNeverShows>This object type does not show up in the navigation.</NavNeverShows>
 </l>

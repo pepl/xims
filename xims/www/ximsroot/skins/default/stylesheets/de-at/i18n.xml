@@ -525,4 +525,8 @@
 <Container_View>Container Ansicht</Container_View>
 <NavHide>Objekt von der Navigation ausnehmen</NavHide>
 <NavTitle>Optionaler Kurztitel für die Navigation</NavTitle>
+<NavHidden>Dieses Objekt wird von der Navigation ausgenommen.</NavHidden>
+<NavShows>Dieses Objekt wird in der Navigation angezeigt.</NavShows>
+<NavShowsIfPub>Dieses Objekt wird in der Navigation angezeigt, sobald es publiziert wird.</NavShowsIfPub>
+<NavNeverShows>Objekte dieses Typs werden in der Navigation nicht direkt angezeigt.</NavNeverShows>
 </l>
