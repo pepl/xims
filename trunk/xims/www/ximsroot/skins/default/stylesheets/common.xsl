@@ -1676,11 +1676,56 @@
 	
 	<xsl:template name="state-toolbar">
 		<div class="toolbar">
-			<xsl:call-template name="button.state.new"/>
-			<xsl:call-template name="button.state.publish"/>
-			<xsl:call-template name="button.state.locked"/>
+		  <xsl:call-template name="button.state.new"/>
+          <xsl:call-template name="button.state.nav"/>
+		  <xsl:call-template name="button.state.publish"/>
+		  <xsl:call-template name="button.state.locked"/>
 		</div>
 	</xsl:template>
+    
+    <xsl:template name="button.state.nav">
+      <span style="display:inline-block; width:16px !important; padding: 0px auto;">
+        <xsl:if test="published='0'">
+          <xsl:attribute name="style">display:inline-block; width:16px !important; padding: 0px auto; color:grey;</xsl:attribute>
+        </xsl:if>
+        <xsl:choose>
+	      <xsl:when test="data_format_name='URL' or
+                          data_format_name='HTML' or
+                          data_format_name='Gallery' or
+                          data_format_name='Container' or
+                          data_format_name='DepartmentRoot'">     
+            <xsl:choose>
+              <xsl:when test="nav_hide = '0' and published='0'">
+                <xsl:attribute name="title">
+                  <xsl:value-of select="$i18n/l/NavShowsIfPub"/>
+                </xsl:attribute>
+		        <xsl:text>≡</xsl:text>
+		  	  </xsl:when>
+		      <xsl:when test="nav_hide = '0'">
+                <xsl:attribute name="title">
+                  <xsl:value-of select="$i18n/l/NavShows"/>
+                </xsl:attribute>
+		        <xsl:text>≡</xsl:text>
+		  	  </xsl:when>
+		      <xsl:otherwise>
+                <xsl:attribute name="title">
+                  <xsl:value-of select="$i18n/l/NavHidden"/>
+                </xsl:attribute>
+		        <xsl:text>≢</xsl:text>
+		      </xsl:otherwise>
+	        </xsl:choose>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:attribute name="title">
+              <xsl:value-of select="$i18n/l/NavNeverShows"/>
+            </xsl:attribute>
+            <span style="visibility:hidden;">≢</span>
+	      </xsl:otherwise>
+	    </xsl:choose>
+        <!-- <xsl:text>&#160;</xsl:text> -->
+      </span>
+    </xsl:template>
+    
 	<xsl:template name="button.state.publish">
 		<xsl:variable name="objecttype">
 			<xsl:value-of select="object_type_id"/>
