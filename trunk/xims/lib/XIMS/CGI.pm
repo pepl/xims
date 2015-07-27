@@ -72,7 +72,7 @@ sub registerEvents {
         'undelete:POST',          'trashcan_content',
         'error',                  'prettyprintxml:POST',
         'htmltidy:POST',          'aclgrantmultiple:POST',
-        'aclrevokemultiple:POST', 'test_location:POST',
+        'aclrevokemultiple:POST', 'test_location',
         @_
     );
 }
