@@ -72,7 +72,7 @@ sub event_store {
         $ctxt->object->attribute( minify => '1' );
     }
     else {
-        $ctxt->object->attribute( minify => '0' );
+        $ctxt->object->attribute( minify => undef );
     }
 
     my $body;

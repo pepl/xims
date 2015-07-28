@@ -2142,7 +2142,7 @@ my $boolean = $object->attribute( %attrhash );
 
 Attributes are stored in ";" separated key=value pairs in the attributes
 column attribute() sets attributes through a hash. If a hash value is empty,
-the attribute value is deleted.
+the attribute is deleted.
 
 =cut
 
@@ -2159,23 +2159,17 @@ sub attribute {
         }
         $text = join(
             ';',
-            map {
-                $_ . "="
-                  . ( defined $attributes{$_} ? $attributes{$_} : '' )
-              } keys(%attributes)
+            map { "$_=" . $attributes{$_} }
+                grep { defined $attributes{$_} and length $attributes{$_} }
+                keys( %attributes )
         );
     }
     else {
         $text = join(
             ';',
-            map {
-                $_ . "="
-                  . (
-                    defined $attr{$_}
-                    ? $self->_escapeattrib( $attr{$_} )
-                    : ''
-                  )
-              } keys(%attr)
+            map { "$_=" . $self->_escapeattrib($attr{$_}) }
+                grep { defined $attr{$_} and length $attr{$_} }
+                keys( %attr )
         );
     }
 

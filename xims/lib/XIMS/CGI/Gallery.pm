@@ -93,18 +93,10 @@ sub event_store {
 
     my $object = $ctxt->object();
 
-#    my $autoindex = $self->param('autoindex');
-#    if ( defined $autoindex and $autoindex eq 'false' ) {
-#        XIMS::Debug( 6, "autoindex: $autoindex" );
-#        $object->attribute( autoindex => '0' );
-#    }
-#    else {
-#        $object->attribute( autoindex => '1' );
-#    }
-    $object->attribute( autoindex => '0' );
+    $object->attribute( autoindex => undef );
 
     my $pagerowlimit = $self->param('pagerowlimit');
-    
+
     #empty or up to 2 figures.
     if ( defined $pagerowlimit and $pagerowlimit =~ /^\d{0,2}$/ ) {
         XIMS::Debug( 6, "pagerowlimit: $pagerowlimit" );
@@ -130,8 +122,8 @@ sub event_store {
             $object->attribute( defaultsort => $defaultsort );
         }
     }
-    
-    my $imgwidth = $self->param('imgwidth');   
+ 
+    my $imgwidth = $self->param('imgwidth');
     if ( defined $imgwidth) {
         $object->attribute( imgwidth => $imgwidth );
     } 
@@ -146,7 +138,7 @@ sub event_store {
         $object->attribute( shownavigation => '1' );
     }
     else {
-        $object->attribute( shownavigation => '0' );
+        $object->attribute( shownavigation => undef );
     }
     
     my $showcaption = $self->param('showcaption');
@@ -154,7 +146,7 @@ sub event_store {
         $object->attribute( showcaption => '1' );
     }
     else {
-        $object->attribute( showcaption => '0' );
+        $object->attribute( showcaption => undef );
     }
 
     return $self->SUPER::event_store($ctxt);
@@ -162,25 +154,6 @@ sub event_store {
 
 # END RUNTIME EVENTS
 # #############################################################################
-
-#=head2 expand_bodydeptinfo()
-#
-#=cut
-#
-#sub expand_bodydeptinfo {
-#    my $self = shift;
-#    my $ctxt = shift;
-#
-#    eval "require XIMS::SAX::Filter::DepartmentExpander;";
-#    if ( $@ ) {
-#        XIMS::Debug( 2, "could not load department-expander: $@" );
-#        return 0;
-#    }
-#    my $filter = XIMS::SAX::Filter::DepartmentExpander->new( Object   => $ctxt->object(),
-#                                                             User     => $ctxt->session->user(), );
-#    $ctxt->sax_filter( [] ) unless defined $ctxt->sax_filter();
-#    push @{$ctxt->sax_filter()}, $filter;
-#}
 
 1;
 

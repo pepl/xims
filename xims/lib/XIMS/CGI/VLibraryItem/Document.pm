@@ -123,7 +123,7 @@ sub event_store {
             return 0;
         }
 
-        $object->attribute( geekmode => $self->param('geekmode') ? 1 : 0 );
+        $object->attribute( geekmode => $self->param('geekmode') ? 1 : undef );
     }
 
     $self->SUPER::event_store($ctxt);
