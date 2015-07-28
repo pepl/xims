@@ -37,11 +37,11 @@
 		<div id="tr-autoindex">
 		<div class="label-large">
 				<label for="cb-autoindex">
-					<xsl:value-of select="$i18n/l/Omit_autoindex"/>
+					<xsl:value-of select="$i18n/l/Autoindex"/>
 				</label>
 			</div>
-			<input name="autoindex" type="checkbox" value="false" class="checkbox" id="cb-autoindex">
-				<xsl:if test="attributes/autoindex = '0'">
+			<input name="autoindex" type="checkbox" value="create" class="checkbox" id="cb-autoindex">
+				<xsl:if test="attributes/autoindex = '1'">
 					<xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
 				</xsl:if>
 			</input>

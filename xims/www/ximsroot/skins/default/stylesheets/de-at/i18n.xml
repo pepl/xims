@@ -148,7 +148,7 @@
 <Choose_position>Eine neue Position auswählen für</Choose_position>
 <close_window>Fenster schließen</close_window>
 <selected>ausgewählt</selected>
-<Omit_autoindex>Verhindere Autoindex beim Veröffentlichen:</Omit_autoindex>
+<Autoindex>Schreibe Autoindex beim Veröffentlichen:</Autoindex>
 <Yes>Ja</Yes>
 <No>Nein</No>
 <Status>Status</Status>

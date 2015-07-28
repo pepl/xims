@@ -1406,8 +1406,7 @@ sub create {
         # publishing states may have changed in this session.
 
         my $autoindex = $self->{Object}->attribute_by_key( 'autoindex' );
-        # if attribute is not explictly set to 0, we do autoindexing
-        if ( not defined $autoindex or $autoindex == 1 ) {
+        if ( defined $autoindex and $autoindex == 1 ) {
             my $idx_generator =  XIMS::Exporter::AutoIndexer->new( Provider   => $self->{Provider},
                                                                    Basedir    => $self->{Basedir},
                                                                    User       => $self->{User},

@@ -151,7 +151,7 @@
 <Choose_position>Choose a new position for</Choose_position>
 <close_window>close window</close_window>
 <selected>selected</selected>
-<Omit_autoindex>Omit Autoindex during publishing:</Omit_autoindex>
+<Autoindex>Create Autoindex during publishing:</Autoindex>
 <Yes>Yes</Yes>
 <No>No</No>
 <Status>Status</Status>

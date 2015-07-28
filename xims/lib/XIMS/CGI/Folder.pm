@@ -172,12 +172,12 @@ sub event_store {
 
     my $autoindex = $self->param('autoindex');
 
-    if ( defined $autoindex and $autoindex eq 'false' ) {
+    if ( defined $autoindex and $autoindex eq 'create' ) {
         XIMS::Debug( 6, "autoindex: $autoindex" );
-        $object->attribute( autoindex => '0' );
+        $object->attribute( autoindex => '1' );
     }
     else {
-        $object->attribute( autoindex => '1' );
+        $object->attribute( autoindex => undef );
     }
 
     my $pagerowlimit = $self->param('pagerowlimit');
