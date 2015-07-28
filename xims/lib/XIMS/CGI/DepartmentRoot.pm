@@ -34,7 +34,7 @@ sub registerEvents {
     $_[0]->SUPER::registerEvents(
         qw(
           add_portlet:POST
-          rem_portlet:POST
+          rem_portlet
           )
         );
 }
