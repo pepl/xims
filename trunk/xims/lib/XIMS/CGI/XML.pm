@@ -163,7 +163,7 @@ sub event_store {
             $object->attribute( sfe => '1' );
         }
         elsif ( $sfe eq 'false' ) {
-            $object->attribute( sfe => '0' );
+            $object->attribute( sfe => undef );
         }
     }
 

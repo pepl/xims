@@ -286,7 +286,7 @@ sub event_gen_website {
 	);
 	#### set attributes of Departmentroot
 	# avoid autoindexing of departmentroot contents
-	$deptroot->attribute( autoindex => '0' );
+	$deptroot->attribute( autoindex => undef );
 	#TODO: attributes
 	
 	my $parent = XIMS::Object->new( path => $parent_folder );
