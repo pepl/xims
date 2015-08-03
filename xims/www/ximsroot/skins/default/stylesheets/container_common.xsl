@@ -316,7 +316,10 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:otherwise>
-				</xsl:choose>
+			</xsl:choose>
+            <xsl:if test="/document/context/session/user/userprefs/profile_type = 'webadmin'">
+              <xsl:call-template name="button.options.toggle-hide-multiple"/>
+            </xsl:if>
 		</div>
 	</xsl:template>
 	
@@ -392,6 +395,20 @@
       <xsl:attribute name="title"><xsl:value-of select="$l_delete"/></xsl:attribute>
       <span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
       <span class="ui-button-text"><xsl:value-of select="$l_delete"/></span>
+    </button>
+  </xsl:template>
+  
+  <xsl:template name="button.options.toggle-hide-multiple">
+    <xsl:variable name="id" select="@id"/>
+    <button class="option-delete ui-button ui-widget ui-state-default
+                   ui-corner-all ui-button-icon-only"
+            value="1"
+            name="toggle_hide_multiple"
+            type="submit"
+            role="button"
+            aria-disabled="false"
+            title="Toggle ‘Hide from navigation’">
+      ≚
     </button>
   </xsl:template>
 	

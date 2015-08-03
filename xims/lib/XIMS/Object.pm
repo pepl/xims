@@ -2582,6 +2582,39 @@ sub unpublish {
 
 }
 
+
+=head2    unpublish()
+
+=head3 Parameter
+
+   none
+
+=head3 Returns
+
+    $boolean : True or False for setting nav_hide
+
+=head3 Description
+
+my $boolean = $object->toggle_hide();
+
+Sets nav_hide to 1 if 0, sets it to 0 otherwise. Updates the object in the
+database.
+
+=cut
+
+sub toggle_hide {
+    my $self = shift;
+
+    if ( $self->nav_hide == 0 ) {
+        $self->nav_hide(1);
+    }
+    else {
+        $self->nav_hide(0);
+    }
+
+    return $self->data_provider->updateObject( $self->data() );
+}
+
 # The following methods allow the more intuitive $obj->data_format() to work,
 # rather than forcing XIMS::DataFormat->new( id => $obj->id() ) for example.
 

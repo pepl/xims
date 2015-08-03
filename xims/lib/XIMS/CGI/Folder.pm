@@ -53,7 +53,7 @@ sub registerEvents {
             'movemultiple_browse',      'movemultiple:POST',
             'copymultiple:POST',        'aclmultiple_prompt',
             'aclgrantmultiple:POST',    'aclrevokemultiple:POST',
-            @_
+            'toggle_hide_multiple:POST', @_
         )
     );
 }
@@ -506,6 +506,32 @@ sub event_copymultiple {
     $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
     return 0;
 }
+
+=head2 event_toggle_hide_multiple()
+
+=cut
+
+sub event_toggle_hide_multiple {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my @ids = $self->param('multiselect');
+    foreach(@ids){
+        my $obj = new XIMS::Object('id' => $_);
+        if($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::WRITE()){
+            $obj->toggle_hide()
+        }
+        else{
+            XIMS::Debug( 4,  "Could not handle " . $obj->location() );
+        }
+    }
+    XIMS::Debug( 4, "redirecting to the container" );
+    $self->param( 'sb',    'date' );
+    $self->param( 'order', 'desc' );
+    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
+    return 0;
+}
+
 
 =head2 event_move_browsemultiple()
 
