@@ -42,13 +42,13 @@ unless ( $sourcepath and  $targetpath ) {
 my $user = $term->authenticate( %args );
 my $user = XIMS::User->new( name => $args{u} );
 
-my $questionnaire = XIMS::Questionnaire->new( User => $user, path => $sourcepath, marked_deleted => undef );
+my $questionnaire = XIMS::Questionnaire->new( User => $user, path => $sourcepath, marked_deleted => 0 );
 die "Could not find source questionnaire\n" unless $questionnaire and $questionnaire->id;
 
 my $privmask = $user->object_privmask( $questionnaire );
 die "Access Denied. You do not have privileges to copy to '".$sourcepath."'\n" unless $privmask and ($privmask & XIMS::Privileges::COPY());
 
-my $targetcontainer = XIMS::Object->new( User => $user, path => $targetpath, marked_deleted => undef );
+my $targetcontainer = XIMS::Object->new( User => $user, path => $targetpath, marked_deleted => 0 );
 die "Could not find target container\n" unless $targetcontainer and $targetcontainer->id;
 
 die "Target is not a container\n" unless $targetcontainer->object_type->is_fs_container();

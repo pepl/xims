@@ -41,7 +41,7 @@ die "Could not find object '$path'.\n" unless $object and $object->id();
 my $privmask = $user->object_privmask( $object );
 die "Access Denied. You do not have privileges to modify '$path'.\n" unless $privmask and ($privmask & XIMS::Privileges::MODIFY());
 
-my $iterator = $object->children( order => 'position', marked_deleted => undef );
+my $iterator = $object->children( order => 'position', marked_deleted => 0);
 my $i = 0;
 while ( my $child = $iterator->getNext() ) {
     my $oldposition = $child->position();
