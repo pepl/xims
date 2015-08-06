@@ -170,7 +170,7 @@ CREATE TABLE ci_documents
                                  REFERENCES ci_data_formats ( id )
  ,symname_to_doc_id INTEGER      REFERENCES ci_documents( id )
                                  ON DELETE cascade
- ,position          INTEGER
+ ,position          INTEGER      DEFAULT 0 NOT NULL
  ,location_path     TEXT
  )
 ;
@@ -246,7 +246,7 @@ CREATE TABLE ci_content
  ,last_published_by_lastname    VARCHAR(90)
  ,last_published_by_middlename  VARCHAR(30)
  ,last_published_by_firstname   VARCHAR(90)
- ,data_format_name              VARCHAR(40)
+ ,data_format_name              VARCHAR(40)   NOT NULL
  ,content_length                INTEGER       DEFAULT 0
  )
 ;

@@ -1428,6 +1428,9 @@ sub init_store_object {
 	$location = $converter->convert($location) if defined $location;
 
 	my $title    = $self->param('title');
+    # strip leading and trailing whitespace
+    $title =~ s/^\s*//;
+    $title =~ s/\s*$//;
 	my $keywords = $self->param('keywords');
 	my $abstract = $self->param('abstract');
 	my $notes    = $self->param('notes');
@@ -1600,7 +1603,7 @@ sub init_store_object {
 
 	my $location_nosuffix = $location;
 	$location_nosuffix =~ s/\.[^\.]+$//
-	  unless $ctxt->properties->application->preservelocation();
+        unless $ctxt->properties->application->preservelocation();
 	$object->title( $title || $location_nosuffix );
 
 	my $markednew = $self->param('markednew');
@@ -3914,16 +3917,31 @@ sub event_reposition {
 	my ( $self, $ctxt ) = @_;
 
 	my $object = $ctxt->object;
-
-	my $current_user_object_priv =
-	  $ctxt->session->user->object_privmask($object);
+    my $user = $ctxt->session->user;
+	my $current_user_object_priv = $user->object_privmask($object);
 	return $self->event_access_denied($ctxt)
 	  unless $current_user_object_priv & XIMS::Privileges::WRITE();
 
 	my $new_position = $self->param("new_position");
 
 	if ( $new_position > 0 and $object->position != $new_position ) {
-		if ( $object->reposition( position => $new_position ) ) {
+        # Attempt to sort-oft-self-heal b0rked positions
+        if ($object->position() == 0 and my $parent = $object->parent()) {
+            XIMS::Debug( 3, 'Got position 0, attempt complete reorder.');
+            my $iterator = $parent->children( order => 'position', marked_deleted => 0);
+            my $i = 0;
+            while ( my $child = $iterator->getNext() ) {
+                my $oldposition = $child->position();
+                $child->position( ++$i );
+                if ( $child->update( User => $user, no_modder => 1 ) ) {
+                    XIMS::Debug( 3, "Updated position of '" . $child->title . "' from $oldposition to " . $child->position() . ".\n");
+                }
+                else {
+                    XIMS::Debug( 2, "Could not update position of '" . $child->location_path . "'.\n");
+                }
+            }
+        }
+		elsif ( $object->reposition( position => $new_position ) ) {
 			XIMS::Debug( 4, "object repositioned" );
 		}
 		else {
