@@ -1609,7 +1609,7 @@ sub trashcan {
         )
       )
     {
-        $self->position(undef);
+        $self->position( 0 );
         @retval = $self->data_provider->updateObject( $self->data() );
     }
     else {
