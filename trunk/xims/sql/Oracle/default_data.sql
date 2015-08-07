@@ -137,11 +137,11 @@ INSERT INTO CI_ROLES_GRANTED ( id, grantor_id, grantee_id, role_master ) VALUES 
 
 -- add root folder
 INSERT INTO CI_DOCUMENTS ( id, parent_id, object_type_id, data_format_id, department_id, location, position) VALUES ( DOC_SEQ.NEXTVAL, NULL, 6, 18, 1, 'root', 1 );
-INSERT INTO CI_CONTENT ( id, document_id, title, language_id, last_modified_by_id, owned_by_id, created_by_id, content_length, published, marked_new, marked_deleted ) VALUES ( CTT_SEQ.NEXTVAL, 1, 'root', 2, 2, 2, 2, 0, 0, 0, 0);
+INSERT INTO CI_CONTENT ( id, document_id, title, language_id, last_modified_by_id, owned_by_id, created_by_id, content_length, published, marked_new, marked_deleted, data_format_name ) VALUES ( CTT_SEQ.NEXTVAL, 1, 'root', 2, 2, 2, 2, 0, 0, 0, 0, 'Container');
 
 -- add SiteRoot "xims" with SiteRoot URL '/ximspubroot/xims'
 INSERT INTO CI_DOCUMENTS ( id, parent_id, object_type_id, data_format_id, department_id, location, position, location_path ) VALUES ( DOC_SEQ.NEXTVAL, 1, 17, 31, 2, 'xims', 1, '/xims' );
-INSERT INTO CI_CONTENT ( id, document_id, title, language_id, last_modified_by_id, owned_by_id, created_by_id, content_length, published, marked_new, marked_deleted ) VALUES ( CTT_SEQ.NEXTVAL, 2, '/ximspubroot/xims', 2, 2, 2, 2, 0, 0, 0, 0);
+INSERT INTO CI_CONTENT ( id, document_id, title, language_id, last_modified_by_id, owned_by_id, created_by_id, content_length, published, marked_new, marked_deleted, data_format_name ) VALUES ( CTT_SEQ.NEXTVAL, 2, '/ximspubroot/xims', 2, 2, 2, 2, 0, 0, 0, 0, 'SiteRoot');
 
 -- add default bookmarks
 INSERT INTO CI_BOOKMARKS ( id, owner_id, content_id, stdhome) VALUES ( BMK_SEQ.NEXTVAL, 3, 2, 1 );
