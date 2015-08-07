@@ -304,6 +304,34 @@ END;
 CREATE TRIGGER update_content_length BEFORE UPDATE ON ci_content
        FOR EACH ROW EXECUTE PROCEDURE update_content_length();
 
+\echo creating trigger data_format_name...
+CREATE OR REPLACE FUNCTION get_data_format_name(INTEGER) RETURNS TEXT AS '
+DECLARE
+    document_id_in ALIAS FOR $1;
+    data_format_name TEXT;
+BEGIN
+    SELECT INTO data_format_name f.name
+    FROM ci_data_formats f
+    JOIN ci_documents d ON d.data_format_id = f.id
+    WHERE d.id = document_id_in;
+
+    RETURN data_format_name;
+END;
+' LANGUAGE plpgsql; 
+
+CREATE OR REPLACE FUNCTION data_format_name() RETURNS TRIGGER AS '
+       BEGIN
+          IF NEW.data_format_name IS NULL THEN
+             SELECT INTO NEW.data_format_name get_data_format_name(NEW.document_id);
+          END IF;
+          RETURN NEW;
+       END;
+' LANGUAGE 'plpgsql';       
+
+
+CREATE TRIGGER data_format_name BEFORE INSERT OR UPDATE ON ci_content
+       FOR EACH ROW EXECUTE PROCEDURE data_format_name();
+
 
 \echo creating table 'ci_object_privs_granted'
 CREATE TABLE ci_object_privs_granted

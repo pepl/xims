@@ -66,7 +66,7 @@ isnt($o->locked(), 1, 'object not locked anymore');
 # trashcan, / undelete
 ok ($o->trashcan(User => $user), 'thrashcan testobject');
 is ($o->marked_deleted, 1, 'testobject is marked_deleted' );
-is ($o->position, undef, 'testobject has undefined position' );
+is ($o->position, 0, 'testobject has position 0' );
 ok ( $o->undelete(), 'undelete testobject' );
 is ($o->marked_deleted, 0, 'testobject is not marked_deleted' );
 cmp_ok($o->position, '>', 0, 'testobject has a defined position' );
