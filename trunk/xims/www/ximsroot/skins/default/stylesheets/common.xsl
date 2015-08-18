@@ -1693,6 +1693,7 @@
                           data_format_name='HTML' or
                           data_format_name='Gallery' or
                           data_format_name='Container' or
+                          data_format_name='SymbolicLink' or
                           data_format_name='DepartmentRoot'">     
             <xsl:choose>
               <xsl:when test="nav_hide = '0' and published='0'">
