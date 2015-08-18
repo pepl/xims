@@ -14,6 +14,7 @@
 	<xsl:template name="create-content">
 		<xsl:call-template name="form-locationtarget-create"/>
 		<xsl:call-template name="form-marknew-pubonsave"/>
+        <xsl:call-template name="form-nav-options"/>
 		<xsl:call-template name="form-grant"/>
 		<br class="clear"/>
 	</xsl:template>

@@ -12,6 +12,7 @@
 		<xsl:template name="edit-content">
 		<xsl:call-template name="form-locationtarget-edit"/>
 		<xsl:call-template name="form-marknew-pubonsave"/>
+        <xsl:call-template name="form-nav-options"/>
 		<br class="clear"/>
 	</xsl:template>
 	
