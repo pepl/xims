@@ -155,7 +155,7 @@ CREATE TABLE ci_sessions
 \echo creating table 'ci_documents'
 CREATE TABLE ci_documents
  (location          VARCHAR(256)
- ,document_status   VARCHAR(100)
+ ,document_role   VARCHAR(100)
  ,id                SERIAL       PRIMARY KEY
  ,parent_id         INTEGER      REFERENCES ci_documents ( id )
                                  ON DELETE CASCADE

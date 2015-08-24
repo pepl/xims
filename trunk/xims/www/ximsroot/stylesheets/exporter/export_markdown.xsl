@@ -20,6 +20,11 @@
 
   <xsl:template match="/document/context/object">
     <page>
+      <xsl:if test="document_role/text()">
+        <xsl:attribute name="role">
+          <xsl:value-of select="document_role"/>
+        </xsl:attribute>
+      </xsl:if>
       <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="{department_id}/ou.xml"/>
       <rdf:RDF xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                xmlns:dc  = "http://purl.org/dc/elements/1.1/"

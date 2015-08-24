@@ -35,7 +35,12 @@
         </xsl:variable>
 
         <portlet id="{@id}" parent_id="{@parent_id}" document_id="{@document_id}">
-	    <path>
+          <xsl:if test="document_role/text()">
+            <xsl:attribute name="role">
+              <xsl:value-of select="document_role"/>
+            </xsl:attribute>
+          </xsl:if>
+	      <path>
               <xsl:apply-templates select="." mode="path-element"/>
             </path>
             <departmentinfo><xsl:value-of select="department_id"/>/ou.xml</departmentinfo>
