@@ -12,7 +12,7 @@
 	<xsl:param name="testlocation">false</xsl:param>
 	<xsl:param name="search-location">true</xsl:param>
 	
-		<xsl:template name="create-content">
+	<xsl:template name="create-content">
 		<xsl:call-template name="form-locationtitle-create"/>
 			<xsl:call-template name="form-marknew-pubonsave"/>
             <xsl:call-template name="form-nav-options"/>

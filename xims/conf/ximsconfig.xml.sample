@@ -86,6 +86,21 @@
         </CodeEditorOptions>
         <DefaultCodeEditor>codemirror</DefaultCodeEditor>
 
+        <!-- per object type options for document role attribute. The <option
+             value="0"></option> entry *needs to be the first child node for each
+             object type.
+        -->
+        <!-- <DocumentRoleOptions>
+          <Document2>
+            <option value="0"></option>
+            <option value="landing-page">Landing Page</option>
+          </Document2>
+          <URLLink >
+            <option value="0"></option>
+            <option value="home">Home</option>
+          </URLLink>
+        </DocumentRoleOptions> -->
+        
         <!--
         # Source IP of the mailable object types' request agent session
         -->

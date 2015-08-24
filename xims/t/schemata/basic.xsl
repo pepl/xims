@@ -121,7 +121,7 @@
   </axsl:template>
   <axsl:template match="object[name(..) != 'context']" priority="3991" mode="M0">
     <axsl:choose>
-      <axsl:when test="count(published|language_id|data_format_id|title|creation_timestamp|location|marked_new|notes|attributes|abstract|body|department_id|keywords|style_id|symname_to_doc_id|created_by_id|locked_by_id|last_modified_by_id|last_modified_by_lastname|last_modified_by_middlename|last_modified_by_firstname|created_by_lastname|created_by_middlename|created_by_firstname|owned_by_lastname|owned_by_middlename|owned_by_firstname|last_publication_timestamp|last_published_by_id|last_published_by_lastname|last_published_by_middlename|last_published_by_firstname|schema_id|document_status)                   =count(*)"/>
+      <axsl:when test="count(published|language_id|data_format_id|title|creation_timestamp|location|marked_new|notes|attributes|abstract|body|department_id|keywords|style_id|symname_to_doc_id|created_by_id|locked_by_id|last_modified_by_id|last_modified_by_lastname|last_modified_by_middlename|last_modified_by_firstname|created_by_lastname|created_by_middlename|created_by_firstname|owned_by_lastname|owned_by_middlename|owned_by_firstname|last_publication_timestamp|last_published_by_id|last_published_by_lastname|last_published_by_middlename|last_published_by_firstname|schema_id|document_role)                   =count(*)"/>
       <axsl:otherwise>Foreign element child<axsl:text xml:space="preserve"> </axsl:text><axsl:value-of select="name(.)"/><axsl:text xml:space="preserve"> </axsl:text>in element 'object'.</axsl:otherwise>
     </axsl:choose>
     <axsl:apply-templates mode="M0"/>

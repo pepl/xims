@@ -1434,6 +1434,8 @@ sub init_store_object {
 	my $keywords = $self->param('keywords');
 	my $abstract = $self->param('abstract');
 	my $notes    = $self->param('notes');
+    my $document_role = $self->param('document_role');
+    $document_role =~ s/.*?(\w+).*?/$1/;
 
 	if ( $object and $object->id() and length $self->param('id') ) {
 		unless ( $ctxt->session->user->object_privmask($object) &
@@ -1630,6 +1632,15 @@ sub init_store_object {
 		XIMS::Debug( 6, "abstract, len: " . length($abstract) );
 		$object->abstract($abstract);
 	}
+
+    if ( defined $document_role and length $document_role ) {
+        if ($document_role eq '0') {
+            $object->document_role( undef );
+        }
+        else {
+            $object->document_role($document_role);
+        }
+    }
 
 	# check if valid notes are given
 	if ( defined $notes

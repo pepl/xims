@@ -240,7 +240,7 @@
                 <element name="schema_id">
                     <text/>
                 </element>
-                <element name="document_status">
+                <element name="document_role">
                     <text/>
                 </element>
                 <optional>

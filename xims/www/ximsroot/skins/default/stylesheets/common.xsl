@@ -12,7 +12,8 @@
 
 <xsl:stylesheet version="1.0" 
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"              
-                xmlns:dyn="http://exslt.org/dynamic" 
+                xmlns:dyn="http://exslt.org/dynamic"
+                xmlns:exslt="http://exslt.org/common"
                 xmlns="http://www.w3.org/1999/xhtml" 
                 extension-element-prefixes="dyn">
 	<xsl:import href="../../../stylesheets/common.xsl"/>
@@ -402,12 +403,14 @@
 		<div class="form-div ui-corner-all div-left">
 			<xsl:call-template name="form-title"/>
 			<xsl:call-template name="form-location-create"/>
+            <xsl:call-template name="form-document-role"/>
 		</div>
 	</xsl:template>
 	<xsl:template name="form-locationtitle-edit">
 		<div class="form-div ui-corner-all div-left">
 			<xsl:call-template name="form-title"/>
 			<xsl:call-template name="form-location-edit"/>
+            <xsl:call-template name="form-document-role"/>
 		</div>
 	</xsl:template>
 	<xsl:template name="form-location-edit">
@@ -756,6 +759,37 @@
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Keywords"/></xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
+
+    <xsl:template name="form-document-role">
+      <xsl:variable name="options-count"
+                    select="count(exslt:node-set($document_role_options)/*[local-name()=$objtypename]/*)"/>
+      <xsl:variable name="prev-document-role" select="document_role"/>
+
+      <xsl:if test="$options-count &gt; 0 and /document/context/session/user/userprefs/profile_type = 'webadmin'">
+
+        <div id="tr-document-role">
+		  <div class="label-std">
+            <label for="input-document-role"><xsl:value-of select="$i18n/l/Role"/></label>
+		  </div>
+
+          <select name="document_role" id="input-document-role" count="{$options-count}">
+            <xsl:for-each select="exslt:node-set($document_role_options)/*[local-name()=$objtypename]/*">
+              <xsl:copy>
+                <xsl:if test="@value=$prev-document-role">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="@*|text()"/>
+              </xsl:copy>
+            </xsl:for-each>
+          </select>
+       
+        <!-- </input> -->
+		<xsl:text>&#160;</xsl:text>
+	    </div>
+      </xsl:if>
+	</xsl:template>
+
+    
 	<xsl:template name="form-abstract">
 		<div id="tr-abstract">
 			<div class="label-std">
@@ -773,6 +807,7 @@
 			</textarea>
 		</div>
 	</xsl:template>
+    
 	<xsl:template name="form-notes">
 		<div id="tr-notes">
 			<div id="label-notes">

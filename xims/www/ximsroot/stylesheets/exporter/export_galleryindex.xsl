@@ -73,6 +73,11 @@
       <xsl:value-of select="data_format_id"/>
     </xsl:variable>
     <page>
+      <xsl:if test="document_role/text()">
+        <xsl:attribute name="role">
+          <xsl:value-of select="document_role"/>
+        </xsl:attribute>
+      </xsl:if>
       <xi:include xmlns:xi="http://www.w3.org/2001/XInclude">
         <xsl:attribute name="href"><xsl:call-template name="departmentpath"/>/ou.xml</xsl:attribute>
       </xi:include>

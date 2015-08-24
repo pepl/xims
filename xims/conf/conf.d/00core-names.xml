@@ -110,7 +110,7 @@
             <Document>
                 <item>document.location</item>
                 <item>document.location_path</item>
-                <item>document.document_status</item>
+                <item>document.document_role</item>
                 <item>document.id</item>
                 <item>document.parent_id</item>
                 <item>document.object_type_id</item>
@@ -174,7 +174,7 @@
                 <item>content.content_length</item>
                 <item>document.location</item>
                 <item>document.location_path</item>
-                <item>document.document_status</item>
+                <item>document.document_role</item>
                 <item>document.parent_id</item>
                 <item>document.object_type_id</item>
                 <item>document.department_id</item>
