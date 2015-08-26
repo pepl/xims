@@ -42,7 +42,11 @@ sub unauthorized {
 
     $env->{REMOTE_USER} = undef;
 
-    HTTP::Throwable::Factory->throw( { status_code => 403 } );
+    HTTP::Throwable::Factory->throw( { status_code => 403,  
+                                       reason      => "Forbidden", 
+                                     } 
+                              );
+
 }
 
 

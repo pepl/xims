@@ -16,8 +16,8 @@ sub login {
     XIMS::Debug( 5, 'called' );
 
     if ( $remote_user = $env->{REMOTE_USER}
-             and $user = XIMS::User->new( name => $remote_user )
-             and $user->id() and $user->enabled() eq '1' )
+         and $user = XIMS::User->new( name => $remote_user )
+         and $user->id() and $user->enabled() eq '1' )
     {
         XIMS::Debug( 6, 'this is a login request, creating a new session' );
         
