@@ -11,28 +11,6 @@ sub call {
     my ( $session_id, $login, $user );
     XIMS::Debug( 5, 'called' );
 
-    # # first check if authentication has been externally provided. We use this
-    # # for requests that do not need a real session and may not be redirected,
-    # # e.g. Shibboleth authenticated intranet search
-    # if ( $remote_user = $env->{REMOTE_USER}
-    #      and $user = XIMS::User->new( name => $remote_user )
-    #      and $user->id() and $user->enabled() eq '1' )
-    # {
-    #     XIMS::Debug( 6, 'this is a login request, creating a new session' );
-        
-    #     $env->{'xims.appcontext'}->session(
-    #         XIMS::Session->new(
-    #             'session_id'  => 'ephemeral',
-    #             'user_id'     => $user->id(),
-    #             'host'        => $env->{REMOTE_ADDR},
-    #             'auth_module' => $env->{AUTH_TYPE}
-    #         )
-    #         );
-    #     return $self->app->($env);
-    # }
-
-    # Otherwise proceed with BasicAuth
-    
     my $auth = $env->{HTTP_AUTHORIZATION}
         or return $self->unauthorized;
 
@@ -64,6 +42,7 @@ sub call {
 
     return $self->unauthorized;
 }
+
 
 sub unauthorized {
     my ( $self, $env, $reason ) = @_;
