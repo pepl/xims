@@ -1876,6 +1876,9 @@ sub init_store_object {
         if ( length($nav_title) < 60 and length($nav_title) > 0 ) {
             $object->nav_title($nav_title)
         }
+        else {
+            $object->nav_title( undef );
+        }
     }
 
 	return 1;
