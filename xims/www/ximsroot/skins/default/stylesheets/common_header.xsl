@@ -9,7 +9,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml" 
                 xmlns:str="http://exslt.org/strings"
-                extension-element-prefixes="str">
+                xmlns:exslt="http://exslt.org/common"
+                extension-element-prefixes="str exslt">
 	
 	<xsl:variable name="supportmail_body">
 		<xsl:text>
@@ -110,6 +111,7 @@
 			<xsl:call-template name="header.arrownavigation"/>
 			<xsl:call-template name="menu-widget"/>
 			<xsl:call-template name="help-widget"/>
+            <xsl:call-template name="motd"/>
 			<xsl:call-template name="header.search"/>
 		</div>
 		<!--
@@ -460,13 +462,31 @@
 	<!--Help Widget-->	
 	<!-- customize the items in this widget in the config file -->
 	<xsl:template name="help-widget">
-
-		<div id="help-widget">
-			<button><xsl:value-of select="$i18n/l/Help"/></button>
-			<ul style="position:absolute !important; width: 150px">
-			   <xsl:copy-of select="$helplinks"/>
-				</ul>
-</div>
-
+	  <div id="help-widget">
+		<button><xsl:value-of select="$i18n/l/Help"/></button>
+		<ul style="position:absolute !important; width: 150px">
+		  <xsl:copy-of select="$helplinks"/>
+		</ul>
+      </div>
 	</xsl:template>
+
+
+    <xsl:template name="motd">
+      <xsl:if test="exslt:node-set($motd)/*[local-name()='MOTD']/*
+                    and not(contains(/document/context/session/attributes, 'motd=read')
+                            or /document/context/session/attributes/motd='read' )">
+        <div id="motd" title="{exslt:node-set($motd)//@title}" style="display:none">
+          <xsl:copy-of select="exslt:node-set($motd)/*[local-name()='MOTD']/*"/>
+        </div>
+        <div style="float: left; margin-right: 20px; margin-top: 13.5px; position: relative; z-index: 30;">
+          <a class="warning_msg"
+             id="motd-link"
+             href="#"
+             style="border-radius: 5px; padding: 5px; text-decoration:none;">
+            <xsl:value-of select="exslt:node-set($motd)//@title"/>
+          </a>
+        </div>
+      </xsl:if>
+    </xsl:template>
+    
 </xsl:stylesheet>

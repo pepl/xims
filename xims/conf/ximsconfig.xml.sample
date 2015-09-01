@@ -297,6 +297,16 @@
          </a>
        </li>
     </HelpLinks>
+
+    <!-- the empty MOTD-node should remain if you disable this -->  
+    <!-- <MOTD/> -->
+    <MOTD title="Welcome">
+      <p><strong>Hi!</strong></p>
+      <p>Comment out <code>&lt;MOTD&gt;</code> in <i>ximsconfig.xml</i> to get
+      rid of this message.</p>
+    </MOTD>
+
+    
     </General>
     <!-- Relative to $xims_home/conf -->
     <Include>conf.d</Include>

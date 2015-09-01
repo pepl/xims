@@ -53,6 +53,7 @@ sub registerEvents {
           bookmarks
           newwebsite
           gen_website:POST
+          mark_motd_read:POST
           )
         );
 }
@@ -699,6 +700,22 @@ sub remove_user_privileges {
 #*;
 	return 1;
 }
+
+sub event_mark_motd_read {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    if ($ctxt->session) {
+        $ctxt->session->attributes("motd=read");
+        $ctxt->session->update();
+        $self->simple_response( '204 NO CONTENT' );
+    }
+    else {
+        $self->simple_response( '500 INTERNAL SERVER ERROR', 'Meh!' );
+    }
+}
+
+
 
 # END RUNTIME EVENTS
 # #############################################################################
