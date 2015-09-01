@@ -42,6 +42,9 @@ This stylesheet is used to generate www/ximsroot/stylesheets/config.xsl from con
       <xslt:variable name="document_role_options">
         <xsl:apply-templates select="DocumentRoleOptions/*" mode="copy"/>
       </xslt:variable>
+       <xslt:variable name="motd">
+        <xsl:apply-templates select="MOTD" mode="copy"/>
+      </xslt:variable>
       <xslt:variable name="big_image_threshold" select="{BigImageLimit}"/> <!-- 70KiB -->
       <xslt:variable name="searchresultrowlimit" select="{SearchResultRowLimit}"/>
       

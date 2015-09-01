@@ -672,14 +672,41 @@ $(document).ready(function(){
 	//initOptionsButtons();
 	
 	/* 
-	   * workaround: target=_blank in help-menu items opens 2 windows (maybe some conflicts with jquery-ui)
-	  */
+	 * workaround: target=_blank in help-menu items opens 2 windows (maybe some conflicts with jquery-ui)
+	 */
 	  
-	  $("#help-widget a").click( function() {
+	$("#help-widget a").click( function() {
 	    window.open(this.href);
 	    return false;
-	  });
-	  
+	});
+
+
+    
+    $( "#motd" ).dialog({
+        resizable: false, 
+        //height:140,
+        width: 450,
+        modal: true,
+        autoOpen: false,
+        buttons: { 
+            "OK": function() {
+                var jsonQuery = {
+				    mark_motd_read: "1",
+                    token: $("input[name='token']").attr('value'),
+                };
+                
+                $.post("/goxims/user",
+                         { mark_motd_read: "1",
+                           token: $("input[name='token']").attr('value') },
+                         function() { $( "#motd-link" ).hide() }
+                        )
+                $( this ).dialog( "close" ); 
+            } 
+        }
+    });
+    
+    $( "#motd-link" ).click( function() {$('#motd').dialog('open');} );
+    
 });
 
 /* IE special polyfills*/
@@ -888,8 +915,6 @@ Date.parseDate = function(str, fmt) {
 		return new Date(y, m, d, hr, min, 0);
 	return today;
 };
-
-
 
 
 
