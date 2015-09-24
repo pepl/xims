@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<l>
-    <Search_keys>Suchschlüssel</Search_keys>
-    <Pagesize>Anzahl der Einträge pro Seite</Pagesize>
-    <Database_DSN>Datenbank Datenquelle</Database_DSN>
-    <Database_User>Datenbankbenutzer</Database_User>
-    <Database_Password>Datenbankpasswort</Database_Password>
-</l>
