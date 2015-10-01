@@ -392,7 +392,13 @@
 <AboutDeletionMultiple>Sie sind dabei die folgenden Objekte zu löschen</AboutDeletionMultiple>
 <AboutDeletion1_User>Sie sind dabei den Account</AboutDeletion1_User>
 <AboutDeletion2>zu löschen.</AboutDeletion2>
-<DeletionNotice>Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, fehlen Ihnen entweder die Berechtigung zum Löschen oder das jeweilige Objekt ist derzeit publiziert.</DeletionNotice>
+<DeletionNotice>Für ausgewählte Objekte, die hier möglicherweise nicht
+aufgelistet sind, fehlen Ihnen entweder die Berechtigung zum Löschen oder das
+jeweilige Objekt ist derzeit publiziert.</DeletionNotice>
+<Convert>Konvertiere</Convert>
+<ConvertConfirm>Konvertieren des Objekts bestätigen</ConvertConfirm>
+<AboutConversion1>Sie sind dabei das Objekt</AboutConversion1>
+<AboutConversion2>zu konvertieren.</AboutConversion2>
 <WarnNoUndo>Dies ist eine endgültige Aktion und kann nicht rückgängig gemacht werden!</WarnNoUndo>
 <ChildObjectsFound>Kindobjekte gefunden</ChildObjectsFound>
 <alsoDeleted>die ebenfalls gelöscht würden</alsoDeleted>

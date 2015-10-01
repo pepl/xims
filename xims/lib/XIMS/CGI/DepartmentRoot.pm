@@ -35,6 +35,8 @@ sub registerEvents {
         qw(
           add_portlet:POST
           rem_portlet
+          convert2folder_prompt
+          convert2folder:POST
           )
         );
 }
@@ -129,6 +131,50 @@ sub event_rem_portlet {
     }
 
     return $self->event_edit( $ctxt );
+}
+
+sub event_convert2folder_prompt {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+    my $current_user_object_priv
+        = $ctxt->session->user->object_privmask( $ctxt->object );
+    return $self->event_access_denied($ctxt)
+        unless $current_user_object_priv & XIMS::Privileges::WRITE();
+
+    $ctxt->properties->application->style('convert2folder_prompt');
+
+    return 0;
+}
+
+sub event_convert2folder {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $current_user_object_priv
+        = $ctxt->session->user->object_privmask( $ctxt->object );
+    return $self->event_access_denied($ctxt)
+        unless $current_user_object_priv & XIMS::Privileges::WRITE();
+
+    # we should come from event_edit, so unlock.
+    $ctxt->object->unlock();
+
+    if ( $ctxt->object->published ) {
+
+        # reap ou.xml
+        require XIMS::Exporter;
+        XIMS::Exporter::OUIndexer->new(
+            Provider => $ctxt->data_provider,
+            Basedir  => XIMS::PUBROOT(),
+            Object   => $ctxt->object,
+            User     => $ctxt->session->user,
+        )->remove();
+    }
+
+    if ( $ctxt->object->convert2folder ) {
+        return $self->event_publish_prompt( $ctxt );
+    }
+
+    return 1;
 }
 
 # END RUNTIME EVENTS
