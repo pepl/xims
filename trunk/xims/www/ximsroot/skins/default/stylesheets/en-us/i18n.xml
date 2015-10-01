@@ -408,6 +408,10 @@
 <AboutDeletionMultiple>Your are about to delete the following objects</AboutDeletionMultiple>
 <AboutDeletion1_User>You are about to delete the user</AboutDeletion1_User>
 <AboutDeletion2>from the system.</AboutDeletion2>
+<Convert>Convert</Convert>
+<ConvertConfirm>Confirm Object Conversion</ConvertConfirm>
+<AboutConversion1>You are about to convert the object</AboutConversion1>
+<AboutConversion2></AboutConversion2>
 <DeletionNotice>For selected objects which are not listed here, you do not have the rights to delete or the object is currently published.</DeletionNotice>
 <WarnNoUndo>This is a permanent action that cannot be undone!</WarnNoUndo>
 <ChildObjectsFound>Child objects found</ChildObjectsFound>

@@ -45,14 +45,17 @@
 
 <xsl:template name="form-keywords"/>
 
-	<xsl:template name="form-obj-specific">
-		<div class="form-div block">
-		<h2><xsl:value-of select="$i18n/l/ExtraOptions"/></h2>
-			<xsl:call-template name="autoindex"/>
-			<xsl:call-template name="form-pagerowlimit-edit"/>
-			<xsl:call-template name="defaultsorting"/>
-		</div>
-	</xsl:template>
+<xsl:template name="form-obj-specific">
+  <div class="form-div block">
+	<h2><xsl:value-of select="$i18n/l/ExtraOptions"/></h2>
+	<xsl:call-template name="autoindex"/>
+	<xsl:call-template name="form-pagerowlimit-edit"/>
+	<xsl:call-template name="defaultsorting"/>
+    <xsl:if test="/document/context/session/user/userprefs/profile_type = 'webadmin'">
+      <xsl:call-template name="tr-convert2folder"/>
+    </xsl:if>
+  </div>
+</xsl:template>
 	
 <xsl:template name="form-portlets">
 	<div class="form-div block">
@@ -77,4 +80,20 @@
 			</button>
 	</div>
 </xsl:template>
+
+<xsl:template name="tr-convert2folder">
+  <div id="tr-convert" >
+    <div id="label-convert" class="label-large">
+      <label for="input-convert">
+         <xsl:value-of select="$i18n/l/Convert"/> Departmentroot → <xsl:value-of select="$i18n/l/Folder"/>
+	  </label>
+	</div>
+    <a href="{$xims_box}{$goxims_content}?id={@id}&amp;convert2folder_prompt=1"
+       id="input-convert"
+       class="button">
+ 	  <xsl:value-of select="$i18n/l/Convert"/>!
+	</a>
+  </div>
+</xsl:template>
+
 </xsl:stylesheet>

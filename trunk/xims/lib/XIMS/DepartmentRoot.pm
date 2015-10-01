@@ -307,6 +307,65 @@ sub remove_portlet {
     return 1;
 }
 
+=head2    my $boolean = $deproot->convert2folder;
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    True or False on success or failure
+
+=head3 Description
+
+    Converts a DepartmentRoot into a Folder, updates its children's department
+    id and voids department properties after storing them in the notes field
+    as plain text for later reference.
+
+=cut
+
+sub convert2folder {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    # store departmentroot information into notes and
+    # delete departmentroot-specific information
+    my $notes = $self->notes();
+    foreach my $property (qw(image_id style_id script_id css_id feed_id attributes body)) {
+        $notes .= $self->$property ? "\n$property: " . $self->$property: '';
+        if ($property eq 'body') {
+            $self->$property( ' ' );
+        }
+        else {
+            $self->$property( undef );
+        }
+    }
+    $self->notes($notes) if length($notes);
+
+    # Update the department_id of descendants
+    my $iterator = $self->descendants( department_id => $self->document_id() );
+
+    # Exit if no descendant has to be updated
+    return undef unless defined $iterator;
+
+    while ( my $descendant = $iterator->getNext() ) {
+        $descendant->department_id( $self->department_id() );
+        if ( $descendant->update( User => $self->User, no_modder => 1 ) ) {
+            XIMS::Debug(4, "Updated department_id of '" . $descendant->title . "'.\n");
+        }
+        else {
+            XIMS::Debug(4, "Could not update department_id of '" . $descendant->location_path . "'.\n");
+        }
+    }
+
+    $self->object_type_id( XIMS::ObjectType->new( name => 'Folder' )->id() );
+    $self->data_format_id( XIMS::DataFormat->new( name => 'Container' )->id() );
+
+    return $self->data_provider->updateObject( $self->data() );
+}
+
+
 sub _getbodyfragment {
     my $self = shift;
 
