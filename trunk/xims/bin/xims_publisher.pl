@@ -119,6 +119,7 @@ if ( $args{r} or $method eq 'unpublish' ) {
 
 # (re)set no_dependencies_update
 $args{n} ? $options{no_dependencies_update} = 1 : delete $options{no_dependencies_update};
+$options{no_pubber} = 1 if $args{A} and $user->admin();
 
 if ( $exporter->$method( Object => $object, User => $user, %options ) ) {
     print "Object '" . $object->title . "' ".$method."ed successfully.\n";
