@@ -28,7 +28,8 @@
         <div id="content-container">-->
           <form action="{$xims_box}{$goxims_content}"
                 name="eform"
-                method="get" id="create-edit-form">
+                method="post" id="create-edit-form">
+            <xsl:call-template name="input-token"/>
             <input type="hidden" 
                    name="id" 
                    id="id" 
