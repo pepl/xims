@@ -15,8 +15,9 @@
     <xsl:value-of select="substring-after($request.uri.query,'objid=')"/>
   </xsl:variable>
 	<xsl:template match="/document/context/object">
-					<form action="{$xims_box}{$goxims_content}" name="eform" method="get" id="property-form">						
-						<input type="hidden" name="id" id="id" value="{@id}"/>
+					<form action="{$xims_box}{$goxims_content}" name="eform" method="post" id="property-form">						
+                      <xsl:call-template name="input-token"/>
+                      <input type="hidden" name="id" id="id" value="{@id}"/>
 						<xsl:if test="$objid != ''"><input type="hidden" name="objid" id="objid" value="{$objid}"/></xsl:if>
 						<xsl:if test="$objid != ''"><input type="hidden" name="objid" id="objid" value="{$objid}"/></xsl:if>
 						<xsl:apply-templates select="/document/context/object/children"/>

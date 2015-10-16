@@ -26,7 +26,8 @@
       </head>
       <body style="width:auto">
         <div id="content-container">-->
-					<form action="{$xims_box}{$goxims_content}" name="eform" method="get" id="create-edit-form">
+					<form action="{$xims_box}{$goxims_content}" name="eform" method="post" id="create-edit-form">
+                        <xsl:call-template name="input-token"/>
 						<input type="hidden" name="id" id="id" value="{@id}"/>
 						<xsl:if test="$objid != ''"><input type="hidden" name="objid" id="objid" value="{$objid}"/></xsl:if>
 						<xsl:apply-templates select="/document/context/object/children"/>
