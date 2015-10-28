@@ -67,7 +67,7 @@ sub registerEvents {
           most_recent
           simile
           filter
-          filter_create:POST
+          filter_create
           )
     );
 }
