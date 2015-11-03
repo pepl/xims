@@ -116,6 +116,18 @@ sub event_store {
                 $img_obj->abstract($image_description);
             }
 
+            my $image_rights = $self->param('imagerights');
+            if (
+                defined $image_rights
+                and
+                ( length $image_rights and $image_rights !~ /^\s+$/
+                    or not length $image_rights )
+              )
+            {
+                XIMS::Debug( 6, "image_rights, len: " . length($image_rights) );
+                $img_obj->rights($image_rights);
+            }
+
             XIMS::Debug( 4, "reading from filehandle" );
             my ( $buffer, $body );
             while ( read( $img_fh, $buffer, 1024 ) ) {

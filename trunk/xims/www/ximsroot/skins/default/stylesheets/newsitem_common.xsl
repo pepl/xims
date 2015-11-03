@@ -86,6 +86,22 @@
 				</textarea>
 				<script type="text/javascript">document.getElementsByName("imagedescription")[0].value = '';</script>
 			</div>
+            <div id="tr-image-rights">
+			  <div id="label-image-rights">
+				<label for="input-image-rights">
+				  <xsl:value-of select="$i18n/l/Image"/>
+				  <xsl:text>&#160;</xsl:text>
+				  <xsl:value-of select="$i18n/l/Rights"/>
+				</label>
+			  </div>
+			  <!--<xsl:text>&#160;</xsl:text>
+				  <a href="javascript:openDocWindow('ImageRights')" class="doclink">(?)</a>-->
+			  <br/>
+			  <textarea name="imagerights" rows="3" cols="74" class="text" id="input-image-rights">
+				<xsl:text>&#160;</xsl:text>
+			  </textarea>
+			  <script type="text/javascript">document.getElementsByName("imagerights")[0].value = '';</script>
+			</div>
 			<div id="tr-image-target">
 				<div class="label-std">
 					<label for="input-image-target">

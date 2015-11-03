@@ -52,7 +52,7 @@ sub prepare {
     my %data_formats = ();
 
     $self->{FilterList} =
-        [ XML::Filter::CharacterChunk->new( TagName => [qw(body)] ) ];
+        [ XML::Filter::CharacterChunk->new( TagName => [qw(body rights bibliosource)] ) ];
 
     my $doc_data = { context => {} };
 

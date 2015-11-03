@@ -7,7 +7,7 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
-	<xsl:import href="edit_common.xsl"/>
+  <xsl:import href="edit_common.xsl"/>
 	
 	<xsl:template name="form-file-edit">
 		<div id="tr-replace">
@@ -20,24 +20,23 @@
 			</div>
 			<input type="file" name="file" size="43" class="text" id="input-replace"/>
 			<!--<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('File')" class="doclink">(?)</a>-->
+			    <a href="javascript:openDocWindow('File')" class="doclink">(?)</a>-->
 		</div>
 	</xsl:template>
 	
 	<xsl:template name="edit-content">
-		<xsl:call-template name="form-titlelocationfile-edit"/>
-		<xsl:call-template name="form-marknew-pubonsave"/>
-		<xsl:call-template name="preview-image"/>
-		<xsl:call-template name="form-keywordabstract"/>
-		<!--<xsl:call-template name="form-grant"/>-->
-	</xsl:template>
+      <xsl:call-template name="form-titlelocationfile-edit"/>
+	  <xsl:call-template name="form-marknew-pubonsave"/>
+	  <xsl:call-template name="preview-image"/>
+	  <xsl:call-template name="form-keywordabstractrights"/>
+    </xsl:template>
 	
 	<xsl:template name="form-titlelocationfile-edit">
-	<div class="form-div ui-corner-all div-left">
+	  <div class="form-div ui-corner-all div-left">
 		<xsl:call-template name="form-title"/>
 		<xsl:call-template name="form-location-edit"/>
 		<xsl:call-template name="form-file-edit"/>
-	</div>
+	  </div>
 	</xsl:template>
 	
 	<xsl:template name="preview-image"/>

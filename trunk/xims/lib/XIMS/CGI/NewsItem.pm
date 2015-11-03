@@ -119,9 +119,20 @@ sub event_store {
                     or not length $image_description )
               )
             {
-                XIMS::Debug( 6,
-                    "image_description, len: " . length($image_description) );
+                # XIMS::Debug( 6, "image_description, len: " . length($image_description) );
                 $img_obj->abstract($image_description);
+            }
+
+            my $image_rights = $self->param('imagerights');
+            if (
+                defined $image_rights
+                and
+                ( length $image_rights and $image_rights !~ /^\s+$/
+                    or not length $image_rights )
+              )
+            {
+                XIMS::Debug( 6, "image_rights, len: " . length($image_rights) );
+                $img_obj->rights($image_rights);
             }
 
             XIMS::Debug( 4, "reading from filehandle" );
@@ -136,9 +147,7 @@ sub event_store {
 
         }
         else {
-            XIMS::Debug( 3,
-"Image upload folder undefined or does not exist, the new Image object was not created"
-            );
+            XIMS::Debug( 3, "Image upload folder undefined or does not exist, the new Image object was not created" );
         }
     }
 

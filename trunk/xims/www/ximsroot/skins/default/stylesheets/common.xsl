@@ -392,6 +392,14 @@
 			<xsl:call-template name="form-abstract"/>
 		</div>
 	</xsl:template>
+    <xsl:template name="form-keywordabstractrights">
+		<div class="form-div ui-corner-all block">
+			<h2><xsl:value-of select="$i18n/l/Metadata"/></h2>
+			<xsl:call-template name="form-keywords"/>
+			<xsl:call-template name="form-abstract"/>
+            <xsl:call-template name="form-rights"/>
+		</div>
+	</xsl:template>
 	<xsl:template name="form-abstractnotes">
 		<div class="form-div ui-corner-all block">
 			<h2><xsl:value-of select="$i18n/l/Metadata"/></h2>			
@@ -800,8 +808,8 @@
 				<a href="javascript:openDocWindow('Abstract')" class="doclink">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Abstract"/></xsl:attribute>(?)</a>-->
 			</div>
-			<br/>
-			<textarea id="input-abstract" name="abstract" rows="3" cols="74">
+			<!-- <br/> -->
+			<textarea id="input-abstract" name="abstract" rows="3" cols="69">
 				<xsl:apply-templates select="abstract"/>
                 <xsl:comment/>
 			</textarea>
@@ -819,13 +827,32 @@
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Notes"/></xsl:attribute>(?)</a>-->
 			</div>
 			<br/>
-			<textarea name="notes" rows="3" cols="74" id="input-notes"><xsl:comment/>
-				<xsl:apply-templates select="notes"/>
+			<textarea name="notes" rows="3" cols="69" id="input-notes">
+              <xsl:comment/>
+			  <xsl:apply-templates select="notes"/>
 			</textarea>
 		</div>
 	</xsl:template>
 
-	<xsl:template name="form-stylesheet">
+    <xsl:template name="form-rights">
+	  <div id="tr-rights">
+		<div class="label-std">
+		  <label for="input-rights">
+			<xsl:value-of select="$i18n/l/Rights"/>
+		  </label>
+		  <!--<xsl:text>&#160;</xsl:text>
+			  <a href="javascript:openDocWindow('Rights')" class="doclink">
+			  <xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Rights"/></xsl:attribute>(?)</a>-->
+		</div>
+		<!-- <br/> -->
+		<textarea name="rights" rows="3" cols="69" maxlength="2000" id="input-rights">
+          <xsl:comment/>
+		  <xsl:apply-templates select="rights"/>
+		</textarea>
+	  </div>
+	</xsl:template>
+
+    <xsl:template name="form-stylesheet">
 		<xsl:variable name="curr_id">
 			<xsl:choose>
 				<xsl:when test="@id != ''">
