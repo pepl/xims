@@ -32,9 +32,9 @@
 		<a href="javascript:openDocWindow('Overwrite when unzipping contents')" class="doclink">(?)</a>-->
 	</div>
 		
-		<xsl:call-template name="form-keywordabstract"/>
-		<xsl:call-template name="form-grant"/>
-		<xsl:call-template name="uploadaction"/>
+	<xsl:call-template name="form-keywordabstractrights"/>
+    <xsl:call-template name="form-grant"/>
+	<xsl:call-template name="uploadaction"/>
 	</xsl:template>
 	
 	<xsl:template name="file-create">

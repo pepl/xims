@@ -24,7 +24,8 @@
         <rdf:RDF xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                  xmlns:dc  = "http://purl.org/dc/elements/1.1/"
                  xmlns:dcq = "http://purl.org/dc/qualifiers/1.0/"
-                 xmlns:sch = "http://schema.org/">
+                 xmlns:sch = "http://schema.org/"
+                 xmlns:atom = "http://www.w3.org/2005/Atom">
           <rdf:Description about="{location}">
             <dc:title><xsl:value-of select="title"/></dc:title>
             <dc:creator><xsl:call-template name="ownerfullname"/></dc:creator>
@@ -32,11 +33,16 @@
             <dc:description><xsl:value-of select="abstract"/></dc:description>
             <dc:publisher><xsl:call-template name="ownerfullname"/></dc:publisher>
             <dc:contributor><xsl:call-template name="modifierfullname"/></dc:contributor>
-            <sch:contentSize><xsl:value-of select="content_length div 1024"/> KB</sch:contentSize>
+            <sch:contentSize>
+              <xsl:value-of select="content_length div 1024"/>
+              <xsl:text> KB</xsl:text>
+            </sch:contentSize>
+            <atom:rights><xsl:copy-of select="rights/node()"/></atom:rights>
             <dc:date>
               <dcq:created>
                 <rdf:Description>
-                  <dcq:dateScheme rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
+                  <dcq:dateScheme
+                  rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
                   <rdf:value><xsl:apply-templates select="creation_timestamp" mode="ISO8601"/></rdf:value>
                 </rdf:Description>
               </dcq:created>

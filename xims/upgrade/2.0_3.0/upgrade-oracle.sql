@@ -22,13 +22,14 @@ CREATE INDEX OPG_GPC_COMBINED_I ON CI_OBJECT_PRIVS_GRANTED
 (GRANTEE_ID, PRIVILEGE_MASK, CONTENT_ID)
 /
 PROMPT Create objecttype Document2 and update suffix
-INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level ) 
+INSERT INTO CI_OBJECT_TYPES ( ID, NAME, IS_FS_CONTAINER, IS_XIMS_DATA, REDIR_TO_SELF, PUBLISH_GOPUBLIC, MENU_LEVEL ) 
   VALUES ( OBT_SEQ.NEXTVAL, 'Document2', 0, 1, 1, 0, 1 );
 UPDATE CI_DATA_FORMATS SET SUFFIX = 'html' WHERE NAME = 'XHTML5';
 /
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id, menu_level )
+INSERT INTO CI_OBJECT_TYPES ( ID, NAME, IS_FS_CONTAINER, IS_XIMS_DATA, REDIR_TO_SELF, PUBLISH_GOPUBLIC, PARENT_ID, MENU_LEVEL )
        VALUES ( nextval('ci_object_types_id_seq'), 'NewsItem', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ), 0 )
 / 
-ALTER table ci_content ADD ( NAV_TITLE VARCHAR2(60) );
-ALTER table ci_content ADD ( NAV_HIDE  NUMBER(1,0)  DEFAULT 0  NOT NULL );
+ALTER TABLE CI_CONTENT ADD ( NAV_TITLE VARCHAR2(60) );
+ALTER TABLE CI_CONTENT ADD ( NAV_HIDE  NUMBER(1,0)  DEFAULT 0  NOT NULL );
+ALTER TABLE CI_CONTENT ADD ( RIGHTS    VARCHAR2(2048) );
 /

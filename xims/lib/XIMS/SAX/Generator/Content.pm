@@ -80,7 +80,7 @@ sub prepare {
             push(
                 @{ $self->{FilterList} },
                 XML::Filter::CharacterChunk->new(
-                    TagName => [qw(body)]
+                    TagName => [qw(body rights)]
                 )
             );
         }

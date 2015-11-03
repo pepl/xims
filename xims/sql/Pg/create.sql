@@ -203,6 +203,7 @@ CREATE TABLE ci_content
  ,id                            SERIAL        PRIMARY KEY
  ,locked_time                   TIMESTAMP(0)  WITHOUT TIME ZONE     -- should be locked_timestamp !!!
  ,abstract                      VARCHAR(2000)
+ ,rights                        VARCHAR(2000) 
  ,body                          TEXT
  ,title                         VARCHAR(400)  NOT NULL
  ,nav_title                     VARCHAR(60)

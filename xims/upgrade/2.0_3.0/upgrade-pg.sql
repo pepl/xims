@@ -14,3 +14,4 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
        VALUES ( nextval('ci_object_types_id_seq'), 'NewsItem', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ), 0 );      
 ALTER TABLE CI_CONTENT ADD    nav_title                 VARCHAR(60);
 ALTER TABLE CI_CONTENT ADD    nav_hide                  SMALLINT DEFAULT 0 NOT NULL;
+ALTER TABLE CI_CONTENT ADD    rights                    VARCHAR(2048);

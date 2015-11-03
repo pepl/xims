@@ -1433,6 +1433,7 @@ sub init_store_object {
     $title =~ s/\s*$//;
 	my $keywords = $self->param('keywords');
 	my $abstract = $self->param('abstract');
+    my $rights  = $self->param('rights');
 	my $notes    = $self->param('notes');
     my $document_role = $self->param('document_role');
     $document_role =~ s/.*?(\w+).*?/$1/;
@@ -1631,6 +1632,14 @@ sub init_store_object {
 	{
 		XIMS::Debug( 6, "abstract, len: " . length($abstract) );
 		$object->abstract($abstract);
+	}
+
+    # check if a valid rights is given
+    if ( defined $rights
+		and	( length $rights and $rights !~ /^\s+$/ or not length $rights ) )
+	{
+		XIMS::Debug( 6, "rights, len: " . length($rights) );
+		$object->rights($rights);
 	}
 
     if ( defined $document_role and length $document_role ) {

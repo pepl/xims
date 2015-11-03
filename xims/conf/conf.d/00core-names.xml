@@ -106,6 +106,7 @@
                 <item>content.valid_from_timestamp</item>
                 <item>content.valid_to_timestamp</item>
                 <item>content.content_length</item>
+                <item>content.rights</item>
             </Content>
             <Document>
                 <item>document.location</item>
@@ -172,6 +173,7 @@
                 <item>content.valid_from_timestamp</item>
                 <item>content.valid_to_timestamp</item>
                 <item>content.content_length</item>
+                <item>content.rights</item>
                 <item>document.location</item>
                 <item>document.location_path</item>
                 <item>document.document_role</item>
