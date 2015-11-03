@@ -98,6 +98,7 @@
           <URLLink >
             <option value="0"></option>
             <option value="home">Home</option>
+            <option value="licence">Licence</option>
           </URLLink>
         </DocumentRoleOptions> -->
         
