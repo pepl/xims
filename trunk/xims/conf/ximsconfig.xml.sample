@@ -31,8 +31,6 @@
         <!-- RDBMS specific DBD connect options -->
         <DBDOpt></DBDOpt>
 
-        <TimeZone>Europe/Vienna</TimeZone>
-
         <!--
         # Example settings for PostgreSQL
         <DBUser>ximsrun</DBUser>           # Default value from defaultdata.sql
