@@ -73,7 +73,7 @@ sub end_element {
                 Attributes   => {}
             }
         );
-        $self->SUPER::characters( { Data => $dt->day } );
+        $self->SUPER::characters( { Data => sprintf('%02d', $dt->day) } );
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
@@ -85,7 +85,7 @@ sub end_element {
                 Attributes   => {}
             }
         );
-        $self->SUPER::characters( { Data => $dt->month } );
+        $self->SUPER::characters( { Data => sprintf('%02d', $dt->month) } );
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
@@ -97,7 +97,7 @@ sub end_element {
                 Attributes   => {}
             }
         );
-        $self->SUPER::characters( { Data => $dt->year } );
+        $self->SUPER::characters( { Data => sprintf('%04d', $dt->year) } );
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
@@ -109,7 +109,7 @@ sub end_element {
                 Attributes   => {}
             }
         );
-        $self->SUPER::characters( { Data => $dt->hour } );
+        $self->SUPER::characters( { Data => sprintf('%02d', $dt->hour) } );
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
@@ -121,7 +121,7 @@ sub end_element {
                 Attributes   => {}
             }
         );
-        $self->SUPER::characters( { Data => $dt->min } );
+        $self->SUPER::characters( { Data => sprintf('%02d', $dt->min) } );
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
@@ -133,7 +133,7 @@ sub end_element {
                 Attributes   => {}
             }
         );
-        $self->SUPER::characters( { Data => $dt->sec } );
+        $self->SUPER::characters( { Data => sprintf('%02d', $dt->sec) } );
         $self->SUPER::end_element();
 
 
