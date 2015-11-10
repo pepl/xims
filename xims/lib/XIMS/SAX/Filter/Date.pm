@@ -19,7 +19,7 @@ package XIMS::SAX::Filter::Date;
 
 use common::sense;
 use parent qw( XML::SAX::Base );
-use DateTime;
+
 
 =head2 new()
 
@@ -29,6 +29,9 @@ sub new {
     my $class = shift;
     my $self  = $class->SUPER::new(@_);
 
+    # this has to be adapted to the current format we get the datetime in
+    $self->{timestamp_regex} =
+      qr/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/;
     return $self;
 }
 
@@ -60,9 +63,9 @@ sub start_element {
 sub end_element {
     my $self = shift;
 
-    if ( defined $self->{got_date}
-             and defined $self->{date}
-             and my $dt = XIMS::datetime($self->{date}) ) {
+    if ( defined $self->{got_date} and defined $self->{date} ) {
+        my ( $year, $month, $day, $hour, $min, $sec ) =
+          ( $self->{date} =~ $self->{timestamp_regex} );
 
         $self->SUPER::start_element(
             {
@@ -73,7 +76,7 @@ sub end_element {
                 Attributes   => {}
             }
         );
-        $self->SUPER::characters( { Data => sprintf('%02d', $dt->day) } );
+        $self->SUPER::characters( { Data => $day } );
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
@@ -85,7 +88,7 @@ sub end_element {
                 Attributes   => {}
             }
         );
-        $self->SUPER::characters( { Data => sprintf('%02d', $dt->month) } );
+        $self->SUPER::characters( { Data => $month } );
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
@@ -97,7 +100,7 @@ sub end_element {
                 Attributes   => {}
             }
         );
-        $self->SUPER::characters( { Data => sprintf('%04d', $dt->year) } );
+        $self->SUPER::characters( { Data => $year } );
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
@@ -109,7 +112,7 @@ sub end_element {
                 Attributes   => {}
             }
         );
-        $self->SUPER::characters( { Data => sprintf('%02d', $dt->hour) } );
+        $self->SUPER::characters( { Data => $hour } );
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
@@ -121,7 +124,7 @@ sub end_element {
                 Attributes   => {}
             }
         );
-        $self->SUPER::characters( { Data => sprintf('%02d', $dt->min) } );
+        $self->SUPER::characters( { Data => $min } );
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
@@ -133,33 +136,7 @@ sub end_element {
                 Attributes   => {}
             }
         );
-        $self->SUPER::characters( { Data => sprintf('%02d', $dt->sec) } );
-        $self->SUPER::end_element();
-
-
-        # $self->SUPER::start_element(
-        #     {
-        #         Name         => "rfc_1123",
-        #         LocalName    => "rfc_1123",
-        #         Prefix       => "",
-        #         NamespaceURI => undef,
-        #         Attributes   => {}
-        #     }
-        # );
-        # $self->SUPER::characters( { Data => XIMS::rfc1123_timestamp($dt) } );
-        # $self->SUPER::end_element();
-
-
-        $self->SUPER::start_element(
-            {
-                Name         => "iso",
-                LocalName    => "iso",
-                Prefix       => "",
-                NamespaceURI => undef,
-                Attributes   => {}
-            }
-        );
-        $self->SUPER::characters( { Data =>  XIMS::w3c_timestamp($dt) } );
+        $self->SUPER::characters( { Data => $sec } );
         $self->SUPER::end_element();
 
         $self->{date} = undef;
