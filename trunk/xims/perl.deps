@@ -21,6 +21,7 @@ DBIx::SQLEngine~0.017
 DBIx::XHTML_Table
 Digest::MD5
 Digest::SHA3
+DateTime
 Math::Random::Secure
 Email::Valid 
 File::Slurp 

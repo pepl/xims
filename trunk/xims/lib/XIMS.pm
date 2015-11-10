@@ -28,6 +28,7 @@ use common::sense;
 use XIMS::Config;
 use Encode ();
 use Carp;
+use DateTime ();
 
 our $AUTOLOAD;
 our $VERSION = 2.99_1;
@@ -720,6 +721,84 @@ sub is_notutf8 {
 
     eval { Encode::decode( 'UTF-8', $string, 1 ); };
     return $@ ? 1 : 0;
+}
+
+
+=head2 datetime( $time_string )
+
+=head3 Parameter
+
+    $time_string: a timestamp in 'YYYY-MM-DD HH:MM:SS' format.
+
+=head3 Returns
+
+    A L<DateTime> object if everything went well.
+
+=head3 Description
+
+  Create DateTime object from database timestamps. The time zone configured in
+  F<ximsconfig.xml> is assumed. We then can use this for formatting purposes
+  and for the calculation of time zone offsets (including daylight saving
+  switches)
+
+=cut
+
+sub datetime {
+    shift =~ /^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/;
+
+    return DateTime->new(
+        year      => $1,
+        month     => $2,
+        day       => $3,
+        hour      => $4,
+        minute    => $5,
+        second    => $6,
+        time_zone => XIMS::TimeZone()
+    );
+}
+
+=head2 w3c_timestamp( $dt )
+
+=head3 Parameter
+
+    $dt: A L<DateTime> object
+
+=head3 Returns
+
+    A W3C-flavored ISO 8601 timestamp string.
+
+=cut
+
+sub w3c_timestamp {
+
+    my $dt = shift or return;
+
+    my $offmin = $dt->offset / 60; # tz offset in minutes
+
+    return sprintf("%04d-%02d-%02dT%02d:%02d:%02d%+03d:%02d",
+                   $dt->year, $dt->month, $dt->day,
+                   $dt->hour, $dt->min, $dt->sec,
+                   $offmin / 60, $offmin % 60);
+}
+
+=head2 rfc1123_timestamp( $dt )
+
+=head3 Parameter
+
+    $dt: A L<DateTime> object
+
+=head3 Returns
+
+    A RFC-1123 timestamp string.
+
+=cut
+
+sub rfc1123_timestamp {
+
+    my $dt = shift or return;
+
+    my $dtc = $dt->clone->set_time_zone( 'UTC' );
+    return $dtc->strftime("%a, %d %b %Y %H:%M:%S GMT");
 }
 
 =head1 NAME
