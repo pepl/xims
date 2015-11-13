@@ -252,9 +252,14 @@
 	</xsl:template>
 	
 	<xsl:template match="vlpublications/publication">
-		<option value="{id}">
-			<xsl:value-of select="normalize-space(concat(name, ' (', volume, ')'))"/>
-		</option>
+      <xsl:variable name="volume">
+        <xsl:if test="volume/text() and volume != ''">
+      	  <xsl:value-of select="concat(' (', volume, ')')"/>
+        </xsl:if>
+      </xsl:variable>
+	  <option value="{id}">
+		<xsl:value-of select="normalize-space(concat(name, $volume))"/>
+	  </option>
 	</xsl:template>
 	
 	<xsl:template match="vlsubjects/subject|vlkeywords/keyword">
