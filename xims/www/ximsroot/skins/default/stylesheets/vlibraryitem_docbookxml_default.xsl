@@ -118,7 +118,7 @@
         <xsl:if test="count(keywordset/keyword) &gt; 0">
           <li><xsl:apply-templates select="keywordset"/></li>
         </xsl:if>
-        <xsl:if test="count(publication/publication) &gt; 0">
+        <xsl:if test="count(publicationset/publication) &gt; 0">
           <li><xsl:apply-templates select="publicationset"/></li>
         </xsl:if>
         <xsl:if test="meta/mediatype != ''">
