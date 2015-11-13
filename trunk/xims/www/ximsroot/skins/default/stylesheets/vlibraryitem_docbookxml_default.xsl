@@ -86,7 +86,11 @@
   </xsl:template>
 
   <xsl:template match="publication">
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?publication=1&amp;publication_id={id}"><xsl:value-of select="name"/><xsl:text> (</xsl:text><xsl:value-of select="volume"/>)</a>
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?publication=1&amp;publication_id={id}"><xsl:value-of select="name"/>
+    <xsl:if test="volume != ''">
+      <xsl:text> (</xsl:text><xsl:value-of select="volume"/><xsl:text>)</xsl:text>
+    </xsl:if>
+    </a>
     <xsl:if test="isbn != ''">
       ISBN: <xsl:value-of select="isbn"/>
     </xsl:if>

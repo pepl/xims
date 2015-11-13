@@ -87,9 +87,11 @@
             </xsl:when>
             <xsl:when test="$publication">
               <xsl:value-of select="/document/context/vlpublicationinfo/publication/name"/>
+              <xsl:if test="/document/context/vlpublicationinfo/publication/volume != ''">
                 <xsl:text> (</xsl:text>
                 <xsl:value-of select="/document/context/vlpublicationinfo/publication/volume"/>
                 <xsl:text>)</xsl:text>
+              </xsl:if>
             </xsl:when>
             <xsl:when test="$vls">
                 <xsl:value-of select="$i18n/l/Search_for"/> '<xsl:value-of select="$vls"/>'
