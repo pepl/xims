@@ -569,12 +569,13 @@ sub vlitems_byfilter {
    
     my $order;
     my %p2c = (
-        'alpha'   => [ "c.title ",                       "ASC" ],
-        'chrono'  => [ "m.date_from_timestamp ",         "ASC" ],
-        'dc.date' => [ "m.dc_date ",                     "DESC" ],
-        'create'  => [ "c.creation_timestamp ",          "DESC" ],
-        'modify'  => [ "c.last_modification_timestamp ", "DESC" ],
-        'loctn'   => [ "d.location ",                    "DESC" ],
+        'alpha'    => [ "c.title ",                       "ASC" ],
+        'chrono'   => [ "m.date_from_timestamp ",         "ASC" ],
+        'dc.date'  => [ "m.dc_date ",                     "DESC" ],
+        'create'   => [ "c.creation_timestamp ",          "DESC" ],
+        'modify'   => [ "c.last_modification_timestamp ", "DESC" ],
+        'vld_from' => [ "c.valid_from_timestamp ",        "DESC"],
+        'loctn'    => [ "d.location ",                    "DESC" ],
     );
     my $oopts = join( '|', keys(%p2c) );
 
@@ -700,7 +701,7 @@ sub _vlitems_byfilter_sql {
     }
     else {
         $properties =
-            'distinct c.id AS id, d.parent_id, d.location, d.object_type_id, d.data_format_id, c.document_id, '
+            'distinct c.id AS id, d.parent_id, d.location, d.object_type_id, d.data_format_id, c.image_id, c.document_id, '
           . 'c.abstract, c.title, c.last_modification_timestamp, '
           . 'c.status, c.status_checked_timestamp, '
           . 'c.marked_deleted, c.locked_time, c.locked_by_id, c.published';

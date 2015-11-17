@@ -1193,6 +1193,7 @@ sub event_filter {
     #   loctn: Location
     #   create: creation date
     #   modify: modification date
+    #   vld_from: valid from timestamp
     #   dc.date: meta.dc_date
     $order ||= 'modify';
 
