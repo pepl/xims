@@ -1008,6 +1008,11 @@ sub new {
     if ( exists $args{dbdsn} and exists $args{dbuser} and exists $args{dbpasswd} ) {
         #warn "new db connect";
         my $dbh;
+
+        if ( $args{dbdopt} =~ /ora_taf_function/ ) {
+            require XIMS::DataProvider::DBI_ORA_TAF;
+        }
+
         eval {
             $dbh = DBIx::SQLEngine->new( $args{dbdsn}, $args{dbuser}, $args{dbpasswd} );
         };
