@@ -47,6 +47,7 @@
 					<tr>
 						<th><xsl:value-of select="$i18n/l/Status"/></th>
 						<th><xsl:value-of select="$i18n/l/Position"/></th>
+                        <th><xsl:value-of select="$i18n/l/Role"/></th>
 						<th><xsl:value-of select="$i18n/l/Title"/></th>
 						<th><xsl:value-of select="$i18n/l/Options"/></th>
 					</tr>
