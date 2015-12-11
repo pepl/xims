@@ -74,22 +74,4 @@
         </xsl:copy>
     </xsl:template>
 
-    <xsl:template match="children/object">
-        <xsl:variable name="dataformat">
-            <xsl:value-of select="data_format_id"/>
-        </xsl:variable>
-        <xsl:variable name="objecttype">
-            <xsl:value-of select="object_type_id"/>
-        </xsl:variable>
-        <!-- this should be switched to xlink spec -->
-        <xsl:choose>
-            <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='URL'">
-                <link type="locator" title="{title}" href="{location}"/>
-            </xsl:when>
-            <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='SymbolicLink'">
-                <link type="locator" title="{title}" href="{symname_to_doc_id}" />
-            </xsl:when>
-        </xsl:choose>
-    </xsl:template>
-
 </xsl:stylesheet>
