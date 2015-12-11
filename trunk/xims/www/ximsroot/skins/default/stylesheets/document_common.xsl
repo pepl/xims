@@ -99,6 +99,9 @@
         <td style="text-align:center;">
           <xsl:call-template name="cttobject.position"/>
         </td>
+        <td style="text-align:center;">
+          <i><xsl:value-of select="document_role"/></i>
+        </td>
         <td>
           <a>
             <xsl:attribute name="href">
