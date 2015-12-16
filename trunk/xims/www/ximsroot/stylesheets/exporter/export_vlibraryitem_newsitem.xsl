@@ -122,6 +122,7 @@
         </meta>
         <xsl:copy-of select="subjectset"/>
         <xsl:copy-of select="keywordset"/>
+        <xsl:copy-of select="publicationset"/>
         <xsl:copy-of select="authorgroup"/>
       </vlibrary>
       
