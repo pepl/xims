@@ -108,7 +108,7 @@ sub event_default {
     my $workgroup_id = $self->param('workgroup_id');
 
     # May come in as latin1 via gopublic
-    my $author_lname = XIMS::utf8_sanitize($self->param('author_lname'));
+    my $author_lname = XIMS::utf8_sanitize( scalar $self->param('author_lname') );
     if ( defined $author_lname ) {
         $self->param( 'author_lname', $author_lname ); # update CGI param, so that stylesheets get the right one
     }
@@ -117,7 +117,7 @@ sub event_default {
     # The following parameter can be used to specify a title for the citation listing
     # Since it *may* come in as latin1 depending on the pubstylesheet encoding,
     # we have to make sure that it will be utf8 encoded.
-    my $ptitle = XIMS::utf8_sanitize($self->param('ptitle'));
+    my $ptitle = XIMS::utf8_sanitize( scalar $self->param('ptitle') );
     if ( defined $ptitle ) {
         $self->param( 'ptitle', $ptitle );
     }
@@ -186,11 +186,11 @@ sub event_reflibsearch {
     }
     my $order = 'last_modification_timestamp DESC';
 
-    my $search = XIMS::utf8_sanitize($self->param('reflibsearch'));
+    my $search = XIMS::utf8_sanitize( scalar $self->param('reflibsearch') );
     if ( defined $search ) {
         $self->param( 'reflibsearch', $search ); # update CGI param, so that stylesheets get the right one
     }
-    $search ||= $self->param('reflibsearch'); # fallback
+    $search ||= scalar $self->param('reflibsearch'); # fallback
 
     # The following parameter can be used to specify a title for the citation listing
     # Since it *may* come in as latin1 depending on the pubstylesheet encoding,
@@ -532,7 +532,7 @@ sub event_import {
             $object->reference( $reference );
 
             my $importer = XIMS::Importer::Object::ReferenceLibraryItem->new( User => $ctxt->session->user(), Parent => $ctxt->object() );
-            my $identifier = XIMS::trim( $self->param( 'identifier' ) );
+            my $identifier = XIMS::trim( scalar $self->param( 'identifier' ) );
             if ( defined $identifier and defined $propertyvalues{identifier} and not $importer->check_duplicate_identifier( $propertyvalues{identifier} ) ) {
                 XIMS::Debug( 3, "Reference with the same identifier already exists." );
                 next;
