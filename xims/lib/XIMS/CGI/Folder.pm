@@ -320,7 +320,7 @@ sub event_undeletemultiple {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my @ids = $self->param('multiselect');
+    my @ids = $self->multi_param('multiselect');
     my @objects;
     foreach(@ids){
     	my $obj = new XIMS::Object('id' => $_);
@@ -344,7 +344,7 @@ sub event_publishmultiple_prompt {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my @ids = $self->param('multiselect');
+    my @ids = $self->multi_param('multiselect');
     my @objects;
     foreach(@ids){
     	my $obj = new XIMS::Object('id' => $_);

@@ -120,7 +120,10 @@ sub event_store {
 
     # set the location parameter, so init_store_object sets the right location
     if ( defined $ctxt->parent() ) {
-        $self->param( name => $self->param( 'file' ) );
+        {
+            my $name = $self->param( 'file' );
+            $self->param( name => $name );
+        }
         #warn "Content-Type Upload: " . $self->uploadInfo($fh)->{'Content-Type'} if $self->param( 'unzip' );
         # check if we should expand a zip file
         if ( $self->param( 'unzip' )

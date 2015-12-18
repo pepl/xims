@@ -2782,21 +2782,21 @@ sub event_publish {
 	);
 
 	my $no_dependencies_update = 1;
-	if ( defined $self->param("update_dependencies")
-		and $self->param("update_dependencies") == 1 )
+	if ( defined scalar $self->param("update_dependencies")
+             and scalar $self->param("update_dependencies") == 1 )
 	{
 		$no_dependencies_update = undef;
 	}
 
 	my $published = 0;
-	if ( defined $self->param("autopublish")
-		and $self->param("autopublish") == 1 )
+	if ( defined scalar $self->param("autopublish")
+             and scalar $self->param("update_dependencies") == 1 )
 	{
 		XIMS::Debug( 4, "going to publish references" );
 		my @objids = $self->param("objids");
 		$published =
 		  $self->autopublish( $ctxt, $exporter, 'publish', \@objids,
-			$no_dependencies_update, $self->param("recpublish") );
+			$no_dependencies_update, scalar $self->param("recpublish") );
 	}
 
 	if (
@@ -2807,8 +2807,8 @@ sub event_publish {
 	  )
 	{
 		XIMS::Debug( 6, "object published!" );
-		if ( defined $self->param("verbose_result")
-			and $self->param("verbose_result") == 1 )
+		if ( defined scalar $self->param("verbose_result")
+                 and scalar $self->param("verbose_result") == 1 )
 		{
 			if ( $published > 0 ) {
 				$ctxt->session->message(
@@ -2898,8 +2898,8 @@ sub publish_gopublic {
 				grantor        => $user->id()
 			);
 
-			if ( defined $self->param("verbose_result")
-				and $self->param("verbose_result") == 1 )
+			if ( defined scalar $self->param("verbose_result")
+                     and scalar $self->param("verbose_result") == 1 )
 			{
 				$ctxt->session->message(
 					__x(
@@ -2949,23 +2949,27 @@ sub event_unpublish {
 		User     => $ctxt->session->user
 	);
 
-my $no_dependencies_update = 1;
-	if ( defined $self->param("update_dependencies")
-		and $self->param("update_dependencies") == 1 )
+    my $no_dependencies_update = 1;
+	if ( defined scalar $self->param("update_dependencies")
+             and scalar $self->param("update_dependencies") == 1 )
 	{
 		$no_dependencies_update = undef;
 	}
 	my $unpublished = 0;
-	if ( defined $self->param("autopublish")
-		and $self->param("autopublish") == 1 )
+	if ( defined scalar $self->param("autopublish")
+             and scalar $self->param("autopublish") == 1 )
 	{
 		XIMS::Debug( 4, "going to unpublish references" );
-		my @objids = $self->param("objids");
+		my @objids = $self->multi_param("objids");
 		$unpublished =
-		  $self->autopublish( $ctxt, $exporter, 'unpublish', \@objids,
-			$no_dependencies_update, $self->param("recpublish") );
-	}	
-	
+            $self->autopublish( $ctxt,
+                                $exporter,
+                                'unpublish',
+                                \@objids,
+                                $no_dependencies_update,
+                                scalar $self->param("recpublish") );
+	}
+
 	if (
 		$exporter->unpublish(
 			Object                 => $ctxt->object,
@@ -2974,8 +2978,8 @@ my $no_dependencies_update = 1;
 	  )
 	{
 		XIMS::Debug( 6, "object unpublished!" );
-		if ( defined $self->param("verbose_result")
-			and $self->param("verbose_result") == 1 )
+		if ( defined scalar $self->param("verbose_result")
+                 and scalar $self->param("verbose_result") == 1 )
 		{
 			$ctxt->session->message(
 				__x(
@@ -3047,8 +3051,8 @@ sub unpublish_gopublic {
 			);
 			$privs_object->delete();
 
-			if ( defined $self->param("verbose_result")
-				and $self->param("verbose_result") == 1 )
+			if ( defined scalar $self->param("verbose_result")
+                     and scalar $self->param("verbose_result") == 1 )
 			{
 				$ctxt->session->message(
 					__x(
@@ -3589,9 +3593,9 @@ sub event_aclgrantmultiple {
 	XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 	
-	if($self->param('grantees')){
+	if( $self->param('grantees') ){
 		my @grantees;
-		foreach ( split( /\s*,\s*/, $self->param('grantees') ) ) {
+		foreach ( split( /\s*,\s*/, $self->multi_param('grantees') ) ) {
 		    my $grantee = XIMS::User->new( name => $_ );
 			#unless $grantee and $grantee->id();
 			if($grantee and $grantee->id()){	
@@ -3631,7 +3635,7 @@ sub event_aclgrantmultiple {
 		}
 		
 		my $recgrant = $self->param('recacl');
-	    my @ids = $self->param('multiselect');
+	    my @ids = $self->multi_param('multiselect');
 	    my $user = $ctxt->session->user();
 	    #my @objects;
 	    
@@ -3720,7 +3724,7 @@ sub event_aclrevokemultiple {
 
 	if($self->param('grantees')){
 	my @grantees;
-	foreach ( split( /\s*,\s*/, $self->param('grantees') ) ) {
+	foreach ( split( /\s*,\s*/, $self->multi_param('grantees') ) ) {
 	    my $grantee = XIMS::User->new( name => $_ );
 	    #warn "\n\ngrantee : ".$grantee->name();
 #	    XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n")
@@ -3741,7 +3745,7 @@ sub event_aclrevokemultiple {
 			return 0;
 		}
 	my $recgrant = $self->param('recacl');
-	my @ids = $self->param('multiselect');
+	my @ids = $self->multi_param('multiselect');
 	my $user = $ctxt->session->user();
 	
 	my $obj;
@@ -4336,7 +4340,7 @@ sub event_search {
 	# event_search may get the search string latin1-encoded if used by the
 	# public-search interface (?search=1;s=searchstring;p=1) Check for that
 	# eventuality here and encode to utf-8 in case.
-	my $search = XIMS::utf8_sanitize( $self->param('s') );
+	my $search = XIMS::utf8_sanitize( scalar $self->param('s') );
 	if ( defined $search ) {
 		$self->param( 's', $search );    # update CGI param, so that stylesheets
 		                                 # get the right one

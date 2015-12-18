@@ -1107,8 +1107,9 @@ sub event_filter {
     }
 
     # chronicle dates
-    my $date_from = $self->_heuristic_date_parser( $self->param('cf') );
-    my $date_to   = $self->_heuristic_date_parser( $self->param('ct') );
+  
+    my $date_from = $self->_heuristic_date_parser( scalar $self->param('cf') );
+    my $date_to   = $self->_heuristic_date_parser( scalar $self->param('ct') );
     if ( defined $date_from ) {
         XIMS::Debug( 6, "date_from param '$date_from'" );
     }
