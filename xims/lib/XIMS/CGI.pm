@@ -1190,6 +1190,7 @@ sub redirect_uri {
 	my $dp     = $ctxt->data_provider();
 
 	my $redirectpath;
+    my $params;
 	my $r = $self->param('r');
 	my $uri;
 	if ( defined $r ) {
@@ -1208,7 +1209,13 @@ sub redirect_uri {
 		my $objtype = $object->object_type();
 		if ( $objtype->redir_to_self() == 0 ) {
 			$redirectpath =
-			  $dp->location_path( document_id => $object->parent_id() );
+                $dp->location_path( document_id => $object->parent_id() );
+
+            # redirect Image and File types to event_view_data
+            my $potn = $object->parent->object_type->name() || undef;
+            if ( $potn and ($potn eq 'Image' or $potn eq 'File')) {
+                $self->param('view_data', 1);
+            }
 		}
 		else {
 			$redirectpath =
@@ -1220,7 +1227,6 @@ sub redirect_uri {
 	$redirectpath ||= '/root';
 
     # preserve some selected params
-	my $params;
     for my $pn (qw(sb order m hd hls bodyonly plain page showtrashcan view_data)) {
         my $pv = $self->param($pn);
         if ( defined $pv ) {
