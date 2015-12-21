@@ -14,7 +14,7 @@
 
     <xsl:template name="view-content">
       <xsl:call-template name="object-metadata"/>
-      <div>
+      <div style="max-height:640px;overflow:scroll;">
         <img src="{$goxims_content}{$absolute_path}" title="{title}"/>	   
       </div>
       <xsl:call-template name="documentlinks"/>
