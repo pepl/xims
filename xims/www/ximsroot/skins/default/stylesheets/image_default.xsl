@@ -12,4 +12,13 @@
     <xsl:import href="common.xsl"/>
     <xsl:import href="file_default.xsl"/>
 
+    <xsl:template name="view-content">
+      <xsl:call-template name="object-metadata"/>
+      <div>
+        <img src="{$goxims_content}{$absolute_path}" title="{title}"/>	   
+      </div>
+      <xsl:call-template name="documentlinks"/>
+      <xsl:call-template name="summary_keywords"/>
+      <xsl:call-template name="summary_rights"/>
+    </xsl:template>
 </xsl:stylesheet>

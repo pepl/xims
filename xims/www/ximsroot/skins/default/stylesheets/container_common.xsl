@@ -734,6 +734,7 @@
 		<xsl:param name="search" select="false()"/>
 		<xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
 		<xsl:param name="dfmime" select="/document/data_formats/data_format[@id=current()/data_format_id]/mime_type"/>
+        <xsl:param name="otname" select="/document/object_types/object_type[@id=current()/object_type_id]/name"/>
 		<xsl:param name="link_to_id" select="false()"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted=1">
@@ -779,6 +780,9 @@
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
+                        <xsl:when test="$otname = 'Image' or $otname = 'File'">
+                          <xsl:value-of select="concat($goxims_content,'?id=',@id,'&amp;view_data=1')"/>
+                        </xsl:when>
 						<xsl:when test="marked_deleted=1">
 							<xsl:value-of select="concat($goxims_content,'?id=',@id)"/>
 						</xsl:when>
