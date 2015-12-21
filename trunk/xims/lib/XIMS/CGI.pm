@@ -718,6 +718,7 @@ low.
 =cut
 
 sub selectStylesheet {
+
 	XIMS::Debug( 5, "called" );
 	my ( $self, $ctxt ) = @_;
 	my $retval = undef;
@@ -1218,65 +1219,21 @@ sub redirect_uri {
 	# special case for '/root' which got an undefined location_path
 	$redirectpath ||= '/root';
 
-	my $sb           = $self->param("sb");
-	my $order        = $self->param("order");
-	my $m            = $self->param("m");
-	my $hd           = $self->param("hd");
-	my $hls          = $self->param("hls");
-	my $bodyonly     = $self->param("bodyonly");
-	my $plain        = $self->param("plain");
-	my $page         = $self->param("page");
-	my $showtrashcan = $self->param("showtrashcan");
+    # preserve some selected params
 	my $params;
-
-	# preserve some selected params
-	$params .= "sb=$sb" if defined $sb;
-	if ( defined $m ) {
-		$params .= "&" if length $params;
-		$params .= "m=$m";
-	}
-	if ( defined $order ) {
-		$params .= "&" if length $params;
-		$params .= "order=$order";
-	}
-	if ( defined $hd ) {
-		$params .= "&" if length $params;
-		$params .= "hd=$hd";
-	}
-	if ( defined $hls ) {
-		$params .= "&" if length $params;
-		$params .= "hls=$hls";
-	}
-
-	if ( defined $bodyonly ) {
-		$params .= "&" if length $params;
-		$params .= "bodyonly=$bodyonly";
-	}
-	if ( defined $plain ) {
-		$params .= "&" if length $params;
-		$params .= "plain=$plain";
-	}
-	if ( defined $page ) {
-		$params .= "&" if length $page;
-		$params .= "page=$page";
-	}
-	if ( defined $showtrashcan ) {
-		$params .= "&" if length $showtrashcan;
-		$params .= "showtrashcan=$showtrashcan";
-	}
+    for my $pn (qw(sb order m hd hls bodyonly plain page showtrashcan view_data)) {
+        my $pv = $self->param($pn);
+        if ( defined $pv ) {
+            $params .= "&" if length $params;
+            $params .= "$pn=$pv";
+        }
+    }
 
 	if ( not defined $uri ) {
 		$uri = URI->new();
 		$uri->path( $self->script_name() . $redirectpath );
 		$uri->query($params);
 	}
-
-        # vermutlich PROXY-bezogen, schaumer später…
-	# my $frontend_uri =
-	#   URI->new( $ctxt->apache, $ctxt->session->serverurl() );
-	# $uri->scheme( $frontend_uri->scheme() );
-	# $uri->hostname( $frontend_uri->hostname() );
-	# $uri->port( $frontend_uri->port() );
 
 	XIMS::Debug( 4, "redirecting to " . $uri->as_string() );
 	return $uri
