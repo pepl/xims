@@ -12,6 +12,7 @@
 	
   <xsl:param name="tinymce" >1</xsl:param>
   <xsl:param name="selEditor">wysiwyg</xsl:param> 
+  <xsl:param name="tinymce_version" select="4"/>  
 	
   <xsl:template name="edit-content">
     <xsl:call-template name="form-locationtitle-edit"/>

@@ -12,6 +12,8 @@
 	
 	<xsl:param name="tinymce">1</xsl:param>	
 	<xsl:param name="selEditor">wysiwyg</xsl:param>	
+        <xsl:param name="testlocation" select="true()"/>
+        <xsl:param name="tinymce_version" select="4"/>
 	
 	<xsl:template name="create-content">
 		<input type="hidden" name="objtype" value="{$objtype}"/>

@@ -41,6 +41,7 @@ use Text::ParseWords ();    # for _parse_attributes
 use XML::LibXML;            # for balanced_string(), balance_string()
 use IO::File;               # for balanced_string()
 use Carp;
+use HTML::HTML5::Parser;
 
 
 # the binfile field is no longer available via the method interface, but is
@@ -3420,15 +3421,15 @@ sub balanced_string {
 
     $CDATAstring : input string
     %args        : hash
-       recognized keys: keephtmlheader : per default, the html-header tidy
-                                         generates is stripped of the return
-                                         string and only the part between the
-                                         "body" tag is returned in case of
-                                         importing legacy html documents it
-                                         may be useful to keep the meta
-                                         information in the html header - the
-                                         keephtmlheader flag is your friend
-                                         for that.
+    recognized keys: keephtmlheader : per default, the html-header tidy
+                                      generates is stripped of the return
+                                      string and only the part between the
+                                      "body" tag is returned in case of
+                                      importing legacy html documents it
+                                      may be useful to keep the meta
+                                      information in the html header - the
+                                      keephtmlheader flag is your friend
+                                      for that.
 
 =head3 Returns
 
@@ -3438,86 +3439,31 @@ sub balanced_string {
 
 my $wbCDATAstring = $object->balance_string( $CDATAstring, [$params] );
 
-takes a string and tries tidy, or if that fails XML::LibXML to well-balance it
+Takes a string lets HTML::HTML5::Parser do its magic.
 
 =cut
 
+
 sub balance_string {
     XIMS::Debug( 5, "called" );
-    my $self        = shift;
-    my $CDATAstring = shift;
-    my %args        = @_;
+    my ($self, $CDATAstring, %args) = @_;
 
     return unless defined $CDATAstring;
 
-    my $wbCDATAstring = undef;    # return value
-
-    # as long as there is no libtidy and no XS based HTML::Tidy, it looks like
-    # we have to deal with the forking and temorary file handling...:/
-    my $tidy        = XIMS::TIDYPATH();
-    my $tidyOptions = XIMS::TIDYOPTIONS();
-    my $tmppath     = "/tmp/";
-    my $tmpfile     = 'formwell' . $$ * int( rand 42 ) . '.tmp';
-    my $tmp         = $tmppath . $tmpfile;
-
-    my $tmp_fh = IO::File->new( $tmp, 'w' );
-    if ( defined $tmp_fh ) {
-        print $tmp_fh $CDATAstring;
-        $tmp_fh->close;
-        XIMS::Debug( 4, "Temporary file written" );
-    }
-    else {
-        XIMS::Debug( 2, "Error writing file '$tmp': $!" );
-        return;
-    }
-
-    eval { $wbCDATAstring = `$tidy $tidyOptions $tmp`; };
-    if ($@) {
-        XIMS::Debug( 2, "Could not execute '$tidy $tidyOptions $tmp': $@" );
-        return;
-    }
-
-    unlink $tmp;
-
-    if ( not $self->balanced_string( $wbCDATAstring, nochunk => 1 ) ) {
-
-        # tidy cleans better, but we want the following as fallback
-        XIMS::Debug( 3,
-            "tidy did not return a wellformed string, using LibXML" );
-
-        my $parser = XML::LibXML->new();
-
-        $CDATAstring =~ s/\r//g; # dunno where these CRs come from
-        my $doc;
-        eval { $doc = $parser->parse_html_string($CDATAstring, { encoding =>'utf-8',
-                                                                 recover => 1,
-                                                                 no_blanks => 0,
-                                                                 expand_entities => 1 }
-                      );
-        };
-        if ($@) {
-            XIMS::Debug( 2, "LibXML could not parse string either: $@" );
-            return;
-        }
-        else {
-            $wbCDATAstring =  $doc->toString();
-        }
-    }
+    my $parser = HTML::HTML5::Parser->new;
+    my $wbCDATAstring = $parser->parse_string( $CDATAstring )->toString();
 
     if ( not exists $args{keephtmlheader} ) {
-
         # strip everything before <BODY> and after </BODY>
         $wbCDATAstring =~ s/^.*<body[^>]*>\n?//si;
         $wbCDATAstring =~ s\</body[^>]*>.*$\\si;
     }
 
-    if ( length $wbCDATAstring ) {
-        return $wbCDATAstring;
-    }
-    else {
-        return;
-    }
+    return $wbCDATAstring || undef;
 }
+
+
+
 
 =head2 content_field()
 
