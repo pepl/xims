@@ -170,10 +170,6 @@ sub HOME {
 
 =item XMLEDITOR()
 
-=item TIDYPATH()
-
-=item TIDYOPTIONS()
-
 =item XIMSROOT_URL()
 
 =item XIMSROOT()
@@ -245,10 +241,6 @@ sub FALLBACKSTARTPATH         { return $_CONFIG_->FallbackStartPath(); }
 sub DEFAULTXHTMLEDITOR        { return $_CONFIG_->DefaultXHTMLEditor(); }
 
 sub XMLEDITOR                 { return $_CONFIG_->XMLEditor(); }
-
-sub TIDYPATH                  { return $_CONFIG_->TidyPath(); }
-
-sub TIDYOPTIONS               { return $_CONFIG_->TidyOptions(); }
 
 sub XIMSROOT_URL              { return '/' . $_CONFIG_->XIMSRoot(); }
 

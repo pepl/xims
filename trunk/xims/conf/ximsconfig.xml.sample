@@ -61,15 +61,6 @@
         <SessionMaxAge>86400</SessionMaxAge>
 
         <!--
-        # Path to the tidy binary
-        -->
-        <TidyPath></TidyPath>
-        <!--
-        # Options for tidy
-        -->
-        <TidyOptions>-config /usr/local/xims/conf/ximstidy.conf -quiet -f /dev/null</TidyOptions>
-
-        <!--
         # Path to the htmldoc binary
         -->
         <htmldocPath>/usr/bin/htmldoc</htmldocPath>
