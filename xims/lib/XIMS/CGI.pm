@@ -2756,7 +2756,7 @@ sub event_publish {
              and scalar $self->param("update_dependencies") == 1 )
 	{
 		XIMS::Debug( 4, "going to publish references" );
-		my @objids = $self->param("objids");
+		my @objids = $self->multi_param("objids");
 		$published =
 		  $self->autopublish( $ctxt, $exporter, 'publish', \@objids,
 			$no_dependencies_update, scalar $self->param("recpublish") );
