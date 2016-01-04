@@ -8,7 +8,7 @@ lowlevel class for newsitem objs.
 package XIMS::Exporter::NewsItem2;
 
 use common::sense;
-use parent qw( XIMS::Exporter::Document );
+use parent -norequire, qw( XIMS::Exporter::Document );
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
 use XIMS::SAX::Filter::ContentObjectPropertyResolver;
