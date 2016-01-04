@@ -70,9 +70,7 @@ sub start_element {
         $self->{got_attributes} = 1;
     }
 
-    $self->SUPER::start_element($element);
-
-    return;
+    return $self->SUPER::start_element($element);
 }
 
 
@@ -90,7 +88,7 @@ sub start_element {
 =cut
 
 sub end_element {
-    my $self = shift;
+    my ($self,$element) = @_;
 
     if ( defined $self->{got_attributes} and defined $self->{attributes} ) {
         my %attribs = ( $self->{attributes} =~ /([^;\=]+)\=([^\;]+)/g );
@@ -111,9 +109,8 @@ sub end_element {
     }
 
     $self->{got_attributes} = undef;
-    $self->SUPER::end_element(@_);
 
-    return;
+    return $self->SUPER::end_element($element);
 }
 
 
@@ -134,13 +131,11 @@ sub characters {
     my ( $self, $string ) = @_;
 
     if ( defined $string->{Data} and defined $self->{got_attributes} ) {
-        $self->{attributes} .= $string->{Data};
+        return $self->{attributes} .= $string->{Data};
     }
     else {
-        $self->SUPER::characters($string);
+        return $self->SUPER::characters($string);
     }
-
-    return;
 }
 
 1;

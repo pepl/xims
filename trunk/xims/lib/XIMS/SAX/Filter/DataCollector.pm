@@ -199,8 +199,7 @@ none yet
 =cut
 
 sub end_element {
-    my $self = shift;
-    my $data = shift;
+    my ($self,$data) = @_;
 
     if ( $self->is_tag() ) {
         XIMS::Debug( 4, "is inside tag!" );
@@ -220,9 +219,7 @@ sub end_element {
         XIMS::Debug( 6, "end element" );
     }
 
-    $self->SUPER::end_element($data);
-
-    return;
+    return $self->SUPER::end_element($data);
 }
 
 
@@ -244,17 +241,14 @@ none yet
 =cut
 
 sub characters {
-    my $self = shift;
-    my $data = shift;
+    my ($self,$data) = @_;
 
     if ( $self->is_tag() && defined $data->{Data} ) {
-        $self->add_data( $data->{Data} );
+        return $self->add_data( $data->{Data} );
     }
     else {
-        $self->SUPER::characters($data);
+        return $self->SUPER::characters($data);
     }
-
-    return;
 }
 
 

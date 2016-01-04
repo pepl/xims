@@ -35,9 +35,8 @@ use parent qw( XIMS::SAX::Filter::DataCollector );
 sub new {
     my $class = shift;
     my $self  = $class->SUPER::new(@_);
-    $self->set_tagname("children");
 
-    return;
+    return $self->set_tagname("children");
 }
 
 
@@ -66,9 +65,7 @@ sub handle_data {
     my $objects = $provider->getChildObjects(%param);
     $self->push_listobject( @{$objects} ) if defined $objects;
 
-    $self->SUPER::handle_data();
-
-    return;
+    return $self->SUPER::handle_data();
 }
 
 1;

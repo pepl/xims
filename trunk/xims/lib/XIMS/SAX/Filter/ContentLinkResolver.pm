@@ -66,9 +66,7 @@ sub start_element {
         }
     }
 
-    $self->SUPER::start_element($element);
-
-    return;
+    return $self->SUPER::start_element($element);
 }
 
 1;

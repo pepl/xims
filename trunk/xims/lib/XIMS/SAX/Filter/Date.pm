@@ -51,9 +51,8 @@ sub start_element {
         $self->{got_date} = 1;
     }
 
-    $self->SUPER::start_element($element);
+    return $self->SUPER::start_element($element);
 
-    return;
 }
 
 =head2 end_element()
@@ -61,7 +60,7 @@ sub start_element {
 =cut
 
 sub end_element {
-    my $self = shift;
+    my ( $self, $element ) = @_;
 
     if ( defined $self->{got_date} and defined $self->{date} ) {
         my ( $year, $month, $day, $hour, $min, $sec ) =
@@ -143,9 +142,8 @@ sub end_element {
     }
 
     $self->{got_date} = undef;
-    $self->SUPER::end_element(@_);
 
-    return;
+    return $self->SUPER::end_element( $element );
 }
 
 =head2 charachters()
@@ -156,13 +154,11 @@ sub characters {
     my ( $self, $string ) = @_;
 
     if ( defined $string->{Data} and defined $self->{got_date} ) {
-        $self->{date} .= $string->{Data};
+        return $self->{date} .= $string->{Data};
     }
     else {
-        $self->SUPER::characters($string);
+        return $self->SUPER::characters($string);
     }
-
-    return;
 }
 
 1;

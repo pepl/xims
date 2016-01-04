@@ -27,8 +27,7 @@ use XML::Generator::PerlData;
 
 
 sub end_element {
-    my $self = shift;
-    my $elem = shift;
+    my ($self, $element) = @_;
 
     if ( $elem->{LocalName} eq "children" ) {
         my $object  = $self->{Object};
@@ -51,9 +50,8 @@ sub end_element {
         }
     }
 
-    $self->SUPER::end_element($elem);
+    return $self->SUPER::end_element( $element );
 
-    return;
 }
 
 1;

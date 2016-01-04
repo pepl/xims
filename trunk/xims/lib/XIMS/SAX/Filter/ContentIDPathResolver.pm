@@ -51,9 +51,7 @@ sub start_element {
         $self->{got_to_resolve} = 1;
     }
 
-    $self->SUPER::start_element($element);
-
-    return;
+    return $self->SUPER::start_element($element);
 }
 
 =head2 end_element()
@@ -123,9 +121,8 @@ sub end_element {
     }
 
     $self->{got_to_resolve} = undef;
-    $self->SUPER::end_element(@_);
 
-    return;
+    return $self->SUPER::end_element($element);
 }
 
 =head2 characters
@@ -139,13 +136,11 @@ sub characters {
         and defined $self->{got_to_resolve}
         and $self->{got_to_resolve} == 1 )
     {
-        $self->{document_id} .= $string->{Data};
+      return $self->{document_id} .= $string->{Data};
     }
     else {
-        $self->SUPER::characters($string);
+      return $self->SUPER::characters($string);
     }
-
-    return;
 }
 
 1;
