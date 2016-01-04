@@ -29,7 +29,7 @@ use XML::Generator::PerlData;
 sub end_element {
     my ($self, $element) = @_;
 
-    if ( $elem->{LocalName} eq "children" ) {
+    if ( $element->{LocalName} eq "children" ) {
         my $object  = $self->{Object};
         my @objects = $object->descendants_granted(
             User => $object->User,
