@@ -47,8 +47,7 @@ sub new {
 =cut
 
 sub end_element {
-    my $self = shift;
-    my $data = shift;
+    my ($self,$data) = @_;
     $self->SUPER::end_element($data);
     if ( defined $data->{LocalName} and $data->{LocalName} eq "context" ) {
         my $ol = { LocalName => "objectlist" };
@@ -64,9 +63,11 @@ sub end_element {
         $self->handle_data;
         $self->SUPER::end_element($ol);
     }
-    return;
+    ## no critic ( RequireFinalReturn )
+    # return;
 }
 
+## use critic
 
 =head2    $filter->handle_data()
 

@@ -219,9 +219,7 @@ sub handle_data {
             XIMS::Debug( 6, "no objects found" );
         }
     }
-    $self->SUPER::handle_data();
-
-    return;
+    return $self->SUPER::handle_data();
 }
 
 =head2 get_objecttypes()
@@ -355,8 +353,7 @@ sub get_documentlinks {
 =cut
 
 sub build_or_filter {
-    my $self   = shift;
-    my @tags   = @_;
+    my ($self, @tags)   =  @_;
     my $retval = undef;
     my @conds  = ();
     if ( scalar @tags ) {
@@ -402,8 +399,7 @@ sub build_or_filter {
 =cut
 
 sub build_not_filter {
-    my $self   = shift;
-    my @tags   = @_;
+    my ($self,@tags)   = @_;
     my $retval = undef;
     if ( scalar @tags ) {
         $retval = $self->build_or_filter(@tags);
@@ -419,8 +415,7 @@ sub build_not_filter {
 =cut
 
 sub build_and_filter {
-    my $self   = shift;
-    my @tags   = @_;
+    my ($self,@tags)   = shift;
     my $retval = undef;
     my @conds  = ();
     if ( scalar @tags ) {
@@ -476,9 +471,7 @@ sub build_and_filter {
 =cut
 
 sub build_date_filter {
-    my $self   = shift;
-    my $BOOLOP = shift;
-    my @tags   = @_;
+    my ($self, $BOOLOP, @tags) = @_;
     my $retval;
     my ( $leftwrap, $rightwrap ) = ( "", "" );
     $retval = "" if scalar @tags;
