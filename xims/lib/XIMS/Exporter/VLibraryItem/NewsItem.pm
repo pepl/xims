@@ -129,12 +129,6 @@ sub set_sax_generator {
     return XIMS::SAX::Generator::Exporter::VLibraryItem->new();
 }
 
-=head2 update_related()
-
-=cut
-
-sub update_related { return; }
-
 =head2 update_parent()
 
 =cut
