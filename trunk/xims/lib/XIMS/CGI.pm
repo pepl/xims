@@ -2648,36 +2648,36 @@ sub event_publish_prompt {
 	return $self->event_access_denied($ctxt)
 	  unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
-	my @objects;
-	my $dfmime_type = $ctxt->object->data_format->mime_type();
-	if ( $dfmime_type eq 'text/html' ) {
+    my @objects;
+    my $dfmime_type = $ctxt->object->data_format->mime_type();
+    my $urllinkid   = XIMS::ObjectType->new( fullname => 'URLLink' )->id();
 
-		# check for body references in (X)HTML documents
-		XIMS::Debug( 4, "checking body refs" );
-		@objects = $self->body_ref_objects($ctxt);
-
-		# look for document links
-		my $urllinkid = XIMS::ObjectType->new( fullname => 'URLLink' )->id();
-		my @doclinks = $ctxt->object->children_granted(
-			object_type_id => $urllinkid,
-			marked_deleted => 0
-		);
-		push( @objects, @doclinks ) if scalar @doclinks > 0;
-
-		for (@objects) {
-			$_->{location_path} =
-			    $_->object_type_id == $urllinkid
-			  ? $_->location()
-			  : $_->location_path();
-		}
-	}
-	elsif ( $dfmime_type eq 'application/x-container' ) {
+    if ( $dfmime_type eq 'application/x-container' ) {
 		@objects =
 		  $ctxt->object->children_granted( marked_deleted => 0 )
 		  ;    # get even non-container objects
 	}
+    else {
+        if ( $dfmime_type eq 'text/html' ) {
+            # check for body references in (X)HTML documents
+            XIMS::Debug( 4, "checking body refs" );
+            @objects = $self->body_ref_objects($ctxt);
+            for (@objects) {
+                $_->{location_path} =
+                    $_->object_type_id == $urllinkid
+                    ? $_->location()
+                    : $_->location_path();
+            }
+        }
+        # look for document links
+        my @doclinks = $ctxt->object->children_granted(
+            object_type_id => $urllinkid,
+            marked_deleted => 0
+        );
+        push( @objects, @doclinks ) if scalar @doclinks > 0;
+    }
 
-	if ( scalar @objects ) {
+    if ( scalar @objects ) {
 		$ctxt->objectlist( \@objects );
 
 		# check for publish privileges on referenced objects
