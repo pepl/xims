@@ -1259,8 +1259,7 @@ sub redirect_uri {
 
 sub clean_userquery {
 	XIMS::Debug( 5, "called" );
-	my $self      = shift;
-	my $userquery = shift;
+	my ($self, $userquery) = @_;
 
 	# convert wildcard, clean up a bit
 	$userquery =~ s/\*+/%/g;
@@ -1268,6 +1267,10 @@ sub clean_userquery {
 	$userquery =~ s/^\s+//;
 	$userquery =~ s/\s+$//;
 	$userquery =~ s/[ ;,<>`´|?]+//g;
+
+    if ( length(XIMS::UserNameDefaultDomain()) and $userquery !~ /[:%@]/ ) {
+        $userquery .= '@' . XIMS::UserNameDefaultDomain();
+    }
 
 	return $userquery;
 }
@@ -3555,17 +3558,22 @@ sub event_obj_aclgrant {
 sub event_aclgrantmultiple {
 	XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-	
-	if( $self->param('grantees') ){
+
+	if( my $grantees = $self->param('grantees') ){
+        $grantees =~ s/\s+$//;
+        $grantees =~ s/^\s+//;
 		my @grantees;
-		foreach ( split( /\s*,\s*/, $self->multi_param('grantees') ) ) {
-		    my $grantee = XIMS::User->new( name => $_ );
+		foreach my $gname ( split(/\s*,\s*/, $grantees) ) {
+            if ( length(XIMS::UserNameDefaultDomain()) and $gname !~ /[:@]/ ) {
+                $gname .= '@' . XIMS::UserNameDefaultDomain();
+            }
+		    my $grantee = XIMS::User->new( name => $gname );
 			#unless $grantee and $grantee->id();
-			if($grantee and $grantee->id()){	
+			if($grantee and $grantee->id()){
 				push @grantees, $grantee;
 			}
 			else{
-				XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n");
+				XIMS::Debug( 4, "Grantee '" . $gname . "' could not be found.\n");
 			}
 		}
 		unless (scalar @grantees){
@@ -3575,7 +3583,7 @@ sub event_aclgrantmultiple {
 			$self->sendError( $ctxt, __ "None of your provided grantees could befound." );
 			return 0;
 		}
-		
+	   
 		# build the privilege mask
 		my $bitmask = 0;
 		foreach my $priv ( XIMS::Privileges::list() ) {
@@ -3685,28 +3693,30 @@ sub event_aclrevokemultiple {
 	XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-	if($self->param('grantees')){
-	my @grantees;
-	foreach ( split( /\s*,\s*/, $self->multi_param('grantees') ) ) {
-	    my $grantee = XIMS::User->new( name => $_ );
-	    #warn "\n\ngrantee : ".$grantee->name();
-#	    XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n")
-#	        unless $grantee and $grantee->id();
-#	    push @grantees, $grantee;
-		if($grantee and $grantee->id()){	
-				push @grantees, $grantee;
-			}
-			else{
-				XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n");
-			}
-		}
-		unless (scalar @grantees){
-			$ctxt->properties->application->styleprefix('common');
-			$ctxt->properties->application->style('error');
-			XIMS::Debug( 2, "none of provided grantees found" );
-			$self->sendError( $ctxt, __ "None of your provided grantees could befound." );
-			return 0;
-		}
+	if( my $grantees = $self->param('grantees') ) {
+        $grantees =~ s/\s+$//;
+        $grantees =~ s/^\s+//;
+        my @grantees;
+        foreach my $gname (split(/\s*,\s*/, $grantees)) {
+            if ( length(XIMS::UserNameDefaultDomain()) and $gname !~ /[:@]/ ) {
+                $gname .= '@' . XIMS::UserNameDefaultDomain();
+            }
+            my $grantee = XIMS::User->new( name => $gname );
+            
+            if($grantee and $grantee->id()){	
+                push @grantees, $grantee;
+            }
+            else{
+                XIMS::Debug( 4, "Grantee '" . $gname . "' could not be found.\n");
+            }
+        }
+        unless (scalar @grantees){
+            $ctxt->properties->application->styleprefix('common');
+            $ctxt->properties->application->style('error');
+            XIMS::Debug( 2, "none of provided grantees found" );
+            $self->sendError( $ctxt, __ "None of your provided grantees could befound." );
+            return 0;
+        }
 	my $recgrant = $self->param('recacl');
 	my @ids = $self->multi_param('multiselect');
 	my $user = $ctxt->session->user();
