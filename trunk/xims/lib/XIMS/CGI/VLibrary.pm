@@ -951,6 +951,12 @@ chronicle (chronicle_from - chronicle_to)
 
 status operator
 
+=item lang
+
+two character language suffix
+
+(e.g. lang=en filters objects /w location like '%.en')
+
 =item vls
 
 fulltext (with querybuilder)
@@ -1104,6 +1110,13 @@ sub event_filter {
             $criteria{status} = " c.status $statusoperator ? ";
             $params{status}   = $status;
         }
+    }
+
+    my $lang = $self->param('lang');
+    if ( defined $lang and $lang =~ /^[a-z]{2}$/ ) {
+        XIMS::Debug( 6, "lang param '$lang'" );
+        $criteria{lang} = " d.location LIKE ? ";
+        $params{lang}   = "\%.$lang";
     }
 
     # chronicle dates
