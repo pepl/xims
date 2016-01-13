@@ -748,6 +748,11 @@ sub _vlitems_byfilter_sql {
         $conditions .= " AND " . $criteria{status};
         push @values, $params{status};
     }
+    if ( $criteria{lang} ne '' ) {
+        XIMS::Debug( 6, "Language filter" );
+        $conditions .= " AND " . $criteria{lang};
+        push @values, $params{lang};
+    }
     if ( $criteria{chronicle} ne ''
         || ( defined $order and $order =~ /m.date_from_timestamp/ ) )
     {
