@@ -1056,7 +1056,7 @@ sub event_filter {
               ['pid', 'publication'] ) {
         my ( $par, $p ) = @{$_};
 
-        foreach my $prop_ids ( $self->param($par) ) {
+        foreach my $prop_ids ( $self->multi_param($par) ) {
             next unless defined $prop_ids and length $prop_ids;
 
             XIMS::Debug( 6, "$p param '$prop_ids'" );
