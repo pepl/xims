@@ -119,7 +119,7 @@ sub event_default {
     }
 
     # May come in as latin1 via gopublic
-    my $search = XIMS::utf8_sanitize($self->param('searchstring'));
+    my $search = XIMS::utf8_sanitize(scalar $self->param('searchstring'));
     if ( defined $search ) {
         $self->param( 'searchstring', $search ); # update CGI param, so that stylesheets get the right one
     }

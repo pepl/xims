@@ -218,7 +218,7 @@ sub event_store {
 sub event_deletemultiple {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    my @ids = $self->param('multiselect');
+    my @ids = $self->multi_param('multiselect');
     foreach(@ids){
     	my $obj = new XIMS::Object('id' => $_);
     	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE())){
@@ -241,7 +241,7 @@ sub event_deletemultiple_prompt {
 	XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my @ids = $self->param('multiselect');
+    my @ids = $self->multi_param('multiselect');
     my @objects;
     foreach(@ids){
     	my $obj = new XIMS::Object('id' => $_);
@@ -269,7 +269,7 @@ sub event_trashcanmultiple_prompt {
 	XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my @ids = $self->param('multiselect');
+    my @ids = $self->multi_param('multiselect');
     my @objects;
     foreach(@ids){
     	my $obj = new XIMS::Object('id' => $_);
@@ -297,7 +297,7 @@ sub event_trashcanmultiple {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my @ids = $self->param('multiselect');
+    my @ids = $self->multi_param('multiselect');
     foreach(@ids){
     	my $obj = new XIMS::Object('id' => $_);
     	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE())){
@@ -375,7 +375,7 @@ sub event_publishmultiple {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my @ids = $self->param('multiselect');
+    my @ids = $self->multi_param('multiselect');
     my @objects;
     require XIMS::Exporter;
     my $exporter = XIMS::Exporter->new(
@@ -427,7 +427,7 @@ sub event_unpublishmultiple {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     XIMS::Debug( 4, "container - id:".$ctxt->object->id );
-    my @ids = $self->param('multiselect');
+    my @ids = $self->multi_param('multiselect');
     my @objects;
     require XIMS::Exporter;
     my $exporter = XIMS::Exporter->new(
@@ -488,7 +488,7 @@ sub event_copymultiple {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my @ids = $self->param('multiselect');
+    my @ids = $self->multi_param('multiselect');
     foreach(@ids){
         my $obj = new XIMS::Object('id' => $_);
         if($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::COPY()){
@@ -515,7 +515,7 @@ sub event_toggle_hide_multiple {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my @ids = $self->param('multiselect');
+    my @ids = $self->multi_param('multiselect');
     foreach(@ids){
         my $obj = new XIMS::Object('id' => $_);
         if($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::WRITE()){
@@ -552,7 +552,7 @@ sub event_movemultiple_browse {
 	$ctxt->properties->application->styleprefix("common");
 	$ctxt->properties->application->style("error");
 	
-	my @ids = $self->param('multiselect');
+	my @ids = $self->multi_param('multiselect');
     my @objects;
     my $to = $self->param("to");
     if ( not( $to =~ /^\d+$/ ) ) {
@@ -637,7 +637,7 @@ sub event_movemultiple {
 			$ctxt->session->error_msg( __ "Target is not a valid container" );
 			return 0;
 		}
-	my @ids = $self->param('multiselect');
+	my @ids = $self->multi_param('multiselect');
     foreach(@ids){
     	my $object = new XIMS::Object('id' => $_);
     	
@@ -694,7 +694,7 @@ sub event_aclmultiple_prompt {
 	XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my @ids = $self->param('multiselect');
+    my @ids = $self->multi_param('multiselect');
     my @objects;
     foreach(@ids){
     	my $obj = new XIMS::Object('id' => $_);
