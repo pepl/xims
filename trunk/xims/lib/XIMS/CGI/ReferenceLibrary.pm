@@ -195,7 +195,7 @@ sub event_reflibsearch {
     # The following parameter can be used to specify a title for the citation listing
     # Since it *may* come in as latin1 depending on the pubstylesheet encoding,
     # we have to make sure that it will be utf8 encoded.
-    my $ptitle = XIMS::utf8_sanitize($self->param('ptitle'));
+    my $ptitle = XIMS::utf8_sanitize( scalar $self->param('ptitle'));
     if ( defined $ptitle ) {
         $self->param( 'ptitle', $ptitle );
     }
