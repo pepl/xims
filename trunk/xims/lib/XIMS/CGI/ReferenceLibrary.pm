@@ -298,10 +298,6 @@ sub event_import {
     }
     else {
         $body = $self->param( 'body' );
-        if ( defined $body and length $body ) {
-            # Converter needs latin1
-            $body = Text::Iconv->new("UTF-8", "ISO-8859-1")->convert($body);
-        }
     }
 
     unless ( defined $body and length $body ) {
@@ -333,7 +329,7 @@ sub event_import {
         # Use format converter binaries available at
         # http://www.scripps.edu/~cdputnam/software/bibutils/bibutils.html
         # TODO: take path from config, or use Perl Module (if available)
-        my $inputformatfilterpath = '/usr/local/bin/';
+        my $inputformatfilterpath = '/usr/bin/';
         my $inputformatfilter = $inputformatfilterpath . $sourcetypemap{$importformat};
         if ( not -f $inputformatfilter ) {
             XIMS::Debug( 3, "Could not find import filter binary $inputformatfilter" );
@@ -349,7 +345,7 @@ sub event_import {
         # convert input file
         my $modsbody;
         eval {
-            $modsbody = `$inputformatfilter $tmpfilename`;
+            $modsbody = `$inputformatfilter -i utf8 $tmpfilename`;
         };
         if ( $@ ) {
             XIMS::Debug( 2, "Could not execute '$inputformatfilter $tmpfilename': $@" );
@@ -369,8 +365,6 @@ sub event_import {
             XIMS::Debug( 2, "Could not unlink temporary file." . $!);
         }
     }
-
-    #warn Dumper "modsbody: " . $body;
 
     my $parser = XML::LibXML->new();
     my $doc;
@@ -446,12 +440,13 @@ sub event_import {
                   );
 
     my %genremapping = ( periodical => 'Article',
-                        book => 'Book',
-                        "conference publication" => 'Proceeding',
-                        report => 'Report',
-                        eprint => 'Preprint',
-                        preprint => 'Preprint',
-                        theses => 'Dissertation' );
+                         book => 'Book',
+                         "conference publication" => 'Proceeding',
+                         report => 'Report',
+                         eprint => 'Preprint',
+                         preprint => 'Preprint',
+                         theses => 'Dissertation',
+                         'journal article' => 'Article',);
 
     my $modsimported = 0;
 
@@ -557,7 +552,7 @@ sub event_import {
             }
         }
         else {
-            XIMS::Debug( 4, "Import of reference $title failed" );
+            XIMS::Debug( 4, "Import of reference '$title' failed" );
             next;
         }
 

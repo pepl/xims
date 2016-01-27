@@ -7,8 +7,6 @@
  -->
 <xsl:stylesheet version="1.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<!--<xsl:import href="common.xsl"/>-->
-	
 	<xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 	
 	<xsl:variable name="popupsizes">
