@@ -472,8 +472,11 @@ sub event_import {
             my $lastname = XIMS::clean( XIMS::nodevalue( $authorn->findnodes("m:namePart[\@type='family']") ) );
             next unless ( defined $lastname and length $lastname );
             my $firstname = XIMS::clean( XIMS::nodevalue( $authorn->findnodes("m:namePart[\@type='given' and position() = 1]") ) );
+            $firstname = '' unless defined $firstname;
+            $firstname =~ s/^([A-Z])$/$1./;
             my $middlename = XIMS::clean( XIMS::nodevalue( $authorn->findnodes("m:namePart[\@type='given' and position() = 2]") ) );
             $middlename = '' unless defined $middlename;
+            $middlename =~ s/^([A-Z])$/$1./;
             my $role = XIMS::clean( XIMS::nodevalue( $authorn->findnodes("m:role/m:roleTerm[\@authority='marcrelator' and \@type='text']") ) );
 
             my $vlibauthor = XIMS::VLibAuthor->new( lastname => XIMS::escapewildcard( $lastname ),
