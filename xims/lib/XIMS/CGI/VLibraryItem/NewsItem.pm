@@ -74,7 +74,8 @@ sub event_store {
 
             # will be undef if string can not be converted to iso-8859-1
             $img_obj->location(
-                $converter->convert( $self->param('imagefile') ) );
+                $converter->convert( scalar $self->param('imagefile') )
+            );
 
             my $type = $self->uploadInfo($img_fh)->{'Content-Type'};
             my $df;

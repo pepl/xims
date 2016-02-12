@@ -414,11 +414,12 @@ sub event_publishmultiple {
             return 0;
         }
     }
-    my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'publish', \@org_ids, $no_dependencies_update, $self->param("recpublish") );
+    my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'publish', \@org_ids, $no_dependencies_update, scalar $self->param("recpublish") );
     XIMS::Debug( 4, "redirecting to the container" );
     $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
     return 0;
 }
+
 =head2 event_unpublishnmultiple()
 
 =cut
@@ -474,7 +475,7 @@ sub event_unpublishmultiple {
     }
     
     #
-    my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'unpublish', \@org_ids, $no_dependencies_update, $self->param("recpublish") );
+    my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'unpublish', \@org_ids, $no_dependencies_update, scalar $self->param("recpublish") );
     XIMS::Debug( 4, "redirecting to the container - id:".$ctxt->object->id );
     $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
     return 0;

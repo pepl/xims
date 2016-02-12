@@ -506,7 +506,7 @@ sub _create_mapping_from_name {
 
     my @vlpropvalues = split( ";", XIMS::trim( $propertyvalue ) );
     foreach my $value (@vlpropvalues) {
-        my $parsed_name;
+        my $parsed_name = {};
         my $propclass = "XIMS::VLib" . $propertyname;
 
         # XXX no code for publications?
@@ -523,8 +523,7 @@ sub _create_mapping_from_name {
               $propclass->new( %{$parsed_name},
                 document_id => $object->parent_id() );
         }
-
-        if ( not( defined $propobject and $propobject->id() ) ) {
+        if ( keys(%$parsed_name) and not(defined $propobject and $propobject->id()) ) {
             $propobject = $propclass->new();
             if ( $propertyname eq 'Author' ) {
                 $propobject->lastname( $parsed_name->{lastname} );
