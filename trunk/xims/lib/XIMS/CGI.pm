@@ -3164,8 +3164,8 @@ sub event_prettyprintxml {
     );
     $self->skipSerialization(1);
 
-    my $doc = $ctxt->object->balanced_string($string);
-    if ( defined $doc and $doc->isa('XML::LibXML::DocumentFragment') ) {
+    my $doc = $ctxt->object->balanced_string($string, nochunk => 1);
+    if ( defined $doc and $doc->isa('XML::LibXML::Document') ) {
         $self->{RES}->body( $doc->toString(1) );
     }
     else {
