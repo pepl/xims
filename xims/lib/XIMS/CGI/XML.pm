@@ -402,6 +402,50 @@ sub event_simpleformedit {
     return 0;
 }
 
+=head2 event_test_wellformedness()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_test_wellformedness(...)
+
+=cut
+
+sub event_test_wellformedness {
+	XIMS::Debug( 5, "called" );
+	my ( $self, $ctxt ) = @_;
+
+	my $body = $self->param('body');
+
+	# if we got no body param, use $object->body
+	my $string = defined $body ? $body : $ctxt->object->body();
+
+	$self->{RES} = $self->{REQ}->new_response(
+        $self->psgi_header( -type => 'text/plain',
+                            -charset => 'UTF-8' )
+    );
+	$self->skipSerialization(1);
+
+    # XML-Types are supposed to be full XML documents
+	my $test = $ctxt->object->balanced_string( $string, verbose_msg => 1, nochunk=> 1 );
+	if ( $test->isa('XML::LibXML::Document') ) {
+		$self->{RES}->body("Parse ok\n");
+	}
+	else {
+		$test = $test;
+		$test ||= "Cowardly refusing to fill an errorstring";
+        $self->{RES}->body( "$test\n" );
+	}
+
+	return 0;
+}
+
+
+
+
 =head2 private functions/methods
 
 =over
