@@ -118,9 +118,9 @@ sub _set_children {
 
         my @children;
         if ($object->{ObjectType}->is_fs_container == 1) {
-            # container.xml files should contain ALL children, not a selection of
-            # granted objects depending on the last publisher. Sideeffects?
-            # What about DocumentLinks?
+            # container.xml files should contain ALL PUBLISHED CHILDREN, not a
+            # selection of granted objects depending on the last publisher.
+            # XXX Possible Sideeffects? What about DocumentLinks?
             @children = $object->children(published => 1)
         }
         else {
