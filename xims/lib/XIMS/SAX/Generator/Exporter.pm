@@ -116,7 +116,16 @@ sub _set_children {
             $childrenargs{object_type_id} = \@object_type_ids;
         }
 
-        my @children = $object->children_granted(%childrenargs);
+        my @children;
+        if ($object->{ObjectType}->is_fs_container == 1) {
+            # container.xml files should contain ALL children, not a selection of
+            # granted objects depending on the last publisher. Sideeffects?
+            # What about DocumentLinks?
+            @children = $object->children(published => 1)
+        }
+        else {
+            @children = $object->children_granted(%childrenargs);
+        }
         $children = \@children;
         $ctxt->object->data_provider->{ocache}->{kids}->{$cachekey}
             = $children;
