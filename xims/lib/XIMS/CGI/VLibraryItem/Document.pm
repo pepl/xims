@@ -150,14 +150,14 @@ sub event_store {
     }
 
     # Store metadata (publisher, chronicle dates, etc)
-    map { $meta->data( $_ => $self->param($_) ) if defined $self->param($_) }
+    map { $meta->data( $_ => scalar $self->param($_) ) if defined $self->param($_) }
       qw(publisher subtitle legalnotice bibliosource mediatype coverage audience);
 
     # For these, check date-format first
     foreach (qw(chronicle_from_date chronicle_to_date dc_date)) {
         if ( defined $self->param($_) ) {
-            if ( $self->_isvaliddate( $self->param($_) ) ) {
-                $meta->data( $_ => $self->param($_) );
+            if ( $self->_isvaliddate( scalar $self->param($_) ) ) {
+                $meta->data( $_ => scalar $self->param($_) );
             }
             else {
                 $error_message =
