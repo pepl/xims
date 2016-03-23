@@ -15,6 +15,17 @@
   <xsl:template name="pre-body-hook">
     <xsl:call-template name="div-vlitemmeta"/>
   </xsl:template>
+       
+  <xsl:template name="view-content">
+    <div id="docbody">
+      <xsl:comment/>
+      <div id="content">
+         <xsl:call-template name="pre-body-hook"/>
+         <xsl:apply-templates select="body"/>
+      </div>      
+      <xsl:call-template name="documentlinks"/>
+    </div>
+  </xsl:template>
 
 </xsl:stylesheet>
 
