@@ -346,16 +346,15 @@ sub convert2folder {
     # Update the department_id of descendants
     my $iterator = $self->descendants( department_id => $self->document_id() );
 
-    # Exit if no descendant has to be updated
-    return undef unless defined $iterator;
-
-    while ( my $descendant = $iterator->getNext() ) {
-        $descendant->department_id( $self->department_id() );
-        if ( $descendant->update( User => $self->User, no_modder => 1 ) ) {
-            XIMS::Debug(4, "Updated department_id of '" . $descendant->title . "'.\n");
-        }
-        else {
-            XIMS::Debug(4, "Could not update department_id of '" . $descendant->location_path . "'.\n");
+    if ( defined $iterator ) {
+        while ( my $descendant = $iterator->getNext() ) {
+            $descendant->department_id( $self->department_id() );
+            if ( $descendant->update( User => $self->User, no_modder => 1 ) ) {
+                XIMS::Debug(4, "Updated department_id of '" . $descendant->title . "'.\n");
+            }
+            else {
+                XIMS::Debug(4, "Could not update department_id of '" . $descendant->location_path . "'.\n");
+            }
         }
     }
 
