@@ -33,6 +33,9 @@
 			var spantitle = xiElm ? dom.getAttrib(xiElm, 'title').split('#') : '';
 			data.href = xiElm ? dom.getAttrib(xiElm, 'title').split('#')[0] : '';
 			data.xpointer = xiElm ? dom.getAttrib(xiElm, 'title').split('#')[1] : '';
+			if(!data.xpointer){
+				data.xpointer = '';
+			}
 			
 			var generalFormItems = [
 				{

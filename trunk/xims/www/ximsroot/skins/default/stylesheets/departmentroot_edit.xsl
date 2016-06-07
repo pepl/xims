@@ -19,7 +19,17 @@
 		<xsl:call-template name="form-stylemedia"/>
 		<xsl:call-template name="form-keywordabstract"/>
 		<xsl:call-template name="form-obj-specific"/>
-		
+    
+    <!-- start uibk-design extras -->
+        <xsl:if test="contains($absolute_path, 'uniweb') or contains($absolute_path, 'cabal')">
+        <!-- show only to webadmins -->
+        <xsl:if test="/document/context/session/user/userprefs/profile_type = 'webadmin'">
+          <xsl:call-template name="select-faculty"/>
+          <xsl:call-template name="select_category"/>
+        </xsl:if>
+      </xsl:if>
+        <!-- end uibk-design extras -->
+    <br class="clear"/>
 	</xsl:template>
 	
 	<xsl:template match="objectlist/object">

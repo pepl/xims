@@ -178,5 +178,9 @@ tinymce.addI18n('de_AT',{
 "Format": "Format",
 "Address": "Adresse",
 "Blockquote": "Zitat (blockquote)",
-"Insert nonbreaking space": "Leerzeichen einf\u00fcgen"
+"Insert nonbreaking space": "Leerzeichen einf\u00fcgen",
+"div": "div",
+"aside": "aside",
+"section": "section",
+"You have unsaved changes are you sure you want to navigate away?": "Sie haben ungespeicherte Änderungen. Sind Sie sicher, dass Sie die Bearbeitung abbrechen möchten?"
 });

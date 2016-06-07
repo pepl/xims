@@ -259,9 +259,9 @@ sub _render_form {
 # TODO: i18n.
     my $env = shift;
     my $req = Plack::Request->new($env);  
-    my %messages = (mismatch => '<div class="message"><span>Login failed.<br/>Try again with your correct username and password.</span></div>',
-                    logout => '<div class="message"><span>Logout successful.<br/>To log in again, enter your username and password.</span></div>',
-                    timeout => '<div class="message"><span>Sorry, your session timed out.<br/>To log in again, enter your username and password.</span></div>'
+    my %messages = (mismatch => '<div class="message"><span>Anmeldung fehlgeschlagen.<br/>Bitte geben Sie Benutzernamen und Kennwort korrekt ein.</span></div>',
+                    logout => '<div class="message"><span>Abmeldung erfolgreich.<br/>Um sich erneut anzumelden, geben Sie bitte Benutzernamen und Kennwort ein.</span></div>',
+                    timeout => '<div class="message"><span>Leider ist Ihre Sitzung abgelaufen.<br/>Um sich erneut anzumelden, geben Sie bitte Benutzernamen und Kennwort ein.</span></div>',
                 );
     
     my $message = $messages{ $req->param('reason') };
@@ -280,10 +280,15 @@ sub _render_form {
   <body">
     <div id="main">
       <div id="header">
-        <h1 class="university">My Organization</h1>
+        <h1 class="university">Universität Innsbruck</h1>
         <div id="emotionimage">
           <a title="XIMS" href="http://xims.info">
             <img alt="XIMS Logo" title="XIMS" width="44px" height="44px" src="/ximsroot/images/xims_logo_44x44.png"/>
+          </a>
+        </div>
+        <div id="logo_uni5">
+          <a title="Logo der Universität Innsbruck" href="http://www.uibk.ac.at" class="sprite icon_logouni">
+            <img alt="Logo der Universität Innsbruck" title="Logo der Universität Innsbruck" src="/ximspubroot/images/uni-logo.jpg" />
           </a>
         </div>
       </div>
@@ -294,11 +299,11 @@ sub _render_form {
         </h2>
         $message
         <div>
-          <label for="userid">Username: </label>
+          <label for="userid">Benutzername: </label>
           <input tabindex="1" type="text" name="userid" id="userid" class="text" required autofocus/>
         </div>
         <div>
-          <label for="password">Password: </label>
+          <label for="password">Kennwort: </label>
           <input tabindex="2" type="password" name="password" id="password" class="text" required/>
         </div>
         <div class="submit">
@@ -306,6 +311,15 @@ sub _render_form {
           <input tabindex="3" type="submit" name="login" value="Login" class="control"/>
         </div>
       </form>
+      <div class="infolinks">
+        <h2><span class="infotext">Hilfreiche Links</span></h2>
+        <ul>
+          <li><a href="http://www.uibk.ac.at/webredaktion/xims/">XIMS an der Universität Innsbruck</a></li>
+          <li><a href="http://www.uibk.ac.at/webredaktion/xims/dokumentation/xims-in-sechs-schritten/">Benutzeranleitung - XIMS in sechs Schritten</a></li>
+          <li><a href="http://www.uibk.ac.at/webredaktion/webstyleguide/">Webstyleguide Webredaktion</a></li>
+          <li><a href="http://www.uibk.ac.at/webredaktion/xims/zugang-support-schulung.html">Informationen zu XIMS-Zugang, -Support und -Kursen</a></li>
+        </ul>
+      </div>
     </div>
   </body>
 </html>

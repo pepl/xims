@@ -55,8 +55,9 @@
 <div class="form-div block">
 	<xsl:call-template name="form-nl-to"/>
 	<xsl:call-template name="form-nl-replyto"/>
-<xsl:call-template name="form-nl-subject"/>
-<xsl:call-template name="form-includeimages"/>
+	<xsl:call-template name="form-nl-bcc"/>
+        <xsl:call-template name="form-nl-subject"/>
+        <xsl:call-template name="form-includeimages"/>
 </div>              
               <div style="margin: auto; text-align: center;">
           <p><xsl:value-of select="$i18n/l/Preview"/>:</p>
@@ -138,7 +139,7 @@
 <xsl:template name="form-nl-to">
   <div>
     <div class="label-std"><label for="input-nl-to"><xsl:value-of select="$i18n/l/Email_To"/>*</label></div>
-    <input id="input-nl-to" name="to" size="60" type="email" required="" class="text"/>
+    <input id="input-nl-to" name="to" size="60" type="email" multiple="" required="" class="text"/>
     <!--<xsl:text>&#160;</xsl:text>
     <a href="javascript:openDocWindow('To')" class="doclink">
     <xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/To"/></xsl:attribute>(?)</a>-->
@@ -158,12 +159,23 @@
 <xsl:template name="form-nl-subject">
 <div>
 	<div class="label-std"><label for="input-nl-subject"><xsl:value-of select="$i18n/l/Email_Subject"/>*</label></div>
-	<input id="input-nl-subject" name="subject" size="60" type="text" class="text" required=""/>
+	<input id="input-nl-subject" name="subject" size="60" type="text" class="text" required="" maxlength="60"/>
 	<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Subject')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Subject"/></xsl:attribute>(?)</a>-->
 				</div>
 </xsl:template>
+
+<xsl:template name="form-nl-bcc">
+    <div>
+        <div class="label-std">
+            <label for="input-nl-bcc">BCC</label>
+        </div>
+        <input id="input-nl-bcc" name="bcc" size="60" type="email" class="text" multiple=""/>
+    </div>
+</xsl:template>
+
+
 
 <xsl:template name="form-includeimages">
 		<div>

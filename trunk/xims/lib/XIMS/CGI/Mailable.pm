@@ -89,8 +89,13 @@ sub event_send_as_mail {
 
     my $object = $ctxt->object();
 
+
+    # User->full_name kommt aus der sec$users, UIBK-spezifisch!
+    # fullname != full_name
     my $from = '"'
-               . Encode::encode( "MIME-Header", $object->User->fullname )
+               . Encode::encode( "MIME-Header", 
+                                 $object->User->full_name 
+                 )
                . '" <' . $object->User->email . '>';
 
     unless ( $object->published() ) {
@@ -115,9 +120,13 @@ sub event_send_as_mail {
                       );
     }
 
-    my $to = Email::Valid->address( $self->param('to') );
+    my $to = join(',', grep { Email::Valid->address($_) }
+                            split( /[,;]/, $self->param('to') )
+             );
 
-    # my $bcc    = Email::Valid->address($self->param('bcc')) or q();
+    my $bcc = join(',', grep { Email::Valid->address($_) } 
+                             split( /[,;]/, $self->param('bcc') )
+              );
 
     unless ( length $to ) {
         $self->sendError( $ctxt, __"No valid email address supplied!" );
@@ -136,12 +145,13 @@ sub event_send_as_mail {
         return 0;
     }
 
-    $subject = Encode::encode( "MIME-Header", XIMS::utf8_sanitize( $subject ) );
+    my $subject = Encode::encode( "MIME-Header", XIMS::utf8_sanitize( $subject ) );
 
     my $reply_to = Email::Valid->address( $self->param('reply-to') );
 
     my $include_type = 'extern';
     if ( $self->param('mailer_include_images') eq 'true' ) {
+        XIMS::Debug( 6, "Including Images" );
         $include_type = 'location';
     }
 
@@ -164,6 +174,7 @@ sub event_send_as_mail {
         From         => $from,
         To           => $to,
         Subject      => $subject,
+        Bcc          => $bcc,
         'Reply-To'   => $reply_to,
         HTMLCharset  => 'iso-8859-1',
         HTMLEncoding => 'base64',
@@ -217,6 +228,8 @@ sub event_send_as_mail {
             );
         return 0;
     }
+
+    #warn "----\n".$MIMEmail->as_string."\n----\n";
 
     if ( $MIMEmail->send() ) {
         $ctxt->session->message("Mail sent");
