@@ -52,8 +52,10 @@ $().ready(function(){
         paste_text_use_dialog: true,
         paste_preprocess: 'convertWordBefore',
         paste_postprocess: 'convertWordAfter',
-        extended_valid_elements: "#xi:include[*],#xi:fallback[*],@[xml::lang|class|id|style],multipage,+subpage[*],iframe[*],#td[*],tr[*],-ol[start|type|compact],br[class|clear<all?left?none?right],#span[class|title|style|lang],video[*],audio[*],source[*]",
-        custom_elements: 'xi:include,xi:fallback',
+        //uibk special: Theologischer Leseraum 
+        allow_html_in_named_anchor: true,
+        extended_valid_elements: "#xi:include[*],#xi:fallback[*],@[xml::lang|class|id|style],multipage,+subpage[*],iframe[*],#td[*],tr[*],-ol[start|type|compact],br[class|clear<all?left?none?right],#span[class|title|style|lang],video[*],audio[*],source[*],#uibk:lv-liste[*]",
+        custom_elements: 'xi:include,xi:fallback,~uibk:lv-liste',
         invalid_elements: "st*:*", //remove word's smarttags
         body_id : "content", //change body-id, so custom css-file can be applied
         content_css: css, 

@@ -150,7 +150,7 @@ sub handler {
 
     # run app and return
     if ( $res = run_app($app_class, $env) ) {
-        push @{$res->[1]}, ('Cache-Control', 'private, must-revalidate',
+        push @{$res->[1]}, ('Cache-Control', 'no-cache',
                             'X-UA-Compatible', 'IE=10');
         return $res;
     }
@@ -196,83 +196,6 @@ sub quick_handler {
 
 };
 
-
-# TODO: i18n. 
-sub login_screen {
-    my $env = shift;
-    #my ($env, $reason) = @_;
-    my $req = Plack::Request->new($env);  
-    my %messages = (mismatch => '<div class="message"><span>Login failed.<br/>Try again with your correct username and password.</span></div>',
-                    logout => '<div class="message"><span>Logout successful.<br/>To log in again, enter your username and password.</span></div>',
-                    timeout => '<div class="message"><span>Sorry, your session timed out.<br/>To log in again, enter your username and password.</span></div>'
-                );
-    
-    my $message = $messages{ $req->param('reason') };
-    my $action = $req->param('r');
-    my $goxims = XIMS::GOXIMS();
-    if ($action =~ /^$goxims/) {
-        $action =~ s!(^/[a-z]+(?:/[-_a-z0-9]+(?:\.[a-z0-9]+){0,2})*/?)?.*!$1!i;
-    }
-    else {
-        $action = XIMS::GOXIMS();
-    }
-
-    # my $motd = q();
-    my $motd = <<MOTD;
-<div class="warning">
-    <p>I am the optional message of the day. (Lorem ipsum, baby!)</p>
-</div>
-MOTD
-
-    my $body = <<FORM;
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>XIMS - Login</title>
-    <link rel="stylesheet" media="screen" type="text/css" href="/ximsroot/stylesheets/login.css"/>
-  </head>
-  <body">
-    <div id="main">
-      <div id="header">
-        <h1 class="university">My Organization</h1>
-        <div id="emotionimage">
-          <a title="XIMS" href="http://xims.info">
-            <img alt="XIMS Logo" title="XIMS" width="44px" height="44px" src="/ximsroot/images/xims_logo_44x44.png"/>
-          </a>
-        </div>
-      </div>
-      $motd
-      <form method="post" name="login" action="$action" id="login">
-        <h2>
-          <span class="infotext">XIMS LOGIN</span>
-        </h2>
-        $message
-        <div>
-          <label for="userid">Username: </label>
-          <input tabindex="1" type="text" name="userid" id="userid" class="text" required autofocus/>
-        </div>
-        <div>
-          <label for="password">Password: </label>
-          <input tabindex="2" type="password" name="password" id="password" class="text" required/>
-        </div>
-        <div class="submit">
-          <input type="hidden" name="dologin" value="1" />
-          <input tabindex="3" type="submit" name="login" value="Login" class="control"/>
-        </div>
-      </form>
-    </div>
-  </body>
-</html>
-FORM
-
-return [ 200,
-         [ 'Content-Type' => 'text/html;charset=UTF-8',
-           'Set-Cookie' => 'session=; path=/; expires=-1Y',
-           'Content-Security-Policy' => "default-src 'none'; img-src 'self'; style-src 'self'",
-           'X-Frame-Options' => "DENY", ],
-         [ encode('UTF-8', $body) ]
-     ];
-};
 
 sub get_interface {
     my $req = shift;

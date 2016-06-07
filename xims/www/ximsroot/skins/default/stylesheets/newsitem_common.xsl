@@ -113,12 +113,33 @@
 				<input type="text" name="imagefolder" size="60" class="text" id="input-image-target">
 					<!--  Provide an "educated-guess" default value -->
 					<xsl:attribute name="value">
-						<xsl:for-each select="/document/context/object/parents/object[@document_id != 1]">
-							<xsl:text>/</xsl:text>
-							<xsl:value-of select="location"/>
-						</xsl:for-each>
-						<xsl:text>/images</xsl:text>
-					</xsl:attribute>
+            <!-- uibk - lokale aenderung wg. ipoint images
+                 <xsl:for-each select="/document/context/object/parents/object[@document_id != 1]"> -->
+	           <xsl:choose>
+	             <!-- Falls wir in einer Rubrik unter news sind, kommt das Bild in den gemeinsamen Bilderordner -->
+	             <xsl:when test="/document/context/object/parents/object[@document_id=179280]">
+	               <xsl:for-each select="/document/context/object/parents/object[@document_id != 1 and @document_id != /document/context/object/@parent_id]">
+	                 <xsl:text>/</xsl:text>
+	                 <xsl:value-of select="location"/>
+	                 </xsl:for-each><xsl:text>/images/</xsl:text><xsl:value-of select="date:year()"/>
+	             </xsl:when>
+	             <xsl:otherwise>
+	               <xsl:for-each select="/document/context/object/parents/object[@document_id != 1]">
+	                 <xsl:text>/</xsl:text>
+	                 <xsl:value-of select="location"/>
+	                 </xsl:for-each><xsl:text>/images/</xsl:text><xsl:value-of select="date:year()"/>
+	             </xsl:otherwise>
+	           </xsl:choose>
+          </xsl:attribute>
+          <!-- orig:
+             <xsl:attribute name="value">
+             <xsl:for-each select="/document/context/object/parents/object[@document_id != 1]">
+             <xsl:text>/</xsl:text>
+             <xsl:value-of select="location"/>
+             </xsl:for-each>
+             <xsl:text>/images</xsl:text>
+             </xsl:attribute>
+          -->
 				</input>
 				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('NewsItemImage')" class="doclink">(?)</a>-->

@@ -2027,7 +2027,7 @@ i.mce-i-backcolor {
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-
+/*
 .mce-i-uniE034:before {
 	content: "\e034";
 }
@@ -2217,6 +2217,297 @@ i.mce-i-backcolor {
 .mce-i-qrcode:before {
 	content: "\e607";
 }
+*/
+
+.mce-i-codesample:before {
+    content: "\e610";
+}
+.mce-i-drop:before {
+    content: "\e934";
+}
+.mce-i-sharpen:before {
+    content: "\eba7";
+}
+.mce-i-contrast:before {
+    content: "\ecd4";
+}
+.mce-i-cross2:before {
+    content: "\ed6a";
+}
+.mce-i-arrow-resize2:before {
+    content: "\edf9";
+}
+.mce-i-gamma:before {
+    content: "\e607";
+}
+.mce-i-orientation:before {
+    content: "\e608";
+}
+.mce-i-editimage:before {
+    content: "\e914";
+}
+.mce-i-rotateleft:before {
+    content: "\eaa8";
+}
+.mce-i-rotateright:before {
+    content: "\eaa9";
+}
+.mce-i-flipv:before {
+    content: "\eaaa";
+}
+.mce-i-fliph:before {
+    content: "\eaac";
+}
+.mce-i-zoomin:before {
+    content: "\eb35";
+}
+.mce-i-zoomout:before {
+    content: "\eb36";
+}
+.mce-i-options:before {
+    content: "\ec6a";
+}
+.mce-i-sun:before {
+    content: "\eccc";
+}
+.mce-i-moon:before {
+    content: "\eccd";
+}
+.mce-i-arrowleft:before {
+    content: "\edc0";
+}
+.mce-i-crop:before {
+    content: "\ee78";
+}
+.mce-i-tablerowprops:before {
+    content: "\e609";
+}
+.mce-i-tablecellprops:before {
+    content: "\e60a";
+}
+.mce-i-table2:before {
+    content: "\e60b";
+}
+.mce-i-tablemergecells:before {
+    content: "\e60c";
+}
+.mce-i-tableinsertcolbefore:before {
+    content: "\e60d";
+}
+.mce-i-tableinsertcolafter:before {
+    content: "\e60f";
+}
+.mce-i-tableinsertrowbefore:before {
+    content: "\e611";
+}
+.mce-i-tableinsertrowafter:before {
+    content: "\e612";
+}
+.mce-i-tablesplitcells:before {
+    content: "\e613";
+}
+.mce-i-tabledelete:before {
+    content: "\e614";
+}
+.mce-i-tableleftheader:before {
+    content: "\e62a";
+}
+.mce-i-tabletopheader:before {
+    content: "\e62b";
+}
+.mce-i-tabledeleterow:before {
+    content: "\e800";
+}
+.mce-i-tabledeletecol:before {
+    content: "\e801";
+}
+.mce-i-images:before {
+    content: "\e60e";
+}
+.mce-i-outdent:before {
+    content: "\e00d";
+}
+.mce-i-indent:before {
+    content: "\e00c";
+}
+.mce-i-extra-icons:before {
+    content: "\e602";
+}
+.mce-i-clearbr:before {
+    content: "\e603";
+}
+.mce-i-visualblocks:before {
+    content: "\e604";
+}
+.mce-i-show-blocks:before {
+    content: "\e605";
+}
+.mce-i-xml:before {
+    content: "\e606";
+}
+.mce-i-browse:before {
+    content: "\e034";
+}
+.mce-i-resize:before {
+    content: "\e032";
+}
+.mce-i-copy:before {
+    content: "\e031";
+}
+.mce-i-rtl:before {
+    content: "\e030";
+}
+.mce-i-ltr:before {
+    content: "\e02f";
+}
+.mce-i-visualchars:before {
+    content: "\e02e";
+}
+.mce-i-strikethrough:before {
+    content: "\e02d";
+}
+.mce-i-underline:before {
+    content: "\e02c";
+}
+.mce-i-italic:before {
+    content: "\e02b";
+}
+.mce-i-bold:before {
+    content: "\e02a";
+}
+.mce-i-uniE029:before {
+    content: "\e029";
+}
+.mce-i-restoredraft:before {
+    content: "\e028";
+}
+.mce-i-pagebreak:before {
+    content: "\e027";
+}
+.mce-i-template:before {
+    content: "\e026";
+}
+.mce-i-nonbreaking:before {
+    content: "\e025";
+}
+.mce-i-spellchecker:before {
+    content: "\e024";
+}
+.mce-i-fullscreen:before {
+    content: "\e023";
+}
+.mce-i-print:before {
+    content: "\e022";
+}
+.mce-i-emoticons:before {
+    content: "\e021";
+}
+.mce-i-charmap:before {
+    content: "\e020";
+}
+.mce-i-superscript:before {
+    content: "\e01f";
+}
+.mce-i-subscript:before {
+    content: "\e01e";
+}
+.mce-i-removeformat:before {
+    content: "\e01d";
+}
+.mce-i-hr:before {
+    content: "\e01c";
+}
+.mce-i-table:before {
+    content: "\e01b";
+}
+.mce-i-forecolor:before {
+    content: "\e01a";
+}
+.mce-i-preview:before {
+    content: "\e019";
+}
+.mce-i-inserttime:before {
+    content: "\e018";
+}
+.mce-i-code:before {
+    content: "\e017";
+}
+.mce-i-help:before {
+    content: "\e016";
+}
+.mce-i-media:before {
+    content: "\e015";
+}
+.mce-i-image:before {
+    content: "\e014";
+}
+.mce-i-anchor:before {
+    content: "\e013";
+}
+.mce-i-unlink:before {
+    content: "\e012";
+}
+.mce-i-link:before {
+    content: "\e011";
+}
+.mce-i-redo:before {
+    content: "\e010";
+}
+.mce-i-undo:before {
+    content: "\e00f";
+}
+.mce-i-blockquote:before {
+    content: "\e00e";
+}
+.mce-i-outdent2ndline:before {
+    content: "\e600";
+}
+.mce-i-indent2ndline:before {
+    content: "\e601";
+}
+.mce-i-numlist:before {
+    content: "\e00b";
+}
+.mce-i-bullist:before {
+    content: "\e00a";
+}
+.mce-i-searchreplace:before {
+    content: "\e009";
+}
+.mce-i-paste:before {
+    content: "\e008";
+}
+.mce-i-cut:before {
+    content: "\e007";
+}
+.mce-i-alignjustify:before {
+    content: "\e006";
+}
+.mce-i-alignright:before {
+    content: "\e005";
+}
+.mce-i-aligncenter:before {
+    content: "\e004";
+}
+.mce-i-alignleft:before {
+    content: "\e003";
+}
+.mce-i-fullpage:before {
+    content: "\e002";
+}
+.mce-i-newdocument:before {
+    content: "\e001";
+}
+.mce-i-save:before {
+    content: "\e000";
+}
+.mce-i-uniE033:before {
+    content: "\e033";
+}
+.mce-i-pastetext:before {
+    content: "\e035";
+}
+
 
 /*xims specials*/
 .mceButton-sprite {
@@ -2280,3 +2571,4 @@ i.mce-i-backcolor {
 .mceButton-sprite a.mce_ximsextras_new {
 	width: 30px !important;
 }
+.fa{font-family: 'Fontawesome';}

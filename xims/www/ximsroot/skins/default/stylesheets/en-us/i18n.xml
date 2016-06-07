@@ -530,6 +530,7 @@
 <Email_Send>Send</Email_Send>
 <Container_View>Container view</Container_View>
 <NavHide>Hide this object from navigation</NavHide>
+<NavShow>Include this object in the navigation</NavShow>
 <NavTitle>Optional short title for navigation</NavTitle>
 <NavHidden>This object is hidden from the navigation.</NavHidden>
 <NavShows>This object shows up in the navigation.</NavShows>

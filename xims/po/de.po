@@ -573,7 +573,7 @@ msgstr "Bitte geben Sie eine aussagekräftigen Betreff an!"
 
 #: ../lib/XIMS/CGI/Mailable.pm:144
 msgid "Please keep the subject below 60 characters"
-msgstr "Suchanfragen müssen zwischen 2 und 30 Zeichen lang sein!"
+msgstr "Der Betreff darf maximal 60 Zeichen lang sein!"
 
 #: ../lib/XIMS/CGI/Mailable.pm:223
 #, perl-brace-format
