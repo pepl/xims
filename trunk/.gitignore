@@ -1,3 +1,7 @@
 xims/conf/ximsconfig.xml
 xims/www/ximsroot/stylesheets/config.xsl
+<<<<<<< HEAD
 \#*
+=======
+xims/ximsctl
+>>>>>>> + adding .gitignore
