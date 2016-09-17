@@ -82,7 +82,7 @@
 <purge>Endgültig löschen</purge>
 <Trashcan>Papierkorb</Trashcan>
 <Keywords>Schlagwörter</Keywords>
-<Abstract>Zusammen&#173;fassung</Abstract>
+<Abstract>Zusammenfassung</Abstract>
 <Notes>Notizen</Notes>
 <Description>Beschreibung</Description>
 <Valid_from>Gültig ab</Valid_from><!--Gültig von -->
@@ -530,7 +530,6 @@ jeweilige Objekt ist derzeit publiziert.</DeletionNotice>
 <Email_Send>Versende</Email_Send>
 <Container_View>Container Ansicht</Container_View>
 <NavHide>Objekt von der Navigation ausnehmen</NavHide>
-<NavShow>Objekt in die Navigation aufnehmen</NavShow>
 <NavTitle>Optionaler Kurztitel für die Navigation</NavTitle>
 <NavHidden>Dieses Objekt wird von der Navigation ausgenommen.</NavHidden>
 <NavShows>Dieses Objekt wird in der Navigation angezeigt.</NavShows>

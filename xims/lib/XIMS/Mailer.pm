@@ -30,8 +30,7 @@ module's RequestAgent to open connections using a XIMS session.
 
 package XIMS::Mailer;
 
-use strict;
-#use common::sense;
+use common::sense;
 use parent qw(MIME::Lite::HTML);
 
 use HTTP::Request;

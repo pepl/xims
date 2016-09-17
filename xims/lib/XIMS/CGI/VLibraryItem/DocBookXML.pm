@@ -63,11 +63,11 @@ sub event_edit {
     # event edit in SUPER implements operation control
     $self->SUPER::event_edit( $ctxt );
     return 0 if $ctxt->properties->application->style() eq 'error';
-
+    
     # check if a code editor is to be used based on cookie or config
     my $ed = $self->set_code_editor( $ctxt );
     $ctxt->properties->application->style( "edit" . $ed );
-
+    
     return 0;
 }
 

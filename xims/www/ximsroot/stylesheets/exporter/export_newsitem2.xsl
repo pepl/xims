@@ -130,13 +130,7 @@
           type="{concat('image/', translate(@data_format_name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))}" 
           title="{abstract}"
           href="{location_path}">
-        <img class="photo" alt="{title}" src="{location_path}">
-          <xsl:if test="normalize-space(rights) != ''">
-            <xsl:attribute name="data-rights">
-              <xsl:value-of select="normalize-space(rights)"/>
-            </xsl:attribute>
-          </xsl:if>
-        </img>
+        <img class="photo" alt="{title}" src="{location_path}"/>
       </a>
       <xsl:if test="normalize-space(abstract) != ''">
         <figcaption property="description"><xsl:value-of select="abstract"/></figcaption>

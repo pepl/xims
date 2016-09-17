@@ -544,7 +544,6 @@
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Title"/></xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
-
 	<xsl:template name="form-locationtitle-edit_xml">
 		<xsl:variable name="objecttype">
 			<xsl:value-of select="object_type_id"/>
@@ -600,7 +599,6 @@
 			</div>
 		</div>
 	</xsl:template>
-
 	<xsl:template name="form-bodyfromfile-create">
 		<div id="tr-bodyfromfile">
 			<div id="label-bodyfromfile">
@@ -614,7 +612,6 @@
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/bodyfromfile_create"/></xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
-
 	<xsl:template name="form-bodyfromfile-edit">
 		<div id="tr-bodyfromfile">
 			<div class="label-large">
@@ -628,7 +625,6 @@
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/bodyfromfile_edit"/></xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
-
 	<xsl:template name="jsorigbody">
 		<xsl:call-template name="mk-inline-js">
 			<xsl:with-param name="code">
@@ -636,7 +632,6 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-
 	<xsl:template name="form-body-create">
 		<xsl:param name="with_origbody" select="'no'"/>
 		<xsl:param name="mode" select="html"/>
@@ -681,7 +676,6 @@
 			<xsl:call-template name="trytobalance"/>
 		</div>
 	</xsl:template>
-
 	<xsl:template name="testbodysxml">
 		<xsl:call-template name="wfcheckjs"/>
 		<a href="javascript:void(0)" onclick="return wfcheck();">
@@ -1279,45 +1273,27 @@
 	  </div>
 	</xsl:template>
     
-    <!-- <xsl:template name="form-nav-hide"> -->
-	<!--   <div id="tr-navtitle"> -->
-	<!-- 	<div class="label-large"> -->
-	<!-- 	  <label for="input-nav-hide"> -->
-	<!-- 		<xsl:value-of select="$i18n/l/NavHide"/> -->
-	<!-- 	  </label> -->
-	<!-- 	</div> -->
-    <!--     <input type="checkbox" class="checkbox" name="nav-hide" id="input-nav-hide"> -->
-	<!-- 	  <xsl:if test="nav_hide = '1'"> -->
-	<!-- 		<xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute> -->
-	<!-- 	  </xsl:if> -->
-	<!-- 	</input> -->
-	<!--   </div> -->
-	<!-- </xsl:template> -->
-
-    <!-- UIBK: Change default -->
     <xsl:template name="form-nav-hide">
 	  <div id="tr-navtitle">
 		<div class="label-large">
-		  <label for="input-nav-show">
-			<xsl:value-of select="$i18n/l/NavShow"/>
+		  <label for="input-nav-hide">
+			<xsl:value-of select="$i18n/l/NavHide"/>
 		  </label>
 		</div>
-        <input type="checkbox" class="checkbox" name="nav-show" id="input-nav-show">
-		  <xsl:if test="nav_hide = '0'">
+        <input type="checkbox" class="checkbox" name="nav-hide" id="input-nav-hide">
+		  <xsl:if test="nav_hide = '1'">
 			<xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
 		  </xsl:if>
 		</input>
 	  </div>
-	</xsl:template>
+	 </xsl:template>
 
 	<xsl:template name="form-nav-options">
-      <xsl:if test="/document/context/session/user/userprefs/profile_type = 'webadmin'">
-        <div class="block form-div">
-	      <h2>Navigation</h2>
-          <xsl:call-template name="form-nav-title"/>
-          <xsl:call-template name="form-nav-hide"/>
-        </div>
-      </xsl:if>
+     <div class="block form-div">
+	   <h2>Navigation</h2>
+       <xsl:call-template name="form-nav-title"/>
+       <xsl:call-template name="form-nav-hide"/>
+     </div>
     </xsl:template>
     
 	<xsl:template name="options-menu-bar">
@@ -1763,9 +1739,7 @@
 	<xsl:template name="state-toolbar">
 		<div class="toolbar">
 		  <xsl:call-template name="button.state.new"/>
-          <xsl:if test="/document/context/session/user/userprefs/profile_type = 'webadmin'">
-            <xsl:call-template name="button.state.nav"/>
-          </xsl:if>
+          <xsl:call-template name="button.state.nav"/>
 		  <xsl:call-template name="button.state.publish"/>
 		  <xsl:call-template name="button.state.locked"/>
 		</div>

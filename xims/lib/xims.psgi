@@ -32,15 +32,13 @@ builder {
     enable "ConditionalGET";
     enable "HTTPExceptions";
 
-    enable_if { length(XIMS::TRUSTPROXY()) }
-        "XForwardedFor", trust => [split( /,/, XIMS::TRUSTPROXY() )];
+    #enable_if { length(XIMS::TRUSTPROXY()) }
+    #    "Plack::Middleware::XForwardedFor", trust => [split( /,/, XIMS::TRUSTPROXY() )];
 
     # /goxims
     mount XIMS::GOXIMS() => builder {
-        enable 'SetEnvFromHeader' => REMOTE_USER     => 'REMOTE-USER', 
-                                     Shib_Session_ID => 'Shib-Session-ID';
         enable 'XIMS::AppContext';
-        enable 'XIMS::Auth::Ext'; # form authentication as default; see XIMS::Auth::Ext for Shibboleth et al.
+        enable 'XIMS::Auth'; # form authentication as default; see XIMS::Auth::Ext for Shibboleth et al.
         enable 'XIMS::UILang';
         mount XIMS::CONTENTINTERFACE()        => \&goxims::handler; # /content
         mount XIMS::PERSONALINTERFACE()       => \&goxims::handler; # /user
@@ -72,17 +70,6 @@ builder {
         mount '/' => \&goxims::quick_handler;
     };
 
-    # Intranet Suche
-    mount '/intra-search' => builder {
-        enable 'SetEnvFromHeader' => REMOTE_USER     => 'REMOTE-USER', 
-                                     Shib_Session_ID => 'Shib-Session-ID';
-        enable 'XIMS::AppContext';
-        enable 'XIMS::Auth::ExtBasic';
-        enable 'XIMS::UILang';
-        mount XIMS::CONTENTINTERFACE()        => \&goxims::handler; # /content
-        mount '/' => http_exception('NotFound');
-    };
-
     # WebDAV
     mount XIMS::GODAV() => builder {
         enable "XIMS::AppContext";
@@ -91,16 +78,13 @@ builder {
     };
 
     # static files
-    mount '/' => builder {
-        enable "ConditionalGET";
-        mount XIMS::XIMSROOT_URL()    =>  Plack::App::File->new( root => XIMS::XIMSROOT() );
-        mount XIMS::PUBROOT_URL()     =>  Plack::App::File->new( root => XIMS::PUBROOT() );
-        mount '/favicon.ico' => Plack::App::File->new(file => XIMS::XIMSROOT() . '/images/xims_favicon.ico');
-        mount '/robots.txt'  => Plack::App::File->new(file => XIMS::XIMSROOT() . '/robots.txt');
+    mount XIMS::XIMSROOT_URL()    =>  Plack::App::File->new( root => XIMS::XIMSROOT() );
+    mount XIMS::PUBROOT_URL()     =>  Plack::App::File->new( root => XIMS::PUBROOT() );
+    mount '/favicon.ico' => Plack::App::File->new(file => XIMS::XIMSROOT() . '/images/xims_favicon.ico');
+    mount '/robots.txt'  => Plack::App::File->new(file => XIMS::XIMSROOT() . '/robots.txt');
 
-        # Redirect / -> /goxims
-        mount '/' => http_exception(Found => { location => XIMS::GOXIMS() . '/' });
-    }
+    # Redirect / -> /goxims
+    mount '/' => http_exception(Found => { location => XIMS::GOXIMS() . '/' });
 };
 
 __END__
