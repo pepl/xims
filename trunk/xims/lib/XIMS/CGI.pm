@@ -1843,11 +1843,8 @@ sub init_store_object {
 	}
 
 
-    # my $nav_hide = $self->param('nav-hide');
-    # $object->nav_hide( (defined $nav_hide and $nav_hide eq 'on') ? 1 : 0 );
-    # UIBK change default
-    my $nav_show = $self->param('nav-show');
-    $object->nav_hide( (defined $nav_show and $nav_show eq 'on') ? 0 : 1 );
+    my $nav_hide = $self->param('nav-hide');
+    $object->nav_hide( (defined $nav_hide and $nav_hide eq 'on') ? 1 : 0 );
 
     my $nav_title = $self->param('nav-title');
     if ( defined $nav_title ) {

@@ -208,57 +208,6 @@ sub event_store {
         }
     }
 
-    # UIBK special
-    # these Parameters are specific to DepartmentRoots, but handling
-    # them here is still better than practically duplicating in the
-    # whole subroutine...
-    # start patch ;-)
-
-    my $faculty = $self->param( 'faculty' );
-    if ( defined $faculty ) {
-        XIMS::Debug( 6, "faculty: $faculty" );
-        if ($faculty eq 'none') {
-            $object->attribute( faculty => undef );
-        }
-        else {
-            $object->attribute( faculty => $faculty );
-        }
-    }
-
-
-    my $category = $self->param( 'category' );
-    if ( defined $category ) {
-        XIMS::Debug( 6, "category: $category" );
-        if ($category eq 'none') {
-            $object->attribute( category => undef );
-        }
-        else {
-            $object->attribute( category => $category );
-        }
-    }
-
-    my $omit_department_image = $self->param( 'omit_department_image' );
-    if ( defined $omit_department_image and $omit_department_image eq '1' ) {
-        $object->attribute( omit_department_image => $omit_department_image );
-    }
-    elsif ($object->attribute_by_key( 'omit_department_image' )) {
-        $object->attribute( omit_department_image => undef );
-    }
-
-#    my $omit_right_column = $self->param( 'omit_right_column' );
-#    if ( defined $omit_right_column ) {
-#        XIMS::Debug( 6, "omit_right_column: $omit_right_column" );
-#        if ( $omit_right_column == 0 ) {
-#            $object->attribute( omit_right_column => undef );
-#        }
-#        else {
-#            $object->attribute( omit_right_column => $omit_right_column );
-#        }
-#    }
-
-    # end of patch
-    # end UIBK special
-
     return $self->SUPER::event_store($ctxt);
 }
 

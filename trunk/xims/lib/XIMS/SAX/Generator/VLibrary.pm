@@ -114,16 +114,6 @@ sub prepare {
         );
     }
 
-    push(
-                @{ $self->{FilterList} },
-                XIMS::SAX::Filter::ContentObjectPropertyResolver->new(
-                    User           => $ctxt->session->user,
-                    ResolveContent => [qw( image_id )],
-                    Properties     => [qw( abstract )]
-                )
-            );
-
-
     if ( not $ctxt->parent() ) {
 
         # Left here for amusement.
@@ -198,8 +188,6 @@ sub prepare {
                     $child->{authorgroup} =
                       { author => [ $child->vleauthors() ] };
                     $child->{meta} = [ $child->vlemeta() ];
-                    #use Data::Dumper;
-                    #warn Dumper( $child->{meta} );
                     $child->{subjectset} =
                       { subject => [ $child->vlesubjects() ] };
                 }

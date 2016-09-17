@@ -48,7 +48,6 @@
                 <item>user.lastname</item>
                 <item>user.middlename</item>
                 <item>user.firstname</item>
-                <item>user.full_name</item> <!-- UIBK -->
                 <item>user.email</item>
                 <item>user.url</item>
                 <item>user.object_type</item>

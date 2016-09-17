@@ -35,7 +35,7 @@ tinymce.PluginManager.add('advimage', function(editor) {
 		style.visibility = 'hidden';
 		style.position = 'fixed';
 		style.bottom = style.left = 0;
-		//style.width = style.height = 'auto';
+		style.width = style.height = 'auto';
 
 		document.body.appendChild(img);
 		img.src = url;
@@ -171,8 +171,8 @@ tinymce.PluginManager.add('advimage', function(editor) {
 				src: data.src,
 				title: data.title,
 				alt: data.alt,
-				//width: data.width,
-				//height: data.height,
+				width: data.width,
+				height: data.height,
 				style: data.style,
 				captiontext: data.captiontext,
 				//"class": data["class"]
@@ -537,8 +537,8 @@ tinymce.PluginManager.add('advimage', function(editor) {
 				css['float'] = data.align;
 				css['vertical-align'] = '';
 			}
-			//	css['width'] = addPixelSuffix(data.width);
-			//	css['height'] = addPixelSuffix(data.height);
+				css['width'] = addPixelSuffix(data.width);
+				css['height'] = addPixelSuffix(data.height);
 
 			win.find('#style').value(dom.serializeStyle(dom.parseStyle(dom.serializeStyle(css))));
 		}

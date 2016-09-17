@@ -34,7 +34,7 @@
             <!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>--></h2>
 				<textarea name="body" id="body" rows="20" cols="90" onchange="document.getElementById('xims_wysiwygeditor').disabled = true;">
-					<!-- <xsl:text>&lt;p&gt;&#160;&lt;/p&gt;</xsl:text>-->
+					<xsl:text>&lt;p&gt;&#160;&lt;/p&gt;</xsl:text>
 				</textarea>
 		</div>
 		<xsl:call-template name="jsorigbody"/>

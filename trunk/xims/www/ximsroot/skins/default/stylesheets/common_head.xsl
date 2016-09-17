@@ -142,18 +142,8 @@
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/menu.css" type="text/css"/>
 		  
     <!-- custom content css -->
-    <link type="text/css" href="https://www.uibk.ac.at/stylesheets/15/css/bs3grid.css" rel="stylesheet"/> 
     <xsl:if test="$defaultcss != ''"><link type="text/css" href="{$defaultcss}" rel="stylesheet"/></xsl:if>
-    <link type="text/css" href="{$ximsroot}vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
-    <link type="text/css" href="{$ximsroot}vendor/open-sans/open-sans.css" rel="stylesheet"/>
-    <style>
-	    /* #content {
-	       width:695px;
-	       font-family:Verdana,Helvetica,Arial,sans-serif;
-	       font-weight:normal;
-	       padding:0px;
-	       font-size:0.9375em}*/
-    </style>
+
 	</xsl:template>
 	
 	<xsl:template name="script_head">

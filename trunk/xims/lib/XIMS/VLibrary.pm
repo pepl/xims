@@ -968,10 +968,9 @@ sub _vlitems_byproperty {
 
     # TODO think of fetching the whole object data here for performance
 
-    my $sql =
-        # 'SELECT d.id AS id FROM cilib_'
-        # UIBK hint to even out buggy optimizer decisions (Oracle)
-        'SELECT  /*+ FIRST_ROWS(2000) */ d.id AS id FROM cilib_'
+    my $sql = 'SELECT d.id AS id FROM cilib_'
+      # UIBK  hint to even out buggy optimizer decisions (Oracle)
+      #  'SELECT  /*+ FIRST_ROWS(2000) */ d.id AS id FROM cilib_'
       . $property
       . 'map m, cilib_'
       . $property
