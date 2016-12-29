@@ -362,7 +362,9 @@
         <img src="{location}">
           <xsl:attribute name="alt"><xsl:value-of select="title"/></xsl:attribute>
           <xsl:attribute name="title"><xsl:if test="$showcaption = '1' and abstract != ''"><xsl:value-of select="abstract"/></xsl:if></xsl:attribute>
-      </img></li>
+          <xsl:attribute name="data-rights"><xsl:value-of select="rights"/></xsl:attribute>
+        </img>
+      </li>
     </xsl:if>
   </xsl:template>
 

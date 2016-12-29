@@ -77,13 +77,14 @@
 </xsl:template>
 
 <xsl:template match="/document/context/object/children/object">
-<xsl:if test="object_type_id=3 and published=1">
-	<img>
-	<xsl:attribute name="src"><xsl:value-of select="$absolute_path_nosite"/>/<xsl:value-of select="location"/></xsl:attribute>
-	<xsl:attribute name="alt"><xsl:value-of select="abstract"/></xsl:attribute>
-	<xsl:attribute name="title"><xsl:value-of select="title"/></xsl:attribute>
-	</img>
-	</xsl:if>
+  <xsl:if test="object_type_id=3 and published=1">
+    <img>
+	  <xsl:attribute name="src"><xsl:value-of select="$absolute_path_nosite"/>/<xsl:value-of select="location"/></xsl:attribute>
+	  <xsl:attribute name="alt"><xsl:value-of select="abstract"/></xsl:attribute>
+	  <xsl:attribute name="title"><xsl:value-of select="title"/></xsl:attribute>
+      <xsl:attribute name="data-rights"><xsl:value-of select="rights"/></xsl:attribute>
+    </img>
+  </xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>
