@@ -82,7 +82,11 @@
 	  <xsl:attribute name="src"><xsl:value-of select="$absolute_path_nosite"/>/<xsl:value-of select="location"/></xsl:attribute>
 	  <xsl:attribute name="alt"><xsl:value-of select="abstract"/></xsl:attribute>
 	  <xsl:attribute name="title"><xsl:value-of select="title"/></xsl:attribute>
-      <xsl:attribute name="data-rights"><xsl:value-of select="rights"/></xsl:attribute>
+      <xsl:if test="normalize-space(rights) != ''">
+        <xsl:attribute name="data-rights">
+          <xsl:value-of select="normalize-space(rights)"/>
+        </xsl:attribute>
+      </xsl:if>
     </img>
   </xsl:if>
 </xsl:template>
