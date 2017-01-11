@@ -3471,28 +3471,27 @@ sub balance_string {
 
 sub content_field {
     XIMS::Debug( 5, "called" );
+
     my $self = shift;
-    my $df;
-    if (    defined( $self->{DataFormat} )
-        and defined( $self->{DataFormat}->id ) )
-    {
-        $df = $self->{DataFormat};
-    }
-    else {
-        my $df_id = $self->{data_format_id}
-          || $self->{'document.data_format_id'};
-        my $dfs = XIMS::DATA_FORMATS();
-        $df = $dfs->{$df_id};
-        $self->{DataFormat} = $df;
+
+    # some object types should use binfile regardless what gets loaded in
+    # their bodies:
+    my $ot_name = $self->object_type->name;
+    if ( $ot_name eq 'File'
+      or $ot_name eq 'Image'
+      or $ot_name eq 'ReferenceLibraryItem'
+      or $ot_name eq 'SimpleDBItem' ) {
+        return 'binfile'
     }
 
-    # pepl: departmentroot portlet info is stored in its body
-    # return if $df->name() eq 'Container';
+    # for the rest, decide based on the mime-type
+    my $mime_type = $self->data_format->mime_type;
     return 'binfile'
-      if (  $df->mime_type
-        and $df->mime_type =~ /^(?:application|image|audio|video)\//i
-        and $df->mime_type !~ /container|xsp|xml/i );
+      if (  $mime_type
+        and $mime_type =~ /^(?:application|image|audio|video)\//i
+        and $mime_type !~ /container|xsp|xml/i );
     return 'body';
+
 }
 
 #workflow implementation#
