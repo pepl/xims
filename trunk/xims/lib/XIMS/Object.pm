@@ -3476,7 +3476,8 @@ sub content_field {
 
     # some object types should use binfile regardless what gets loaded in
     # their bodies:
-    my $ot_name = $self->object_type->name;
+    my $ot_name;
+    $ot_name = $self->object_type->name if $self->object_type;
     if ( $ot_name eq 'File'
       or $ot_name eq 'Image'
       or $ot_name eq 'ReferenceLibraryItem'
