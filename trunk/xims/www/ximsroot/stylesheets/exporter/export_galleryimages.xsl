@@ -80,8 +80,12 @@
   <xsl:if test="object_type_id=3 and published=1">
     <img>
 	  <xsl:attribute name="src"><xsl:value-of select="$absolute_path_nosite"/>/<xsl:value-of select="location"/></xsl:attribute>
-	  <xsl:attribute name="alt"><xsl:value-of select="abstract"/></xsl:attribute>
-	  <xsl:attribute name="title"><xsl:value-of select="title"/></xsl:attribute>
+	  <xsl:attribute name="alt"><xsl:value-of select="title"/></xsl:attribute>
+       <xsl:if test="normalize-space(abstract) != ''">
+	     <xsl:attribute name="title">
+           <xsl:value-of select="abstract"/>
+         </xsl:attribute>
+       </xsl:if>
       <xsl:if test="normalize-space(rights) != ''">
         <xsl:attribute name="data-rights">
           <xsl:value-of select="normalize-space(rights)"/>
