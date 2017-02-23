@@ -361,12 +361,16 @@
         <xsl:if test="position() = 1"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
         <img src="{location}">
           <xsl:attribute name="alt"><xsl:value-of select="title"/></xsl:attribute>
-          <xsl:attribute name="title"><xsl:if test="$showcaption = '1' and abstract != ''"><xsl:value-of select="abstract"/></xsl:if></xsl:attribute>
-           <xsl:if test="normalize-space(rights) != ''">
-             <xsl:attribute name="data-rights">
-               <xsl:value-of select="normalize-space(rights)"/>
-             </xsl:attribute>
-           </xsl:if>
+          <xsl:attribute name="title">
+            <xsl:if test="$showcaption = '1' and normalize-space(abstract) != ''">
+              <xsl:value-of select="abstract"/>
+            </xsl:if>
+          </xsl:attribute>
+          <xsl:if test="normalize-space(rights) != ''">
+            <xsl:attribute name="data-rights">
+              <xsl:value-of select="normalize-space(rights)"/>
+            </xsl:attribute>
+          </xsl:if>
         </img>
       </li>
     </xsl:if>
