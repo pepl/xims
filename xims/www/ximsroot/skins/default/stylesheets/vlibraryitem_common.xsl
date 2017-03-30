@@ -465,32 +465,32 @@
 	</xsl:template>
 	
 	<xsl:template name="form-metadata">
-	<xsl:param name="mode"/>
-		<div class="form-div block">
+	  <xsl:param name="mode"/>
+	  <div class="form-div block">
 		<h2><xsl:value-of select="$i18n/l/Metadata"/></h2>
 		<xsl:call-template name="form-abstract"/>
 		<xsl:call-template name="tr-publisher"/>
-	<xsl:choose>
-		<xsl:when test="$mode = 'chronicle'">
+	    <xsl:choose>
+		  <xsl:when test="$mode = 'chronicle'">
 			<xsl:call-template name="form-chronicle_from"/>
 			<xsl:call-template name="form-chronicle_to"/>
-		</xsl:when>
-		<xsl:when test="$mode = 'date'">
-		<xsl:call-template name="form-dc_date"/>
-		</xsl:when>
-	</xsl:choose>
-	
-		</div>
+		  </xsl:when>
+		  <xsl:when test="$mode = 'date'">
+		    <xsl:call-template name="form-dc_date"/>
+		  </xsl:when>
+	    </xsl:choose>
+	    
+	  </div>
 	</xsl:template>
 	
 	<xsl:template name="form-obj-specific">
-		<div class="form-div block">
+	  <div class="form-div block">
 		<h2><xsl:value-of select="$i18n/l/ExtraOptions"/></h2>
-			<xsl:call-template name="tr-mediatype"/>
-	<xsl:call-template name="tr-coverage"/>
-	<xsl:call-template name="tr-audience"/>
-	<xsl:call-template name="tr-legalnotice"/>
-	<xsl:call-template name="tr-bibliosource"/>
-		</div>
+		<xsl:call-template name="tr-mediatype"/>
+	    <xsl:call-template name="tr-coverage"/>
+	    <xsl:call-template name="tr-audience"/>
+	    <xsl:call-template name="tr-legalnotice"/>
+	    <xsl:call-template name="tr-bibliosource"/>
+	  </div>
 	</xsl:template>
 </xsl:stylesheet>
