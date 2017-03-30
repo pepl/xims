@@ -65,6 +65,25 @@ sub event_store {
     my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
 
+    $self->handle_image_upload($ctxt);
+
+    my $rc = $self->SUPER::event_store($ctxt);
+    if ( not $rc ) {
+        return 0;
+    }
+    else {
+        return 1;
+    }
+}
+
+=head2 handle_image_upload()
+
+=cut
+
+sub handle_image_upload {
+    my ( $self, $ctxt ) = @_;
+    XIMS::Debug( 5, "called" );
+
     my $img_fh = $self->upload('imagefile');
     if ( length $img_fh ) {
         my $target_location = $self->param('imagefolder');
@@ -153,15 +172,8 @@ sub event_store {
             );
         }
     }
-
-    my $rc = $self->SUPER::event_store($ctxt);
-    if ( not $rc ) {
-        return 0;
-    }
-    else {
-        return 1;
-    }
 }
+
 
 1;
 

@@ -40,6 +40,7 @@
 <NewsItem2>NewsItem2</NewsItem2>
 <Document2>HTML5 Document</Document2>
 <Markdown>Markdown Document</Markdown>
+<NewsLink>News-Link</NewsLink>
 <!-- end objecttypes -->
 <!-- privileges -->
 <PrivView>View</PrivView>
