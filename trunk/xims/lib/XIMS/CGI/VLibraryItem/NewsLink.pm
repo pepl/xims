@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::VLibraryItem::NewsItem
+XIMS::CGI::VLibraryItem::NewsLink
 
 =head1 VERSION
 
@@ -9,7 +9,7 @@ $Id$
 
 =head1 SYNOPSIS
 
-    use XIMS::CGI::VLibraryItem::NewsItem;
+    use XIMS::CGI::VLibraryItem::NewsLink;
 
 =head1 DESCRIPTION
 
@@ -19,22 +19,31 @@ This module bla bla
 
 =cut
 
-package XIMS::CGI::VLibraryItem::NewsItem;
+package XIMS::CGI::VLibraryItem::NewsLink;
 
 use common::sense;
-use parent qw( XIMS::CGI::VLibraryItem::Document XIMS::CGI::NewsItem2 );
+use parent qw( XIMS::CGI::VLibraryItem::URLLink XIMS::CGI::VLibraryItem::NewsItem );
 use XIMS::VLibMeta;
 use Locale::TextDomain ('info.xims');
 
+
+=head2 event_default()
+
+=cut
+
 sub event_default {
-    my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt) = @_;
 
-    # replace image id with image path
-    $self->resolve_content( $ctxt, [qw( IMAGE_ID )] );
+    use Data::Dumper;
+    warn Dumper($ctxt);
+    
+    # this handles absolute URLs only for now
+    $self->redirect( $ctxt->object->location() );
 
-    return $self->SUPER::event_default($ctxt);
+    return 0;
 }
+
 
 =head2 event_edit()
 
@@ -60,15 +69,24 @@ sub event_store {
 
     $self->handle_image_upload($ctxt);
 
-    my $rc = $self->SUPER::event_store($ctxt);
-    if ( not $rc ) {
-        return 0;
-    }
-    else {
-        return 1;
-    }
-}
+    # URLLink-Location must be unchanged
+    #$ctxt->properties->application->preservelocation( 1 );
 
+    #$self->handle_image_upload($ctxt);
+
+    # my $rc = $self->SUPER::event_store($ctxt);
+    # if ( not $rc ) {
+    #     # check URL
+    #     my $object = $ctxt->object();
+    #     if ( not( $object->check($self->param('location') ) ) ) {
+    #         $self->sendError( $ctxt, __"The specified URL returns an Error. Please check the location." );
+    #     }
+    #     return 0;
+    # }
+
+    # return 1;
+    $self->SUPER::event_store($ctxt);
+}
 
 1;
 

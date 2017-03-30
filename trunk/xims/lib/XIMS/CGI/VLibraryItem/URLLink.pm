@@ -49,17 +49,17 @@ sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     my $error_message = '';
-      
+
     # URLLink-Location must be unchanged
     $ctxt->properties->application->preservelocation( 1 );    
-    
+
     # Title, subject, keywords and abstract are mandatory
     return 0 unless $self->init_store_object( $ctxt )
                     and defined $ctxt->object();
 
     my $object = $ctxt->object();
-    
-    #check URL
+
+    # check URL
     if ( not( $object->check($self->param('location') ) ) ) {
         $self->sendError( $ctxt, __"The specified URL returns an Error. Please check the location." );
         return 0;

@@ -25,7 +25,7 @@
 		</xsl:call-template>
 	</xsl:template>
 	
-		<xsl:template name="form-leadimage-edit">
+	<xsl:template name="form-leadimage-edit">
 		<xsl:call-template name="form-leadimage">
 			<xsl:with-param name="mode">edit</xsl:with-param>
 		</xsl:call-template>
@@ -166,13 +166,13 @@
     </script>
 	</xsl:template>
 	
-		<xsl:template name="form-metadata">
-  <div class="form-div block">
+	<xsl:template name="form-metadata">
+      <div class="form-div block">
 		<h2><xsl:value-of select="$i18n/l/Metadata"/></h2>
 		<xsl:call-template name="form-keywords"/>
-			<xsl:call-template name="form-valid_from"/>
-			<xsl:call-template name="form-valid_to"/>
-  </div>
-</xsl:template>
+		<xsl:call-template name="form-valid_from"/>
+		<xsl:call-template name="form-valid_to"/>
+      </div>
+    </xsl:template>
 
 </xsl:stylesheet>
