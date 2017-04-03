@@ -13,7 +13,6 @@
 <xsl:import href="libraryitem_common.xsl"/>
 
 <xsl:param name="reflib" select="true()"/>
-
 <xsl:param name="reftype"><xsl:value-of select="/document/context/object/reference_type_id"/></xsl:param>
 <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 <xsl:variable name="titlerefpropid" select="/document/reference_properties/reference_property[name='title']/@id"/>
