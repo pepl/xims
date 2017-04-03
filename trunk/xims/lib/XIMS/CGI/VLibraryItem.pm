@@ -23,6 +23,7 @@ package XIMS::CGI::VLibraryItem;
 
 use common::sense;
 use parent qw( XIMS::CGI );
+use URI;
 use XIMS::VLibrary;
 use XIMS::VLibAuthor;
 use XIMS::VLibAuthorMap;
@@ -157,8 +158,7 @@ sub event_remove_mapping {
 
     # delete mapping and redirect to event edit
     if ( $propmapobject->delete() ) {
-        # TODO: fix this dirtyness
-        if ( index( ref($ctxt->object), 'URLLink' ) > -1 ) {
+        if ( ref($ctxt->object) =~ /Link$/ ) {
             my $uri = URI->new( $self->uri(-absolute => 1) );
             $uri->query('id='.$ctxt->object->id().';edit=1');
             $self->redirect( $uri );
@@ -211,8 +211,7 @@ sub event_create_mapping {
             $vlpublication )
           if $vlpublication;
 
-        # TODO: fix this dirtyness
-        if ( index( ref($object), 'URLLink' ) > -1 ) {
+        if ( ref($ctxt->object) =~ /Link$/ ) {
             my $uri = URI->new( $self->uri(-absolute => 1) );
             $uri->query('id='.$object->id().';edit=1');
             $self->redirect( $uri );
@@ -254,9 +253,8 @@ sub event_create_mapping_async {
     $self->_create_mapping_from_id( $ctxt->object(), ucfirst($property),
         $property_id );
 
-    # TODO: fix this dirtyness
-    if ( index( ref($object), 'URLLink' ) > -1 ) {
-        my $uri = URI->new( $self->uri(-absolute => 1) );
+    if ( ref($object) =~ /Link$/ ) {
+        my $uri = URI->new( $self->url(-absolute => 1) );
         $uri->query('id='.$object->id().';show_mapping_async=1;property='.$property);
         $self->redirect( $uri );
     }
@@ -351,9 +349,8 @@ sub event_remove_mapping_async {
 
     # delete mapping and redirect to event edit
     if ( $propmapobject->delete() ) {
-        # TODO: fix this dirtyness
-        if ( index( ref($ctxt->object), 'URLLink' ) > -1 ) {
-            my $uri = URI->new( $self->uri(-absolute => 1) );
+        if ( ref($ctxt->object) =~ /Link$/ ) {
+            my $uri = URI->new( $self->url(-absolute => 1) );
             $uri->query('id='.$ctxt->object->id().';show_mapping_async=1;property='.$property);
             $self->redirect($uri);
         }
