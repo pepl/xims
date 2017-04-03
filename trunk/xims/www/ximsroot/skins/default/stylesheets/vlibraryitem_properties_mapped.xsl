@@ -20,9 +20,9 @@
 <xsl:param name="property"/>
 
 <xsl:template match="/">
-   <div>
-     <xsl:apply-templates select="/document/context/object"/>
-   </div>
+  <span id="message_{$property}"><xsl:comment/></span>
+  <xsl:apply-templates select="/document/context/object"/>
+  <xsl:text>&#160;</xsl:text>
 </xsl:template>
 
 <xsl:template match="object">
