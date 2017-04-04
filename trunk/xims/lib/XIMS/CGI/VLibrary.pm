@@ -615,8 +615,7 @@ warn "\n\nproperty_id: ".$vlibproperty->id();
             if ( $vlibproperty->create() ) {
                 _update_or_publish($ctxt);    # update the VLibrary's timestamps
                 XIMS::Debug( 6, "$class: Update record successful." );
-                #warn "\n\n".$objid." - ".$self->redirect_uri( $ctxt, $objid )."\n\n";
-                $self->redirect( $self->redirect_uri( $ctxt, $objid )."?edit=1" );
+                $self->redirect( XIMS::GOXIMS() . XIMS::CONTENTINTERFACE() . "?id=$objid&edit=1");
             }
             else {
                 XIMS::Debug( 3, "could not create $class" );
