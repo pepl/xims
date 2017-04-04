@@ -24,9 +24,11 @@
 	
 	<xsl:call-template name="form-vlproperties">
 		<xsl:with-param name="mo" select="'subject'"/>
+                <xsl:with-param name="objid" select="@id"/>
 	</xsl:call-template>
 	<xsl:call-template name="form-vlproperties">
 		<xsl:with-param name="mo" select="'keyword'"/>
+                <xsl:with-param name="objid" select="@id"/>
 	</xsl:call-template>
 	
 	<xsl:call-template name="form-obj-specific"/>
