@@ -60,7 +60,6 @@ sub event_store {
     my $object = $ctxt->object();
 
     # check URL
-    warn scalar $self->param('name');
     if ( not( $object->check( scalar $self->param('name') ) ) ) {
         $self->sendError( $ctxt, __"The specified URL returns an Error. Please check the location." );
         return 0;
