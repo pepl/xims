@@ -19,6 +19,7 @@
     <!--             indent="no"/> -->
 		
 	<xsl:template name="form-vlproperties">
+                <xsl:param name="objid"/>
 		<xsl:param name="mo"/>
 		<xsl:param name="property"><xsl:value-of select="$i18n_vlib/l/*[name()=$mo]"/></xsl:param>
 		<div class="form-div block">
@@ -57,9 +58,18 @@
 				<button type="button" name="create_mapping" class="button" onclick="createMapping('{$mo}', $('#svl{$mo}').val(), '{$i18n_vlib/l/select_name}')"><xsl:value-of select="$i18n_vlib/l/Create_mapping" /></button>
 				<xsl:text>&#160;</xsl:text>
 			</xsl:if>
-			<a class="button" href="javascript:createDialog('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1&amp;property={$mo}','default-dialog','{$i18n/l/create} {$property}')">
+			<xsl:choose>
+		 	  <xsl:when test="$objid">
+                              <a class="button" href="javascript:createDialog('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1&amp;property={$mo}&amp;objid={$objid}','default-dialog','{$i18n/l/create} {$property}')">
+                                <xsl:value-of select="concat($i18n/l/create, ' ', $property)"/>
+                            </a>
+                          </xsl:when>
+                          <xsl:otherwise>
+			    <a class="button" href="javascript:createDialog('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1&amp;property={$mo}','default-dialog','{$i18n/l/create} {$property}')">
 				<xsl:value-of select="concat($i18n/l/create, ' ', $property)"/>
-			</a>
+			    </a>
+                          </xsl:otherwise>
+                        </xsl:choose>
 			<xsl:text>&#160;</xsl:text>
 		</div>
 		</div>

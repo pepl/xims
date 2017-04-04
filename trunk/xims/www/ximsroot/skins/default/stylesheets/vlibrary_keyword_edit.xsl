@@ -19,7 +19,6 @@
                       <xsl:call-template name="input-token"/>
                       <input type="hidden" name="id" id="id" value="{@id}"/>
 						<xsl:if test="$objid != ''"><input type="hidden" name="objid" id="objid" value="{$objid}"/></xsl:if>
-						<xsl:if test="$objid != ''"><input type="hidden" name="objid" id="objid" value="{$objid}"/></xsl:if>
 						<xsl:apply-templates select="/document/context/object/children"/>
 					</form>
 	</xsl:template>
