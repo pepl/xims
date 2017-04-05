@@ -78,13 +78,19 @@ Checks the HTTP-Status of the URL-link and stores the result in the object
 =cut
 
 sub check {
-    XIMS::Debug( 5, "called" );
     my $self = shift;
     my $url = shift;
     my $timeout = shift;
 
+    XIMS::Debug( 5, "called. URL '$url'" );
+
     $url = $self->location() unless defined $url;
     return unless defined $url;
+
+    # add siteroot url to paths
+    if ($url =~ /^\//) {
+       $url = $self->siteroot->title . $url;
+    }
 
     my $ua = LWP::UserAgent->new();
     $ua->timeout( $timeout || 10 );
