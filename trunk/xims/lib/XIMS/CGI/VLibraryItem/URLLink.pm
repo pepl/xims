@@ -51,7 +51,7 @@ sub event_store {
     my $error_message = '';
 
     # URLLink-Location must be unchanged
-    $ctxt->properties->application->preservelocation( 1 );    
+    $ctxt->properties->application->preservelocation( 1 );
 
     # Title, subject, keywords and abstract are mandatory
     return 0 unless $self->init_store_object( $ctxt )
@@ -114,6 +114,12 @@ sub event_store {
         XIMS::Debug( 4, "closing thickbox" );
         return $self->close_thickbox(1);
     }
+    elsif ( $self->param('proceed_to_edit') == 1 ) {
+        $self->redirect( XIMS::GOXIMS() . XIMS::CONTENTINTERFACE()
+                       . '?id=' . $object->id() . '&edit=1');
+        return 1;
+    }
+
     else {
         XIMS::Debug( 4, "redirecting" );
         $self->redirect( $self->redirect_uri( $ctxt ) );
