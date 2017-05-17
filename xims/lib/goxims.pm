@@ -151,7 +151,7 @@ sub handler {
     # run app and return
     if ( $res = run_app($app_class, $env) ) {
         push @{$res->[1]}, ('Cache-Control', 'private, must-revalidate',
-                            'X-UA-Compatible', 'IE=10');
+                            'X-UA-Compatible', 'IE=11');
         return $res;
     }
 
