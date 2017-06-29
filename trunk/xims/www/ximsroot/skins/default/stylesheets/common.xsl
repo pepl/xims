@@ -1623,7 +1623,7 @@
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="user_privileges/delete">
-             
+            <form method="post" style="display:inline;"> 
                 <xsl:call-template name="input-token"/>
                 <input type="hidden" name="id" value="{$id}"/>
                 <xsl:if test="$currobjmime='application/x-container'">
@@ -1644,6 +1644,7 @@
                   <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_undelete"><xsl:comment/></span>
 				  <span class="ui-button-text"><xsl:value-of select="$l_Undelete"/></span>
                 </button>
+            </form>
 			</xsl:when>
 			<xsl:otherwise>
 				<a class="button option-disabled">&#160;</a>
