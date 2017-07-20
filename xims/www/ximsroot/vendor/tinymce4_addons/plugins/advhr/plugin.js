@@ -122,6 +122,7 @@ tinymce.PluginManager.add('advhr', function(editor) {
 	editor.addMenuItem('advhr', {
 		icon : 'hr',
 		text : 'Horizontal line',
+		onclick: showDialog,
 		context : 'insert'
 	});
 });
