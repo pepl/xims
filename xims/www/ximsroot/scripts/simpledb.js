@@ -1,5 +1,5 @@
 /*
-# Copyright (c) 2002-2015 The XIMS Project.
+# Copyright (c) 2002-2017 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -42,10 +42,11 @@ function addSelection( from, to ) {
     storeSelections( to );
     from.value = "";
 }*/
+
 function addSelection( from, to ) {
     if ( from.val() == '' ) { return false; }
     from.val(from.val().replace(/\|/g, '_')); // check for the separator
-
+    
     to.append($("<option>"+from.val()+"</option>")); 
     storeSelections( to );
     from.val("");

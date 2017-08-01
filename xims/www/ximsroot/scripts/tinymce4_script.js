@@ -1,28 +1,28 @@
 
-      var storeBack = function(){
-        var path = $('iframe', win.document).contents().find('#input-path').val();
-                var title = $('iframe', win.document).contents().find('#input-title').val();
-                var target;
-                if($('iframe', win.document).contents().find('#input-target')){
-                  target = $('iframe', win.document).contents().find('#input-target').val();
-                }
-                $('#'+field_name).val(path);
-                //dirty but working by now (undocumented TinyMCE4 API)
-                $('#'+field_name).parents('.mce-container-body').parent().find('input').last().val(title);
-                //alert(win.parent.find('#xpointer'));
-
-                //win.find('#xpointer').value('xpointer');
-                if(target != ''){
-                  $('#'+field_name).siblings('input').siblings('input').val(target);
-                }
-
-                tinyMCE.activeEditor.windowManager.close();
-                //win.find('#xpointer')[0].value = 'xpointer';
-      }
+var storeBack = function(){
+    var path = $('iframe', win.document).contents().find('#input-path').val();
+    var title = $('iframe', win.document).contents().find('#input-title').val();
+    var target;
+    if($('iframe', win.document).contents().find('#input-target')){
+        target = $('iframe', win.document).contents().find('#input-target').val();
+    }
+    $('#'+field_name).val(path);
+    //dirty but working by now (undocumented TinyMCE4 API)
+    $('#'+field_name).parents('.mce-container-body').parent().find('input').last().val(title);
+    //alert(win.parent.find('#xpointer'));
+    
+    //win.find('#xpointer').value('xpointer');
+    if(target != ''){
+        $('#'+field_name).siblings('input').siblings('input').val(target);
+    }
+    
+    tinyMCE.activeEditor.windowManager.close();
+    //win.find('#xpointer')[0].value = 'xpointer';
+};
 
       
 $().ready(function(){
-  tinymce.init({
+    tinymce.init({
 	    selector: "#body",
 	    theme: "modern",
 	    skin: "../../../../tinymce4_addons/skins/xims_lightgray",
@@ -49,13 +49,13 @@ $().ready(function(){
 	          //view: {title: 'View', items: 'visualaid visualchars visualblocks | code | fullscreen'}, 
 	          view: {title: 'View', items: 'visualchars visualblocks | code | fullscreen'}, 
 	          format: {title: 'Format', items: 'bold italic underline superscript subscript | formats | removeformat'}, 
-	          table: {title: 'Table'}, 
+	          table: {title: 'Table'}
 	          //tools: {title: 'Tools'} 
 	      },
 
 	    toolbar1: "styleselect | formatselect | removeformat | bold italic underline superscript subscript | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | indent2ndline outdent2ndline",
 	    toolbar2: "anchor link unlink | nonbreaking | table | charmap extraicons | advhr | galleryinclude advimage clearbr | xmlinclude | media | visualchars visualblocks | code | fullscreen",
-	   // toolbar3: "visualchars visualblocks | code | fullscreen",
+	    // toolbar3: "visualchars visualblocks | code | fullscreen",
 	    content_css: css,
 	    body_id: 'content',
 	    element_format: 'xml',
@@ -70,7 +70,7 @@ $().ready(function(){
 	        "advhr": "../../../tinymce4_addons/plugins/advhr/plugin.js",
 	        "media": "../../../tinymce4_addons/plugins/media/plugin.js",
 	        "clearbr": "../../../tinymce4_addons/plugins/clearbr/plugin.js",
-	        "visualblocks": "../../../tinymce4_addons/plugins/visualblocks/plugin.js",
+	        "visualblocks": "../../../tinymce4_addons/plugins/visualblocks/plugin.js"
 	    },
 	    image_advtab: true,
 	    visual: true,
@@ -85,8 +85,8 @@ $().ready(function(){
 	        //path: '../../../../CodeMirror', // Path to CodeMirror distribution
 	        path: tinymceUrl + '/../../../../codemirror', // Path to CodeMirror distribution
 	        config: {           // CodeMirror config object
-	          lineNumbers: true,
-	          mode: 'htmlmixed'
+	            lineNumbers: true,
+	            mode: 'htmlmixed'
 	        }
 	    },
 	    table: {
@@ -99,7 +99,7 @@ $().ready(function(){
 	    /*link_list: [
 	                {title: 'My page 1', value: 'http://www.tinymce.com'},
 	                {title: 'My page 2', value: 'http://www.moxiecode.com'}
-	            ],*/
+	                ],*/
 	    entity_encoding: 'raw',
 	    schema: "html5",
 	    //element_format : "html"
@@ -158,77 +158,78 @@ $().ready(function(){
         {title : 'Ein-/ausblenden Link', selector : 'a', classes: 'link-ein'},
         {title : 'Ein-/ausblenden Text', selector : 'div', classes: 'text-ein'}
   ],
-  file_browser_callback: function(field_name, url, type, win) { 
-	  if (type == "file") {
-	        var browseurl = brUrl + 'style=tinymcelink&tinymce_version=4';
-	    }
-	    else if (type == "gallery") {
-	        var browseurl = brUrl + 'style=tinymcelink&otfilter=Gallery&tinymce_version=4';
-	    }
-	    else {
-	        var browseurl = brUrl + 'style=tinymceimage&otfilter=Image&tinymce_version=4';
-	    }
-	  console.log(browseurl);
-
-	    tinyMCE.get('body').windowManager.open({
-	        file: browseurl,
-	        title: "XIMS File Browser",
-	        width: 600, // width of XIMS File Browser pop-up
-	        height: 400,
-	        resizable: "yes",
-	        scrollbars: "yes",
-	        inline: 1,
-	        //data: data,
-	        classes: "ximsfilebrowser",
-	        close_previous: "no",
-	        buttons: [
-	        {
-	            text: 'Ok',
-	            onclick: function(e){
-	            	var path;
-	            	if (type == "image") {path = $('iframe', win.document).contents().find('#input-image').val();}
-	            	else { path = $('iframe', win.document).contents().find('#input-path').val();}
-	            	var title = $('iframe', win.document).contents().find('#input-title').val();
-	            	var target;
-	            	if($('iframe', win.document).contents().find('#input-target')){
-	            		target = $('iframe', win.document).contents().find('#input-target').val();
-	            	}
-	            	$('#'+field_name).val(path);
-	            	//dirty but working by now (undocumented TinyMCE4 API)
-	            	//$('#'+field_name).parents('.mce-container-body').parent().find('input').last().val(title);
-	            	var fn_id = parseInt(field_name.replace("mce_","").replace("-inp",""));
-	            	var title_id = fn_id + 1;	            	
-	            	var title_inp = "mce_"+ (fn_id+2);
-	            	if (type == "image"){
-	            		var title_inp = "mce_"+ (fn_id+1);
-	            		var alt_inp = "mce_"+ (fn_id+2);
-	            	}
-	            	$('#'+title_inp).val(title);
-	            	if (type == "image"){$('#'+alt_inp).val(title);}
-	            	var mywin = win;
-	            	if(target != ''){
-	            		$('#'+field_name).siblings('input').siblings('input').val(target);
-	            	}
-			        tinyMCE.activeEditor.windowManager.close();
-			      }
-	        },
-	        {
-	            text: 'Cancel',
-	            onclick: 'close'
+        file_browser_callback: function(field_name, url, type, win) {
+            var browseurl;
+	        if (type == "file") {
+	            browseurl = brUrl + 'style=tinymcelink&tinymce_version=4';
 	        }
-	        ],
-	    }, {
-	        window: win,
-	        input: field_name
-	    });
+	        else if (type == "gallery") {
+	            browseurl = brUrl + 'style=tinymcelink&otfilter=Gallery&tinymce_version=4';
+	        }
+	        else {
+	            browseurl = brUrl + 'style=tinymceimage&otfilter=Image&tinymce_version=4';
+	        }
+	        console.log(browseurl);
 
-	    return false;
-      },//end filebrowser callback
+	        tinyMCE.get('body').windowManager.open({
+	            file: browseurl,
+	            title: "XIMS File Browser",
+	            width: 600, // width of XIMS File Browser pop-up
+	            height: 400,
+	            resizable: "yes",
+	            scrollbars: "yes",
+	            inline: 1,
+	            //data: data,
+	            classes: "ximsfilebrowser",
+	            close_previous: "no",
+	            buttons: [
+	                {
+	                    text: 'Ok',
+	                    onclick: function(e){
+	            	        var path;
+	            	        if (type == "image") {path = $('iframe', win.document).contents().find('#input-image').val();}
+	            	        else { path = $('iframe', win.document).contents().find('#input-path').val();}
+	            	        var title = $('iframe', win.document).contents().find('#input-title').val();
+	            	        var target;
+	            	        if($('iframe', win.document).contents().find('#input-target')){
+	            		        target = $('iframe', win.document).contents().find('#input-target').val();
+	            	        }
+	            	        $('#'+field_name).val(path);
+	            	        //dirty but working by now (undocumented TinyMCE4 API)
+	            	        //$('#'+field_name).parents('.mce-container-body').parent().find('input').last().val(title);
+	            	        var fn_id = parseInt(field_name.replace("mce_","").replace("-inp",""));
+	            	        var title_id = fn_id + 1;	            	
+	            	        var title_inp = "mce_"+ (fn_id+2);
+	            	        if (type == "image"){
+	            		        title_inp = "mce_"+ (fn_id+1);
+	            		        var alt_inp = "mce_"+ (fn_id+2);
+	            	        }
+	            	        $('#'+title_inp).val(title);
+	            	        if (type == "image"){$('#'+alt_inp).val(title);}
+	            	        var mywin = win;
+	            	        if(target != ''){
+	            		        $('#'+field_name).siblings('input').siblings('input').val(target);
+	            	        }
+			                tinyMCE.activeEditor.windowManager.close();
+			            }
+	                },
+	                {
+	                    text: 'Cancel',
+	                    onclick: 'close'
+	                }
+	            ]
+	        }, {
+	            window: win,
+	            input: field_name
+	        });
+            
+	        return false;
+        },//end filebrowser callback
 
-      video_template_callback: function insertVideo(data){
+        video_template_callback: function insertVideo(data){
 	    	var html = '';
 	    	html = (
-					'<video class="media '+data.medialayout+'" width="' + data.width + '" height="' + data.height + '"' + (data.poster ? ' poster="' + data.poster + '"' : '') + ' controls="controls">\n' +
+				'<video class="media '+data.medialayout+'" width="' + data.width + '" height="' + data.height + '"' + (data.poster ? ' poster="' + data.poster + '"' : '') + ' controls="controls">\n' +
 						'<source src="' + data.source1 + '"' + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' +
 						(data.source2 ? '<source src="' + data.source2 + '"' + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') +
 					'</video>'

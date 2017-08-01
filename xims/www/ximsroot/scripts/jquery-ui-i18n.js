@@ -37,7 +37,7 @@ jQuery(function(a){
         firstDay: 0,
         isRTL: false
     };
-    a.datepicker.setDefaults(a.datepicker.regional.es)
+    a.datepicker.setDefaults(a.datepicker.regional.es);
 });
 jQuery(function(a){
     a.datepicker.regional.fr = {
@@ -54,7 +54,7 @@ jQuery(function(a){
         firstDay: 1,
         isRTL: false
     };
-    a.datepicker.setDefaults(a.datepicker.regional.fr)
+    a.datepicker.setDefaults(a.datepicker.regional.fr);
 });
 jQuery(function(a){
     a.datepicker.regional.it = {
@@ -71,7 +71,7 @@ jQuery(function(a){
         firstDay: 1,
         isRTL: false
     };
-    a.datepicker.setDefaults(a.datepicker.regional.it)
+    a.datepicker.setDefaults(a.datepicker.regional.it);
 });
 jQuery(function(a){
 	$.datepicker.regional.en = {

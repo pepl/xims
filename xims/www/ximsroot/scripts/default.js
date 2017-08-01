@@ -1,27 +1,27 @@
 /*
- # Copyright (c) 2002-2015 The XIMS Project.
+ # Copyright (c) 2002-2017 The XIMS Project.
  # See the file "LICENSE" for information and conditions for use, reproduction,
  # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
  # $Id$
  */
 function confirmDelete(){
     if (confirm("Are you sure?")) {
-        return true
+        return true;
     }
     else {
-        return false
+        return false;
     }
 }
 
-function genericWindow(url, width, height){
-    var height = (height == null) ? "400" : height;
-    var width = (width == null) ? "400" : width;
+function genericWindow(url, arg_width, arg_height){
+    var height = (arg_height == null) ? "400" : arg_height;
+    var width = (arg_width == null) ? "400" : arg_width;
     
     newWindow = window.open(url, "displayWindow", "resizable=yes,scrollbars=yes,width=" +
-    width +
-    ",height=" +
-    height +
-    ",screenX=100,screenY=300");
+                            width +
+                            ",height=" +
+                            height +
+                            ",screenX=100,screenY=300");
 }
 
 function previewWindow(url){
@@ -33,7 +33,9 @@ function diffWindow(url){
 }
 
 function openDocWindow(topic){
-    docWindow = window.open("http://xims.info/documentation/users/xims-user_s-reference.sdbk#" + escape(topic), "displayWindow", "resizable=yes,scrollbars=yes,width=800,height=480,screenX=100,screenY=300");
+    docWindow = window.open("http://xims.info/documentation/users/xims-user_s-reference.sdbk#" + escape(topic),
+                            "displayWindow",
+                            "resizable=yes,scrollbars=yes,width=800,height=480,screenX=100,screenY=300");
 }
 
 function createFilterWindow(url){
@@ -108,7 +110,7 @@ function stringHighlight(mystring){
         body.innerHTML = newContent;
     }
     
-    highlighted = true
+    highlighted = true;
 }
 
 function toggleHighlight(hls){
@@ -141,108 +143,109 @@ function toggleHighlight(hls){
 }
 
 /*
-   function which selects 'trytobalance' input form element to a
-   given value (e.g. from cookie); see 'document_edit.xsl'
+  function which selects 'trytobalance' input form element to a
+  given value (e.g. from cookie); see 'document_edit.xsl'
 */
-      function selTryToBalance(selElement, toSelect) {
-          if ( !toSelect ) {
-              toSelect = 'true';
-          }   
-          toSelect = toSelect.toLowerCase();
-          for (var i=0; i < selElement.length; i++) {
-              if ( selElement[i].value.toString().toLowerCase() == toSelect ) {
-                  selElement[i].checked = true;
-              }   
-          }   
-      }
+function selTryToBalance(selElement, toSelect) {
+    if ( !toSelect ) {
+        toSelect = 'true';
+    }   
+    toSelect = toSelect.toLowerCase();
+    for (var i=0; i < selElement.length; i++) {
+        if ( selElement[i].value.toString().toLowerCase() == toSelect ) {
+            selElement[i].checked = true;
+        }   
+    }   
+}
 
-      function createCookie(name,value,days) {
-          if (days) {
-              var date = new Date();
-              date.setTime(date.getTime()+(days*24*60*60*1000));
-              var expires = "; expires="+date.toGMTString();
-          }
-          else var expires = "";
-          document.cookie = name+"="+value+expires+"; path=/";
-      }
+function createCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        expires = "; expires="+date.toGMTString();
+    }
+    
+    document.cookie = name+"="+value+expires+"; path=/";
+}
 
-      function readCookie(name) {
-          var nameEQ = name + "=";
-          var ca = document.cookie.split(';');
-          for (var i=0;i < ca.length;i++) {
-              var c = ca[i];
-              while (c.charAt(0)==' ') c = c.substring(1,c.length);
-              if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-          }
-          return null;
-      }
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
 
-      function setSel(selObj, toselect) {
-          if ( !toselect ) {
-                  toselect = 'plain';
-          }
-          toselect = toselect.toLowerCase();
-          opts=selObj.options,
-          i=opts.length;
-          while (i-- > 0) {
-              if(opts[i].value.toLowerCase()==toselect) {
-                  selObj.selectedIndex=i;
-                  return true;
-              }
-          }
-          return false;
-      }
-      
-      function checkBodyFromSel (selection, type) {
-
-        createCookie('xims_'+type+'editor',selection,90);
-
-        if ( hasBodyChanged() ) {
-            $('#xims_'+type+'editor').attr("disabled",true);
-            alert(bodyContentChanged);
-            return false;
+function setSel(selObj, toselect) {
+    if ( !toselect ) {
+        toselect = 'plain';
+    }
+    toselect = toselect.toLowerCase();
+    opts=selObj.options,
+    i=opts.length;
+    while (i-- > 0) {
+        if(opts[i].value.toLowerCase()==toselect) {
+            selObj.selectedIndex=i;
+            return true;
         }
-      /*
+    }
+    return false;
+}
+
+function checkBodyFromSel (selection, type) {
+    
+    createCookie('xims_'+type+'editor',selection,90);
+    
+    if ( hasBodyChanged() ) {
+        $('#xims_'+type+'editor').attr("disabled",true);
+        alert(bodyContentChanged);
+        return false;
+    }
+    /*
       reload with param 'true' in order to fetch (clean) content from
       server again; this interfears the least with JS-WYSIWYG editors
-      */
-        window.location.reload(true);
+    */
+    window.location.reload(true);
+    
+    return true;
+}
 
+function hasBodyChanged () {
+    var currentbody;
+    
+    // check for TinyMCE editor content
+    if (window.tinyMCE){
+        currentbody = tinyMCE.get('body').getContent();
+    }
+    // Plain Textarea
+    else {
+        var body = document.getElementById('body');
+        if ( body && body.value ) {
+            currentbody = body.value;
+        }
+    }
+    // now lets check if there are any changes ;-)
+    if ( currentbody && currentbody != origbody ) {
         return true;
     }
-
-      function hasBodyChanged () {
-          var currentbody;
-
-          // check for TinyMCE editor content
-          if (window.tinyMCE){
-              currentbody = tinyMCE.get('body').getContent();
-          }
-          // Plain Textarea
-          else {
-              var body = document.getElementById('body');
-              if ( body && body.value ) {
-                  currentbody = body.value;
-              }
-          }
-          // now lets check if there are any changes ;-)
-          if ( currentbody && currentbody != origbody ) {
-              return true;
-          }
-          // return false otherwise
-          else {
-              return false;
-          }
-      }
-      
-      /*
-      Disable possibility of changing editors for "timeout"
-      seconds. This prevents false-positive errors of "hasBodyChanged()"
-      due to switching to another editor too fast.
-      type : one of 'wysiwyg' or 'code'
-      */
-      function timeoutEditorChange(timeout, type) {
-        $('#xims_'+type+'editor').attr("disabled",true);;
-        //document.getElementById('xims_wysiwygeditor').disabled = true;
-        window.setTimeout(function(){$('#xims_'+type+'editor').removeAttr('disabled');},timeout*1000);
+    // return false otherwise
+    else {
+        return false;
     }
+}
+      
+/*
+  Disable possibility of changing editors for "timeout"
+  seconds. This prevents false-positive errors of "hasBodyChanged()"
+  due to switching to another editor too fast.
+  type : one of 'wysiwyg' or 'code'
+*/
+function timeoutEditorChange(timeout, type) {
+    $('#xims_'+type+'editor').attr("disabled",true);;
+    //document.getElementById('xims_wysiwygeditor').disabled = true;
+    window.setTimeout(function(){$('#xims_'+type+'editor').removeAttr('disabled');},timeout*1000);
+}

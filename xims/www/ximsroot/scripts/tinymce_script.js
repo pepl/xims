@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2002-2015 The XIMS Project.
+ * Copyright (c) 2002-2017 The XIMS Project.
  * See the file "LICENSE" for information and conditions for use, reproduction,
  * and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
  *
@@ -140,14 +140,15 @@ function urlconverter (u, n, e){
  * Custom file-browse dialog (XIMS file-browse-url)
  */
 function filebrowse(field_name, url, type, win){
+    var browseurl;
     if (type == "file") {
-        var browseurl = brUrl + 'style=tinymcelink';
+        browseurl = brUrl + 'style=tinymcelink';
     }
     else if (type == "gallery") {
-        var browseurl = brUrl + 'style=tinymcelink&otfilter=Gallery';
+        browseurl = brUrl + 'style=tinymcelink&otfilter=Gallery';
     }
     else {
-        var browseurl = brUrl + 'style=tinymceimage&otfilter=Image';
+        browseurl = brUrl + 'style=tinymceimage&otfilter=Image';
     }
 
     tinyMCE.get('body').windowManager.open({
