@@ -1,5 +1,8 @@
-/**
- * @author Susanne Tober
+/*
+ * Copyright (c) 2002-2017 The XIMS Project.
+ * See the file "LICENSE" for information and conditions for use, reproduction,
+ * and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+ * $Id: $
  */
 
 $.ajaxSetup({
@@ -7,7 +10,7 @@ $.ajaxSetup({
 });
 	
 function post_async(jsonQuery, property) {
-    jsonQuery.token = $("input[name='token']").attr('value');	
+    jsonQuery.token = $("input[name='token']").attr('value');
     $.post(abspath, jsonQuery, function(data){ 		
         mkHandleMapResponse(data, property);
         initOptionsButtons();
@@ -692,14 +695,14 @@ $(document).ready(function(){
             "OK": function() {
                 var jsonQuery = {
 				    mark_motd_read: "1",
-                    token: $("input[name='token']").attr('value'),
+                    token: $("input[name='token']").attr('value')
                 };
                 
                 $.post("/goxims/user",
                          { mark_motd_read: "1",
                            token: $("input[name='token']").attr('value') },
-                         function() { $( "#motd-link" ).hide() }
-                        )
+                       function() { $( "#motd-link" ).hide(); }
+                      );
                 $( this ).dialog( "close" ); 
             } 
         }
