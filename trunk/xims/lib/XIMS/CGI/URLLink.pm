@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::CGI::URLLink;
 
 use common::sense;
-use parent qw( XIMS::CGI );
+use parent qw( XIMS::CGI XIMS::CGI::NewsItem2);
 use Locale::TextDomain ('info.xims');
 
 # #############################################################################
@@ -78,6 +78,8 @@ sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    $self->handle_image_upload($ctxt);
+
     # check URL;
     $ctxt->object->check();
     $ctxt->properties->application->preservelocation(1);
@@ -88,6 +90,17 @@ sub event_store {
 
     return $self->SUPER::event_store($ctxt);
 }
+
+
+sub event_edit {
+    my ( $self, $ctxt ) = @_;
+    XIMS::Debug( 5, "called" );
+
+    $self->resolve_content( $ctxt, [qw( IMAGE_ID )] );
+
+    return $self->SUPER::event_edit($ctxt);
+}
+
 
 =head2 event_test_location()
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-# Copyright (c) 2002-2015 The XIMS Project.
+# Copyright (c) 2002-2017 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: newsitem_common.xsl 2188 2009-01-03 18:24:00Z pepl $
@@ -33,7 +33,7 @@
 	
 	<xsl:template name="form-leadimage">
 		<xsl:param name="mode"/>
-		<div class="form-div block">
+		<div class="form-div block" id="form-leadimage">
 		<div id="tr-lead">
 			<div class="label-std">
 				<label for="input-lead">
@@ -113,7 +113,9 @@
 				<input type="text" name="imagefolder" size="60" class="text" id="input-image-target">
 					<!--  Provide an "educated-guess" default value -->
 					<xsl:attribute name="value">
-						<xsl:for-each select="/document/context/object/parents/object[@document_id != 1]">
+                        <!-- filter out root and document when this temlate is
+                             used for URLLinks representing Image Tiles -->
+						<xsl:for-each select="/document/context/object/parents/object[@document_id != 1 and object_type_id != 2]">
 							<xsl:text>/</xsl:text>
 							<xsl:value-of select="location"/>
 						</xsl:for-each>
@@ -134,37 +136,37 @@
   <xsl:template name="form-image">
     <xsl:param name="mode">edit</xsl:param>
     <div id="tr-image">
-  <!-- Load image from XIMS -->
-    <xsl:if test="$mode='edit'">
-    <xsl:variable name="curr_id">
-      <xsl:value-of select="parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
-    </xsl:variable>
-    <div class="label-std">
-      <label for="input-image">
-        <xsl:value-of select="$i18n/l/Image"/>
-      </label>
-    </div>
-    <input type="text" name="image" size="60" value="{image_id}" class="text" id="input-image"/>
-    <xsl:text>&#160;</xsl:text>
-    <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$curr_id}&amp;contentbrowse=1&amp;to={$curr_id}&amp;otfilter=Image&amp;sbfield=eform.image','default-dialog','{$i18n/l/Browse_image}')" class="button"><xsl:value-of select="$i18n/l/Browse_image"/></a>
-    </xsl:if>
-    <!-- Upload image -->
-    <xsl:if test="$mode='create'">
-      <div class="label-std"><label for="imagefile"><xsl:value-of select="$i18n/l/Image"/></label></div>
-      <input type="file" name="imagefile" id="imagefile" class="text"/>
-      <xsl:text>&#160;</xsl:text>
-    </xsl:if>
+      <!-- Load image from XIMS -->
+      <xsl:if test="$mode='edit'">
+        <xsl:variable name="curr_id">
+          <xsl:value-of select="parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
+        </xsl:variable>
+        <div class="label-std">
+          <label for="input-image">
+            <xsl:value-of select="$i18n/l/Image"/>
+          </label>
+        </div>
+        <input type="text" name="image" size="60" value="{image_id}" class="text" id="input-image"/>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$curr_id}&amp;contentbrowse=1&amp;to={$curr_id}&amp;otfilter=Image&amp;sbfield=eform.image','default-dialog','{$i18n/l/Browse_image}')" class="button"><xsl:value-of select="$i18n/l/Browse_image"/></a>
+      </xsl:if>
+      <!-- Upload image -->
+      <xsl:if test="$mode='create'">
+        <div class="label-std"><label for="imagefile"><xsl:value-of select="$i18n/l/Image"/></label></div>
+        <input type="file" name="imagefile" id="imagefile" class="text"/>
+        <xsl:text>&#160;</xsl:text>
+      </xsl:if>
     </div>
   </xsl:template>
 	
-	<xsl:template name="charcountcheck">
-		<script type="text/javascript">
-    var str_of  = '<xsl:value-of select="$i18n_news/l/of"/>';
-    var str_entered = '<xsl:value-of select="$i18n_news/l/Characters_entered"/>';
-    var str_charlimit  = '<xsl:value-of select="$i18n_news/l/Charlimit_reached"/>';
-    var maxKeys = 390; // Should this be a config.xsl value?
+  <xsl:template name="charcountcheck">
+	<script type="text/javascript">
+      var str_of  = '<xsl:value-of select="$i18n_news/l/of"/>';
+      var str_entered = '<xsl:value-of select="$i18n_news/l/Characters_entered"/>';
+      var str_charlimit  = '<xsl:value-of select="$i18n_news/l/Charlimit_reached"/>';
+      var maxKeys = 390; // Should this be a config.xsl value?
     </script>
-	</xsl:template>
+  </xsl:template>
 	
 	<xsl:template name="form-metadata">
       <div class="form-div block">

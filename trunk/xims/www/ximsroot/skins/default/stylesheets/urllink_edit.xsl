@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-# Copyright (c) 2002-2015 The XIMS Project.
+# Copyright (c) 2002-2017 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: urllink_edit.xsl 2188 2009-01-03 18:24:00Z pepl $
@@ -10,11 +10,14 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
   <xsl:import href="edit_common.xsl"/>
+  <xsl:import href="newsitem_common.xsl"/>
+ 
   
   	<xsl:template name="edit-content">
 	  <xsl:call-template name="form-locationtitle-edit"/>
 	  <xsl:call-template name="form-marknew-pubonsave"/>
       <xsl:call-template name="form-nav-options"/>
+	  <xsl:call-template name="form-leadimage-edit"/>
 	  <xsl:call-template name="form-metadata"/>
 	</xsl:template>
 
@@ -70,6 +73,18 @@
 			function openLangDialog(){
 				$( '#dialog-lang' ).dialog('open');
 			}
+
+            function toggle_image_form( role ) {
+                if (role == "img-tile") {
+                   $( "#form-leadimage" ).toggle(true);
+                   $( "#tr-abstract" ).toggle(false);
+                }
+                else {
+                   $( "#form-leadimage" ).toggle(false);
+                   $( "#tr-abstract" ).toggle(true);
+                }
+            }
+                 
 			function checkLangSuffix(){
 				var arr = $('#input-location').val().split('.');
 				if($.inArray(arr[arr.length -1], ['de','en','fr','ru','es','it']) != -1){
@@ -80,7 +95,16 @@
 				}
 			}
 			$(document).ready(function(){
-				$( "#dialog-lang" ).dialog({ autoOpen: false });
+
+                toggle_image_form( $( "#input-document-role option:selected" ).val() );
+                   
+                $("#input-document-role").change(
+                    function() {
+                        toggle_image_form( $( "#input-document-role option:selected" ).val() );
+                    }
+                );
+                    
+                $( "#dialog-lang" ).dialog({ autoOpen: false });
 				checkLangSuffix();
 			});
 		</script>	

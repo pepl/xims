@@ -89,7 +89,11 @@
           <URLLink >
             <option value="0"></option>
             <option value="home">Home</option>
-            <option value="licence">Licence</option>
+            <option value="enclosure">Enclosure</option>
+            <option value="feed">Feed</option>
+            <option value="tile">Tile</option>
+            <option value="img-tile">Image Tile</option>
+            <option value="pano-img">Panorama Image</option>
           </URLLink>
         </DocumentRoleOptions> -->
         
