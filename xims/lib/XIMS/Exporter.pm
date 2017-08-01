@@ -1572,7 +1572,8 @@ sub set_sax_filters {
     push @retval, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
                                                                  PrependSiteRootURL => $self->{Options}->{PrependSiteRootURL},
                                                                  ResolveContent => [ qw( DEPARTMENT_ID
-                                                                                         SYMNAME_TO_DOC_ID ) ] );
+                                                                                         SYMNAME_TO_DOC_ID 
+                                                                                         IMAGE_ID ) ] );
 
     push @retval, XIMS::SAX::Filter::Attributes->new();
     # the following is needed to give the ContentLinkResolver SAXy events from the body
@@ -2375,13 +2376,12 @@ sub remove {
         };
         if ( $@ ) {
             my $err = $@;
-            XIMS::Debug( 2, "Error deleting cach dir: $err" );
+            XIMS::Debug( 2, "Error deleting cache dir: $err" );
         }
     }
 
     # finally, drop the dir.
     rmdir( $kill_path ) || do { XIMS::Debug( 2, "can't remove directory '$kill_path' " . $! ); return; };
-
 
     # mark the folder as not published.
     XIMS::Debug( 4, "marking folder as unpublished again :)" );

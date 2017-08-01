@@ -156,6 +156,28 @@ sub update_status {
 }
 
 
+=head2 add_image()
+
+=cut
+
+sub add_image {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $img_object = shift;
+
+    my $obj_importer = XIMS::Importer::Object->new( User => $img_object->User(), Parent => $img_object->parent() );
+    my $id = $obj_importer->import( $img_object );
+    if ( defined( $id ) ) {
+        $self->image_id( $id );
+    }
+    else {
+        XIMS::Debug( 3, "could not create new image object. Perhaps it already exists." );
+    }
+    return $id;
+}
+
+
+
 1;
 
 

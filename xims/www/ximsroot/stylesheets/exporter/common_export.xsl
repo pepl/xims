@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+# Copyright (c) 2002-2017 The XIMS Project.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id: $
+-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 version="1.0">
 
@@ -39,6 +45,21 @@
             <xsl:attribute name="role">
               <xsl:value-of select="document_role"/>
             </xsl:attribute>
+          </xsl:if>
+          <xsl:if test="image_id/text()">
+            <xsl:attribute name="image">
+              <xsl:value-of select="image_id"/>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:if test="keywords/text()">
+            <xsl:attribute name="keywords">
+              <xsl:value-of select="keywords"/>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:if test="abstract/text()">
+            <abstract>
+              <xsl:value-of select="abstract"/>
+            </abstract>
           </xsl:if>
         </link>
       </xsl:when>
