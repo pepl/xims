@@ -33,6 +33,8 @@
 * Review and edit ximsctl. It is prepared for the paths as used herein
   and starts a XIMS server listening on the loopback's port 5000.  
 
+
+  [init.d]
   ./etc/ contains example scripts as starting points for a deployment 
   along linux FHS conventions 
   
@@ -41,4 +43,7 @@
   │   └── xims
   ├── oracleclient.env
   └── xims.env
-      
+
+
+  [systemd]
+  ./etc/systemd/system contains an example service-unit for xims       

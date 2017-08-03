@@ -1,0 +1,29 @@
+[Unit]
+Description = Startup script for XIMS/Starman Server
+After=network.target
+
+[Service]
+#run the service as root
+User=root
+Group=root
+
+#set runtime directory, so that pidfile can be properly created inside var/run/xims
+RuntimeDirectory=xims
+
+
+Environment=XIMS_HOME=/usr/local/xims/xims
+Environment=WORKERS=20
+Environment=LOG_DIR=/var/log/xims
+Environment=prog=xims
+Environment=STATUSFILE=/var/run/xims.status
+Environment=PORT=82
+Environment=GROUP=www-data
+Environment=USER=www-data
+
+
+ExecStart=/usr/local/bin/start_server --dir ${XIMS_HOME}/lib --port ${PORT} --pid-file=PIDFile --interval=5 --status-file=${STATUSFILE} --signal-on-hup=QUIT --\
+          starman --max-requests 90 --keepalive-timeout 5 --workers ${WORKERS} --user ${USER} --group ${GROUP} --access-log ${LOG_DIR}/access_log --error-log ${LOG_DIR}/error_log --preload-app ${XIMS_HOME}/lib/xims.psgi >> ${LOG_DIR}/error_log
+
+
+[Install]
+WantedBy = multi-user.target
