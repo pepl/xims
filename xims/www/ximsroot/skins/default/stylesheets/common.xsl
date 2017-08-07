@@ -15,7 +15,7 @@
                 xmlns:dyn="http://exslt.org/dynamic"
                 xmlns:exslt="http://exslt.org/common"
                 xmlns="http://www.w3.org/1999/xhtml" 
-                extension-element-prefixes="dyn">
+                extension-element-prefixes="dyn exslt">
 	<xsl:import href="../../../stylesheets/common.xsl"/>
 	<xsl:import href="common_header.xsl"/>
 	<xsl:import href="common_head.xsl"/>
