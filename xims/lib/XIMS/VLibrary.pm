@@ -701,7 +701,8 @@ sub _vlitems_byfilter_sql {
     }
     else {
         $properties =
-            'distinct c.id AS id, d.parent_id, d.location, d.object_type_id, d.data_format_id, c.image_id, c.document_id, '
+            'distinct c.id AS id, d.parent_id, d.location, d.object_type_id, '
+          . 'd.data_format_id, d.document_role, c.image_id, c.document_id, '
           . 'c.abstract, c.title, c.last_modification_timestamp, '
           . 'c.status, c.status_checked_timestamp, '
           . 'c.marked_deleted, c.locked_time, c.locked_by_id, c.published';
@@ -1102,7 +1103,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2015 The XIMS Project.
+Copyright (c) 2002-2017 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
