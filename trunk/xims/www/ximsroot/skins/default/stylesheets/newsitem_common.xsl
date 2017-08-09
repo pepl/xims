@@ -8,8 +8,9 @@
 <xsl:stylesheet version="1.0" 
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:date="http://exslt.org/dates-and-times"
+                xmlns:exslt="http://exslt.org/common"
                 xmlns="http://www.w3.org/1999/xhtml" 
-                extension-element-prefixes="date">
+                extension-element-prefixes="exslt date">
 
 	<xsl:import href="document_common.xsl"/>
 	
@@ -113,7 +114,7 @@
 				<input type="text" name="imagefolder" size="60" class="text" id="input-image-target">
 					<!--  Provide an "educated-guess" default value -->
 					<xsl:attribute name="value">
-                        <!-- filter out root and document when this temlate is
+                        <!-- filter out root and document when this template is
                              used for URLLinks representing Image Tiles -->
 						<xsl:for-each select="/document/context/object/parents/object[@document_id != 1 and object_type_id != 2]">
 							<xsl:text>/</xsl:text>
@@ -168,13 +169,74 @@
     </script>
   </xsl:template>
 	
-	<xsl:template name="form-metadata">
-      <div class="form-div block">
-		<h2><xsl:value-of select="$i18n/l/Metadata"/></h2>
-		<xsl:call-template name="form-keywords"/>
-		<xsl:call-template name="form-valid_from"/>
-		<xsl:call-template name="form-valid_to"/>
-      </div>
-    </xsl:template>
+  <xsl:template name="form-metadata">
+    <div class="form-div block">
+	  <h2><xsl:value-of select="$i18n/l/Metadata"/></h2>
+	  <xsl:call-template name="form-keywords"/>
+	  <xsl:call-template name="form-valid_from"/>
+	  <xsl:call-template name="form-valid_to"/>
+    </div>
+  </xsl:template>
 
+  <xsl:template name="form-link">
+    <div class="form-div-block">
+      <h2>NewsLink</h2>
+      <div class="form-div ui-corner-all div-left" id="tr-link">
+		<div class="label-std">
+		  <label for="input-link">
+			<!-- Location is now 'Pfad' in german translation - 
+				 <xsl:value-of select="$i18n/l/Location"/>
+			-->
+			<xsl:value-of select="$i18n/l/LocationURL"/>
+		  </label>
+		</div>
+        <!-- link stored in body field -->
+		<input type="text" name="body" size="60" class="text" id="input-link" onchange="checkLangSuffix()" value="{body}"></input>
+		
+		<xsl:text>&#160;</xsl:text>
+        <!-- when adding a navigation link or a document link show
+             parent container instead of the departmentlinks folder
+		-->
+		<a class="button" id="buttonBrTarget">
+		  <xsl:attribute name="href">
+			javascript:createDialog('<xsl:value-of select="$xims_box"/>
+                                     <xsl:value-of select="$goxims_content"/>
+                                     <xsl:text>?id=</xsl:text>
+                                     <xsl:value-of select="/document/context/object/parents/object[last() - 1]/@id"/>
+                                     <xml:text>&amp;contentbrowse=1&amp;sbfield=eform.body&amp;urllink=1'</xml:text>,
+                                    'default-dialog',
+                                    '<xsl:value-of select="$i18n/l/browse_target"/>');
+		  </xsl:attribute>
+		  <xsl:value-of select="$i18n/l/browse_target"/>
+		</a>
+		<xsl:text>&#160;</xsl:text>
+		<a class="button warn" id="content-lang-notice" style="display:none;" href="javascript:openLangDialog()">Hinweis</a>
+		<div id="dialog-lang" title="{$i18n/l/Notice}">
+		  <p><xsl:value-of select="$i18n/l/WarnLangSuffix"/></p>
+		</div>
+      </div>
+    </div>
+        <script type="text/javascript">
+function openLangDialog(){
+	$( '#dialog-lang' ).dialog('open');
+}
+
+function checkLangSuffix(){
+	var arr = $('#input-location').val().split('.');
+	if($.inArray(arr[arr.length -1], ['de','en','fr','ru','es','it']) != -1){
+		$('#content-lang-notice').show();
+		}
+	else {
+		$('#content-lang-notice').hide();
+	}
+}
+
+$( "#dialog-lang" ).dialog({ autoOpen: false });
+
+checkLangSuffix();               
+    </script>    
+  </xsl:template>
+
+
+    
 </xsl:stylesheet>

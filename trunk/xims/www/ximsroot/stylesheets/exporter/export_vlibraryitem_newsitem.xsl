@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2015 The XIMS Project.
+# Copyright (c) 2002-2017 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -99,8 +99,9 @@
               <xsl:if test="image_id/location_path != ''">
                 <xsl:apply-templates select="image_id"/>
               </xsl:if>
-              
-              <xsl:apply-templates select="body"/>
+              <xsl:if test="not(document_role='newslink')">
+                <xsl:apply-templates select="body"/>
+              </xsl:if>
             </div>
           </div>
         </article>
@@ -108,6 +109,9 @@
       </body>
 
       <links>
+        <xsl:if test="document_role='newslink'">
+          <link type="locator" role="newslink" href="{body}"/>
+        </xsl:if>
         <xsl:apply-templates select="children/object">
           <xsl:sort select="position" data-type="number"/>
         </xsl:apply-templates>
