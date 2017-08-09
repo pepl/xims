@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2015 The XIMS Project.
+# Copyright (c) 2002-2017 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: newsitem_default.xsl 2387 2009-12-17 14:07:58Z susannetober $
@@ -63,7 +63,7 @@
 		</xsl:choose>
 		<div id="body-content" style="clear:both;">
           <xsl:call-template name="pre-body-hook"/>
-		  <xsl:apply-templates select="body"/>
+		  <xsl:call-template name="body"/>
 		</div>
 		
 		<div id="validity">
@@ -85,5 +85,10 @@
 	</div>
 	</xsl:template>
 
+    <!-- indirection iot ease overriding -->
+    <xsl:template name="body">
+      <xsl:apply-templates select="body"/>
+    </xsl:template>
+        
 </xsl:stylesheet>
 

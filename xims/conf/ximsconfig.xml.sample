@@ -95,6 +95,10 @@
             <option value="img-tile">Image Tile</option>
             <option value="pano-img">Panorama Image</option>
           </URLLink>
+          <NewsItem>
+            <option value="0"></option>
+            <option value="newslink">NewsLink</option>
+          </NewsItem>
         </DocumentRoleOptions> -->
         
         <!--
