@@ -189,7 +189,10 @@ sub prepare {
                       { author => [ $child->vleauthors() ] };
                     $child->{meta} = [ $child->vlemeta() ];
                     $child->{subjectset} =
-                      { subject => [ $child->vlesubjects() ] };
+                        { subject => [ $child->vlesubjects() ] };
+                    if ($child->{document_role} eq 'newslink') {
+                        $child->{url} = $child->body();
+                    }
                 }
             }
             $doc_data->{context}->{object}->{children} =
@@ -235,7 +238,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2015 The XIMS Project.
+Copyright (c) 2002-2017 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
