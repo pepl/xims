@@ -33,6 +33,7 @@
 	
 	<xsl:variable name="objtypeid" select="/document/context/object/object_type_id"/>
 	<xsl:variable name="objtypename" select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/>
+    <xsl:variable name="objtypefullname" select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/fullname"/>
 	<!--<xsl:param name="objtype_name">
 		<xsl:value-of select="$i18n/l/ots/ot[@id=$objtypeid]"/>
 	</xsl:param>-->
@@ -769,10 +770,13 @@
 	</xsl:template>
 
     <xsl:template name="form-document-role">
+      <xsl:variable name="options-element" select="translate($objtypefullname, ':', '_')"/>
       <xsl:variable name="options-count"
-                    select="count(exslt:node-set($document_role_options)/*[local-name()=$objtypename]/*)"/>
+                    select="count(exslt:node-set($document_role_options)/*[local-name()=$options-element]/*)"/>
       <xsl:variable name="prev-document-role" select="document_role"/>
 
+      <b><xsl:value-of select="$options-element"/></b>
+      
       <xsl:if test="$options-count &gt; 0 and /document/context/session/user/userprefs/profile_type = 'webadmin'">
 
         <div id="tr-document-role">
@@ -781,7 +785,7 @@
 		  </div>
 
           <select name="document_role" id="input-document-role" count="{$options-count}">
-            <xsl:for-each select="exslt:node-set($document_role_options)/*[local-name()=$objtypename]/*">
+            <xsl:for-each select="exslt:node-set($document_role_options)/*[local-name()=$options-element]/*">
               <xsl:copy>
                 <xsl:if test="@value=$prev-document-role">
                   <xsl:attribute name="selected">selected</xsl:attribute>
