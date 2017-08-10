@@ -1,4 +1,4 @@
--- Copyright (c) 2002-2015 The XIMS Project.
+-- Copyright (c) 2002-2017 The XIMS Project.
 -- See the file "LICENSE" for information and conditions for use, reproduction,
 -- and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
@@ -7,7 +7,7 @@
 -- should be done through the modules!!!
 
 INSERT INTO CI_LANGUAGES ( id, fullname, code ) VALUES ( LNG_SEQ.NEXTVAL, 'English (US)', 'en-us' );
-INSERT INTO CI_LANGUAGES ( id, fullname, code ) VALUES ( LNG_SEQ.NEXTVAL, 'Deutsch (Österreich)', 'de-at' );
+INSERT INTO CI_LANGUAGES ( id, fullname, code ) VALUES ( LNG_SEQ.NEXTVAL, 'Deutsch (ï¿½sterreich)', 'de-at' );
 
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level ) VALUES ( OBT_SEQ.NEXTVAL, 'Folder', 1, 1, 0, 0, 1 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level ) VALUES ( OBT_SEQ.NEXTVAL, 'Document', 0, 1, 1, 0, 1 );
