@@ -1,77 +1,77 @@
 \section{Berechtigungsmechanismus in \otherterm{XIMS}}
 \label{berechtigungen}
 
-\otherterm{XIMS} verfügt über ein umfangreiches Berechtigungssystem. Dieses ermöglicht eine
-sehr feingranulare Steuerung von Berechtigungen. Berechtigungen können auf
+\otherterm{XIMS} verfï¿½gt ï¿½ber ein umfangreiches Berechtigungssystem. Dieses ermï¿½glicht eine
+sehr feingranulare Steuerung von Berechtigungen. Berechtigungen kï¿½nnen auf
 Basis einzelner Benutzer bzw. Rollen (z.\,B. zur Verwaltung von Benutzergruppen)
 vergeben werden. Berechtigungen regeln die Privilegien auf \otherterm{XIMS}-Objekte.
 
 Ein Benutzer kann beispielsweise die Berechtigung besitzen, bestimmte Dokumente
 zu lesen, ein anderer Benutzer hingegen kann Objekte editieren bzw. aus dem
-System löschen.
+System lï¿½schen.
 
-Für jedes einzelne in \otherterm{XIMS} verwaltete Objekt sind eigene Zugriffsrechte in einer
-sogenannten ">Access-Control-List"< (ACL) gespeichert. Mit einem Klick auf das »Zugriffskontrolle/Rechteverwaltung-Icon«
-des gewünschten Objekts können bestehende Berechtigungen von Benutzern bzw.
-Rollen gesichtet bzw. verändert werden. Hat ein Benutzer das »GRANT«-Recht
+Fï¿½r jedes einzelne in \otherterm{XIMS} verwaltete Objekt sind eigene Zugriffsrechte in einer
+sogenannten ">Access-Control-List"< (ACL) gespeichert. Mit einem Klick auf das ï¿½Zugriffskontrolle/Rechteverwaltung-Iconï¿½
+des gewï¿½nschten Objekts kï¿½nnen bestehende Berechtigungen von Benutzern bzw.
+Rollen gesichtet bzw. verï¿½ndert werden. Hat ein Benutzer das ï¿½GRANTï¿½-Recht
 (Verwaltungsrecht), so darf dieser Benutzer auch bestehende Berechtigungen
-verändern bzw. neue hinzufügen.
+verï¿½ndern bzw. neue hinzufï¿½gen.
 
 \begin{Hinweis}
-  Die Berechtigungen werden für das jeweilige, einzelne Objekt
-  durchgesetzt; jemanden bloß aus einem übergeordneten Verzeichnis
+  Die Berechtigungen werden fï¿½r das jeweilige, einzelne Objekt
+  durchgesetzt; jemanden bloï¿½ aus einem ï¿½bergeordneten Verzeichnis
   auszusperren ist also nicht ausreichend: Die darunter liegenden
-  Objekte könnten trotzdem (z.\,B. über die Suche) direkt angesprungen
-  werden, wenn ihre eigene ACL dies zulässt!
+  Objekte kï¿½nnten trotzdem (z.\,B. ï¿½ber die Suche) direkt angesprungen
+  werden, wenn ihre eigene ACL dies zulï¿½sst!
 \end{Hinweis}
 
-\subsection{Rechte-Übersicht}
-Fährt man mit der Maus über das Icon zum Rechteverwalten (Schlüsselsymbol) eines Objekts, öffnet sich ein sogenannter Tooltip, der eine Übersicht über die derzeit vergebenen Rechte gibt. Gesetzte Rechte in der Übersicht, erkennen Sie an der fetten Schrift und dem weißen Hintergrund des Buttons. Nicht vergebene Rechte sind durchgestrichen und hellgrau unterlegt.
+\subsection{Rechte-ï¿½bersicht}
+Fï¿½hrt man mit der Maus ï¿½ber das Icon zum Rechteverwalten (Schlï¿½sselsymbol) eines Objekts, ï¿½ffnet sich ein sogenannter Tooltip, der eine ï¿½bersicht ï¿½ber die derzeit vergebenen Rechte gibt. Gesetzte Rechte in der ï¿½bersicht, erkennen Sie an der fetten Schrift und dem weiï¿½en Hintergrund des Buttons. Nicht vergebene Rechte sind durchgestrichen und hellgrau unterlegt.
 
 XIMS kennt die folgenden Privilegien:
 
 \subsubsection{Standardrechte (Basic Privileges)}
 \label{standardrechte}
-Standardrechte sind grundlegende Privilegien, die \otherterm{XIMS} zur Beschränkung des
-Zugriffs auf Objekte zu vergeben hat. Sie sind ähnlich Dateisystemrechten auf
+Standardrechte sind grundlegende Privilegien, die \otherterm{XIMS} zur Beschrï¿½nkung des
+Zugriffs auf Objekte zu vergeben hat. Sie sind ï¿½hnlich Dateisystemrechten auf
 Betriebssystemebene (vgl. Windows/Unix-Zugriffsrechte auf Dateien bzw.
 Verzeichnisse)
 
 \paragraph{View (Lesen)}
-Leserecht für Benutzer/Rolle.
+Leserecht fï¿½r Benutzer/Rolle.
 
 \paragraph{Write (Schreiben)}
-Schreibrechte für Benutzer/Rolle für ein Objekt. Dadurch können beispielsweise der
-Titel bzw. Inhalt verändert und geschrieben werden.
+Schreibrechte fï¿½r Benutzer/Rolle fï¿½r ein Objekt. Dadurch kï¿½nnen beispielsweise der
+Titel bzw. Inhalt verï¿½ndert und geschrieben werden.
 
 \paragraph{Create (Erstellen)}
 Benutzer/Rolle darf ein neues Objekt in einem \ximsterm{Container} erstellen.
 
-\paragraph{Delete (Löschen)}
-Benutzer/Rolle darf ein Objekt löschen.
+\paragraph{Delete (Lï¿½schen)}
+Benutzer/Rolle darf ein Objekt lï¿½schen.
 
 \paragraph{Move (Verschieben)}
 Benutzer/Rolle darf ein Objekt verschieben.
 
-\subsubsection{Veröffentlichungsrechte (Publishing Privileges)}
+\subsubsection{Verï¿½ffentlichungsrechte (Publishing Privileges)}
 \label{pubrechte}
-\paragraph{Publish (Veröffentlichen)} Ein Benutzer bzw. eine Rolle hat das Recht Veröffentlichungsfunktionen
-(»veröffentlichen«, »wiederveröffentlichen«, »veröffentlichen
-rückgängig machen«; siehe Punkt \ref{publizieren}) auszuführen.
+\paragraph{Publish (Verï¿½ffentlichen)} Ein Benutzer bzw. eine Rolle hat das Recht Verï¿½ffentlichungsfunktionen
+(ï¿½verï¿½ffentlichenï¿½, ï¿½wiederverï¿½ffentlichenï¿½, ï¿½verï¿½ffentlichen
+rï¿½ckgï¿½ngig machenï¿½; siehe Punkt \ref{publizieren}) auszufï¿½hren.
 
 \subsubsection{Verwaltungsrechte (Grant Privileges)}
 \label{verwrechte}
 
-\paragraph{Grant (Rechte gewähren)} Besitzen Benutzer bzw. Rollen das Verwaltungsrecht (Grant Privilege), sind diese in
-der Lage anderen Benutzern bzw. Rollen explizite Privilegien für Objekte
-einzuräumen, d.h. Benutzer bzw. Rollen mit Verwaltungsrecht können Privilegien an
+\paragraph{Grant (Rechte gewï¿½hren)} Besitzen Benutzer bzw. Rollen das Verwaltungsrecht (Grant Privilege), sind diese in
+der Lage anderen Benutzern bzw. Rollen explizite Privilegien fï¿½r Objekte
+einzurï¿½umen, d.h. Benutzer bzw. Rollen mit Verwaltungsrecht kï¿½nnen Privilegien an
 andere Benutzer bzw. Rollen vergeben.
 
 
 \subsection{Berechtigungen vergeben und verwalten}
 %\subsection{Berechtigungen eines Benutzers bzw. einer Rolle}
 \label{berechtigungen-benutzer}
-Um bestehende Berechtigungen zu ändern oder neue Berechtigungen zu vergeben, klicken Sie auf das Icon zur ">Rechteverwaltung"<. Es erscheint eine Dialog-Seite (siehe Abbildung \ref{fig:manage-acl}) auf der Sie im oberen Teil (1) neue Rechte vergeben können. Im zweiten Abschnitt (2) sehen Sie eine Tabelle mit den derzeit vergebenen Rechten und der Möglichkeit, diese Berechtigungen zu ändern oder zu entfernen.
+Um bestehende Berechtigungen zu ï¿½ndern oder neue Berechtigungen zu vergeben, klicken Sie auf das Icon zur ">Rechteverwaltung"<. Es erscheint eine Dialog-Seite (siehe Abbildung \ref{fig:manage-acl}) auf der Sie im oberen Teil (1) neue Rechte vergeben kï¿½nnen. Im zweiten Abschnitt (2) sehen Sie eine Tabelle mit den derzeit vergebenen Rechten und der Mï¿½glichkeit, diese Berechtigungen zu ï¿½ndern oder zu entfernen.
 
 \begin{figure}[!ht]
 	\centering
@@ -81,8 +81,8 @@ Um bestehende Berechtigungen zu ändern oder neue Berechtigungen zu vergeben, kli
 \end{figure}
 
 \paragraph{Neue Berechtigungen vergeben}
-%Geben Sie den Namen der Rolle oder des Benutzers, an den Sie Privilegien vergeben wollen, in das entsprechende Feld ein\footnote{Sie können gleiche Privilegien gleichzeitig an mehrere Nutzer vergeben indem Sie die Namen der Benutzer und Rollen durch Komma getrennt in das Feld eingeben}. Möchten Sie die Berechtigungen gleichzeitig nicht nur an das gewählte Objekt sondern auch an alle Kindobjekte (z.B. bei einem Ordner auch an alle enthaltenen Objekte und Unterorder) vergeben, aktivieren Sie die Option ">Rechte rekursiv vergeben/entziehen"<. Anschließend drücken Sie den ">Speichern"<-Button. Nach dem gleichen Schema können Sie einem oder mehreren Nutzern auch Rechte entziehen. Dazu klicken Sie statt ">Speichern"< den ">Rechte entfernen"<-Button.
-Geben Sie den Namen der Rolle oder des Benutzers, an den Sie Privilegien vergeben wollen, in das entsprechende Feld ein\footnote{Sie können gleiche Privilegien gleichzeitig an mehrere Nutzer vergeben indem Sie die Namen der Benutzer und Rollen durch Komma getrennt in das Feld eingeben}. Anschließend drücken Sie den ">Speichern"<-Button. Nach dem gleichen Schema können Sie einem oder mehreren Nutzern auch Rechte entziehen. Dazu klicken Sie statt ">Speichern"< den ">Rechte entfernen"<-Button.
+%Geben Sie den Namen der Rolle oder des Benutzers, an den Sie Privilegien vergeben wollen, in das entsprechende Feld ein\footnote{Sie kï¿½nnen gleiche Privilegien gleichzeitig an mehrere Nutzer vergeben indem Sie die Namen der Benutzer und Rollen durch Komma getrennt in das Feld eingeben}. Mï¿½chten Sie die Berechtigungen gleichzeitig nicht nur an das gewï¿½hlte Objekt sondern auch an alle Kindobjekte (z.B. bei einem Ordner auch an alle enthaltenen Objekte und Unterorder) vergeben, aktivieren Sie die Option ">Rechte rekursiv vergeben/entziehen"<. Anschlieï¿½end drï¿½cken Sie den ">Speichern"<-Button. Nach dem gleichen Schema kï¿½nnen Sie einem oder mehreren Nutzern auch Rechte entziehen. Dazu klicken Sie statt ">Speichern"< den ">Rechte entfernen"<-Button.
+Geben Sie den Namen der Rolle oder des Benutzers, an den Sie Privilegien vergeben wollen, in das entsprechende Feld ein\footnote{Sie kï¿½nnen gleiche Privilegien gleichzeitig an mehrere Nutzer vergeben indem Sie die Namen der Benutzer und Rollen durch Komma getrennt in das Feld eingeben}. Anschlieï¿½end drï¿½cken Sie den ">Speichern"<-Button. Nach dem gleichen Schema kï¿½nnen Sie einem oder mehreren Nutzern auch Rechte entziehen. Dazu klicken Sie statt ">Speichern"< den ">Rechte entfernen"<-Button.
 
 \paragraph{Bestehende Berechtigungen verwalten}
 
@@ -93,16 +93,16 @@ Geben Sie den Namen der Rolle oder des Benutzers, an den Sie Privilegien vergebe
 %	\label{fig:permissions}
 %\end{figure}
 
-Um bestehende Berechtigungen eines Benutzers zu verändern, gehen Sie in der Tabelle mit den vergebenen Rechten in die Zeile des Benutzers bzw. der Rolle, deren Berechtigungen Sie ändern wollen. Dort aktivieren bzw. deaktivieren Sie das Privileg durch Klick auf den entsprechenden Button in der Rechteübersicht und drücken anschließend ">Speichern"<. Wollen Sie einem Benutzer oder einer Rolle alle Rechte entziehen, klicken Sie auf den ">Rechte entfernen"<-Button in der Zeile des Benutzers/ der Rolle.
+Um bestehende Berechtigungen eines Benutzers zu verï¿½ndern, gehen Sie in der Tabelle mit den vergebenen Rechten in die Zeile des Benutzers bzw. der Rolle, deren Berechtigungen Sie ï¿½ndern wollen. Dort aktivieren bzw. deaktivieren Sie das Privileg durch Klick auf den entsprechenden Button in der Rechteï¿½bersicht und drï¿½cken anschlieï¿½end ">Speichern"<. Wollen Sie einem Benutzer oder einer Rolle alle Rechte entziehen, klicken Sie auf den ">Rechte entfernen"<-Button in der Zeile des Benutzers/ der Rolle.
 
-Um den Dialog zum Rechte verwalten zu verlassen ohne Privilegien zu ändern, wählen Sie ">Abbrechen"<.
+Um den Dialog zum Rechte verwalten zu verlassen ohne Privilegien zu ï¿½ndern, wï¿½hlen Sie ">Abbrechen"<.
 
-%folgt man dem Link »Rechte verwalten« (Manage Privileges). Daraufhin folgt ein Dialog
+%folgt man dem Link ï¿½Rechte verwaltenï¿½ (Manage Privileges). Daraufhin folgt ein Dialog
 %mit zwei unterschiedlichen Bereichen (siehe Abb.~\ref{fig:permissionadmin}). Der obere Bereich (1) dient
-%zur Steuerung der Berechtigungen für den entsprechenden Benutzer bzw. der
-%entsprechenden Rolle. Rollen sind i.d.R mit dem UIBK-Präfix gekennzeichnet. Im
-%unteren Bereich (2) können die zuvor explizit dem Benutzer bzw. der Rolle
-%zugewiesenen Berechtigungen wieder entfernt werden. D.h. über den »Rechte entfernen«-Button wird der Benutzer bzw. die
+%zur Steuerung der Berechtigungen fï¿½r den entsprechenden Benutzer bzw. der
+%entsprechenden Rolle. Rollen sind i.d.R mit dem UIBK-Prï¿½fix gekennzeichnet. Im
+%unteren Bereich (2) kï¿½nnen die zuvor explizit dem Benutzer bzw. der Rolle
+%zugewiesenen Berechtigungen wieder entfernt werden. D.h. ï¿½ber den ï¿½Rechte entfernenï¿½-Button wird der Benutzer bzw. die
 %Rolle aus der Berechtigungstabelle (siehe Abb.~\ref{fig:permissions}) des Objektes vollkommen
 %entfernt und verliert alle damit verbundenen Berechtigungen.
 %
@@ -114,33 +114,33 @@ Um den Dialog zum Rechte verwalten zu verlassen ohne Privilegien zu ändern, wähl
 %\end{figure}
 %
 %Der obere Bereich (1) untergliedert sich in drei unterschiedliche Arten von
-%Privilegien: Standardrechte, Veröffentlichungsrechte und Verwaltungsrechte
+%Privilegien: Standardrechte, Verï¿½ffentlichungsrechte und Verwaltungsrechte
 %(siehe auch Punkt \ref{zugriffsrechte}).
-%Standardrechte sind übliche Berechtigungen, wie das Recht zu lesen bzw. zu
-%schreiben. Das Veröffentlichungsrecht ermächtigt einen Benutzer bzw. eine Rolle,
-%das Objekt zu veröffentlichen. Das Verwaltungsrecht gewährt einem Benutzer bzw.
-%einer Rolle das Recht, anderen Personen Privilegien für ein Objekt einzuräumen
+%Standardrechte sind ï¿½bliche Berechtigungen, wie das Recht zu lesen bzw. zu
+%schreiben. Das Verï¿½ffentlichungsrecht ermï¿½chtigt einen Benutzer bzw. eine Rolle,
+%das Objekt zu verï¿½ffentlichen. Das Verwaltungsrecht gewï¿½hrt einem Benutzer bzw.
+%einer Rolle das Recht, anderen Personen Privilegien fï¿½r ein Objekt einzurï¿½umen
 %bzw. wegzunehmen.
-%Die Veränderungen der Privilegien werden erst durch das Drücken des
-%»Speichern«-Buttons wirksam.
-%Im unteren Bereich (2) können einem Benutzer bzw. der Rolle sämtliche Rechte auf
-%das Objekt genommen werden. D.h. durch das Drücken des »Rechte entfernen«-
-%Buttons (Revoke Grants) wird der Benutzer bzw. die Rolle aus der »Access Control
-%List« (ACL) entfernt und scheint somit nicht mehr in der Liste der Benutzer auf,
+%Die Verï¿½nderungen der Privilegien werden erst durch das Drï¿½cken des
+%ï¿½Speichernï¿½-Buttons wirksam.
+%Im unteren Bereich (2) kï¿½nnen einem Benutzer bzw. der Rolle sï¿½mtliche Rechte auf
+%das Objekt genommen werden. D.h. durch das Drï¿½cken des ï¿½Rechte entfernenï¿½-
+%Buttons (Revoke Grants) wird der Benutzer bzw. die Rolle aus der ï¿½Access Control
+%Listï¿½ (ACL) entfernt und scheint somit nicht mehr in der Liste der Benutzer auf,
 %welche explizite Rechte auf das Objekt zugewiesen bekommen haben.
 
 \begin{Hinweis}
   Wenn Sie einer Rolle, z.\,B.: UIBK:ALL, alle Rechte nehmen wollen,
-  löschen Sie bitte die Rolle mit »Rechte entfernen« komplett aus der
+  lï¿½schen Sie bitte die Rolle mit ï¿½Rechte entfernenï¿½ komplett aus der
   ACL. Wenn Sie die Rolle belassen und stattdessen alle Privilegien
   entfernen, sperren Sie damit alle Rollenmitglieder aus -- im Falle
   von UIBK:ALL vermutlich auch sich selbst!
 \end{Hinweis}
 
-%Um Benutzern bzw. Rollen, die bisher noch keine expliziten Rechte für ein Objekt
+%Um Benutzern bzw. Rollen, die bisher noch keine expliziten Rechte fï¿½r ein Objekt
 %haben, Privilegien zu erteilen, muss der Benutzer bzw. die Rolle zuerst ausfindig
 %gemacht werden. Zu diesem Zweck bietet \otherterm{XIMS} in der Berechtigungsvergabe die
-%Möglichkeit nach Benutzern bzw. Rollen zu suchen.
+%Mï¿½glichkeit nach Benutzern bzw. Rollen zu suchen.
 %
 %\begin{figure}[!ht]
 %	\centering
@@ -152,23 +152,23 @@ Um den Dialog zum Rechte verwalten zu verlassen ohne Privilegien zu ändern, wähl
 %\textbf{Suche nach Benutzern:}
 %
 %Um nach einzelnen Benutzern zu suchen, ist die Benutzerkennung in das
-%Eingabefeld einzugeben (z.\,B. C102XX). Mit einem anschließenden Klick auf den
-%»Suchen«-Button, sucht \otherterm{XIMS} nach dem besagten Benutzer und listet diesen auf. In
-%weiterer Folge können dem Benutzer über den Link »Neue Rechte vergeben«
-%gewünschte Privilegien eingeräumt werden.
+%Eingabefeld einzugeben (z.\,B. C102XX). Mit einem anschlieï¿½enden Klick auf den
+%ï¿½Suchenï¿½-Button, sucht \otherterm{XIMS} nach dem besagten Benutzer und listet diesen auf. In
+%weiterer Folge kï¿½nnen dem Benutzer ï¿½ber den Link ï¿½Neue Rechte vergebenï¿½
+%gewï¿½nschte Privilegien eingerï¿½umt werden.
 %
 %\textbf{Suche nach Rollen:}
 %
 %Um nach bestehenden Rollen zu suchen, gibt man den Namen der Rolle (i.d.R.
-%beginnend mit »UIBK:«) in das Suchfeld ein (beispielsweise UIBK:ZID) und wählt im
-%Auswahlfeld »Rolle« (anstatt »BenutzerInnen«) aus. Nach einem anschließenden
-%Klick auf »Suchen« listet \otherterm{XIMS} alle Rollen auf, die den Suchbegriff im Namen
-%enthalten. Gewünschte Privilegien auf gefundene Rollen können analog zur Vergabe
-%von Privilegien für Benutzer vergeben werden.
+%beginnend mit ï¿½UIBK:ï¿½) in das Suchfeld ein (beispielsweise UIBK:ZID) und wï¿½hlt im
+%Auswahlfeld ï¿½Rolleï¿½ (anstatt ï¿½BenutzerInnenï¿½) aus. Nach einem anschlieï¿½enden
+%Klick auf ï¿½Suchenï¿½ listet \otherterm{XIMS} alle Rollen auf, die den Suchbegriff im Namen
+%enthalten. Gewï¿½nschte Privilegien auf gefundene Rollen kï¿½nnen analog zur Vergabe
+%von Privilegien fï¿½r Benutzer vergeben werden.
 
 \subsection{Rollenverwaltung}
 \label{rollenverwaltung}
-Tritt ein Mitarbeiter neu in eine Organisationseingheit ein bzw. verlässt sie, ist es oft nötig ihm auf alle Objekte in einem bestimmten Bereich Privilegien zu geben bzw. diese zu entfernen. Hier ist die Arbeit mit Rollen ein praktisch Mittel. Anstatt jedem einzelnen Mitarbeiter Rechte einzeln zuzuweisen, vergibt man stattdessen die gewünschten Rechte an eine Rolle und fügt alle Benutzer, die die selben Rechte auf ein Objekt oder einen ganzen Bereich erhalten sollen dieser Rolle hinzu. Um Benutzer zu einer Rolle hinzufügen oder zu entfernen kann die Rollenverwaltung verwendet werden. Der jeweilige Rollenadministrator kann sich mit seiner
+Tritt ein Mitarbeiter neu in eine Organisationseingheit ein bzw. verlï¿½sst sie, ist es oft nï¿½tig ihm auf alle Objekte in einem bestimmten Bereich Privilegien zu geben bzw. diese zu entfernen. Hier ist die Arbeit mit Rollen ein praktisch Mittel. Anstatt jedem einzelnen Mitarbeiter Rechte einzeln zuzuweisen, vergibt man stattdessen die gewï¿½nschten Rechte an eine Rolle und fï¿½gt alle Benutzer, die die selben Rechte auf ein Objekt oder einen ganzen Bereich erhalten sollen dieser Rolle hinzu. Um Benutzer zu einer Rolle hinzufï¿½gen oder zu entfernen kann die Rollenverwaltung verwendet werden. Der jeweilige Rollenadministrator kann sich mit seiner
 Benutzerkennung (z.\,B. C102XX) unter \url{http://xims.uibk.ac.at/roles} einloggen.
 
 \begin{figure}[!ht]
@@ -179,5 +179,5 @@ Benutzerkennung (z.\,B. C102XX) unter \url{http://xims.uibk.ac.at/roles} einlogg
 \end{figure}
 
 \begin{Hinweis}
-Es wird empfohlen so wenig Rechte wie möglich an einzelne Benutzer zu vergeben. Die Arbeit mit Rollen dient im Endeffekt nicht nur der Übersichtlichkeit bei den vergebenen Rechten sondern vor allem auch der Vereinfachung der Wartung der Privilegien eines Bereichs.
+Es wird empfohlen so wenig Rechte wie mï¿½glich an einzelne Benutzer zu vergeben. Die Arbeit mit Rollen dient im Endeffekt nicht nur der ï¿½bersichtlichkeit bei den vergebenen Rechten sondern vor allem auch der Vereinfachung der Wartung der Privilegien eines Bereichs.
 \end{Hinweis}
