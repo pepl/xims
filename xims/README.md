@@ -17,7 +17,7 @@ RDBMS for its data repository.
 
 License
 -------
-XIMS is copyrighted 2002-2015 by The XIMS Project. See the file "LICENSE" for
+XIMS is copyrighted 2002-2017 by The XIMS Project. See the file "LICENSE" for
 information and conditions for use, reproduction, and distribution of this work,
 and for a DISCLAIMER OF ALL WARRANTIES.
 
@@ -67,14 +67,14 @@ Credits
 -------
 
 XIMS was originally developed by:
-- Michael Kröll
-- Hansjörg Pehofer
+- Michael Krï¿½ll
+- Hansjï¿½rg Pehofer
 - Kip Hampton
 - Christian Glahn
 
 XIMS is currently developed and maintained by:
 - Susanne Tober
-- Hansjörg Pehofer
+- Hansjï¿½rg Pehofer
 
 Contributors (Sorted by most recent initial contribution):
 - Emir Tanriverdi
@@ -84,12 +84,12 @@ Contributors (Sorted by most recent initial contribution):
 - Arntraud Bacher
 - Simon Bailey
 - Volker Hess 
-- Jochen Früwirth
+- Jochen Frï¿½wirth
 - Joachim Kargl
 - Martina Kinzl
 - Gregor Retti
 - Britta Tautermann
-- Georg Schönwiese
+- Georg Schï¿½nwiese
 
 Additionally, we would like to thank everyone who supplied valuable feedback!
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-# Copyright (c) 2002-2015 The XIMS Project.
+# Copyright (c) 2002-2017 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: xims_create_departmentroot.pl 1441 2006-03-26 18:40:45Z pepl $

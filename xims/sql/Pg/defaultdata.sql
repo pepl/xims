@@ -1,4 +1,4 @@
--- Copyright (c) 2002-2015 The XIMS Project.
+-- Copyright (c) 2002-2017 The XIMS Project.
 -- See the file "LICENSE" for information and conditions for use, reproduction,
 -- and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
@@ -15,7 +15,7 @@ SET CLIENT_ENCODING TO 'LATIN1';
 INSERT INTO ci_languages ( id, fullname, code )
        VALUES ( nextval('ci_languages_id_seq'), 'English (US)', 'en-us' );
 INSERT INTO ci_languages ( id, fullname, code )
-       VALUES ( nextval('ci_languages_id_seq'), 'Deutsch (Österreich)', 'de-at' );
+       VALUES ( nextval('ci_languages_id_seq'), 'Deutsch (ï¿½sterreich)', 'de-at' );
 
 \echo inserting into ci_object_types...
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )

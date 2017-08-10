@@ -181,7 +181,7 @@ Look at the F<error_log> file for messages.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2015 The XIMS Project.
+Copyright (c) 2002-2017 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use,
 reproduction, and distribution of this work, and for a DISCLAIMER OF ALL
