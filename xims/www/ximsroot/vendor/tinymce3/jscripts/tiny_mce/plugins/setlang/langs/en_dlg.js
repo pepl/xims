@@ -8,7 +8,7 @@ attribute_label_hreflangcode:"Target language (<strong>only</strong> for links)"
 attribute_option_de:"de (Deutsch)",
 attribute_option_en:"en (English)",
 attribute_option_it:"it (Italienisch)",
-attribute_option_fr:"fr (Französisch)",
+attribute_option_fr:"fr (Franzï¿½sisch)",
 attribute_option_es:"es (Spanisch)",
 attribute_option_ru:"ru (Russisch)",
 option_de:"de (German)",

@@ -4,11 +4,11 @@
  */
 
 Timeline.GregorianDateLabeller.monthNames["cs"] = [
-    "Leden", "Únor", "Bøezen", "Duben", "Kvìten", "Èerven", "Èervenec", "Srpen", "Záøí", "Øíjen", "Listopad", "Prosinec"
+    "Leden", "ï¿½nor", "Bï¿½ezen", "Duben", "Kvï¿½ten", "ï¿½erven", "ï¿½ervenec", "Srpen", "Zï¿½ï¿½ï¿½", "ï¿½ï¿½jen", "Listopad", "Prosinec"
 ];
 
 Timeline.GregorianDateLabeller.dayNames["cs"] = [
-    "Ne", "Po", "Út", "St", "Èt", "Pá", "So"
+    "Ne", "Po", "ï¿½t", "St", "ï¿½t", "Pï¿½", "So"
 ];
 
 Timeline.GregorianDateLabeller.labelIntervalFunctions["cs"] = function(date, intervalUnit) {
