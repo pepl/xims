@@ -116,8 +116,7 @@ sub prepare {
             )
         );
     }
-    elsif ( $ctxt->object->object_type->name() eq 'NewsItem'
-                or $ctxt->object->object_type->name() eq 'NewsLink') {
+    elsif ( $ctxt->object->object_type->name() eq 'NewsItem' ) {
        push(
             @{ $self->{FilterList} },
             XML::Filter::CharacterChunk->new(
