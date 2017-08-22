@@ -2318,8 +2318,7 @@
 		<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:comment/></script>
 		<script type="text/javascript">
 		  <xsl:choose>
-			<xsl:when test="(/document/context/object/object_type_id = /document/object_types/object_type[name='URLLink']/@id) or
-                            (/document/context/object/object_type_id = /document/object_types/object_type[name='NewsLink']/@id)">
+			<xsl:when test="/document/context/object/object_type_id = /document/object_types/object_type[name='URLLink']/@id">
 			  var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id)"/>';
 			</xsl:when>
 			<xsl:otherwise>
