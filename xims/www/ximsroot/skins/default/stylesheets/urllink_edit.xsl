@@ -77,11 +77,15 @@
             function toggle_image_form( role ) {
                 if (role == "img-tile") {
                    $( "#form-leadimage" ).toggle(true);
+                   $( "#input-lead").attr("name", "abstract");
+                   $( "#input-abstract").attr("name", "disabled");
                    $( "#tr-abstract" ).toggle(false);
                 }
-                else {
+                else { 
                    $( "#form-leadimage" ).toggle(false);
-                   $( "#tr-abstract" ).toggle(true);
+                   $( "#input-lead").attr("name", "disabled");
+		           $( "#input-abstract" ).attr("name", "abstract");
+		           $( "#tr-abstract" ).toggle(true);
                 }
             }
                  
