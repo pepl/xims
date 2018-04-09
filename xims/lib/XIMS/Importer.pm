@@ -184,13 +184,18 @@ sub object_from_object_type {
 
 =head2 import()
 
+=head3 Parameter
+
+    $object
+    $updateexisting
+    $donotchecklocation
+    $grantowneronly
+    $grantdefaultroles
+
 =cut
 
 sub import {
-    my $self               = shift;
-    my $object             = shift;
-    my $updateexisting     = shift;
-    my $donotchecklocation = shift;
+    my ($self, $object, $updateexisting, $donotchecklocation, $grantowneronly, $grantdefaultroles) = @_;
 
     $self->object($object) if $object;
 
@@ -249,7 +254,7 @@ sub import {
     $object->parent_id( $parent->document_id() );
     $object->language_id( $parent->language_id() );
     my $id = $object->create();
-    $self->default_grants();
+    $self->default_grants($grantowneronly, $grantdefaultroles);
 
     return $id;
 }
@@ -384,6 +389,11 @@ sub resolve_suffix {
 }
 
 =head2 default_grants()
+
+=head3 Parameter
+
+     $grantowneronly
+     $grantdefaultroles
 
 =cut
 

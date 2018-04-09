@@ -167,8 +167,8 @@ sub event_passwd_update {
 
     my $rv = $user->update_passwd($oldpw, $newpw, $newpw_confirm);
 
-    use Data::Dumper;
-    warn Dumper($rv, $rv->[0], $rv->[1]);
+    #use Data::Dumper;
+    #warn Dumper($rv, $rv->[0], $rv->[1]);
 
     if ($rv->[0] == 1) {
         $ctxt->properties->application->style( 'update' );
@@ -241,220 +241,217 @@ sub event_gen_website {
 
     my $user = $ctxt->session->user();
 
-#    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::ADMIN() ) {
-#        return $self->event_access_denied( $ctxt );
-#    }
+    #    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::ADMIN() ) {
+    #        return $self->event_access_denied( $ctxt );
+    #    }
 
-# we don't take the system privileges (at the moment)
-#    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::GEN_WEBSITE() ) {
-#        return $self->event_access_denied( $ctxt );
-#    }
+    # we don't take the system privileges (at the moment)
+    #    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::GEN_WEBSITE() ) {
+    #        return $self->event_access_denied( $ctxt );
+    #    }
 
     unless ( ($ctxt->session->user->system_privs_mask() & XIMS::Privileges::ADMIN()) || ( $user->userprefs->profile_type() eq 'webadmin' )) {
         return $self->event_access_denied( $ctxt );
     }
-    
+
     my $message = "";
-    
+
     #my $user = $ctxt->session->user();
-    
-	my $parent_folder = $self->param('path'); #$args{m};	
-	my $location = $self->param('shortname'); #$args{l};	
-	my $title         = $self->param('title'); #$args{t};
-	my $path_deptroot = $parent_folder . $location;
-	my $role;
-	if($self->param('role')){
-		$role = XIMS::User->new( name => $self->param('role') ); #$args{r} );
-		#warn "\n\nparam: ".$self->param('role')." -  role: ".$role->name;
-		$self->sendError( $ctxt,"Could not find role '". $self->param('role') ."'.") 
-			unless $role and $role->id();
-	}
-	my $owner = XIMS::User->new( name => $self->param('owner')); #$args{o} );
-		$self->sendError( $ctxt,"Could not find user '". $self->param('owner') ."'.") 
-			unless $owner and $owner->id();
-	my $grantees_list = $self->param('grantees');
-				
-	# create Departmentroot with departmentlinks and speciallinks
-	
-	# set deptroot info text accordingly to new uniweb design
-	my $abstract = "<span lang=\"de\">$title</span>";
-	$abstract .= "<span lang=\"en\">Insert English title here!</span>";
-	my $deptroot = XIMS::DepartmentRoot->new(
-		User     => $user,
-		location => $location,
-		title    => $title,
-		abstract => $abstract
-	);
-	#### set attributes of Departmentroot
-	# avoid autoindexing of departmentroot contents
-	$deptroot->attribute( autoindex => undef );
-	#TODO: attributes
-	
-	my $parent = XIMS::Object->new( path => $parent_folder );
-	die "Could not find object '" . $parent_folder . "'\n"
-	  unless $parent and $parent->id();
 
-	my $importer = XIMS::Importer::Object->new( User => $user, Parent => $parent );
+    my $parent_folder = $self->param('path'); #$args{m};
+    my $location = $self->param('shortname'); #$args{l};
+    my $title         = $self->param('title'); #$args{t};
+    my $path_deptroot = $parent_folder . $location;
+    my $role;
+    if($self->param('role')){
+        $role = XIMS::User->new( name => $self->param('role') ); #$args{r} );
+        #warn "\n\nparam: ".$self->param('role')." -  role: ".$role->name;
+        $self->sendError( $ctxt,"Could not find role '". $self->param('role') ."'.")
+            unless $role and $role->id();
+    }
+    my $owner = XIMS::User->new( name => $self->param('owner')); #$args{o} );
+    $self->sendError( $ctxt,"Could not find user '". $self->param('owner') ."'.")
+        unless $owner and $owner->id();
+    my $grantees_list = $self->param('grantees');
 
-	unless ($importer->import($deptroot)){
-		$ctxt->properties->application->style( 'newwebsite' );
-		$self->sendError( $ctxt,"Could not import Departmentroot");
-	}
-		
-		my $deptrootid = $importer->import($deptroot);
-		if ($deptrootid) {
-			$message .= "<p>Departmentroot created.</p>";
-		
-		#create Home - Document
-		my $document = XIMS::Document->new(
-			User     => $owner,
-			location => 'index.html',
-			title    => $title
-		);
-		$document->body( '<h1>' . $title . '</h1>' );
-	
-		my $deptimporter = XIMS::Importer::Object->new( User => $user, Parent => $deptroot );
-		my $documentid = $deptimporter->import($document);
-		unless (defined $documentid){
-			$ctxt->properties->application->style( 'passwd' );
-			$self->sendError( $ctxt,"Could not import index.html\n"); 
-		}
-		#print "Successfully created 'index.html'.\n";
-	
-		$document->title($title);
-		$document->abstract($title);
-		
-		$message .= "<p>Document '".$document->title()."' created.</p>";
-		#end create Home document
-		
-		#departmentlinks & speciallinks
-		$message .= &add_link( 'department', $title, $document, $deptroot, $user, $title );
-		$message .= &add_link( 'special', 'A sample Bookmark', $document, $deptroot, $user, $title );
-		
-		# set grants
-		defaultgrants( $deptroot, $owner, $role, $user, $grantees_list );
-		my $iterator = $deptroot->descendants();
-		while ( my $desc = $iterator->getNext() ) {
-			defaultgrants( $desc, $owner, $role, $user );
-		}
-		
-		# only set default bookmark if -b is not given as an argument
-		if ( not $self->param('nobm') ) {
-			$message .= &set_default_bookmark($role, $deptroot);
-		}
-		$message .= &publish_deptroot_rec($deptroot, $user);
-		
-#		$ctxt->properties->application->style( 'newwebsite' );
-		$message .= "<p><strong>New website <a href='content".$parent_folder.$location."'>".$title."</a> successfully generated!</strong></p>";
-#		$ctxt->session->message($message );
-		$ctxt->properties->application->style( 'newwebsite_update' );
+    # create Departmentroot with departmentlinks and speciallinks
+
+    # set deptroot info text accordingly to new uniweb design
+    my $abstract = "<span lang=\"de\">$title</span>";
+    $abstract .= "<span lang=\"en\">Insert English title here!</span>";
+    my $deptroot = XIMS::DepartmentRoot->new(
+        User     => $user,
+        location => $location,
+        title    => $title,
+        abstract => $abstract
+    );
+    #### set attributes of Departmentroot
+    # avoid autoindexing of departmentroot contents
+    $deptroot->attribute( autoindex => undef );
+    #TODO: attributes
+
+    my $parent = XIMS::Object->new( path => $parent_folder );
+    die "Could not find object '" . $parent_folder . "'\n"
+        unless $parent and $parent->id();
+
+    my $importer = XIMS::Importer::Object->new( User => $user, Parent => $parent );
+
+    my $deptrootid = $importer->import($deptroot, undef, undef, 1, undef) ;
+    if ($deptrootid) {
+        $message .= "<p>Departmentroot created.</p>";
+
+        # Set ci_departmentroot_properties.generate_stats to 1
+        my $engine = $deptroot->data_provider->{Driver}->{dbh};
+        unless ( $engine->do_insert( table => 'ci_departmentroot_properties',
+                                     values => { 'document_id'=>$deptroot->document_id(), 'generate_stats'=>1 }) == 1) {
+            warn "Unable to set departmentroot properties!\n";
+        };
+
+        #create Home - Document
+        my $document = XIMS::Document->new(
+            User     => $owner,
+            location => 'index.html',
+            title    => $title
+        );
+        $document->body( '<h1>' . $title . '</h1>' );
+
+        my $deptimporter = XIMS::Importer::Object->new( User => $user, Parent => $deptroot );
+        my $documentid = $deptimporter->import($document, undef, undef, 1, undef);
+        unless (defined $documentid){
+            $ctxt->properties->application->style( 'passwd' );
+            $self->sendError( $ctxt,"Could not import index.html\n");
+        }
+
+        $document->title($title);
+        $document->abstract($title);
+
+        $message .= "<p>Document '".$document->title()."' created.</p>";
+        #end create Home document
+
+        # set grants
+        defaultgrants( $deptroot, $owner, $role, $user, $grantees_list );
+        my $iterator = $deptroot->descendants();
+        while ( my $desc = $iterator->getNext() ) {
+            defaultgrants( $desc, $owner, $role, $user, $grantees_list );
+        }
+
+        # only set default bookmark if -b is not given as an argument
+        if ( not $self->param('nobm') ) {
+            $message .= &set_default_bookmark($role, $deptroot);
+        }
+        $message .= &publish_deptroot_rec($deptroot, $user);
+
+        #		$ctxt->properties->application->style( 'newwebsite' );
+        $message .= "<p><strong>New website <a href='content".$parent_folder.$location."'>".$title."</a> successfully generated!</strong></p>";
+        #		$ctxt->session->message($message );
+        $ctxt->properties->application->style( 'newwebsite_update' );
         $ctxt->session->message($message);
-		}
-		else{
-			$ctxt->properties->application->style( 'newwebsite' );
-			$self->sendError( $ctxt,"Could not create DepartmentRoot");
-		}
-		return 0;
+    }
+    else{
+        $ctxt->properties->application->style( 'newwebsite' );
+        $self->sendError( $ctxt,"Could not create DepartmentRoot");
+    }
+    return 0;
 }
-		
-		
+
+
 # add special or departmentlinks and create folder and portlet
 # add_links($linktype, $object, $title)
 sub add_link{
-		my $type_of_link  = shift;       #department or special
-		my $urllink_title = shift;
-		my $document = shift;
-		my $deptroot = shift;
-		my $user = shift;
-		my $title = shift;
-		
-		my $message = "";
-		#my $object        = $document;
-		# hardcode alarm
-		my $l_location  = $type_of_link . 'links';
-		my $lp_location = $l_location . '_portlet.ptlt';
+        my $type_of_link  = shift;       #department or special
+        my $urllink_title = shift;
+        my $document = shift;
+        my $deptroot = shift;
+        my $user = shift;
+        my $title = shift;
+
+        my $message = "";
+        #my $object        = $document;
+        # hardcode alarm
+        my $l_location  = $type_of_link . 'links';
+        my $lp_location = $l_location . '_portlet.ptlt';
 
 
-		# check for portlet
+        # check for portlet
 #		my @portlet_ids = $deptroot->get_portlet_ids();
 #		my $linksportlet;
 #		$linksportlet = XIMS::Portlet->new(
 #			id             => \@portlet_ids,
 #			location       => $lp_location,
 #			marked_deleted => undef
-#		  )
-#		  if $portlet_ids[0];
-	my $oimporter = XIMS::Importer::Object->new(
-		User   => $deptroot->User,
-		Parent => $deptroot
-	);	  
-		my $linksfolder;
-		# add folder 
-			$linksfolder = XIMS::Folder->new(
-				User     => $deptroot->User,
-				location => $l_location
-			);
-			my $id = $oimporter->import($linksfolder);
-			if ( not $id ) {
-				XIMS::Debug( 2,"could not create ". $type_of_link. "links folder '$l_location'" );
-				return;
-			}
-			else{
-				$message .= "<p>Folder '".$l_location ."' created.</p>"
-			}
-		# add links
-		my $urlimporter = XIMS::Importer::Object::URLLink->new(
-			User   => $deptroot->User,
-			Parent => $linksfolder
-		);
-		#return unless $urlimporter;
-		
-		my $location_path =
-		  XIMS::RESOLVERELTOSITEROOTS() eq '1'
-		  ? $document->location_path_relative()
-		  : $document->location_path();
-	
-		my $urllink = XIMS::URLLink->new(
-			User     => $user,
-			location => $location_path,
-			title => $urllink_title,
-			abstract => $document->abstract(),
-		);
-		my $urlid = $urlimporter->import($urllink);
-		XIMS::Debug( 3,
-		    "could not create "
-		  . $type_of_link
-		  . "link '$location_path'. Perhaps it already exists." )
-	  unless $urlid;
-		if($urlid){
-			$message .= "<p>URLLink '".$urllink->title()."' created in ".$linksfolder->title().".</p>"
-		}
-		
-		# create and assign portlet
-			my $lp_location_nosuffix = $lp_location;
-			$lp_location_nosuffix =~ s/\.[^\.]+$//;
-			my $linksportlet = XIMS::Portlet->new(
-				User     => $deptroot->User,
-				location => $lp_location,
-				title    => $lp_location_nosuffix
-			);
-			$linksportlet->target($linksfolder);
-	
-			# *do not look at the following lines, hack-attack!*
-			# see portlet::generate_body why this hack is here.
-			# REWRITE!
-			my $body =
-	'<content><column name="abstract"/><column name="location"/><column name="title"/><object-type name="URLLink"/></content>';
-			$linksportlet->body($body);
-			
-			my $id = $oimporter->import($linksportlet);
-			$deptroot->add_portlet($linksportlet);
-			$deptroot->update();	
-			
-			$message .= "<p>Portlet '".$linksportlet->title()."' created and assigned to DeptartmentRoot.</p>";	
-		
-		return $message;
-}		
+#         )
+#         if $portlet_ids[0];
+    my $oimporter = XIMS::Importer::Object->new(
+        User   => $deptroot->User,
+        Parent => $deptroot
+    );
+        my $linksfolder;
+        # add folder
+            $linksfolder = XIMS::Folder->new(
+                User     => $deptroot->User,
+                location => $l_location
+            );
+            my $id = $oimporter->import($linksfolder);
+            if ( not $id ) {
+                XIMS::Debug( 2,"could not create ". $type_of_link. "links folder '$l_location'" );
+                return;
+            }
+            else{
+                $message .= "<p>Folder '".$l_location ."' created.</p>"
+            }
+        # add links
+        my $urlimporter = XIMS::Importer::Object::URLLink->new(
+            User   => $deptroot->User,
+            Parent => $linksfolder
+        );
+        #return unless $urlimporter;
+
+        my $location_path =
+          XIMS::RESOLVERELTOSITEROOTS() eq '1'
+          ? $document->location_path_relative()
+          : $document->location_path();
+
+        my $urllink = XIMS::URLLink->new(
+            User     => $user,
+            location => $location_path,
+            title => $urllink_title,
+            abstract => $document->abstract(),
+        );
+        my $urlid = $urlimporter->import($urllink);
+        XIMS::Debug( 3,
+            "could not create "
+          . $type_of_link
+          . "link '$location_path'. Perhaps it already exists." )
+      unless $urlid;
+        if($urlid){
+            $message .= "<p>URLLink '".$urllink->title()."' created in ".$linksfolder->title().".</p>"
+        }
+
+        # create and assign portlet
+            my $lp_location_nosuffix = $lp_location;
+            $lp_location_nosuffix =~ s/\.[^\.]+$//;
+            my $linksportlet = XIMS::Portlet->new(
+                User     => $deptroot->User,
+                location => $lp_location,
+                title    => $lp_location_nosuffix
+            );
+            $linksportlet->target($linksfolder);
+
+            # *do not look at the following lines, hack-attack!*
+            # see portlet::generate_body why this hack is here.
+            # REWRITE!
+            my $body =
+    '<content><column name="abstract"/><column name="location"/><column name="title"/><object-type name="URLLink"/></content>';
+            $linksportlet->body($body);
+
+            my $id = $oimporter->import($linksportlet);
+            $deptroot->add_portlet($linksportlet);
+            $deptroot->update();
+
+            $message .= "<p>Portlet '".$linksportlet->title()."' created and assigned to DeptartmentRoot.</p>";
+
+        return $message;
+}
 
 ##############################################################################
 ###########         subroutines     ##########################################
@@ -514,6 +511,8 @@ sub defaultgrants {
 	}
 	
 	foreach my $grantee_str (split(',',$grantees_list)){
+        next if $grantee_str =~ /(ci00|UIBK:ALL)/i;
+        
 		my $grantee = XIMS::User->new( name => $grantee_str);
 		#warn("\n grantee : ".$grantee->id()."   ".$grantee->name()."\n");
 		
