@@ -400,9 +400,7 @@
 								<xsl:if test="/document/context/object">
 									<li id="new-bm">
 										<a href="#">
-											<xsl:attribute name="onclick">
-												$.get('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims"/>/bookmark?create=1&amp;path=<xsl:value-of select="/document/context/object/location_path"/>&amp;redir_self=1')
-											</xsl:attribute>
+											<xsl:attribute name="onclick">$.post('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims"/>/bookmark', {create: 1, token: '<xsl:value-of select="/document/context/session/token"/>', path: '<xsl:value-of select="/document/context/object/location_path"/>', no_redir: 1} )</xsl:attribute>
 											<span class="ui-icon ui-icon-star"><xsl:comment/></span><xsl:value-of select="$i18n/l/SetBMforCurrentObj"/>
 										</a>
 									</li>

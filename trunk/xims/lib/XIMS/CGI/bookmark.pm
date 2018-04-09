@@ -193,9 +193,9 @@ sub event_create {
     $bookmark->content_id( $object->id() );
     $bookmark->create();
 	
-	#if we create from menu: do not redirect to user's bookmarks page
-	if($self->param('redir_self')){
-		$self->SUPER::redirect( $ctxt );
+	if($self->param('no_redir')){
+         $self->{RES} = $self->{REQ}->new_response(204);
+         $self->skipSerialization(1);
 	}
     else {
     	$self->redirect( $self->redirect_uri($ctxt) );
