@@ -1,21 +1,23 @@
-$Id$
-
-Debian 3.1 (Sarge) specific notes for installing XIMS
------------------------------------------------
+Debian (Buster) specific notes for installing XIMS
+--------------------------------------------------
 
 Installing the following packages will cover the needed
 prequisites mentioned at step (0) by the INSTALL file.
 You should be able to install them by copy-and-pasting
 the following line:
 
-aptitude install apache libxml2 libxslt1 libxml2-utils libxml2-dev xml-core tidy libterm-readline-perl-perl libxml-libxml-perl libxml-libxslt-perl axkit axkit-xsp-webutils libclass-methodmaker-perl libcgi-xmlapplication-perl libtime-piece-perl libapache-dbi-perl libterm-readkey-perl libtext-diff-perl libarchive-zip-perl libtext-template-perl
+apt install libxml2 libxslt1.1 libxml2-utils libxml2-dev xml-core tidy libterm-readline-perl-perl libxml-libxml-perl libxml-libxslt-perl libclass-methodmaker-perl libcgi-xmlapplication-perl libterm-readkey-perl libtext-diff-perl libarchive-zip-perl libtext-template-perl libarray-iterator-perl libauthen-passphrase-perl libcss-minifier-xs-perl libcss-tiny-perl libdigest-sha3-perl libmath-random-secure-perl libemail-valid-perl	libhttp-exception-perl libhttp-throwable-perl libjson-xs-perl libjavascript-minifier-xs-perl libmime-lite-html-perl libtext-markdown-perl libxml-libxml-iterator-perl libxml-sax-machines-perl libxml-generator-perldata-perl libnet-server-ss-prefork-perl libclass-makemethods-perl cpanminus make gcc starman
 
-If you are planning to use PostgreSQL as database back-end
+Install non-debian-packagaed dependencies
+
+cpanm --skip-satisfied < perl-debian-buster-cpanm.deps
+
+If you are planning to use PostgreSQL as database back-end,
 you may want to install the following packages:
 
-aptitude install postgresql postgresql-contrib libdbd-pg-perl
+apt install postgresql postgresql-contrib libdbd-pg-perl
 
-Note that PostgreSQL is configured to use the "identd" authentication method
+Note that PostgreSQL is configured to use the "peer" authentication method
  for local connections per default. You might want to change that by allowing password-
 based authentication methods through adding lines like
 local   xims        xims                                            md5

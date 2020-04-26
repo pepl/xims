@@ -1,0 +1,32 @@
+# This is a simple list of dependancies to be used with cpanm,
+# e.g. cpanm --skip-satisfied < perl.deps
+# perl.deps --skip-satisfied in case you want cpanm to update all mentioned modules.
+#
+# If you plan to use LDAP validation
+# Net::LDAP
+# If you plan to use IMAP validation
+# IMAP::Admin
+Class::XSAccessor::Compat
+Data::Password::passwdqc
+DBI
+# If you’re on Oracle, you may deactive this one; 
+DBD::Pg~1.31           
+# DBD::Oracle is best installed manually  
+DBIx::SQLEngine~0.017
+DBIx::XHTML_Table
+HTML::HTML5::Parser 
+Locale::TextDomain 
+#Task::Plack
+XML::Parser::PerlSAX
+XML::Generator::DBI 
+XML::Filter::GenericChunk~0.04
+Net::Server::SS::PreFork
+Plack::Middleware::XForwardedFor
+Plack::Middleware::SetEnvFromHeader
+# If you plan to run all tests
+# XML::Schematron
+# Perl::Critic
+# Test::Perl::Critic
+# Test::Pod
+# Test::Pod::Coverage 
+# Devel::Cover

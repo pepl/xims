@@ -12,7 +12,7 @@
 #
 
 # Set the location of Perl.
-PERL = 
+PERL = /usr/bin/perl
 
 #########################
 # build rules           #
